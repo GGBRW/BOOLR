@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+<title>PWS | SANDBOX MODE</title>
+
+<canvas id="canvas"></canvas>
+
+<!-- Console -->
+<div id="console">
+    <ul id="output"></ul>
+    <input id="input" spellcheck="false">
+</div>
+
+<!-- Component toolbar -->
+<div id="componentToolbar">
+    <div class="slot">I/O</div>
+    <div class="slot" onmousedown="select(NOT)">!</div>
+    <div class="slot" onmousedown="select(AND)">&</div>
+    <div class="slot" onmousedown="select(OR)">|</div>
+    <div class="slot" onmousedown="select(XOR)">^</div>
+    <div class="slot" onmousedown="select(Component)">?</div>
+    <div class="slot">...</div>
+
+    <div id="selectedMsg"></div>
+
+    <ul id="list" tabindex="1">
+        <li onclick="select(Input)">Input</li>
+        <li onclick="select(Output)">Output</li>
+        <li onclick="select(Clock)">Clock</li>
+        <li>LED</li>
+    </ul>
+</div>
+
+<!-- Credits -->
+<div id="credits">
+    PWS v1.06
+    <button onclick="window.open('../index.html#options')" class="material-icons">settings</button>
+    <button onclick="window.open('../index.html#help')" class="material-icons">help</button>
+</div>
+
+<!-- Debug info -->
+<div id="debugInfo"></div>
+
+<!-- Component info -->
+<div id="componentInfo">
+    <h1>Input</h1>
+    x: 12
+</div>
+
+<!-- Context menu -->
+<ul id="contextMenu" tabindex="1" oncontextmenu="return false"></ul>
+
+<script src="main.js"></script>
+<script src="keys.js"></script>
+<script src="console.js"></script>
+<script src="toolbar.js"></script>
+<script src="components.js"></script>
+<script src="debug.js"></script>
+<script src="contextmenu.js"></script>
+<script src="componentInfo.js"></script>
+<script>draw()</script>

@@ -1,0 +1,150 @@
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<title>PWS</title>
+
+<h1>Profielwerkstuk</h1>
+
+<button id="sandboxbtn">SANDBOX MODE</button>
+<button id="projectsbtn">LOAD PROJECT</button>
+
+<button id="optionsbtn">OPTIONS</button>
+<button id="helpbtn">HELP</button>
+
+<div id="projects">
+    <h1>Projects</h1>
+    <button class="closebtn material-icons">close</button>
+    <table>
+        <tr><th>NAME</th><th>LOCAL/SERVER</th><th>SIZE</th><th></th></tr>
+        <tr><td>Test</td><td>Local</td><td>20.3 MB</td><td class="material-icons">delete</td></tr>
+        <tr><td>Test 2</td><td>Local</td><td>5.6 MB</td><td class="material-icons">delete</td></tr>
+    </table>
+</div>
+
+<div id="options">
+    <h1>Options</h1>
+    <button class="closebtn material-icons">close</button>
+    <ul>
+        <li>Vsync<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
+        <li>Full screen<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
+        <li>Dark mode<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
+        <li>Scroll animation<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
+        <li>Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
+    </ul>
+
+</div>
+
+<div id="help">
+    <h1>Help</h1>
+    <button class="closebtn material-icons">close</button>
+    <!-- TODO: tekst in het help-menu -->
+    <div class="container">
+        <h4>Kopje</h4>
+        <p>Tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst</p>
+        <h4>Kopje</h4>
+        <p>Tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst</p>
+    </div>
+</div>
+
+<div id="overlay"></div>
+
+<script>
+    localStorage.pws_settings = JSON.stringify({ scroll_animation: 1 });
+
+    document.getElementById("sandboxbtn").onclick = function() {
+        const sandbox = window.open("./Local/index.html");
+    }
+
+    document.getElementById("projectsbtn").onclick = function() {
+        document.getElementById("projects").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(function() {
+            document.getElementById("projects").style.transform = "scale(1)";
+            document.getElementById("projects").style.opacity = "1";
+            document.getElementById("overlay").style.opacity = ".5";
+        },1);
+
+        location.hash = "projects";
+    }
+
+    document.getElementById("optionsbtn").onclick = function() {
+        document.getElementById("options").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(function() {
+            document.getElementById("options").style.transform = "scale(1)";
+            document.getElementById("options").style.opacity = "1";
+            document.getElementById("overlay").style.opacity = ".5";
+        },1);
+
+        location.hash = "options";
+    }
+
+    document.getElementById("helpbtn").onclick = function() {
+        document.getElementById("help").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(function() {
+            document.getElementById("help").style.transform = "scale(1)";
+            document.getElementById("help").style.opacity = "1";
+            document.getElementById("overlay").style.opacity = ".5";
+        },1);
+
+        location.hash = "help";
+    }
+
+    document.getElementById(location.hash.substr(1) + "btn") && document.getElementById(location.hash.substr(1) + "btn").onclick();
+
+    const closebtns = document.getElementsByClassName("closebtn");
+    for(let i = 0; i < closebtns.length; ++i) {
+        closebtns[i].onclick = function() {
+            const parent = this.parentElement;
+
+            parent.style.transform = "scale(.95)";
+            parent.style.opacity = "0";
+            document.getElementById("overlay").style.opacity = "0";
+            setTimeout(function() {
+                parent.style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }, 200);
+
+            location.hash = "";
+        }
+    }
+</script>
+
+<canvas id="wallpaper"></canvas>
+<script>
+    const c = document.getElementById("wallpaper");
+    const ctx = c.getContext("2d");
+    [c.height, c.width] = [innerHeight, innerWidth];
+    document.body.style.margin = document.body.style.overflow = 0;
+
+    let str = "";
+    for(let i = 0; i < 6000; ++i) {
+        str += Math.round(Math.random());
+    }
+
+    ctx.font = "20px Consolas";
+    ctx.fillStyle = "#1a1a1a";
+
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        var words = text.split('');
+        var line = '';
+
+        for(var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+    }
+
+    wrapText(ctx,str,8,20,c.width - 5,20);
+</script>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JSLintConfiguration">
+    <option ass="true" />
+    <option bitwise="true" />
+    <option closure="true" />
+    <option continue="true" />
+    <option debug="true" />
+    <option eqeq="true" />
+    <option evil="true" />
+    <option forin="true" />
+    <option indent="4" />
+    <option maxerr="50" />
+    <option newcap="true" />
+    <option nomen="true" />
+    <option plusplus="true" />
+    <option regexp="true" />
+    <option sloppy="true" />
+    <option stupid="true" />
+    <option sub="true" />
+    <option todo="true" />
+    <option unparam="true" />
+    <option vars="true" />
+    <option white="true" />
+  </component>
+</project>
