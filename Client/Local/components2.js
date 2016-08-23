@@ -50,26 +50,6 @@ class Input {
             output.to.update();
         }
     }
-
-    draw() {
-        const x = (this.pos.x - offset.x) * zoom,
-              y = (-this.pos.y + offset.y) * zoom;
-
-        ctx.beginPath();
-        ctx.strokeStyle = "#111";
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = zoom / 16;
-        ctx.rect(x - zoom / 2,y - zoom / 2,zoom * this.width,zoom * this.height);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.font = zoom / 1.5 + "px Roboto Condensed";
-        ctx.fillStyle = "#111";
-        ctx.fillText(this.value,x + (this.width - 1.37) / 2 * zoom,y + (this.height - .5) / 2 * zoom);
-
-        ctx.font = zoom / 5 + "px Roboto Condensed";
-        ctx.fillText(this.label,x - .5 * zoom + zoom / 16,y - .5 * zoom + zoom / 5);
-    }
 }
 
 class Output {
