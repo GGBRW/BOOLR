@@ -128,7 +128,7 @@ Component.prototype.rotate = function() {
 }
 Component.prototype.draw = function() {
     for(let wire of this.wires) {
-        wire.draw(this.output[0] ? this.output[0].value : 0); // TODO: fix
+        wire.draw(this.output[0] ? this.output[0].value : 0); // todo: fix
     }
 
 

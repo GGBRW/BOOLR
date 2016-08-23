@@ -5,13 +5,20 @@ c.height = window.innerHeight;
 c.width = window.innerWidth;
 
 const ctx = c.getContext("2d");
-//ctx.textAlign = "center";
 
 const tau = 2 * Math.PI;
 const rsin = n => Math.round(Math.sin(n));
 const rcos = n => Math.round(Math.cos(n));
 
-let settings = JSON.parse(localStorage.pws_settings);
+let settings;
+if(localStorage.pws_settings) {
+    settings = JSON.parse(localStorage.pws_settings);
+} else {
+    settings = {
+        scroll_animation: 1,
+        zoom_animation: 1
+    }
+}
 
 let offset = { x: 0, y: 0 };
 let zoom = 32;
@@ -47,14 +54,14 @@ function draw() {
 
     // Componenten tekenen
     for(let component of components) {
+        // todo: component in scherm?
         component.draw();
     }
 
-    // Wires tekenen
 
     // Component info
     const component = find(cursor.pos_r.x,cursor.pos_r.y);
-    if(component && keys[32]) showComponentInfo(component,cursor.pos)
+    if(component && keys[32]) showComponentInfo(component,cursor.pos);
     else document.getElementById("componentInfo").style.display = "none";
 
     // Selecties tekenen
@@ -101,6 +108,7 @@ function draw() {
         zoom -= (zoom - zoom_animation) / 8;
     }
 
+    // Framerate berekenen
     framerate = 1000 / (new Date - lastFrame);
     lastFrame = new Date;
 
@@ -128,7 +136,7 @@ window.onresize = () => {
     c.width = window.innerWidth;
 }
 
-// Todo: window.onbeforeunload = () => false;
+// todo: window.onbeforeunload = () => false;
 
 c.onmouseleave = () => scroll_animation.animate = true;
 c.onmouseenter = () => scroll_animation.animate = false;
@@ -137,17 +145,17 @@ c.onmousedown = function(e) {
     cursor.update(e);
 
     if(e.which == 1) {
-        document.getElementById("contextMenu").style.display = "none";
-        cursor.selecting = null;
-
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
-        if(component && e.ctrlKey) {
+        if(component && e.ctrlKey) {    // Start dragging component
             if(keys[68]) cursor.dragging = new component.constructor();
             else cursor.dragging = component;
-        } else if(component) {
+        } else if(component) {          // Start connecting component
             component.wires.push(new Wire);
-            cursor.connecting = { component, wire: component.wires[component.wires.length - 1] };
-        } else if(e.shiftKey) {
+            cursor.connecting = {
+                component,
+                wire: component.wires[component.wires.length - 1]
+            }
+        } else if(e.shiftKey) {         // Start selecting
             cursor.selecting = {
                 x: cursor.pos.x / zoom + offset.x,
                 y: cursor.pos.y / zoom - offset.y,
@@ -156,11 +164,9 @@ c.onmousedown = function(e) {
                 dashOffset: 0
             }
         }
-    } else if(e.which == 2) {
+    } else if(e.which == 2) {           // Start scrolling
         scroll_animation.animate = false;
         return false;
-    } else if(e.which == 3) {
-
     }
 }
 c.onmousemove = function(e) {
@@ -177,7 +183,9 @@ c.onmousemove = function(e) {
                 cursor.connecting.component.connect(component,0,component.input.length);
                 cursor.connecting = null;
                 toolbarMsg("Connected to " + component.constructor.name);
-            } else cursor.connecting.wire.add(cursor.pos_r);
+            } else {
+                cursor.connecting.wire.add(cursor.pos_r);
+            }
         } else if(cursor.selecting) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
             cursor.selecting.h = (cursor.pos.y / zoom - offset.y) - cursor.selecting.y;
@@ -195,10 +203,13 @@ c.onmousemove = function(e) {
 c.onmouseup = function(e) {
     if(e.which == 1) {
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
-        if(component && component.onclick) component.onclick();
 
-        if(cursor.dragging) {
-            // TODO: animatie
+        if(document.getElementById("contextMenu").style.display == "block") {
+            document.getElementById("contextMenu").style.display = "none";
+            cursor.selecting = null;
+        } else if(component) {
+            if(component.onclick) component.onclick();
+        } else if(cursor.dragging) {
             cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
             cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
             cursor.dragging = 0;
@@ -206,10 +217,7 @@ c.onmouseup = function(e) {
             cursor.connecting.component.wires.splice(cursor.connecting.component.wires.indexOf(cursor.connecting.wire),1);
             cursor.connecting = null;
         } else if(cursor.selecting) {
-            console.log(cursor.selecting.x,cursor.selecting.y);
             c.oncontextmenu(e);
-        } else if(component) {
-
         } else new Selected();
     } else if(e.which == 2) {
         scroll_animation.animate = true;

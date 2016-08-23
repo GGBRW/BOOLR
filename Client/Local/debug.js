@@ -7,7 +7,6 @@ function updateDebugInfo() {
     debugInfo.innerHTML += "Offset x: " + Math.round(offset.x) + "<br>";
     debugInfo.innerHTML += "Offset y: " + Math.round(offset.y) + "<br>";
     debugInfo.innerHTML += "Zoom: " + Math.round(zoom) + "<br>";
-    debugInfo.innerHTML += "Memory usage: " + JSON.stringify(components).length / 1000 + "kB <br>";
 }
 
 updateDebugInfo();

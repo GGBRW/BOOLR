@@ -9,6 +9,27 @@ body {
     user-select: none;
 }
 
+@font-face {
+    font-family: "Roboto";
+    src: url(./Fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(./Fonts/Roboto-Bold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url(./Fonts/RobotoCondensed-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Inconsolata";
+    src: url(./Fonts/Inconsolata-Regular.ttf);
+}
+
 #wallpaper {
     position: fixed;
     top: 0;
@@ -111,7 +132,7 @@ body > button:active {
 #projects h1, #options h1, #help h1 {
     font-family: "Roboto";
     font-size: 40px;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
 }
 #projects .closebtn, #options .closebtn, #help .closebtn {

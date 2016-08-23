@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
 <title>PWS | SANDBOX MODE</title>
 
@@ -43,10 +42,7 @@
 <div id="debugInfo"></div>
 
 <!-- Component info -->
-<div id="componentInfo">
-    <h1>Input</h1>
-    x: 12
-</div>
+<div id="componentInfo"></div>
 
 <!-- Context menu -->
 <ul id="contextMenu" tabindex="1" oncontextmenu="return false"></ul>
@@ -59,4 +55,6 @@
 <script src="debug.js"></script>
 <script src="contextmenu.js"></script>
 <script src="componentInfo.js"></script>
-<script>draw()</script>
+<script>
+    draw();  // 'draw' loop starten
+</script>
