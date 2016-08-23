@@ -1,7 +1,7 @@
 "use strict";
 
 let components = [];
-const find = (x,y) => components.find(
+const find = (x,y) => Array.prototype.slice.call(components).reverse().find(
     n =>
         x >= n.pos.x && x < n.pos.x + n.width &&
         y <= n.pos.y && y > n.pos.y - n.height
