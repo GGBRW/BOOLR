@@ -62,7 +62,7 @@ context_options["delete"].onmouseup = () => remove(cursor.pos_r.x,cursor.pos_r.y
 // Delete All
 context_options["delete all"] = document.createElement("li");
 context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete all"].onmouseup = () => remove(cursor.selecting.x,cursor.selecting.y,cursor.selecting.w,cursor.selecting.h);
+context_options["delete all"].onmouseup = () => remove(Math.round(cursor.selecting.x),Math.round(cursor.selecting.y),cursor.selecting.w,cursor.selecting.h);
 
 for(let i in context_options) {
     context_options[i].onclick = function() { this.parentElement.style.display = "none"; cursor.selecting = null }

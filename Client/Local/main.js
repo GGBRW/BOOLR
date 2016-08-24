@@ -53,9 +53,9 @@ function draw() {
     }
 
     // Componenten tekenen
-    for(let component of components) {
+    for(let i = components.length - 1; i >= 0; --i) {
         // todo: component in scherm?
-        component.draw();
+        components[i].draw();
     }
 
 
@@ -74,9 +74,9 @@ function draw() {
         ctx.beginPath();
         ctx.rect(
             (cursor.selecting.x - offset.x) * zoom,
-            (cursor.selecting.y + offset.y) * zoom,
+            (-cursor.selecting.y + offset.y) * zoom,
             cursor.selecting.w * zoom,
-            cursor.selecting.h * zoom
+            -cursor.selecting.h * zoom
         );
         ctx.fill();
         ctx.stroke();
@@ -150,20 +150,18 @@ c.onmousedown = function(e) {
             if(keys[68]) cursor.dragging = new component.constructor();
             else cursor.dragging = component;
         } else if(component) {          // Start connecting component
-            component.wires.push(new Wire);
-            cursor.connecting = {
-                component,
-                wire: component.wires[component.wires.length - 1]
-            }
+            const wire = new Wire();
+            wire.from = component;
+            cursor.connecting = wire;
         } else if(e.shiftKey) {         // Start selecting
             cursor.selecting = {
-                x: cursor.pos.x / zoom + offset.x,
-                y: cursor.pos.y / zoom - offset.y,
+                x: e.x / zoom + offset.x,
+                y: -e.y / zoom - offset.y,
                 h: 0,
                 w: 0,
                 dashOffset: 0
             }
-        }
+        } else new Selected();
     } else if(e.which == 2) {           // Start scrolling
         scroll_animation.animate = false;
         return false;
@@ -177,18 +175,21 @@ c.onmousemove = function(e) {
             cursor.dragging.pos.x += (e.movementX) / zoom;
             cursor.dragging.pos.y -= (e.movementY) / zoom;
         } else if(cursor.connecting) {
-            const component = find(cursor.pos_r.x,cursor.pos_r.y);
-            if(component && component != cursor.connecting.component && component != Input) {
-                cursor.connecting.wire.add(cursor.pos_r);
-                cursor.connecting.component.connect(component,0,component.input.length);
+            cursor.connecting.pos.push(cursor.pos_r);
+
+            const component = find(cursor.pos_r.x,cursor.pos_r.y,false);
+            if(component &&
+               component != cursor.connecting.from &&
+               ![Input,Wire].includes(component.constructor)) {
+                cursor.connecting.to = component;
+                cursor.connecting.from.connect(component,cursor.connecting);
+                toolbarMsg(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
+
                 cursor.connecting = null;
-                toolbarMsg("Connected to " + component.constructor.name);
-            } else {
-                cursor.connecting.wire.add(cursor.pos_r);
             }
         } else if(cursor.selecting) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
-            cursor.selecting.h = (cursor.pos.y / zoom - offset.y) - cursor.selecting.y;
+            cursor.selecting.h = (-e.y / zoom - offset.y) -  cursor.selecting.y;
         }
     } else if(e.which == 2) {
         offset.x -= (e.movementX) / zoom;
@@ -207,18 +208,20 @@ c.onmouseup = function(e) {
         if(document.getElementById("contextMenu").style.display == "block") {
             document.getElementById("contextMenu").style.display = "none";
             cursor.selecting = null;
-        } else if(component) {
-            if(component.onclick) component.onclick();
-        } else if(cursor.dragging) {
+        }
+        else if(cursor.dragging) {
             cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
             cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
             cursor.dragging = 0;
-        } else if(cursor.connecting) {
-            cursor.connecting.component.wires.splice(cursor.connecting.component.wires.indexOf(cursor.connecting.wire),1);
+        }
+        else if(component && component.onclick) component.onclick();
+        else if(cursor.connecting) {
+            components.splice(components.indexOf(cursor.connecting),1);
             cursor.connecting = null;
-        } else if(cursor.selecting) {
+        }
+        else if(cursor.selecting) {
             c.oncontextmenu(e);
-        } else new Selected();
+        }
     } else if(e.which == 2) {
         scroll_animation.animate = true;
     } else if(e.which == 3) {
