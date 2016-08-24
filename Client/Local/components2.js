@@ -1,5 +1,7 @@
 let components = [];
 
+let Selected;
+
 const find = function(x,y) {
     for(let i of components) {
         if(Array.isArray(i.pos)) {  // Component is a wire
@@ -30,8 +32,6 @@ const remove = function(x,y,w = 1,h = 1) {
         }
     }
 }
-
-let Selected;
 
 class Input {
     constructor(
