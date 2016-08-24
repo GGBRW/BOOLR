@@ -1,7 +1,5 @@
 let components = [];
 
-let Selected;
-
 const find = function(x,y) {
     for(let i of components) {
         if(Array.isArray(i.pos)) {  // Component is a wire
@@ -18,20 +16,34 @@ const remove = function(x,y,w = 1,h = 1) {
         const component = find(x,y);
         if(!component) return;
         else if(component.constructor == Wire) {
-            component.from.output.splice(component.from.output.indexOf(component),1);
-            component.to.input.splice(component.to.input.indexOf(component),1);
+            component.from && component.from.output.splice(component.from.output.indexOf(component),1);
+            component.to && component.to.input.splice(component.to.input.indexOf(component),1);
+        } else {
+            if(component.input) {
+                for(let input of component.input) {
+                    input.from.output.splice(input.from.output.indexOf(input),1);
+                    components.splice(components.indexOf(input),1);              }
+            }
+            if(component.output) {
+                for(let output of component.output) {
+                    output.to.input.splice(output.to.input.indexOf(output),1);
+                    components.splice(components.indexOf(output),1);
+                }
+            }
         }
 
         components.splice(components.indexOf(component),1);
     }
     else {
         for(let i = 0; i < Math.abs(w); ++i) {
-            for (let j = 0; j < Math.abs(h); ++j) {
+            for(let j = 0; j < Math.abs(h); ++j) {
                 remove(x + i * Math.sign(w), y + j * Math.sign(h));
             }
         }
     }
 }
+
+let Selected;
 
 class Input {
     constructor(
@@ -71,6 +83,7 @@ class Input {
 
     onclick() {
         this.value = +!this.value;
+        this.update();
     }
 
     draw() {
@@ -88,21 +101,23 @@ class Input {
         ctx.fill();
         ctx.stroke();
 
-        // Label tekenen
-        ctx.fillStyle = "#111";
-        ctx.font = zoom / 5 + "px Roboto Condensed";
-        ctx.fillText(
-            this.label,
-            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
-            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
-        );
-
+        if(zoom < 5) return;
         // Icoon tekenen
+        ctx.fillStyle = "#111";
         ctx.font = zoom / 1.5 + "px Roboto Condensed";
         ctx.fillText(
             this.value,
             (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
             (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+
+        if(zoom < 20) return;
+        // Label tekenen
+        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.label,
+            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
         );
     }
 }
@@ -134,7 +149,6 @@ class Output {
 
     update() {
         this.value = this.func(this.input.map(n => n.value));
-        console.log(this.value);
     }
 
     draw() {
@@ -176,6 +190,7 @@ class Gate {
         pos = Object.assign({}, cursor.pos_r),
         height = 1,
         width = 2,
+        icon = "?",
         label,
         func = input => input
     ) {
@@ -187,6 +202,7 @@ class Gate {
         this.height = height;
         this.width = width;
 
+        this.icon = icon;
         if(!label) {
             const n = components.filter(n => n.constructor == this.constructor).length;
             label = this.constructor.name + "#" + n;
@@ -197,22 +213,15 @@ class Gate {
     }
 
     connect(component,wire) {
-        const connection = {
-            value: 0,
-            component,
-            wire
-        };
-        this.output.push(connection);
-        component.input.push(connection);
-
-        component.update();
+        this.output.push(wire);
+        component.input.push(wire);
     }
 
     update() {
         const result = this.func(this.input.map(n => n.value));
-        for(let i = 0; i < this.output.length; + q+i) {
+        for(let i = 0; i < this.output.length; ++i) {
             this.output[i].value = result[i] ? result[i] : result[result.length - 1];
-            this.output[i].component.update();
+            this.output[i].to.update();
         }
     }
 
@@ -231,8 +240,18 @@ class Gate {
         ctx.fill();
         ctx.stroke();
 
-        // Label tekenen
+        if(zoom < 5) return;
+        // Icoon tekenen
         ctx.fillStyle = "#111";
+        ctx.font = zoom / 1.5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.icon,
+            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+
+        if(zoom < 20) return;
+        // Label tekenen
         ctx.font = zoom / 5 + "px Roboto Condensed";
         ctx.fillText(
             this.label,
@@ -245,14 +264,28 @@ class Gate {
 class NOT extends Gate {
     constructor(pos,height = 1,width = 1,label) {
         const func = input => input.map(n => +!n);
-        super(pos,height,width,label,func);
+        super(pos,height,width,"!",label,func);
     }
 }
 
 class AND extends Gate {
     constructor(pos,height = 2,width = 2,label) {
         const func = input => [input[0] & input[1]];
-        super(pos,height,width,label,func);
+        super(pos,height,width,"&",label,func);
+    }
+}
+
+class OR extends Gate {
+    constructor(pos,height = 2,width = 2,label) {
+        const func = input => [input[0] | input[1]];
+        super(pos,height,width,"|",label,func);
+    }
+}
+
+class XOR extends Gate {
+    constructor(pos,height = 2,width = 2,label) {
+        const func = input => [input[0] ^ input[1]];
+        super(pos,height,width,"^",label,func);
     }
 }
 
@@ -278,8 +311,8 @@ class Wire {
             );
         }
 
-        ctx.lineWidth = zoom / 16;
-        ctx.strokeStyle = this.value ? "#555" : this.color;
+        ctx.lineWidth = zoom / 10;
+        ctx.strokeStyle = this.value ? "#bbb" : this.color;
         ctx.stroke();
     }
 }

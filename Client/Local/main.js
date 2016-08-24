@@ -21,7 +21,7 @@ if(localStorage.pws_settings) {
 }
 
 let offset = { x: 0, y: 0 };
-let zoom = 32;
+let zoom = 50;
 
 let scroll_animation = { v: 0, r: 0, animate: false };
 let zoom_animation = zoom;
@@ -54,8 +54,15 @@ function draw() {
 
     // Componenten tekenen
     for(let i = components.length - 1; i >= 0; --i) {
-        // todo: component in scherm?
-        components[i].draw();
+        const x = (components[i].pos.x - offset.x) * zoom;
+        const y = -(components[i].pos.y - offset.y) * zoom;
+        if(
+            Array.isArray(components[i].pos) || // todo: fix voor wires
+            x + zoom * components[i].width - zoom / 2 >= 0 &&
+            x - zoom / 2 <= c.width &&
+            y + zoom * components[i].height - zoom / 2 >= 0 &&
+            y  - zoom / 2 <= c.height
+        ) components[i].draw();
     }
 
 
@@ -146,22 +153,27 @@ c.onmousedown = function(e) {
 
     if(e.which == 1) {
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
+        if(component && component.onclick) component.onclick();
+
         if(component && e.ctrlKey) {    // Start dragging component
             if(keys[68]) cursor.dragging = new component.constructor();
             else cursor.dragging = component;
-        } else if(component) {          // Start connecting component
+        }
+        else if(!cursor.connecting && component) {          // Start connecting component
             const wire = new Wire();
             wire.from = component;
             cursor.connecting = wire;
-        } else if(e.shiftKey) {         // Start selecting
+        }
+        else if(e.shiftKey) {         // Start selecting
             cursor.selecting = {
                 x: e.x / zoom + offset.x,
-                y: -e.y / zoom - offset.y,
+                y: -(e.y / zoom - offset.y),
                 h: 0,
                 w: 0,
                 dashOffset: 0
             }
-        } else new Selected();
+        }
+        else if(!component) new Selected();
     } else if(e.which == 2) {           // Start scrolling
         scroll_animation.animate = false;
         return false;
@@ -177,7 +189,7 @@ c.onmousemove = function(e) {
         } else if(cursor.connecting) {
             cursor.connecting.pos.push(cursor.pos_r);
 
-            const component = find(cursor.pos_r.x,cursor.pos_r.y,false);
+            const component = find(cursor.pos_r.x,cursor.pos_r.y);
             if(component &&
                component != cursor.connecting.from &&
                ![Input,Wire].includes(component.constructor)) {
@@ -189,7 +201,7 @@ c.onmousemove = function(e) {
             }
         } else if(cursor.selecting) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
-            cursor.selecting.h = (-e.y / zoom - offset.y) -  cursor.selecting.y;
+            cursor.selecting.h = -(e.y / zoom - offset.y) -  cursor.selecting.y;
         }
     } else if(e.which == 2) {
         offset.x -= (e.movementX) / zoom;
@@ -214,7 +226,6 @@ c.onmouseup = function(e) {
             cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
             cursor.dragging = 0;
         }
-        else if(component && component.onclick) component.onclick();
         else if(cursor.connecting) {
             components.splice(components.indexOf(cursor.connecting),1);
             cursor.connecting = null;
