@@ -27,6 +27,8 @@ c.oncontextmenu = function(e) {
         }
     }
 
+    contextMenu.style.width = contextMenu.clientWidth;
+
     return false;
 }
 

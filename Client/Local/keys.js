@@ -16,7 +16,7 @@ document.onkeydown = function(e) {
             scroll(0,-5);
             break;
         case 36: // Home
-            scroll(offset.x,-offset.y);
+            scroll(-offset.x,-offset.y);
             break;
         case 46: // Delete
             if(cursor.selecting) {
@@ -38,7 +38,7 @@ document.onkeydown = function(e) {
             cursor.selecting = null;
             break;
         case 49: // 1
-            document.getElementsByClassName("slot")[0].onmousedown();
+            document.getElementsByClassName("slot")[0].onclick();
             break;
         case 50: // 2
             document.getElementsByClassName("slot")[1].onmousedown();

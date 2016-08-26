@@ -187,14 +187,16 @@ c.onmousemove = function(e) {
             cursor.dragging.pos.x += (e.movementX) / zoom;
             cursor.dragging.pos.y -= (e.movementY) / zoom;
         } else if(cursor.connecting) {
-            cursor.connecting.pos.push(cursor.pos_r);
-
             const component = find(cursor.pos_r.x,cursor.pos_r.y);
+            if(!component || component.constructor != Wire) cursor.connecting.pos.push(cursor.pos_r);
+
             if(component &&
                component != cursor.connecting.from &&
                ![Input,Wire].includes(component.constructor)) {
+                cursor.connecting.pos.push(cursor.pos_r);
                 cursor.connecting.to = component;
                 cursor.connecting.from.connect(component,cursor.connecting);
+                cursor.connecting.from.update();
                 toolbarMsg(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
 
                 cursor.connecting = null;
