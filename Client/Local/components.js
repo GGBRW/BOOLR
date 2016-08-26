@@ -1,231 +1,323 @@
-"use strict";
-
 let components = [];
-const find = (x,y) => Array.prototype.slice.call(components).reverse().find(
-    n =>
-        x >= n.pos.x && x < n.pos.x + n.width &&
-        y <= n.pos.y && y > n.pos.y - n.height
-);
-const remove = (x,y,w = 1,h = 1) => {
+
+const find = function(x,y) {
+    for(let i of components) {
+        if(Array.isArray(i.pos)) {  // Component is a wire
+            for(let pos of i.pos) {
+                if(pos.x == x && pos.y == y) return i;
+            }
+        } else if(x >= i.pos.x && x < i.pos.x + i.width &&
+                  y <= i.pos.y && y > i.pos.y - i.height) return i;
+    }
+}
+
+const remove = function(x,y,w = 1,h = 1) {
     if(w == 1 && h == 1) {
-        find(x, y) != -1 && components.splice(components.indexOf(find(x, y)), 1);
-    } else {
-        for(let i = 0; i < w; ++i)
-            for(let j = 0; j < h; ++j)
-                remove(x + i, y + j);
-    }
-};
-
-
-let Selected = Input;
-
-// Input class
-
-function Input(value = 0, height = 1, width = 2, pos = { x: cursor.pos_r.x, y: cursor.pos_r.y }, label) {
-    this.value = value;
-    this.output = [];
-
-    this.pos = pos;
-    this.height = height; this.width = width;
-
-    this.wires = [];
-
-    if(!label) {
-        let inputs = 0;
-        for(let c of components) {
-            if(c.constructor == Input) ++inputs;
+        const component = find(x,y);
+        if(!component) return;
+        else if(component.constructor == Wire) {
+            component.from && component.from.output.splice(component.from.output.indexOf(component),1);
+            component.to && component.to.input.splice(component.to.input.indexOf(component),1);
+        } else {
+            if(component.input) {
+                for(let input of component.input) {
+                    input.from.output.splice(input.from.output.indexOf(input),1);
+                    components.splice(components.indexOf(input),1);              }
+            }
+            if(component.output) {
+                for(let output of component.output) {
+                    output.to.input.splice(output.to.input.indexOf(output),1);
+                    components.splice(components.indexOf(output),1);
+                }
+            }
         }
-        label = "Input#" + inputs;
+
+        components.splice(components.indexOf(component),1);
     }
-    this.label = label;
-
-    components.push(this);
-}
-Input.prototype.connect = function(component,port_out,port_in) {
-    this.output[port_out] = { component, port: port_in };
-    component.input[port_out] = 0;
-    return component;
-}
-Input.prototype.set = function(value = 0) {
-    this.value = value;
-
-    this.output.forEach(output => {
-        output.component.input[output.port] = this.value;
-        output.component.update();
-    });
-}
-Input.prototype.onclick = function() {
-    this.value = +!this.value;
-    this.set(this.value);
-}
-Input.prototype.rotate = function() {
-    const tmp = this.height;
-    this.height = this.width;
-    this.width = tmp;
-}
-Input.prototype.draw = function() {
-    for(let wire of this.wires) {
-        wire.draw(this.value);
-    }
-
-    const x = (this.pos.x - offset.x) * zoom,
-          y = (-this.pos.y + offset.y) * zoom;
-
-    ctx.beginPath();
-    ctx.strokeStyle = "#111";
-    ctx.fillStyle = "#fff";
-    ctx.lineWidth = zoom / 16;
-    ctx.rect(x - zoom / 2,y - zoom / 2,zoom * this.width,zoom * this.height);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.font = zoom / 1.5 + "px Roboto Condensed";
-    ctx.fillStyle = "#111";
-    ctx.fillText(this.value,x + (this.width - 1.37) / 2 * zoom,y + (this.height - .5) / 2 * zoom);
-
-    ctx.font = zoom / 5 + "px Roboto Condensed";
-    ctx.fillText(this.label,x - .5 * zoom + zoom / 16,y - .5 * zoom + zoom / 5);
-}
-
-
-// Component class
-
-function Component(func, height = 1, width = 1, icon = "?", pos = { x: cursor.pos_r.x, y: cursor.pos_r.y }) {
-    this.input = [];
-    this.output = [];
-    this.func = func;
-
-    this.pos = pos;
-    this.height = height; this.width = width;
-    this.icon = icon;
-
-    this.wires = [];
-
-    components.push(this);
-}
-Component.prototype.connect = function(component,port_out,port_in) {
-    this.output[port_out] = { component, port: port_in };
-    component.input[port_out] = 0;
-    return component;
-}
-Component.prototype.update = function() {
-    const output = this.func(this.input);
-    for(let i = 0; i < output.length; ++i) {
-        this.output[i].value = output[i];
-        this.output[i].component.input[this.output[i].port] = output[i];
-    }
-
-    let updates = [];
-    for(let out of this.output)
-        !updates.includes(out.component) && updates.push(out.component);
-
-    for(let update of updates) update.update();
-}
-Component.prototype.rotate = function() {
-    const tmp = this.height;
-    this.height = this.width;
-    this.width = tmp;
-}
-Component.prototype.draw = function() {
-    for(let wire of this.wires) {
-        wire.draw(this.output[0] ? this.output[0].value : 0); // todo: fix
-    }
-
-
-    const x = (this.pos.x - offset.x) * zoom,
-          y = (-this.pos.y + offset.y) * zoom;
-
-    ctx.beginPath();
-    ctx.strokeStyle = "#111";
-    ctx.fillStyle = "#fff";
-    ctx.lineWidth = zoom / 16;
-    ctx.rect(x - zoom / 2,y - zoom / 2,zoom * this.width,zoom * this.height);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.font = zoom / 1.5 + "px Consolas";
-    ctx.fillStyle = "#111";
-    ctx.fillText(this.icon,x + (this.width - 1.37) / 2 * zoom,y + (this.height - .5) / 2 * zoom);
-}
-
-// Sub- component classes
-const NOT = function() { return new Component(input => [+!input[0]],1,1,"!") };
-const AND = function() { return new Component(input => [input[0] & input[1]],2,2,"&") };
-const OR = function() { return new Component(input => [input[0] | input[1]],2,2,"|") };
-const XOR = function() { return new Component(input => [input[0] ^ input[1]],2,2,"^") };
-
-
-// Output class
-
-function Output(func, height = 1, width = 2, pos = { x: cursor.pos_r.x, y: cursor.pos_r.y }, label) {
-    this.input = [];
-    this.value = 0;
-    this.func = func || ( n => console.log(n) );
-
-    this.pos = pos;
-    this.height = height; this.width = width;
-
-    if(!label) {
-        let outputs = 0;
-        for(let c of components) {
-            if(c.constructor == Output) ++outputs;
+    else {
+        for(let i = 0; i < Math.abs(w); ++i) {
+            for(let j = 0; j < Math.abs(h); ++j) {
+                remove(x + i * Math.sign(w), y + j * Math.sign(h));
+            }
         }
-        label = "Output#" + outputs;
     }
-    this.label = label;
-
-    components.push(this);
 }
-Output.prototype.update = function() {
-    for(let input of this.input) {
-        this.value = input;
+
+let Selected;
+
+class Input {
+    constructor(
+        pos = Object.assign({}, cursor.pos_r),
+        height = 1,
+        width = 2,
+        label
+    ) {
+        this.value = 0;
+        this.output = [];
+
+        this.pos = pos;
+        this.height = height;
+        this.width = width;
+
+        if(!label) {
+            const n = components.filter(n => n.constructor == this.constructor).length;
+            label = this.constructor.name + "#" + n;
+        }
+        this.label = label;
+
+        components.unshift(this);
     }
 
-    this.func(this.value);
-}
-Output.prototype.rotate = function() {
-    const tmp = this.height;
-    this.height = this.width;
-    this.width = tmp;
-}
-Output.prototype.draw = function() {
-    const x = (this.pos.x - offset.x) * zoom,
-          y = (-this.pos.y + offset.y) * zoom;
-
-    ctx.beginPath();
-    ctx.strokeStyle = "#111";
-    ctx.fillStyle = "#fff";
-    ctx.lineWidth = zoom / 16;
-    ctx.rect(x - zoom / 2,y - zoom / 2,zoom * this.width,zoom * this.height);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.font = zoom / 1.5 + "px Roboto Condensed";
-    ctx.fillStyle = "#111";
-    ctx.fillText(this.value,x + (this.width - 1.37) / 2 * zoom,y + (this.height - .5) / 2 * zoom);
-
-    ctx.font = zoom / 5 + "px Roboto Condensed";
-    ctx.fillStyle = "#111";
-    ctx.fillText(this.label,x - .5 * zoom + zoom / 16,y - .5 * zoom + zoom / 5);
-}
-
-// Wire class
-
-function Wire() {
-    this.positions = [];
-    this.value = 0;
-}
-Wire.prototype.add = function add(pos) { this.positions.push(pos); this.pos = pos; };
-Wire.prototype.draw = function(value) {
-    ctx.beginPath();
-    for(let pos of this.positions) {
-        const x = (pos.x - offset.x) * zoom,
-              y = (-pos.y + offset.y) * zoom;
-
-        ctx.lineTo(x,y);
+    connect(component,wire) {
+        this.output.push(wire);
+        component.input.push(wire);
     }
-    ctx.lineWidth = zoom / 16;
-    ctx.strokeStyle = value ? "#822" : "#111";
-    ctx.stroke();
+
+    update(value = this.value) {
+        this.value = value;
+        for(let output of this.output) {
+            output.value = this.value;
+            output.to.update();
+        }
+    }
+
+    onclick() {
+        this.value = +!this.value;
+        this.update();
+    }
+
+    draw() {
+        // Omlijning van component tekenen
+        ctx.beginPath();
+        ctx.rect(
+            (this.pos.x - offset.x) * zoom - zoom / 2,
+            (-this.pos.y + offset.y) * zoom - zoom / 2,
+            zoom * this.width,
+            zoom * this.height
+        );
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fill();
+        ctx.stroke();
+
+        if(zoom < 5) return;
+        // Icoon tekenen
+        ctx.fillStyle = "#111";
+        ctx.font = zoom / 1.5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.value,
+            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+
+        if(zoom < 20) return;
+        // Label tekenen
+        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.label,
+            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+        );
+    }
 }
+
+class Output {
+    constructor(
+        pos = Object.assign({}, cursor.pos_r),
+        height = 1,
+        width = 2,
+        label,
+        func = input => input[0]
+    ) {
+        this.input = [];
+        this.value = 0;
+        this.func = func;
+
+        this.pos = pos;
+        this.height = height;
+        this.width = width;
+
+        if(!label) {
+            const n = components.filter(n => n.constructor == this.constructor).length;
+            label = this.constructor.name + "#" + n;
+        }
+        this.label = label;
+
+        components.unshift(this);
+    }
+
+    update() {
+        this.value = this.func(this.input.map(n => n.value));
+    }
+
+    draw() {
+        // Omlijning van component tekenen
+        ctx.beginPath();
+        ctx.rect(
+            (this.pos.x - offset.x) * zoom - zoom / 2,
+            (-this.pos.y + offset.y) * zoom - zoom / 2,
+            zoom * this.width,
+            zoom * this.height
+        );
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fill();
+        ctx.stroke();
+
+        // Label tekenen
+        ctx.fillStyle = "#111";
+        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.label,
+            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+        );
+
+        // Icoon tekenen
+        ctx.font = zoom / 1.5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.value,
+            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+    }
+}
+
+class Gate {
+    constructor(
+        pos = Object.assign({}, cursor.pos_r),
+        height = 1,
+        width = 2,
+        icon = "?",
+        label,
+        func = input => input
+    ) {
+        this.input = [];
+        this.output = [];
+        this.func = func;
+
+        this.pos = pos;
+        this.height = height;
+        this.width = width;
+
+        this.icon = icon;
+        if(!label) {
+            const n = components.filter(n => n.constructor == this.constructor).length;
+            label = this.constructor.name + "#" + n;
+        }
+        this.label = label;
+
+        components.unshift(this);
+    }
+
+    connect(component,wire) {
+        this.output.push(wire);
+        component.input.push(wire);
+    }
+
+    update() {
+        const result = this.func(this.input.map(n => n.value));
+        for(let i = 0; i < this.output.length; ++i) {
+            this.output[i].value = result[i] ? result[i] : result[result.length - 1];
+            this.output[i].to.update();
+        }
+    }
+
+    draw() {
+        // Omlijning van component tekenen
+        ctx.beginPath();
+        ctx.rect(
+            (this.pos.x - offset.x) * zoom - zoom / 2,
+            (-this.pos.y + offset.y) * zoom - zoom / 2,
+            zoom * this.width,
+            zoom * this.height
+        );
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fill();
+        ctx.stroke();
+
+        if(zoom < 5) return;
+        // Icoon tekenen
+        ctx.fillStyle = "#111";
+        ctx.font = zoom / 1.5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.icon,
+            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+
+        if(zoom < 20) return;
+        // Label tekenen
+        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.fillText(
+            this.label,
+            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+        );
+    }
+}
+
+class NOT extends Gate {
+    constructor(pos,height = 1,width = 1,label) {
+        const func = input => input.map(n => +!n);
+        super(pos,height,width,"!",label,func);
+    }
+}
+
+class AND extends Gate {
+    constructor(pos,height = 2,width = 2,label) {
+        const func = input => [input[0] & input[1]];
+        super(pos,height,width,"&",label,func);
+    }
+}
+
+class OR extends Gate {
+    constructor(pos,height = 2,width = 2,label) {
+        const func = input => [input[0] | input[1]];
+        super(pos,height,width,"|",label,func);
+    }
+}
+
+class XOR extends Gate {
+    constructor(pos,height = 2,width = 2,label) {
+        const func = input => [input[0] ^ input[1]];
+        super(pos,height,width,"^",label,func);
+    }
+}
+
+class Wire {
+    constructor(from,to, color = "#111") {
+        this.from = from;
+        this.to = to;
+
+        this.value = 0;
+
+        this.pos = [];
+        this.color = color;
+
+        components.push(this);
+    }
+
+    draw() {
+        ctx.beginPath();
+        for(let pos of this.pos) {
+            ctx.lineTo(
+                (pos.x - offset.x) * zoom,
+                (-pos.y + offset.y) * zoom
+            );
+        }
+
+        ctx.lineWidth = zoom / 10;
+        ctx.strokeStyle = this.value ? "#bbb" : this.color;
+        ctx.stroke();
+    }
+}
+
+Selected = Input;
+
+
 
