@@ -1,5 +1,24 @@
 "use strict";
 
+/*
+    todo: toolbarMSG line-break
+    todo: contextmenu overflow
+    todo: max aantal inputs
+    todo: mooie promptmenuutje
+    todo: cable compressor (32)
+    todo: websocket in C
+    todo: Werken met meerdere personen
+    todo: Gebieden markeren
+    todo: gebieden kopieren
+    todo: vanuit kabel trekken
+    todo: gebieden verplaatsen
+    todo: kabels door elkander
+    todo: smartphone support (spectator)
+    todo: spectator mode
+    todo: inloggen wachtwoordje
+*/
+
+
 const c = document.getElementById("canvas");
 c.height = window.innerHeight;
 c.width = window.innerWidth;
@@ -193,13 +212,17 @@ c.onmousemove = function(e) {
             if(component &&
                component != cursor.connecting.from &&
                ![Input,Wire].includes(component.constructor)) {
-                cursor.connecting.pos.push(cursor.pos_r);
-                cursor.connecting.to = component;
-                cursor.connecting.from.connect(component,cursor.connecting);
-                cursor.connecting.from.update();
-                toolbarMsg(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
 
-                cursor.connecting = null;
+                cursor.connecting.pos.push(cursor.pos_r);
+                if(component.max_inputs <= component.input.length) {
+                    toolbarMsg(`Component ${component.label} has a maximum of ${component.max_inputs} input(s)`);
+                } else {
+                    cursor.connecting.to = component;
+                    cursor.connecting.from.connect(component,cursor.connecting);
+                    cursor.connecting.from.update();
+                    toolbarMsg(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
+                    cursor.connecting = null;
+                }
             }
         } else if(cursor.selecting) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;

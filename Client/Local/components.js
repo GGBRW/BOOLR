@@ -128,10 +128,12 @@ class Output {
         height = 1,
         width = 2,
         label,
+        max_inputs = 1,
         func = input => input[0]
     ) {
         this.input = [];
         this.value = 0;
+        this.max_inputs = max_inputs;
         this.func = func;
 
         this.pos = pos;
@@ -192,10 +194,12 @@ class Gate {
         width = 2,
         icon = "?",
         label,
+        max_inputs = 2,
         func = input => input
     ) {
         this.input = [];
         this.output = [];
+        this.max_inputs = max_inputs;
         this.func = func;
 
         this.pos = pos;
@@ -264,28 +268,28 @@ class Gate {
 class NOT extends Gate {
     constructor(pos,height = 1,width = 1,label) {
         const func = input => input.map(n => +!n);
-        super(pos,height,width,"!",label,func);
+        super(pos,height,width,"!",label,1,func);
     }
 }
 
 class AND extends Gate {
     constructor(pos,height = 2,width = 2,label) {
         const func = input => [input[0] & input[1]];
-        super(pos,height,width,"&",label,func);
+        super(pos,height,width,"&",label,2,func);
     }
 }
 
 class OR extends Gate {
     constructor(pos,height = 2,width = 2,label) {
         const func = input => [input[0] | input[1]];
-        super(pos,height,width,"|",label,func);
+        super(pos,height,width,"|",label,2,func);
     }
 }
 
 class XOR extends Gate {
     constructor(pos,height = 2,width = 2,label) {
         const func = input => [input[0] ^ input[1]];
-        super(pos,height,width,"^",label,func);
+        super(pos,height,width,"^",label,2,func);
     }
 }
 
