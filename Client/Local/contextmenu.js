@@ -60,7 +60,12 @@ context_options["edit_color"].onclick = () => {
 // Rotate
 context_options["rotate"] = document.createElement("li");
 context_options["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate [R]</span>';
-context_options["rotate"].onclick = () => find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).rotate();
+context_options["rotate"].onclick = () => {
+    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    const t = component.height;
+    component.height = component.width;
+    component.width = t;
+}
 
 // Clone
 context_options["clone"] = document.createElement("li");

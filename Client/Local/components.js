@@ -122,6 +122,30 @@ class Input {
     }
 }
 
+class Constant extends Input {
+    constructor(pos,height,width,label,value = prompt("Enter the value")) {
+        super(pos,height,width,label);
+        this.onclick = undefined;
+
+        this.value = +!isNaN(value) && +!!value;
+    }
+}
+
+class Clock extends Input {
+    constructor(pos,height,width,label,delay = prompt("Enter the delay in ms")) {
+        super(pos,height,width,label);
+        this.onclick = undefined;
+
+        this.delay = delay;
+        this.label += "@" + this.delay + "ms";
+
+        setInterval(() => {
+            this.value = +!this.value;
+            this.update();
+        }, this.delay);
+    }
+}
+
 class Output {
     constructor(
         pos = Object.assign({}, cursor.pos_r),

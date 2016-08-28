@@ -13,6 +13,17 @@ canvas {
     cursor: crosshair;
 }
 
+/* Icons */
+@font-face {
+    font-family: "Material-icons";
+    src: url(../Fonts/MaterialIcons-Regular.ttf);
+}
+.material-icons {
+    font-family: "Material-icons";
+    font-style: normal;
+    font-size: 24px;
+}
+
 /* Fonts */
 
 @font-face {
@@ -168,6 +179,7 @@ canvas {
     border: none;
     font-size: 20px;
     outline: none;
+    cursor: pointer;
 }
 
 /* Debug info */
@@ -235,6 +247,7 @@ canvas {
     color: #bbb;
     border-bottom: 1px solid #444;
     padding: 10px;
+    cursor: pointer;
 }
 
 #contextMenu .material-icons {

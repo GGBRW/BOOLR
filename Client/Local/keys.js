@@ -73,7 +73,11 @@ document.onkeydown = function(e) {
             break;
         case 82: // R
             var component = find(cursor.pos_r.x,cursor.pos_r.y);
-            component && component.rotate();
+            if(component && component.height) {
+                const t = component.height;
+                component.height = component.width;
+                component.width = t;
+            }
             break;
     }
 

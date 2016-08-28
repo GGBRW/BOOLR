@@ -1,16 +1,20 @@
 "use strict";
 
 /*
+    todo: offline iconen
     todo: toolbarMSG line-break
     todo: contextmenu overflow
+    todo: MOUSE MAPPING
     todo: max aantal inputs
     todo: mooie promptmenuutje
     todo: cable compressor (32)
     todo: websocket in C
-    todo: Werken met meerdere personen
-    todo: Gebieden markeren
+    todo: werken met meerdere personen
+    todo: gebieden markeren
     todo: gebieden kopieren
     todo: vanuit kabel trekken
+    todo: wire color
+    todo: wire overlap
     todo: gebieden verplaatsen
     todo: kabels door elkander
     todo: smartphone support (spectator)
@@ -170,6 +174,11 @@ c.onmouseenter = () => scroll_animation.animate = false;
 c.onmousedown = function(e) {
     cursor.update(e);
 
+
+    document.getElementById("list").style.display = "none";
+    document.getElementById("contextMenu").style.display = "none";
+    cursor.selecting = null;
+
     if(e.which == 1) {
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
         if(component && component.onclick) component.onclick();
@@ -178,7 +187,7 @@ c.onmousedown = function(e) {
             if(keys[68]) cursor.dragging = new component.constructor();
             else cursor.dragging = component;
         }
-        else if(!cursor.connecting && component) {          // Start connecting component
+        else if(!cursor.connecting && component) {    // Start connecting component
             const wire = new Wire();
             wire.from = component;
             cursor.connecting = wire;
@@ -242,11 +251,7 @@ c.onmouseup = function(e) {
     if(e.which == 1) {
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
 
-        if(document.getElementById("contextMenu").style.display == "block") {
-            document.getElementById("contextMenu").style.display = "none";
-            cursor.selecting = null;
-        }
-        else if(cursor.dragging) {
+        if(cursor.dragging) {
             cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
             cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
             cursor.dragging = 0;

@@ -16,9 +16,11 @@ function toolbarMsg(msg) {
     }, 3000);
 }
 
-document.getElementsByClassName("slot")[0].onclick = function() {
+document.getElementsByClassName("slot")[0].onmousedown = function() {
     document.getElementById("list").style.display = "block";
-    document.getElementById("list").focus();
+}
+document.getElementsByClassName("slot")[0].onmouseup = function() {
+    document.getElementsByClassName("slot")[0].focus();
 }
 
 document.getElementById("list").onblur = function() { this.style.display = "none" };
