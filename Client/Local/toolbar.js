@@ -1,19 +1,32 @@
 function select(Component) {
     Selected = Component;
-    toolbarMsg(`Selected ${Component.name} ${[Input,Output].includes(Component) ? "port" : "gate"}`);
+    toolbar.message(`Selected ${Component.name} ${[Input,Output].includes(Component) ? "port" : "gate"}`);
     document.getElementById("list").style.display = "none";
 }
 
-function toolbarMsg(msg) {
-    document.getElementById("selectedMsg").style.display = "block";
+const toolbar = document.getElementById("toolbar");
+toolbar.message = function(msg) {
+    const message = document.getElementById("message");
+    message.style.display = "block";
+    message.style.fontSize = 20;
+    message.time = 0;
     setTimeout(() => {
-        document.getElementById("selectedMsg").innerHTML = msg;
-        document.getElementById("selectedMsg").style.opacity = 1;
+        message.innerHTML = msg;
+        message.style.opacity = 1;
+
+        while(message.scrollWidth > message.clientWidth && +message.style.fontSize.slice(0,-2) > 10) {
+            message.style.fontSize = +message.style.fontSize.slice(0,-2) - 1;
+        }
+
+        (function fade() {
+            ++message.time;
+            if(message.time > 200) {
+                message.style.opacity = 0;
+                setTimeout(() => message.style.display = "none", 250);
+            }
+            if(message.style.display != "none") requestAnimationFrame(fade);
+        })();
     },10);
-    setTimeout(() => {
-        document.getElementById("selectedMsg").style.opacity = 0;
-        setTimeout(() => document.getElementById("selectedMsg").style.display = "none", 500);
-    }, 3000);
 }
 
 document.getElementsByClassName("slot")[0].onmousedown = function() {

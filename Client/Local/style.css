@@ -97,7 +97,7 @@ canvas {
 
 /* Component toolbar */
 
-#componentToolbar {
+#toolbar {
     position: absolute;
     left: 50%;
     bottom: 0;
@@ -111,7 +111,7 @@ canvas {
     opacity: .9;
 }
 
-#componentToolbar .slot {
+#toolbar .slot {
     height: 50px;
     width: 50px;
     font-family: "Roboto Condensed";
@@ -121,24 +121,24 @@ canvas {
     margin: 0;
     display: inline-block;
 }
-#componentToolbar .slot:hover {
+#toolbar .slot:hover {
     background: #ddd;
 }
 
-#componentToolbar #selectedMsg {
+#toolbar #message {
     position: absolute;
     left: 0;
-    bottom: 50px;
-    width: 300px;
+    bottom: 60px;
+    width: 400px;
     font-family: "Roboto Condensed";
     font-size: 20px;
     text-align: center;
-    padding: 20px;
     opacity: 0;
     transition: opacity .5s;
+    -white-space: nowrap
 }
 
-#componentToolbar #list {
+#toolbar #list {
     display: none;
     position: absolute;
     left: 0;
@@ -154,11 +154,11 @@ canvas {
     outline: none;
 }
 
-#componentToolbar #list li {
+#toolbar #list li {
     padding: 10px;
 }
 
-#componentToolbar #list li:hover, #componentToolbar #list li:active {
+#toolbar #list li:hover, #toolbar #list li:active {
     background: #ddd;
 }
 

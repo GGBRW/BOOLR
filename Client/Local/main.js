@@ -1,8 +1,7 @@
 "use strict";
 
 /*
-    todo: offline iconen
-    todo: toolbarMSG line-break
+    todo: i/o lijnen overlap
     todo: contextmenu overflow
     todo: MOUSE MAPPING
     todo: max aantal inputs
@@ -166,20 +165,17 @@ window.onresize = () => {
     c.width = window.innerWidth;
 }
 
-// todo: window.onbeforeunload = () => false;
-
 c.onmouseleave = () => scroll_animation.animate = true;
 c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmousedown = function(e) {
     cursor.update(e);
-
-
     document.getElementById("list").style.display = "none";
-    document.getElementById("contextMenu").style.display = "none";
-    cursor.selecting = null;
 
     if(e.which == 1) {
+        document.getElementById("contextMenu").style.display = "none";
+        cursor.selecting = null;
+
         const component = find(cursor.pos_r.x,cursor.pos_r.y);
         if(component && component.onclick) component.onclick();
 
@@ -224,12 +220,14 @@ c.onmousemove = function(e) {
 
                 cursor.connecting.pos.push(cursor.pos_r);
                 if(component.max_inputs <= component.input.length) {
-                    toolbarMsg(`Component ${component.label} has a maximum of ${component.max_inputs} input(s)`);
+                    toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} input(s)`);
+                    components.splice(components.indexOf(cursor.connecting),1);
+                    cursor.connecting = null;
                 } else {
                     cursor.connecting.to = component;
                     cursor.connecting.from.connect(component,cursor.connecting);
                     cursor.connecting.from.update();
-                    toolbarMsg(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
+                    toolbar.message(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
                     cursor.connecting = null;
                 }
             }

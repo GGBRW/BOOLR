@@ -38,7 +38,7 @@ document.onkeydown = function(e) {
             cursor.selecting = null;
             break;
         case 49: // 1
-            document.getElementsByClassName("slot")[0].onclick();
+            document.getElementsByClassName("slot")[0].onmousedown();
             break;
         case 50: // 2
             document.getElementsByClassName("slot")[1].onmousedown();
