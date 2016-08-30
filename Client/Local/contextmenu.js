@@ -1,18 +1,15 @@
 const contextMenu = document.getElementById("contextMenu");
 contextMenu.pos = {};
 
-c.oncontextmenu = function(e) {
+function showContextmenu(pos) {
     if(cursor.dragging || cursor.connecting) return false;
-    contextMenu.style.display = "block";
-    contextMenu.style.left = Math.min(e.x,c.width - contextMenu.clientWidth);
-    contextMenu.style.top = Math.min(e.y,c.height - contextMenu.clientHeight);
-    contextMenu.pos = { x: e.x / zoom + offset.x, y: -e.y / zoom + offset.y };
+    contextMenu.pos = { x: pos.x / zoom + offset.x, y: -pos.y / zoom + offset.y };
 
     contextMenu.innerHTML = "";
     if(cursor.selecting) {
         contextMenu.appendChild(context_options["delete all"]);
     } else {
-        const component = find(Math.round(e.x / zoom + offset.x),Math.round(-e.y / zoom + offset.y));
+        const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
             if(component.constructor == Wire) {
                 contextMenu.appendChild(context_options["edit_color"]);
@@ -26,10 +23,7 @@ c.oncontextmenu = function(e) {
             contextMenu.appendChild(context_options["paste"]);
         }
     }
-
-    //contextMenu.style.width = contextMenu.clientWidth;
-
-    return false;
+    contextMenu.style.display = "block";
 }
 
 /* Menu options */
@@ -85,7 +79,7 @@ context_options["delete"].onclick = () => remove(Math.round(contextMenu.pos.x),M
 // Delete All
 context_options["delete all"] = document.createElement("li");
 context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete all"].onclick = () => remove(Math.round(cursor.selecting.x),Math.round(cursor.selecting.y),cursor.selecting.w,cursor.selecting.h);
+context_options["delete all"].onclick = () => { for(let i of cursor.selecting.components) components.splice(components.indexOf(i),1) };
 
 contextMenu.onclick = function() { this.style.display = "none"; cursor.selecting = null };
 

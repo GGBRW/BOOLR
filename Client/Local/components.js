@@ -1,46 +1,51 @@
 let components = [];
 
-const find = function(x,y) {
-    for(let i of components) {
-        if(Array.isArray(i.pos)) {  // Component is a wire
-            for(let pos of i.pos) {
-                if(pos.x == x && pos.y == y) return i;
-            }
-        } else if(x >= i.pos.x && x < i.pos.x + i.width &&
-                  y <= i.pos.y && y > i.pos.y - i.height) return i;
+const find = function(x,y,w,h) {
+    if(!w && !h) {
+        for(let i of components) {
+            if(Array.isArray(i.pos)) {  // Component is a wire
+                for(let pos of i.pos) {
+                    if(pos.x == x && pos.y == y) return i;
+                }
+            } else if(x >= i.pos.x && x < i.pos.x + i.width &&
+                y <= i.pos.y && y > i.pos.y - i.height) return i;
+        }
+    } else {
+        let result = [];
+        for(let i of components) {
+            if(Array.isArray(i.pos)) {  // Component is a wire
+                for(let pos of i.pos) {
+                    if(pos.x >= Math.min(x,x + w) && pos.x <= Math.max(x,x + w) &&
+                       pos.y >= Math.min(y,y + h) && pos.y <= Math.max(y,y + h)) result.push(i);
+                }
+            } else if(i.pos.x + i.width >= Math.min(x,x + w) && i.pos.x < Math.max(x,x + w) &&
+                      i.pos.y + i.height >= Math.min(y,y + h) && i.pos.y < Math.max(y,y + h)) result.push(i);
+        }
+        return result;
     }
 }
 
-const remove = function(x,y,w = 1,h = 1) {
-    if(w == 1 && h == 1) {
-        const component = find(x,y);
-        if(!component) return;
-        else if(component.constructor == Wire) {
-            component.from && component.from.output.splice(component.from.output.indexOf(component),1);
-            component.to && component.to.input.splice(component.to.input.indexOf(component),1);
-        } else {
-            if(component.input) {
-                for(let input of component.input) {
-                    input.from.output.splice(input.from.output.indexOf(input),1);
-                    components.splice(components.indexOf(input),1);              }
-            }
-            if(component.output) {
-                for(let output of component.output) {
-                    output.to.input.splice(output.to.input.indexOf(output),1);
-                    components.splice(components.indexOf(output),1);
-                }
+const remove = function(x,y) {
+    const component = find(x,y);
+    if(!component) return;
+    else if(component.constructor == Wire) {
+        component.from && component.from.output.splice(component.from.output.indexOf(component),1);
+        component.to && component.to.input.splice(component.to.input.indexOf(component),1);
+    } else {
+        if(component.input) {
+            for(let input of component.input) {
+                input.from.output.splice(input.from.output.indexOf(input),1);
+                components.splice(components.indexOf(input),1);              }
+        }
+        if(component.output) {
+            for(let output of component.output) {
+                output.to.input.splice(output.to.input.indexOf(output),1);
+                components.splice(components.indexOf(output),1);
             }
         }
+    }
 
-        components.splice(components.indexOf(component),1);
-    }
-    else {
-        for(let i = 0; i < Math.abs(w); ++i) {
-            for(let j = 0; j < Math.abs(h); ++j) {
-                remove(x + i * Math.sign(w), y + j * Math.sign(h));
-            }
-        }
-    }
+    components.splice(components.indexOf(component),1);
 }
 
 let Selected;
@@ -86,6 +91,11 @@ class Input {
         this.update();
     }
 
+    blink(duration = 1000) {
+        this.blinking = 0.001;
+        setTimeout(() => this.blinking = null, duration);
+    }
+
     draw() {
         // Omlijning van component tekenen
         ctx.beginPath();
@@ -119,6 +129,19 @@ class Input {
             (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
             (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
         );
+
+        // Blink
+        if(this.blinking) {
+            ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+            ctx.fillRect(
+                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
+                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
+                zoom * this.width + zoom / 16,
+                zoom * this.height + zoom / 16
+            );
+
+            this.blinking += .1;
+        }
     }
 }
 
@@ -177,6 +200,11 @@ class Output {
         this.value = this.func(this.input.map(n => n.value));
     }
 
+    blink(duration = 1000) {
+        this.blinking = 0.001;
+        setTimeout(() => this.blinking = null, duration);
+    }
+
     draw() {
         // Omlijning van component tekenen
         ctx.beginPath();
@@ -208,6 +236,19 @@ class Output {
             (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
             (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
         );
+
+        // Blink
+        if(this.blinking) {
+            ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+            ctx.fillRect(
+                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
+                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
+                zoom * this.width + zoom / 16,
+                zoom * this.height + zoom / 16
+            );
+
+            this.blinking += .1;
+        }
     }
 }
 
@@ -253,6 +294,11 @@ class Gate {
         }
     }
 
+    blink(duration = 1000) {
+        this.blinking = 0.001;
+        setTimeout(() => this.blinking = null, duration);
+    }
+
     draw() {
         // Omlijning van component tekenen
         ctx.beginPath();
@@ -286,6 +332,19 @@ class Gate {
             (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
             (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
         );
+
+        // Blink
+        if(this.blinking) {
+            ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+            ctx.fillRect(
+                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
+                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
+                zoom * this.width + zoom / 16,
+                zoom * this.height + zoom / 16
+            );
+
+            this.blinking += .1;
+        }
     }
 }
 

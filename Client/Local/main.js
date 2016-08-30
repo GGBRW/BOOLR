@@ -165,30 +165,15 @@ window.onresize = () => {
     c.width = window.innerWidth;
 }
 
+c.oncontextmenu = () => false;
 c.onmouseleave = () => scroll_animation.animate = true;
 c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmousedown = function(e) {
     cursor.update(e);
-    document.getElementById("list").style.display = "none";
 
     if(e.which == 1) {
-        document.getElementById("contextMenu").style.display = "none";
-        cursor.selecting = null;
-
-        const component = find(cursor.pos_r.x,cursor.pos_r.y);
-        if(component && component.onclick) component.onclick();
-
-        if(component && e.ctrlKey) {    // Start dragging component
-            if(keys[68]) cursor.dragging = new component.constructor();
-            else cursor.dragging = component;
-        }
-        else if(!cursor.connecting && component) {    // Start connecting component
-            const wire = new Wire();
-            wire.from = component;
-            cursor.connecting = wire;
-        }
-        else if(e.shiftKey) {         // Start selecting
+        if(e.shiftKey) {
             cursor.selecting = {
                 x: e.x / zoom + offset.x,
                 y: -(e.y / zoom - offset.y),
@@ -196,44 +181,45 @@ c.onmousedown = function(e) {
                 w: 0,
                 dashOffset: 0
             }
+        } else if(e.ctrlKey) {
+            if(cursor.selecting) {
+                cursor.dragging = cursor.selecting.components;
+            } else {
+                const component = find(cursor.pos_r.x, cursor.pos_r.y);
+                cursor.dragging = component;
+            }
+        } else {
+            const component = find(cursor.pos_r.x,cursor.pos_r.y);
+            if(!component) new Selected();
         }
-        else if(!component) new Selected();
-    } else if(e.which == 2) {           // Start scrolling
+    } else if(e.which == 2) {
         scroll_animation.animate = false;
-        return false;
+    } else if(e.which == 3) {
+        showContextmenu(cursor.pos);
     }
 }
+
 c.onmousemove = function(e) {
     cursor.update(e);
 
     if(e.which == 1) {
-        if(cursor.dragging) {
-            cursor.dragging.pos.x += (e.movementX) / zoom;
-            cursor.dragging.pos.y -= (e.movementY) / zoom;
-        } else if(cursor.connecting) {
-            const component = find(cursor.pos_r.x,cursor.pos_r.y);
-            if(!component || component.constructor != Wire) cursor.connecting.pos.push(cursor.pos_r);
-
-            if(component &&
-               component != cursor.connecting.from &&
-               ![Input,Wire].includes(component.constructor)) {
-
-                cursor.connecting.pos.push(cursor.pos_r);
-                if(component.max_inputs <= component.input.length) {
-                    toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} input(s)`);
-                    components.splice(components.indexOf(cursor.connecting),1);
-                    cursor.connecting = null;
-                } else {
-                    cursor.connecting.to = component;
-                    cursor.connecting.from.connect(component,cursor.connecting);
-                    cursor.connecting.from.update();
-                    toolbar.message(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
-                    cursor.connecting = null;
-                }
-            }
-        } else if(cursor.selecting) {
+        if(cursor.selecting && !cursor.selecting.components) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
             cursor.selecting.h = -(e.y / zoom - offset.y) -  cursor.selecting.y;
+        } else if(cursor.dragging) {
+            if(Array.isArray(cursor.dragging)) {
+                cursor.selecting.x += (e.movementX) / zoom;
+                cursor.selecting.y -= (e.movementY) / zoom;
+                contextMenu.pos.x += (e.movementX) / zoom;
+                contextMenu.pos.y -= (e.movementY) / zoom;
+                for(let i of cursor.dragging) {
+                    i.pos.x += (e.movementX) / zoom;
+                    i.pos.y -= (e.movementY) / zoom;
+                }
+            } else {
+                cursor.dragging.pos.x += (e.movementX) / zoom;
+                cursor.dragging.pos.y -= (e.movementY) / zoom;
+            }
         }
     } else if(e.which == 2) {
         offset.x -= (e.movementX) / zoom;
@@ -245,21 +231,18 @@ c.onmousemove = function(e) {
 
     }
 }
+
 c.onmouseup = function(e) {
     if(e.which == 1) {
-        const component = find(cursor.pos_r.x,cursor.pos_r.y);
+        if(cursor.selecting) {
+            cursor.selecting.components = find(
+                cursor.selecting.x,cursor.selecting.y,
+                cursor.selecting.w,
+                cursor.selecting.h
+            );
+            showContextmenu(cursor.pos);
+        } else if(cursor.dragging) {
 
-        if(cursor.dragging) {
-            cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
-            cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
-            cursor.dragging = 0;
-        }
-        else if(cursor.connecting) {
-            components.splice(components.indexOf(cursor.connecting),1);
-            cursor.connecting = null;
-        }
-        else if(cursor.selecting) {
-            c.oncontextmenu(e);
         }
     } else if(e.which == 2) {
         scroll_animation.animate = true;
@@ -267,6 +250,115 @@ c.onmouseup = function(e) {
 
     }
 }
+
+// c.onmousedown = function(e) {
+//     cursor.update(e);
+//     document.getElementById("list").style.display = "none";
+//
+//     if(e.which == 1) {
+//         document.getElementById("contextMenu").style.display = "none";
+//         cursor.selecting = null;
+//
+//         const component = find(cursor.pos_r.x,cursor.pos_r.y);
+//         if(component && component.onclick) component.onclick();
+//
+//         if(component && e.ctrlKey) {    // Start dragging component
+//             if(keys[68]) cursor.dragging = new component.constructor();
+//             else cursor.dragging = component;
+//         }
+//         else if(!cursor.connecting && component) {    // Start connecting component
+//             const wire = new Wire();
+//             wire.from = component;
+//             cursor.connecting = wire;
+//         }
+//         else if(e.shiftKey) {         // Start selecting
+//             cursor.selecting = {
+//                 x: e.x / zoom + offset.x,
+//                 y: -(e.y / zoom - offset.y),
+//                 h: 0,
+//                 w: 0,
+//                 dashOffset: 0
+//             }
+//         }
+//         else if(!component) new Selected();
+//     } else if(e.which == 2) {           // Start scrolling
+//         scroll_animation.animate = false;
+//         return false;
+//     }
+// }
+// c.onmousemove = function(e) {
+//     cursor.update(e);
+//
+//     if(e.which == 1) {
+//         if(cursor.dragging) {
+//             cursor.dragging.pos.x += (e.movementX) / zoom;
+//             cursor.dragging.pos.y -= (e.movementY) / zoom;
+//         } else if(cursor.connecting) {
+//             const component = find(cursor.pos_r.x,cursor.pos_r.y);
+//             if(!component || component.constructor != Wire) cursor.connecting.pos.push(cursor.pos_r);
+//
+//             if(component &&
+//                component != cursor.connecting.from &&
+//                ![Input,Wire].includes(component.constructor)) {
+//
+//                 cursor.connecting.pos.push(cursor.pos_r);
+//                 if(component.max_inputs <= component.input.length) {
+//                     toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} input(s)`);
+//                     components.splice(components.indexOf(cursor.connecting),1);
+//                     cursor.connecting = null;
+//                 } else {
+//                     cursor.connecting.to = component;
+//                     cursor.connecting.from.connect(component,cursor.connecting);
+//                     cursor.connecting.from.update();
+//
+//                     toolbar.message(`Connected: ${cursor.connecting.from.label} > ${component.label}`);
+//                     cursor.connecting.from.blink(500);
+//                     cursor.connecting.to.blink(500);
+//
+//                     cursor.connecting = null;
+//                 }
+//             }
+//         } else if(cursor.selecting) {
+//             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
+//             cursor.selecting.h = -(e.y / zoom - offset.y) -  cursor.selecting.y;
+//         }
+//     } else if(e.which == 2) {
+//         offset.x -= (e.movementX) / zoom;
+//         offset.y += (e.movementY) / zoom;
+//
+//         scroll_animation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
+//         scroll_animation.r = Math.atan2(e.movementX,e.movementY);
+//     } else if(e.which == 3) {
+//
+//     }
+// }
+// c.onmouseup = function(e) {
+//     if(e.which == 1) {
+//         const component = find(cursor.pos_r.x,cursor.pos_r.y);
+//
+//         if(cursor.dragging) {
+//             cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
+//             cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
+//             cursor.dragging = 0;
+//         }
+//         else if(cursor.connecting) {
+//             components.splice(components.indexOf(cursor.connecting),1);
+//             cursor.connecting = null;
+//         }
+//         else if(cursor.selecting) {
+//             cursor.selecting.components = find(
+//                 cursor.selecting.x,cursor.selecting.y,
+//                 cursor.selecting.w,
+//                 cursor.selecting.h
+//             );
+//             c.oncontextmenu(e);
+//         }
+//     } else if(e.which == 2) {
+//         scroll_animation.animate = true;
+//     } else if(e.which == 3) {
+//
+//     }
+// }
 onmousewheel = function(e) {
     cursor.update(e);
     e.preventDefault();
