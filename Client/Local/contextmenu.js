@@ -7,6 +7,7 @@ function showContextmenu(pos) {
 
     contextMenu.innerHTML = "";
     if(cursor.selecting) {
+        contextMenu.appendChild(context_options["copy"]);
         contextMenu.appendChild(context_options["delete all"]);
     } else {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
@@ -65,6 +66,11 @@ context_options["rotate"].onclick = () => {
 context_options["clone"] = document.createElement("li");
 context_options["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone [CTRL+D+Drag]</span>';
 context_options["clone"].onclick = () => find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && new (find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).constructor);
+
+// Copy
+context_options["copy"] = document.createElement("li");
+context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord [CTRL+C]</span>';
+context_options["copy"].onclick;
 
 // Paste
 context_options["paste"] = document.createElement("li");

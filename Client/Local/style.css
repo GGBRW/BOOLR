@@ -95,7 +95,7 @@ canvas {
     transition: opacity 1s;
 }
 
-/* Component toolbar */
+/* Toolbar */
 
 #toolbar {
     position: absolute;
@@ -139,7 +139,6 @@ canvas {
 }
 
 #toolbar #list {
-    display: none;
     position: absolute;
     left: 0;
     bottom: 50px;
@@ -230,7 +229,6 @@ canvas {
 
 /* Context menu */
 #contextMenu {
-    display: none;
     position: absolute;
     background: #111;
     opacity: .95;

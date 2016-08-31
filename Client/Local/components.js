@@ -91,9 +91,9 @@ class Input {
         this.update();
     }
 
-    blink(duration = 1000) {
+    blink(duration) {
         this.blinking = 0.001;
-        setTimeout(() => this.blinking = null, duration);
+        duration != undefined && setTimeout(() => this.blinking = null, duration);
     }
 
     draw() {

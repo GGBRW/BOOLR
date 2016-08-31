@@ -160,6 +160,8 @@ let cursor = {
     connecting: null
 }
 
+let clipbord = [];
+
 window.onresize = () => {
     c.height = window.innerHeight;
     c.width = window.innerWidth;
@@ -189,8 +191,14 @@ c.onmousedown = function(e) {
                 cursor.dragging = component;
             }
         } else {
-            const component = find(cursor.pos_r.x,cursor.pos_r.y);
-            if(!component) new Selected();
+            if(contextMenu.style.display != "none" || document.getElementById("list").style.display != "none") {
+                console.log(contextMenu.style.display);
+                contextMenu.style.display = "none";
+                document.getElementById("list").style.display = "none";
+            } else {
+                const component = find(cursor.pos_r.x,cursor.pos_r.y);
+                if(!component) new Selected();
+            }
         }
     } else if(e.which == 2) {
         scroll_animation.animate = false;
@@ -234,15 +242,32 @@ c.onmousemove = function(e) {
 
 c.onmouseup = function(e) {
     if(e.which == 1) {
-        if(cursor.selecting) {
+        if(cursor.selecting && !cursor.selecting.components) {
             cursor.selecting.components = find(
                 cursor.selecting.x,cursor.selecting.y,
                 cursor.selecting.w,
                 cursor.selecting.h
             );
+
+            for(let i of cursor.selecting.components) {
+                i.blink();
+            }
             showContextmenu(cursor.pos);
         } else if(cursor.dragging) {
-
+            if(Array.isArray(cursor.dragging)) {
+                cursor.selecting.x = Math.round(cursor.selecting.x);
+                cursor.selecting.y = Math.round(cursor.selecting.y);
+                contextMenu.pos.x = Math.round(contextMenu.pos.x - cursor.selecting.w % 1) + cursor.selecting.w % 1;
+                contextMenu.pos.y = Math.round(contextMenu.pos.y - cursor.selecting.h % 1) + cursor.selecting.h % 1;
+                for(let i of cursor.dragging) {
+                    i.pos.x = Math.round(i.pos.x);
+                    i.pos.y = Math.round(i.pos.y);
+                }
+            } else {
+                cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
+                cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
+            }
+            cursor.dragging = null;
         }
     } else if(e.which == 2) {
         scroll_animation.animate = true;
