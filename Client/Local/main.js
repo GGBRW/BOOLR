@@ -197,7 +197,11 @@ c.onmousedown = function(e) {
                 document.getElementById("list").style.display = "none";
             } else {
                 const component = find(cursor.pos_r.x,cursor.pos_r.y);
-                if(!component) new Selected();
+                if(component) {
+                    const wire = new Wire();
+                    wire.from = component;
+                    cursor.connecting = wire;
+                } else new Selected();
             }
         }
     } else if(e.which == 2) {
@@ -227,6 +231,17 @@ c.onmousemove = function(e) {
             } else {
                 cursor.dragging.pos.x += (e.movementX) / zoom;
                 cursor.dragging.pos.y -= (e.movementY) / zoom;
+            }
+        } else if(cursor.connecting) {
+            const s = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2));
+            const r = Math.atan2(e.movementX,e.movementY);
+
+            let x = cursor.pos_r.x, y = cursor.pos_r.y;
+            for(let i = 0; i < s; ++i) {
+                x -= Math.sin(r) / zoom;
+                y -= Math.cos(r) / zoom;
+
+                cursor.connecting.pos.push({ x: Math.round(x), y: Math.round(y) });
             }
         }
     } else if(e.which == 2) {
@@ -384,8 +399,10 @@ c.onmouseup = function(e) {
 //
 //     }
 // }
-onmousewheel = function(e) {
+
+c.onmousewheel = function(e) {
     cursor.update(e);
     e.preventDefault();
     zoom_animation -= zoom / 8 * Math.sign(e.deltaY);
 }
+
