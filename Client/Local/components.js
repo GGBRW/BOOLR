@@ -14,10 +14,12 @@ const find = function(x,y,w,h) {
         let result = [];
         for(let i of components) {
             if(Array.isArray(i.pos)) {  // Component is a wire
+                let v = false;
                 for(let pos of i.pos) {
                     if(pos.x >= Math.min(x,x + w) && pos.x <= Math.max(x,x + w) &&
-                       pos.y >= Math.min(y,y + h) && pos.y <= Math.max(y,y + h)) result.push(i);
+                       pos.y >= Math.min(y,y + h) && pos.y <= Math.max(y,y + h)) v = true;
                 }
+                v && result.push(i);
             } else if(i.pos.x + i.width >= Math.min(x,x + w) && i.pos.x < Math.max(x,x + w) &&
                       i.pos.y + i.height >= Math.min(y,y + h) && i.pos.y < Math.max(y,y + h)) result.push(i);
         }
@@ -390,6 +392,8 @@ class Wire {
     }
 
     draw() {
+        if(this.pos.length < 1) return;
+
         ctx.beginPath();
         for(let pos of this.pos) {
             ctx.lineTo(
@@ -399,7 +403,7 @@ class Wire {
         }
 
         ctx.lineWidth = zoom / 10;
-        ctx.strokeStyle = this.value ? "#bbb" : this.color;
+        ctx.strokeStyle = this.value ? "#888" : this.color;
         ctx.stroke();
     }
 }

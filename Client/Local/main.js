@@ -67,8 +67,8 @@ function draw() {
     // Roosterpunten tekenen
     if(c.width * c.height / (zoom * zoom) < 15000) {
         ctx.fillStyle = "#eee"; // FOREGROUND-COLOR
-        for (let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
-            for (let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
+        for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
+            for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
                 ctx.fillRect(i - zoom / 16, j - zoom / 16, zoom / 8, zoom / 8);
             }
         }
@@ -145,13 +145,11 @@ function draw() {
 }
 
 let cursor = {
-    pos: {
-        x: 0, y: 0
-    },
-    pos_r: {
-        x: 0, y: 0
-    },
+    pos: { x: 0, y: 0 },
+    pos_r: { x: 0, y: 0 },
+    delta: { x: 0, y: 0 },
     update: function(e) {
+        this.delta = { x: e.x - this.pos.x, y: e.y - this.pos.y };
         this.pos = { x: e.x, y: e.y };
         this.pos_r = { x: Math.round(e.x / zoom + offset.x), y: Math.round(-e.y / zoom + offset.y) };
     },
@@ -183,31 +181,86 @@ c.onmousedown = function(e) {
                 w: 0,
                 dashOffset: 0
             }
-        } else if(e.ctrlKey) {
+        }
+        else if(e.ctrlKey) {
             if(cursor.selecting) {
-                cursor.dragging = cursor.selecting.components;
-            } else {
-                const component = find(cursor.pos_r.x, cursor.pos_r.y);
-                cursor.dragging = component;
+                cursor.dragging = {
+                    components: cursor.selecting.components,
+                    original_pos: {
+                        x: cursor.selecting.x,
+                        y: cursor.selecting.y
+                    }
+                }
             }
-        } else {
-            if(contextMenu.style.display != "none" || document.getElementById("list").style.display != "none") {
-                console.log(contextMenu.style.display);
+            else {
+                const component = find(cursor.pos_r.x, cursor.pos_r.y);
+                cursor.dragging = {
+                    components: [component],
+                    original_pos: Object.assign([],component.pos)
+                }
+            }
+
+            c.style.cursor = "move";
+        }
+        else {
+            if(contextMenu.style.display != "none" || document.getElementById("list").style.display != "none" || cursor.selecting) {
                 contextMenu.style.display = "none";
                 document.getElementById("list").style.display = "none";
-            } else {
+                cursor.selecting = null;
+            }
+            else {
                 const component = find(cursor.pos_r.x,cursor.pos_r.y);
                 if(component) {
                     const wire = new Wire();
-                    wire.from = component;
+
+                    if(component.constructor == Wire) wire.from = component.from;
+                    else wire.from = component;
                     cursor.connecting = wire;
-                } else new Selected();
+                }
+                else new Selected();
             }
         }
-    } else if(e.which == 2) {
+    }
+    else if(e.which == 2) {
         scroll_animation.animate = false;
-    } else if(e.which == 3) {
-        showContextmenu(cursor.pos);
+        return false;
+    }
+    else if(e.which == 3) {
+        if(cursor.selecting && !cursor.dragging) {
+            cursor.selecting = null;
+        }
+        else if(cursor.dragging) {
+            if(cursor.selecting) {
+                for(let i of cursor.dragging.components) {
+                    if(Array.isArray(i.pos)) {
+                        for(let j of i.pos) {
+                            j.x = j.x - cursor.selecting.x + cursor.dragging.original_pos.x;
+                            j.y = j.y - cursor.selecting.y + cursor.dragging.original_pos.y;
+                        }
+                    } else {
+                        i.pos.x = i.pos.x - cursor.selecting.x + cursor.dragging.original_pos.x;
+                        i.pos.y = i.pos.y - cursor.selecting.y + cursor.dragging.original_pos.y;
+                    }
+                }
+
+                cursor.selecting.x = cursor.dragging.original_pos.x;
+                cursor.selecting.y = cursor.dragging.original_pos.y;
+                contextMenu.pos.x = cursor.selecting.x + cursor.selecting.w;
+                contextMenu.pos.y = cursor.selecting.y + cursor.selecting.h;
+            } else {
+                cursor.dragging.components[0].pos.x = cursor.dragging.original_pos.x;
+                cursor.dragging.components[0].pos.y = cursor.dragging.original_pos.y;
+            }
+            cursor.dragging = null;
+            c.style.cursor = "crosshair";
+        }
+        else if(cursor.connecting) {
+            components.splice(components.indexOf(cursor.connecting),1);
+            cursor.connecting = null;
+        }
+        else {
+            showContextmenu(cursor.pos);
+        }
     }
 }
 
@@ -218,39 +271,71 @@ c.onmousemove = function(e) {
         if(cursor.selecting && !cursor.selecting.components) {
             cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
             cursor.selecting.h = -(e.y / zoom - offset.y) -  cursor.selecting.y;
-        } else if(cursor.dragging) {
-            if(Array.isArray(cursor.dragging)) {
+        }
+        else if(cursor.dragging) {
+            for(let i of cursor.dragging.components) {
+                if(Array.isArray(i.pos)) {
+                    for(let j of i.pos) {
+                        j.x += (e.movementX) / zoom;
+                        j.y -= (e.movementY) / zoom;
+                    }
+                } else {
+                    i.pos.x += (e.movementX) / zoom;
+                    i.pos.y -= (e.movementY) / zoom;
+                }
+            }
+            if(cursor.selecting) {
                 cursor.selecting.x += (e.movementX) / zoom;
                 cursor.selecting.y -= (e.movementY) / zoom;
                 contextMenu.pos.x += (e.movementX) / zoom;
                 contextMenu.pos.y -= (e.movementY) / zoom;
-                for(let i of cursor.dragging) {
-                    i.pos.x += (e.movementX) / zoom;
-                    i.pos.y -= (e.movementY) / zoom;
-                }
-            } else {
-                cursor.dragging.pos.x += (e.movementX) / zoom;
-                cursor.dragging.pos.y -= (e.movementY) / zoom;
-            }
-        } else if(cursor.connecting) {
-            const s = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2));
-            const r = Math.atan2(e.movementX,e.movementY);
-
-            let x = cursor.pos_r.x, y = cursor.pos_r.y;
-            for(let i = 0; i < s; ++i) {
-                x -= Math.sin(r) / zoom;
-                y -= Math.cos(r) / zoom;
-
-                cursor.connecting.pos.push({ x: Math.round(x), y: Math.round(y) });
             }
         }
-    } else if(e.which == 2) {
+        else if(cursor.connecting) {
+            if(!cursor.connecting.pos.length ||
+               (cursor.connecting.pos.slice(-1)[0].x != cursor.pos_r.x ||
+                cursor.connecting.pos.slice(-1)[0].y != cursor.pos_r.y )) {
+                cursor.connecting.pos.push(cursor.pos_r);
+            }
+
+            const component = find(cursor.pos_r.x, cursor.pos_r.y);
+            if(component && component.constructor != Wire && component != cursor.connecting.from) {
+                if(cursor.connecting.from == component) return;
+                else if([Input].includes(component.constructor)) {
+                    toolbar.message("Cannot connect with " + component.label);
+                    components.splice(components.indexOf(cursor.connecting),1);
+                }
+                else if(component.input.length >= component.max_inputs) {
+                    toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} inputs`);
+                    components.splice(components.indexOf(cursor.connecting), 1);
+                }
+                else {
+                    cursor.connecting.to = component;
+                    cursor.connecting.from.connect(component,cursor.connecting);
+
+                    try {
+                        cursor.connecting.from.update();
+                    } catch(e) {
+                        toolbar.message("An error occured while connecting to " + component.label);
+                    }
+
+                    toolbar.message(`Connected ${cursor.connecting.from.label} with ${component.label}`);
+                    cursor.connecting.from.blink(1000);
+                    cursor.connecting.to.blink(1000);
+                }
+
+                cursor.connecting = null;
+            }
+        }
+    }
+    else if(e.which == 2) {
         offset.x -= (e.movementX) / zoom;
         offset.y += (e.movementY) / zoom;
 
         scroll_animation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
         scroll_animation.r = Math.atan2(e.movementX,e.movementY);
-    } else if(e.which == 3) {
+    }
+    else if(e.which == 3) {
 
     }
 }
@@ -264,29 +349,42 @@ c.onmouseup = function(e) {
                 cursor.selecting.h
             );
 
-            for(let i of cursor.selecting.components) {
-                i.blink();
-            }
             showContextmenu(cursor.pos);
-        } else if(cursor.dragging) {
-            if(Array.isArray(cursor.dragging)) {
+        }
+        else if(cursor.dragging) {
+            for(let i of cursor.dragging.components) {
+                if(Array.isArray(i.pos)) {
+                    for(let j of i.pos) {
+                        j.x = Math.round(j.x);
+                        j.y = Math.round(j.y);
+                    }
+                } else {
+                    i.pos.x = Math.round(i.pos.x);
+                    i.pos.y = Math.round(i.pos.y);
+                }
+            }
+
+            if(cursor.selecting) {
                 cursor.selecting.x = Math.round(cursor.selecting.x);
                 cursor.selecting.y = Math.round(cursor.selecting.y);
                 contextMenu.pos.x = Math.round(contextMenu.pos.x - cursor.selecting.w % 1) + cursor.selecting.w % 1;
                 contextMenu.pos.y = Math.round(contextMenu.pos.y - cursor.selecting.h % 1) + cursor.selecting.h % 1;
-                for(let i of cursor.dragging) {
-                    i.pos.x = Math.round(i.pos.x);
-                    i.pos.y = Math.round(i.pos.y);
-                }
-            } else {
-                cursor.dragging.pos.x = Math.round(cursor.dragging.pos.x);
-                cursor.dragging.pos.y = Math.round(cursor.dragging.pos.y);
             }
+
             cursor.dragging = null;
+            c.style.cursor = "crosshair";
         }
-    } else if(e.which == 2) {
+        else if(cursor.connecting) {
+            const component = find(cursor.pos_r.x, cursor.pos_r.y);
+            if(component && cursor.connecting.from == component) component.onclick();
+            components.splice(components.indexOf(cursor.connecting),1);
+            cursor.connecting = null;
+        }
+    }
+    else if(e.which == 2) {
         scroll_animation.animate = true;
-    } else if(e.which == 3) {
+    }
+    else if(e.which == 3) {
 
     }
 }
