@@ -218,7 +218,10 @@ c.onmousedown = function(e) {
                         
                         let i = 0;
                         while((component.pos[i].x != cursor.pos_r.x || component.pos[i].y != cursor.pos_r.y)
-                        && i < component.pos.length) wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
+                        && i < component.pos.length) {
+                            wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
+                            ++i;
+                        }
                     }
                     else wire.from = component;
                     cursor.connecting = wire;
