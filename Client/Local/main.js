@@ -1,24 +1,17 @@
 "use strict";
 
 /*
-    todo: i/o lijnen overlap
     todo: contextmenu overflow
-    todo: MOUSE MAPPING
-    todo: max aantal inputs
     todo: mooie promptmenuutje
     todo: cable compressor (32)
     todo: websocket in C
     todo: werken met meerdere personen
-    todo: gebieden markeren
     todo: gebieden kopieren
-    todo: vanuit kabel trekken
-    todo: wire color
-    todo: wire overlap
-    todo: gebieden verplaatsen
-    todo: kabels door elkander
     todo: smartphone support (spectator)
     todo: spectator mode
     todo: inloggen wachtwoordje
+    todo: max inputs prompt
+    todo: BUG muis positie
 */
 
 
@@ -158,7 +151,7 @@ let cursor = {
     connecting: null
 }
 
-let clipbord = [];
+let clipbord = null;
 
 window.onresize = () => {
     c.height = window.innerHeight;
@@ -166,8 +159,17 @@ window.onresize = () => {
 }
 
 c.oncontextmenu = () => false;
-c.onmouseleave = () => scroll_animation.animate = true;
+// c.onmouseleave = () => scroll_animation.animate = true;
 c.onmouseenter = () => scroll_animation.animate = false;
+
+c.onmouseleave = function(e) {
+    if(cursor.connecting) {
+        components.splice(components.indexOf(cursor.connecting),1);
+        cursor.connecting = null;
+    }
+
+    scroll_animation.animate = true;
+}
 
 c.onmousedown = function(e) {
     cursor.update(e);
@@ -215,7 +217,7 @@ c.onmousedown = function(e) {
 
                     if(component.constructor == Wire) {
                         wire.from = component.from;
-                        
+
                         let i = 0;
                         while((component.pos[i].x != cursor.pos_r.x || component.pos[i].y != cursor.pos_r.y)
                         && i < component.pos.length) {
@@ -301,10 +303,27 @@ c.onmousemove = function(e) {
             }
         }
         else if(cursor.connecting) {
-            if(!cursor.connecting.pos.length ||
-               (cursor.connecting.pos.slice(-1)[0].x != cursor.pos_r.x ||
-                cursor.connecting.pos.slice(-1)[0].y != cursor.pos_r.y )) {
-                cursor.connecting.pos.push(cursor.pos_r);
+            // if(!cursor.connecting.pos.length ||
+            //    (cursor.connecting.pos.slice(-1)[0].x != cursor.pos_r.x ||
+            //     cursor.connecting.pos.slice(-1)[0].y != cursor.pos_r.y )) {
+            //     cursor.connecting.pos.push(cursor.pos_r);
+            // }
+
+            const r = Math.atan2(cursor.delta.x,cursor.delta.y);
+            const s = Math.sqrt(Math.pow(cursor.delta.x,2) + Math.pow(cursor.delta.y,2));
+
+            let x = cursor.pos.x - cursor.delta.x, y = cursor.pos.y - cursor.delta.y;
+            for(let i = 0; i < s; ++i) {
+                x += Math.sin(r);
+                y -= Math.cos(r);
+
+                const rx = Math.round((x + offset.x) * zoom), ry = Math.round((-y + offset.y) * zoom);
+                // if(!cursor.connecting.pos.length ||
+                //    (cursor.connecting.pos.slice(-1)[0].x != rx ||
+                //     cursor.connecting.pos.slice(-1)[0].y != ry )) {
+                    cursor.connecting.pos.push(cursor.pos_r);
+                //}
+
             }
 
             const component = find(cursor.pos_r.x, cursor.pos_r.y);
@@ -322,11 +341,7 @@ c.onmousemove = function(e) {
                     cursor.connecting.to = component;
                     cursor.connecting.from.connect(component,cursor.connecting);
 
-                    try {
-                        cursor.connecting.from.update();
-                    } catch(e) {
-                        toolbar.message("An error occured while connecting to " + component.label);
-                    }
+                    cursor.connecting.from.update();
 
                     toolbar.message(`Connected ${cursor.connecting.from.label} with ${component.label}`);
                     cursor.connecting.from.blink(1000);
@@ -359,6 +374,10 @@ c.onmouseup = function(e) {
             );
 
             showContextmenu(cursor.pos);
+
+            for(let i of cursor.selecting.components) {
+                i.blink(1000);
+            }
         }
         else if(cursor.dragging) {
             for(let i of cursor.dragging.components) {

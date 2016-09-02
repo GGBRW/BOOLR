@@ -20,8 +20,8 @@ const find = function(x,y,w,h) {
                        pos.y >= Math.min(y,y + h) && pos.y <= Math.max(y,y + h)) v = true;
                 }
                 v && result.push(i);
-            } else if(i.pos.x + i.width >= Math.min(x,x + w) && i.pos.x < Math.max(x,x + w) &&
-                      i.pos.y + i.height >= Math.min(y,y + h) && i.pos.y < Math.max(y,y + h)) result.push(i);
+            } else if(i.pos.x + i.width - .5 > Math.min(x,x + w) && i.pos.x - .5 < Math.max(x,x + w) &&
+                      i.pos.y + i.height - .5 > Math.min(y,y + h) && i.pos.y - .5 < Math.max(y,y + h)) result.push(i);
         }
         return result;
     }
@@ -48,6 +48,18 @@ const remove = function(x,y) {
     }
 
     components.splice(components.indexOf(component),1);
+}
+
+const clone = function(target) {
+    let source = Object.assign({}, target);
+
+    if(Array.isArray(source.pos)) source.pos = target.pos.slice(0);
+    else source.pos = Object.assign({}, target.pos);
+
+    Object.setPrototypeOf(source, target.constructor.prototype);
+    source.input = [];
+    source.output = [];
+    return source;
 }
 
 let Selected;
@@ -391,6 +403,11 @@ class Wire {
         components.push(this);
     }
 
+    blink(duration) {
+        this.blinking = 0.001;
+        duration != undefined && setTimeout(() => this.blinking = null, duration);
+    }
+
     draw() {
         if(this.pos.length < 1) return;
 
@@ -405,6 +422,21 @@ class Wire {
         ctx.lineWidth = zoom / 10;
         ctx.strokeStyle = this.value ? "#888" : this.color;
         ctx.stroke();
+
+        // Blink
+        if(this.blinking) {
+            ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+            ctx.beginPath();
+            for(let pos of this.pos) {
+                ctx.lineTo(
+                    (pos.x - offset.x) * zoom,
+                    (-pos.y + offset.y) * zoom
+                );
+            }
+            ctx.stroke();
+
+            this.blinking += .1;
+        }
     }
 }
 
