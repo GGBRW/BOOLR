@@ -1,6 +1,7 @@
 "use strict";
 
 /*
+    todo: connection met kopieren
     todo: contextmenu overflow
     todo: mooie promptmenuutje
     todo: cable compressor (32)
@@ -303,27 +304,10 @@ c.onmousemove = function(e) {
             }
         }
         else if(cursor.connecting) {
-            // if(!cursor.connecting.pos.length ||
-            //    (cursor.connecting.pos.slice(-1)[0].x != cursor.pos_r.x ||
-            //     cursor.connecting.pos.slice(-1)[0].y != cursor.pos_r.y )) {
-            //     cursor.connecting.pos.push(cursor.pos_r);
-            // }
-
-            const r = Math.atan2(cursor.delta.x,cursor.delta.y);
-            const s = Math.sqrt(Math.pow(cursor.delta.x,2) + Math.pow(cursor.delta.y,2));
-
-            let x = cursor.pos.x - cursor.delta.x, y = cursor.pos.y - cursor.delta.y;
-            for(let i = 0; i < s; ++i) {
-                x += Math.sin(r);
-                y -= Math.cos(r);
-
-                const rx = Math.round((x + offset.x) * zoom), ry = Math.round((-y + offset.y) * zoom);
-                // if(!cursor.connecting.pos.length ||
-                //    (cursor.connecting.pos.slice(-1)[0].x != rx ||
-                //     cursor.connecting.pos.slice(-1)[0].y != ry )) {
-                    cursor.connecting.pos.push(cursor.pos_r);
-                //}
-
+            if(!cursor.connecting.pos.length ||
+               (cursor.connecting.pos.slice(-1)[0].x != cursor.pos_r.x ||
+                cursor.connecting.pos.slice(-1)[0].y != cursor.pos_r.y )) {
+                cursor.connecting.pos.push(Object.assign({}, cursor.pos_r));
             }
 
             const component = find(cursor.pos_r.x, cursor.pos_r.y);
@@ -381,6 +365,21 @@ c.onmouseup = function(e) {
         }
         else if(cursor.dragging) {
             for(let i of cursor.dragging.components) {
+                if(cursor.selecting) {
+                    let dx, dy;
+                    if(Array.isArray(cursor.dragging.components[0].pos)) {
+                        dx = Math.round(cursor.dragging.components[0].pos[0].x) - cursor.dragging.components[0].pos[0].x;
+                        dy = Math.round(cursor.dragging.components[0].pos[0].y) - cursor.dragging.components[0].pos[0].y;
+                    } else {
+                        dx = Math.round(cursor.dragging.components[0].pos.x) - cursor.dragging.components[0].pos.x;
+                        dy = Math.round(cursor.dragging.components[0].pos.y) - cursor.dragging.components[0].pos.y;
+                    }
+                    cursor.selecting.x += dx;
+                    cursor.selecting.y += dy;
+                    contextMenu.pos.x += dx;
+                    contextMenu.pos.y += dy;
+                }
+
                 if(Array.isArray(i.pos)) {
                     for(let j of i.pos) {
                         j.x = Math.round(j.x);
@@ -390,13 +389,6 @@ c.onmouseup = function(e) {
                     i.pos.x = Math.round(i.pos.x);
                     i.pos.y = Math.round(i.pos.y);
                 }
-            }
-
-            if(cursor.selecting) {
-                cursor.selecting.x = Math.round(cursor.selecting.x);
-                cursor.selecting.y = Math.round(cursor.selecting.y);
-                contextMenu.pos.x = Math.round(contextMenu.pos.x - cursor.selecting.w % 1) + cursor.selecting.w % 1;
-                contextMenu.pos.y = Math.round(contextMenu.pos.y - cursor.selecting.h % 1) + cursor.selecting.h % 1;
             }
 
             cursor.dragging = null;
@@ -527,7 +519,6 @@ c.onmouseup = function(e) {
 // }
 
 c.onmousewheel = function(e) {
-    cursor.update(e);
     e.preventDefault();
     zoom_animation -= zoom / 8 * Math.sign(e.deltaY);
 }

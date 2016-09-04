@@ -8,15 +8,17 @@ const toolbar = document.getElementById("toolbar");
 toolbar.message = function(msg) {
     const message = document.getElementById("message");
     message.style.display = "block";
-    message.style.fontSize = 20;
+    message.style.fontSize = 16;
     message.time = 0;
     setTimeout(() => {
         message.innerHTML = msg;
-        message.style.opacity = 1;
+        message.style.opacity = .7;
 
-        while(message.scrollWidth > message.clientWidth && +message.style.fontSize.slice(0,-2) > 10) {
+        while(message.clientWidth > 300 && +message.style.fontSize.slice(0,-2) > 8) {
             message.style.fontSize = +message.style.fontSize.slice(0,-2) - 1;
         }
+
+        message.style.marginLeft = -message.clientWidth / 2;
 
         (function fade() {
             ++message.time;

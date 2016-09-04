@@ -127,11 +127,12 @@ canvas {
 
 #toolbar #message {
     position: absolute;
-    left: 0;
+    left: 50%;
     bottom: 60px;
-    width: 400px;
-    font-family: "Roboto Condensed";
-    font-size: 20px;
+    background: #111;
+    color: #bbb;
+    padding: 10px;
+    font-family: "Roboto";
     text-align: center;
     opacity: 0;
     transition: opacity .5s;
@@ -200,13 +201,13 @@ canvas {
     position: absolute;
     top: 100px;
     left: 100px;
-    background: #111;
+    background: #bbb;
     opacity: .95;
     font-family: "Inconsolata";
     font-size: 16px;
-    color: #bbb;
+    color: #333;
     padding: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    -box-shadow: 0 0 20px rgba(0,0,0,.5);
 }
 
 #componentInfo h1 {

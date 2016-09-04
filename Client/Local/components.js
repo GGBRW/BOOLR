@@ -137,7 +137,8 @@ class Input {
 
         if(zoom < 20) return;
         // Label tekenen
-        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.font = zoom / 5 + "px Inconsolata";
+        ctx.fillStyle = "#888";
         ctx.fillText(
             this.label,
             (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
@@ -234,21 +235,23 @@ class Output {
         ctx.fill();
         ctx.stroke();
 
-        // Label tekenen
-        ctx.fillStyle = "#111";
-        ctx.font = zoom / 5 + "px Roboto Condensed";
-        ctx.fillText(
-            this.label,
-            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
-            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
-        );
-
         // Icoon tekenen
         ctx.font = zoom / 1.5 + "px Roboto Condensed";
+        ctx.fillStyle = "#111";
         ctx.fillText(
             this.value,
             (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
             (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+        );
+
+        // Label tekenen
+        ctx.fillStyle = "#111";
+        ctx.font = zoom / 5 + "px Inconsolata";
+        ctx.fillStyle = "#888";
+        ctx.fillText(
+            this.label,
+            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
         );
 
         // Blink
@@ -334,13 +337,14 @@ class Gate {
         ctx.font = zoom / 1.5 + "px Roboto Condensed";
         ctx.fillText(
             this.icon,
-            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+            (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
             (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
         );
 
         if(zoom < 20) return;
         // Label tekenen
-        ctx.font = zoom / 5 + "px Roboto Condensed";
+        ctx.font = zoom / 5 + "px Inconsolata";
+        ctx.fillStyle = "#888";
         ctx.fillText(
             this.label,
             (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
