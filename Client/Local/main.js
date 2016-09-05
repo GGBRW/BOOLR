@@ -1,18 +1,16 @@
 "use strict";
 
 /*
-    todo: connection met kopieren
-    todo: contextmenu overflow
-    todo: mooie promptmenuutje
-    todo: cable compressor (32)
-    todo: websocket in C
-    todo: werken met meerdere personen
-    todo: gebieden kopieren
-    todo: smartphone support (spectator)
-    todo: spectator mode
-    todo: inloggen wachtwoordje
-    todo: max inputs prompt
-    todo: BUG muis positie
+    todo: [BUG] connection met kopieren
+    todo: [BUG] muis positie omreken-fout
+    todo: [BUG] contextmenu overflow
+    todo: [ADD] mooie promptmenuutje
+    todo: [ADD] cable compressor (32)
+    todo: [ADD] websocket in C
+    todo: [ADD] werken met meerdere personen
+    todo: [ADD] spectator mode
+    todo: [ADD] smartphone support (spectator)
+    todo: [ADD] inloggen gebruikersnaam/wachtwoord
 */
 
 
