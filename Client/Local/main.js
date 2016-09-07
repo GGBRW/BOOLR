@@ -1,6 +1,9 @@
 "use strict";
 
 /*
+    todo: selectie animatie
+    todo: [ADD]: copy-paste
+    todo: [ADD] Ctrl + Z
     todo: [BUG] connection met kopieren
     todo: [BUG] muis positie omreken-fout
     todo: [BUG] contextmenu overflow
