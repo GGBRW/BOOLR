@@ -176,8 +176,8 @@ c.onmousedown = function(e) {
     if(e.which == 1) {
         if(e.shiftKey) {
             cursor.selecting = {
-                x: e.x / zoom + offset.x,
-                y: -(e.y / zoom - offset.y),
+                x: Math.round(e.x / zoom + offset.x),
+                y: Math.round(-(e.y / zoom - offset.y)),
                 h: 0,
                 w: 0,
                 dashOffset: 0
