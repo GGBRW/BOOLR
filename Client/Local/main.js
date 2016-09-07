@@ -279,8 +279,8 @@ c.onmousemove = function(e) {
 
     if(e.which == 1) {
         if(cursor.selecting && !cursor.selecting.components) {
-            cursor.selecting.w = (cursor.pos.x / zoom + offset.x) - cursor.selecting.x;
-            cursor.selecting.h = -(e.y / zoom - offset.y) -  cursor.selecting.y;
+            cursor.selecting.w = Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x);
+            cursor.selecting.h = Math.round(-(e.y / zoom - offset.y) -  cursor.selecting.y);
         }
         else if(cursor.dragging) {
             for(let i of cursor.dragging.components) {
@@ -349,8 +349,6 @@ c.onmousemove = function(e) {
 c.onmouseup = function(e) {
     if(e.which == 1) {
         if(cursor.selecting && !cursor.selecting.components) {
-            cursor.selecting.w = Math.round(cursor.selecting.w);
-            cursor.selecting.h = Math.round(cursor.selecting.h);
             cursor.selecting.components = find(
                 cursor.selecting.x,cursor.selecting.y,
                 cursor.selecting.w,
