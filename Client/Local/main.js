@@ -355,7 +355,7 @@ c.onmouseup = function(e) {
                 cursor.selecting.h
             );
 
-            showContextmenu(cursor.pos);
+            showContextmenu({ x: (cursor.pos_r.x - offset.x) * zoom, y: -(cursor.pos_r.y - offset.y) * zoom });
 
             for(let i of cursor.selecting.components) {
                 i.blink(1000);
