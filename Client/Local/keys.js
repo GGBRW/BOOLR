@@ -20,10 +20,7 @@ document.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(cursor.selecting) {
-                remove(cursor.selecting.x,cursor.selecting.y,cursor.selecting.w,cursor.selecting.h);
-
-                document.getElementById("contextMenu").style.display = "none";
-                cursor.selecting = null;
+                for(let i of cursor.selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) }
             } else remove(cursor.pos_r.x,cursor.pos_r.y);
             break;
         case 33: // Page Up
