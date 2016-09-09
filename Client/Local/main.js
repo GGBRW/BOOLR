@@ -1,9 +1,13 @@
 "use strict";
 
 /*
-    todo: selectie animatie
-    todo: [ADD]: copy-paste
-    todo: [ADD] Ctrl + Z
+    todo: [ADD] asynchrone component updates
+    todo: [ADD] roosterpunten weglaten
+    todo: [BUG] overlappende draden niet tekenen
+    todo: [ADD] rechte stukken draad in een keer tekenen
+    todo: [ADD] selectie animatie
+    todo: [ADD] copy-paste
+    todo: [ADD] ctrl + Z
     todo: [BUG] connection met kopieren
     todo: [BUG] muis positie omreken-fout
     todo: [BUG] contextmenu overflow
