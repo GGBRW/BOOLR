@@ -286,6 +286,12 @@ c.onmousemove = function(e) {
 
     if(e.which == 1) {
         if(cursor.selecting && !cursor.selecting.components) {
+            if(cursor.selecting.w != Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x)) {
+                (function animate() {
+                    cursor.selecting.w += (Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x) - cursor.selecting.w) / 10;
+                    if(Math.round(cursor.selecting.w * 10) / 10 == Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x)) requestAnimationFrame(animate);
+                })();
+            }
             cursor.selecting.w = Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x);
             cursor.selecting.h = Math.round(-(e.y / zoom - offset.y) -  cursor.selecting.y);
         }
