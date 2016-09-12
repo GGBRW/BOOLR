@@ -292,7 +292,7 @@ c.onmousemove = function(e) {
                     if(Math.round(cursor.selecting.w * 10) / 10 == Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x)) requestAnimationFrame(animate);
                 })();
             }
-            cursor.selecting.w = Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x);
+            //cursor.selecting.w = Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x);
             cursor.selecting.h = Math.round(-(e.y / zoom - offset.y) -  cursor.selecting.y);
         }
         else if(cursor.dragging) {
