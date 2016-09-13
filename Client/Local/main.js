@@ -1,6 +1,7 @@
 "use strict";
 
 /*
+    todo: [BUG] scrollen + muisknop = WTF?
     todo: [ADD] asynchrone component updates
     todo: [ADD] roosterpunten weglaten
     todo: [BUG] overlappende draden niet tekenen
