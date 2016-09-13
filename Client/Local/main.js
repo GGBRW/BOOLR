@@ -65,11 +65,15 @@ function draw() {
     ctx.fillRect(0,0,c.width,c.height);
 
     // Roosterpunten tekenen
-    if(c.width * c.height / (zoom * zoom) < 15000) {
-        ctx.fillStyle = "#eee"; // FOREGROUND-COLOR
+    if(zoom > 24) {
+        if(zoom < 36) {
+            ctx.fillStyle = "rgba(221,221,221," + (1 - ((35 - zoom) / 10)) + ")"
+        } else {
+            ctx.fillStyle = "#ddd";
+        }
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
             for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
-                ctx.fillRect(i - zoom / 16, j - zoom / 16, zoom / 8, zoom / 8);
+                ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
             }
         }
     }
@@ -137,6 +141,16 @@ function draw() {
         zoom -= (zoom - zoom_animation) / 8;
     }
 
+    // Selectie animate
+    if(cursor.selecting) {
+        if(cursor.selecting.w != cursor.selecting.animate.w) {
+            cursor.selecting.w += (cursor.selecting.animate.w - cursor.selecting.w) / 5;
+        }
+        if(cursor.selecting.h != cursor.selecting.animate.h) {
+            cursor.selecting.h += (cursor.selecting.animate.h - cursor.selecting.h) / 5;
+        }
+    }
+
     // Framerate berekenen
     framerate = 1000 / (new Date - lastFrame);
     lastFrame = new Date;
@@ -179,6 +193,7 @@ c.onmouseleave = function(e) {
 }
 
 c.onmousedown = function(e) {
+    zoom_animation = zoom;
     cursor.update(e);
 
     if(e.which == 1) {
@@ -188,6 +203,10 @@ c.onmousedown = function(e) {
                 y: Math.round(-(e.y / zoom - offset.y)),
                 h: 0,
                 w: 0,
+                animate: {
+                  w: 0,
+                  h: 0
+                },
                 dashOffset: 0
             }
         }
@@ -288,8 +307,8 @@ c.onmousemove = function(e) {
 
     if(e.which == 1) {
         if(cursor.selecting && !cursor.selecting.components) {
-            cursor.selecting.w = Math.round((cursor.pos.x / zoom + offset.x) - cursor.selecting.x);
-            cursor.selecting.h = Math.round(-(e.y / zoom - offset.y) -  cursor.selecting.y);
+            cursor.selecting.animate.w = Math.round((e.x / zoom + offset.x) - cursor.selecting.x);
+            cursor.selecting.animate.h = Math.round(-(e.y / zoom - offset.y) -  cursor.selecting.y);
         }
         else if(cursor.dragging) {
             for(let i of cursor.dragging.components) {

@@ -20,7 +20,9 @@ document.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(cursor.selecting) {
-                for(let i of cursor.selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) }
+                for(let i of cursor.selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) };
+                cursor.selecting = null;
+                document.getElementById("contextMenu").style.display = "none";
             } else remove(cursor.pos_r.x,cursor.pos_r.y);
             break;
         case 33: // Page Up
@@ -74,6 +76,11 @@ document.onkeydown = function(e) {
                 const t = component.height;
                 component.height = component.width;
                 component.width = t;
+            }
+            break;
+        case 83:
+            if(e.ctrlKey) {
+                Export(stringify());
             }
             break;
     }

@@ -11,6 +11,8 @@
 <button id="optionsbtn">OPTIONS</button>
 <button id="helpbtn">HELP</button>
 
+<input id="fileinput" type="file" style="display: none">
+
 <div id="projects">
     <h1>Projects</h1>
     <button class="closebtn material-icons">close</button>
@@ -56,15 +58,18 @@
     }
 
     document.getElementById("projectsbtn").onclick = function() {
-        document.getElementById("projects").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-        setTimeout(function() {
-            document.getElementById("projects").style.transform = "scale(1)";
-            document.getElementById("projects").style.opacity = "1";
-            document.getElementById("overlay").style.opacity = ".5";
-        },1);
+//        document.getElementById("projects").style.display = "block";
+//        document.getElementById("overlay").style.display = "block";
+//        setTimeout(function() {
+//            document.getElementById("projects").style.transform = "scale(1)";
+//            document.getElementById("projects").style.opacity = "1";
+//            document.getElementById("overlay").style.opacity = ".5";
+//        },1);
+//
+//        location.hash = "projects";
+        document.getElementById("fileinput").click();
 
-        location.hash = "projects";
+        const project = window.open("./Local/index.html");
     }
 
     document.getElementById("optionsbtn").onclick = function() {
