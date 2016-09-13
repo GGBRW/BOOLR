@@ -233,8 +233,9 @@ c.onmousedown = function(e) {
                     }
                     else wire.from = component;
                     cursor.connecting = wire;
+                    components.push(wire);
                 }
-                else new Selected();
+                else components.unshift(new Selected());
             }
         }
     }
