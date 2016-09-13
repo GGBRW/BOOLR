@@ -83,8 +83,6 @@ class Input {
             label = this.constructor.name + "#" + n;
         }
         this.label = label;
-
-        components.unshift(this);
     }
 
     connect(component,wire) {
@@ -207,8 +205,6 @@ class Output {
             label = this.constructor.name + "#" + n;
         }
         this.label = label;
-
-        components.unshift(this);
     }
 
     update() {
@@ -294,8 +290,6 @@ class Gate {
             label = this.constructor.name + "#" + n;
         }
         this.label = label;
-
-        components.unshift(this);
     }
 
     connect(component,wire) {
@@ -403,8 +397,6 @@ class Wire {
 
         this.pos = [];
         this.color = color;
-
-        components.push(this);
     }
 
     blink(duration) {
