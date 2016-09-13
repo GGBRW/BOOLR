@@ -38,16 +38,24 @@ function parse(string) {
     for(let i of string.components) {
         let component = eval("new " + i[0]);
         Object.assign(component,i[1]);
+        components.push(component);
     }
     
     for(let i of string.connections) {
         const from = components[i[0]];
         const to = components[i[1]];
         const wire = components[i[2]];
-        console.log(i);
         
         wire.from = from;
         wire.to = to;
         from.connect(to,wire);
     }
+}
+
+function download(string) {
+    a = document.createElement("a");
+    data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
+    a.setAttribute('href', data);
+    a.setAttribute('download', 'data.txt');
+    a.click();
 }
