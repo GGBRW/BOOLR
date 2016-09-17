@@ -56,6 +56,6 @@ function Export(string) {
     const a = document.createElement("a");
     const data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
     a.setAttribute('href', data);
-    a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".pws");
+    a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".txt");
     a.click();
 }

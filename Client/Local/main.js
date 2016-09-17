@@ -435,6 +435,12 @@ c.onmouseup = function(e) {
     }
 }
 
+c.onmousewheel = function(e) {
+    e.preventDefault();
+    zoom_animation -= zoom / 8 * Math.sign(e.deltaY);
+}
+
+
 // c.onmousedown = function(e) {
 //     cursor.update(e);
 //     document.getElementById("list").style.display = "none";
@@ -544,8 +550,4 @@ c.onmouseup = function(e) {
 //     }
 // }
 
-c.onmousewheel = function(e) {
-    e.preventDefault();
-    zoom_animation -= zoom / 8 * Math.sign(e.deltaY);
-}
 
