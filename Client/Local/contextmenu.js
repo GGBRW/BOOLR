@@ -72,16 +72,18 @@ context_options["clone"].onclick = () => {
 // Copy
 context_options["copy"] = document.createElement("li");
 context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord [CTRL+C]</span>';
-context_options["copy"].onclick = () => clipbord = Object.assign({},cursor.selecting);
+context_options["copy"].onclick = () => {
+    clipbord = Object.assign({},cursor.selecting);
+    clipbord.components = stringify(cursor.selecting.components);
+}
 
 // Paste
 context_options["paste"] = document.createElement("li");
 context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste [CTRL+V]</span>';
 context_options["paste"].onclick = function() {
-    if(!clipbord) return;
+    let result = parse(clipbord.components);
 
-    clipbord.components = clipbord.components.map(n => clone(n));
-    for(let i of clipbord.components) {
+    for(let i of result) {
         if(Array.isArray(i.pos)) {
             for(let j of i.pos) {
                 j.x = Math.round(j.x - clipbord.x + contextMenu.pos.x);
@@ -91,17 +93,15 @@ context_options["paste"].onclick = function() {
             i.pos.x = Math.round(i.pos.x - clipbord.x + contextMenu.pos.x);
             i.pos.y = Math.round(i.pos.y - clipbord.y + contextMenu.pos.y);
         }
-        components.push(i);
     }
-
-    clipbord.x = Math.round(contextMenu.pos.x);
-    clipbord.y = Math.round(contextMenu.pos.y);
 
     setTimeout(() => {
         cursor.selecting = Object.assign({}, clipbord);
+        cursor.selecting.x = Math.round(contextMenu.pos.x);
+        cursor.selecting.y = Math.round(contextMenu.pos.y);
+        cursor.selecting.components = result;
         showContextmenu({ x: (cursor.selecting.x + cursor.selecting.w + offset.x) * zoom, y: (-(cursor.selecting.y + cursor.selecting.h) + offset.y) * zoom });
-        console.log(cursor.selecting);
-    },1);
+    }, 1);
 }
 
 // Delete

@@ -1,14 +1,13 @@
 "use strict";
 
 /*
-    todo: [BUG] scrollen + muisknop = WTF?
     todo: [ADD] asynchrone component updates
     todo: [ADD] roosterpunten weglaten
     todo: [BUG] overlappende draden niet tekenen
     todo: [ADD] rechte stukken draad in een keer tekenen
     todo: [ADD] selectie animatie
     todo: [ADD] copy-paste
-    todo: [ADD] ctrl + Z
+    todo: [ADD] Ctrl + Z
     todo: [BUG] connection met kopieren
     todo: [BUG] muis positie omreken-fout
     todo: [BUG] contextmenu overflow
@@ -66,11 +65,7 @@ function draw() {
 
     // Roosterpunten tekenen
     if(zoom > 24) {
-        if(zoom < 36) {
-            ctx.fillStyle = "rgba(221,221,221," + (1 - ((35 - zoom) / 10)) + ")"
-        } else {
-            ctx.fillStyle = "#ddd";
-        }
+        ctx.fillStyle = "rgba(100,100,100," + Math.min(1,zoom / 100) + ")"
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
             for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
                 ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
@@ -354,7 +349,9 @@ c.onmousemove = function(e) {
                     cursor.connecting.from.update();
 
                     toolbar.message(`Connected ${cursor.connecting.from.label} with ${component.label}`);
+
                     cursor.connecting.from.blink(1000);
+                    cursor.connecting.blink(1000);
                     cursor.connecting.to.blink(1000);
                 }
 
