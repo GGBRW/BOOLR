@@ -179,7 +179,7 @@ class Clock extends Input {
 
         setInterval(() => {
             this.value = +!this.value;
-            this.update();
+            update_queue.push({ update: this.update, component: this });
         }, this.delay);
     }
 }

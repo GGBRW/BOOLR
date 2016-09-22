@@ -2,19 +2,14 @@
 
 /*
     todo: [ADD] asynchrone component updates
-    todo: [ADD] roosterpunten weglaten
     todo: [BUG] overlappende draden niet tekenen
     todo: [ADD] rechte stukken draad in een keer tekenen
-    todo: [ADD] selectie animatie
-    todo: [ADD] copy-paste
     todo: [ADD] Ctrl + Z
-    todo: [BUG] connection met kopieren
+    todo: [BUG]: dragging + wire
     todo: [BUG] muis positie omreken-fout
     todo: [BUG] contextmenu overflow
     todo: [ADD] mooie promptmenuutje
     todo: [ADD] cable compressor (32)
-    todo: [ADD] websocket in C
-    todo: [ADD] werken met meerdere personen
     todo: [ADD] spectator mode
     todo: [ADD] smartphone support (spectator)
     todo: [ADD] inloggen gebruikersnaam/wachtwoord
@@ -326,6 +321,41 @@ c.onmousemove = function(e) {
                         j.y -= (e.movementY) / zoom;
                     }
                 } else {
+                    let dx = Math.round(i.pos.x) - Math.round(i.pos.x + e.movementX / zoom);
+                    let dy = Math.round(i.pos.y) - Math.round(i.pos.y - e.movementY / zoom);
+                    if(dx || dy) {
+                        if(i.input) {
+                            for(let input of i.input) {
+                                if(!cursor.dragging.components.includes(input)) {
+                                    if(dx || dy) {
+                                        input.pos.push({
+                                            x: input.pos[input.pos.length - 1].x - dx,
+                                            y: input.pos[input.pos.length - 1].y - dy
+                                        });
+                                    }
+                                }
+                                else if(!cursor.dragging.components.includes(input.to)) {
+
+                                }
+                            }
+                        }
+                        if(i.output) {
+                            for(let output of i.output) {
+                                if(!cursor.dragging.components.includes(output)) {
+                                    let dx = Math.round(i.pos.x) - Math.round(i.pos.x + e.movementX / zoom);
+                                    let dy = Math.round(i.pos.y) - Math.round(i.pos.y - e.movementY / zoom);
+                                    if(dx || dy) {
+                                        output.pos.unshift({
+                                            x: output.pos[0].x - dx,
+                                            y: output.pos[0].y - dy
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
                     i.pos.x += (e.movementX) / zoom;
                     i.pos.y -= (e.movementY) / zoom;
                 }

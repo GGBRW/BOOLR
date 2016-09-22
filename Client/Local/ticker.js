@@ -9,6 +9,9 @@ function tick() {
             update_queue.splice(0,1);
         }
     }
+    if(update_queue.length) console.log(update_queue);
+
+    requestAnimationFrame(tick);
 }
 
-setInterval(tick, delay);
+// setInterval(tick, delay);
