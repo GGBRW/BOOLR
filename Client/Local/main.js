@@ -65,12 +65,19 @@ function draw() {
 
     // Roosterpunten tekenen
     if(zoom > 24) {
-        ctx.fillStyle = "rgba(100,100,100," + Math.min(1,zoom / 100) + ")"
+        ctx.fillStyle = "rgba(160,160,160," + Math.min(1,zoom / 100) + ")"
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
             for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
                 ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
             }
         }
+    }
+
+    // Labels, Areas, etc. tekenen
+    for(let i = labels.length - 1; i >= 0; --i) {
+        const x = (labels[i].pos.x - offset.x) * zoom;
+        const y = -(labels[i].pos.y - offset.y) * zoom;
+        labels[i].draw();
     }
 
     // Componenten tekenen
@@ -85,7 +92,6 @@ function draw() {
             y  - zoom / 2 <= c.height
         ) components[i].draw();
     }
-
 
     // Component info
     const component = find(cursor.pos_r.x,cursor.pos_r.y);
@@ -167,7 +173,13 @@ let cursor = {
     connecting: null
 }
 
-let clipbord = null;
+let clipbord = JSON.parse(localStorage.pws).clipbord || null;
+
+window.onbeforeunload = function() {
+    let storage = typeof JSON.parse(localStorage.pws) == 'object' ? JSON.parse(localStorage.pws) : {};
+    storage.clipbord = clipbord;
+    localStorage.pws = JSON.stringify(storage);
+}
 
 window.onresize = () => {
     c.height = window.innerHeight;
@@ -190,7 +202,6 @@ c.onmouseleave = function(e) {
 c.onmousedown = function(e) {
     zoom_animation = zoom;
     cursor.update(e);
-
     if(e.which == 1) {
         if(e.shiftKey) {
             cursor.selecting = {
@@ -250,7 +261,9 @@ c.onmousedown = function(e) {
                     cursor.connecting = wire;
                     components.push(wire);
                 }
-                else components.unshift(new Selected());
+                else {
+                    components.unshift(new Selected());
+                }
             }
         }
     }

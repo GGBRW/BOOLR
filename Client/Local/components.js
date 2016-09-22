@@ -94,13 +94,15 @@ class Input {
         this.value = value;
         for(let output of this.output) {
             output.value = this.value;
-            output.to.update();
+            //output.to.update();
+            update_queue.push({ update: output.to.update, component: output.to });
         }
     }
 
     onclick() {
         this.value = +!this.value;
-        this.update();
+        //this.update();
+        update_queue.push({ update: this.update, component: this });
     }
 
     blink(duration) {
@@ -301,7 +303,8 @@ class Gate {
         const result = this.func(this.input.map(n => n.value));
         for(let i = 0; i < this.output.length; ++i) {
             this.output[i].value = result[i] ? result[i] : result[result.length - 1];
-            this.output[i].to.update();
+            //this.output[i].to.update();
+            update_queue.push({ update: this.output[i].to.update, component: this.output[i].to });
         }
     }
 

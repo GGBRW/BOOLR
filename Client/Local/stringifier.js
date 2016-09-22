@@ -47,19 +47,18 @@ function stringify(area = components) {
 
 function parse(string) {
     let result = [];
-    const margin = components.length;
     string = JSON.parse(string);
     for(let i of string.components) {
         let component = eval("new " + i[0]);
         Object.assign(component,i[1]);
-        components.push(component);
+        component.constructor == Wire ? components.push(component) : components.unshift(component);
         result.push(component);
     }
     
     for(let i of string.connections) {
-        const from = components[i[0] + margin];
-        const to = components[i[1] + margin];
-        const wire = components[i[2] + margin];
+        const from = result[i[0]];
+        const to = result[i[1]];
+        const wire = result[i[2]];
         
         wire.from = from;
         wire.to = to;

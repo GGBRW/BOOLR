@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="_style.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="/Local/stringifier.js"></script>
@@ -63,7 +63,7 @@
             const text = reader.result;
 
             const project = window.open("Local/index.html");
-            project.onload = function() { this.components = this.parse(text) }
+            project.onload = function() { alert(this) };
         }
         reader.readAsText(input.files[0]);
     }
@@ -118,42 +118,4 @@
             location.hash = "";
         }
     }
-</script>
-
-<canvas id="wallpaper"></canvas>
-<script>
-    const c = document.getElementById("wallpaper");
-    const ctx = c.getContext("2d");
-    [c.height, c.width] = [innerHeight, innerWidth];
-    document.body.style.margin = document.body.style.overflow = 0;
-
-    let str = "";
-    for(let i = 0; i < 6000; ++i) {
-        str += Math.round(Math.random());
-    }
-
-    ctx.font = "20px Consolas";
-    ctx.fillStyle = "#1a1a1a";
-
-    function wrapText(context, text, x, y, maxWidth, lineHeight) {
-        var words = text.split('');
-        var line = '';
-
-        for(var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + ' ';
-            var metrics = context.measureText(testLine);
-            var testWidth = metrics.width;
-            if (testWidth > maxWidth && n > 0) {
-                context.fillText(line, x, y);
-                line = words[n] + ' ';
-                y += lineHeight;
-            }
-            else {
-                line = testLine;
-            }
-        }
-        context.fillText(line, x, y);
-    }
-
-    wrapText(ctx,str,8,20,c.width - 5,20);
 </script>

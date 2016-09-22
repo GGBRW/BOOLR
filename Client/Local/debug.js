@@ -7,6 +7,7 @@ function updateDebugInfo() {
     debugInfo.innerHTML += "Offset x: " + Math.round(offset.x) + "<br>";
     debugInfo.innerHTML += "Offset y: " + Math.round(offset.y) + "<br>";
     debugInfo.innerHTML += "Zoom: " + Math.round(zoom) + "<br>";
+    debugInfo.innerHTML += "Updates: " + update_queue.length + "<br>";
 }
 
 updateDebugInfo();
