@@ -19,9 +19,9 @@ document.onkeydown = function(e) {
             scroll(-offset.x,-offset.y);
             break;
         case 46: // Delete
-            if(cursor.selecting) {
-                for(let i of cursor.selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) };
-                cursor.selecting = null;
+            if(selecting) {
+                for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) };
+                selecting = null;
                 document.getElementById("contextMenu").style.display = "none";
             } else remove(cursor.pos_r.x,cursor.pos_r.y);
             break;
@@ -34,7 +34,7 @@ document.onkeydown = function(e) {
         case 27: // Escape
             document.getElementById("list").style.display = "none";
             document.getElementById("contextMenu").style.display = "none";
-            cursor.selecting = null;
+            selecting = null;
             break;
         case 49: // 1
             document.getElementsByClassName("slot")[0].onmousedown();
@@ -77,6 +77,10 @@ document.onkeydown = function(e) {
                 component.height = component.width;
                 component.width = t;
             }
+            break;
+        case 114: // F3
+            debugInfo.style.display = debugInfo.style.display == "none" ? "block" : "none";
+            return false;
             break;
         case 83:
             if(e.ctrlKey) {

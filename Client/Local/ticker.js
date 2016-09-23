@@ -1,6 +1,7 @@
 let update_queue = [];
-const delay = 17;
+const delay = 1;
 
+let tickrate = 0, lastTick = new Date;
 function tick() {
     let start = new Date;
     while(update_queue.length && new Date - start < delay) {
@@ -11,7 +12,9 @@ function tick() {
     }
     if(update_queue.length) console.log(update_queue);
 
-    requestAnimationFrame(tick);
-}
+    // Tickrate berekenen
+    tickrate = 1000 / (new Date - lastTick);
+    lastTick = new Date;
 
-// setInterval(tick, delay);
+    setTimeout(tick,delay);
+}

@@ -66,7 +66,7 @@ let Selected;
 
 class Input {
     constructor(
-        pos = Object.assign({}, cursor.pos_r),
+        pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
         label
@@ -186,7 +186,7 @@ class Clock extends Input {
 
 class Output {
     constructor(
-        pos = Object.assign({}, cursor.pos_r),
+        pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
         label,
@@ -269,7 +269,7 @@ class Output {
 
 class Gate {
     constructor(
-        pos = Object.assign({}, cursor.pos_r),
+        pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
         icon = "?",
