@@ -168,7 +168,9 @@ let cursor = {
     connecting: null
 }
 
-let clipbord = JSON.parse(localStorage.pws).clipbord || null;
+if(localStorage.pws) {
+    let clipbord = JSON.parse(localStorage.pws).clipbord;
+}
 
 window.onbeforeunload = function() {
     let storage = typeof JSON.parse(localStorage.pws) == 'object' ? JSON.parse(localStorage.pws) : {};
