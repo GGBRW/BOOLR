@@ -26,16 +26,6 @@ const tau = 2 * Math.PI;
 const rsin = n => Math.round(Math.sin(n));
 const rcos = n => Math.round(Math.cos(n));
 
-let settings;
-if(localStorage.pws_settings) {
-    settings = JSON.parse(localStorage.pws_settings);
-} else {
-    settings = {
-        scroll_animation: 1,
-        zoom_animation: 1
-    }
-}
-
 let offset = { x: 0, y: 0 };
 let zoom = 50;
 
@@ -121,20 +111,28 @@ function draw() {
     }
 
     // Scroll animatie
-    if(scroll_animation.animate && settings.scroll_animation) {
-        offset.x -= Math.sin(scroll_animation.r) * scroll_animation.v;
-        offset.y += Math.cos(scroll_animation.r) * scroll_animation.v;
+    if(settings.scroll_animation) {
+        if(scroll_animation.animate && settings.scroll_animation) {
+            offset.x -= Math.sin(scroll_animation.r) * scroll_animation.v;
+            offset.y += Math.cos(scroll_animation.r) * scroll_animation.v;
 
-        scroll_animation.v -= scroll_animation.v / 16;
-        scroll_animation <= 0 && (scroll_animation.animate = false);
+            scroll_animation.v -= scroll_animation.v / 16;
+            scroll_animation <= 0 && (scroll_animation.animate = false);
+        }
     }
 
     // Zoom animation
-    if(zoom_animation - zoom < 0 && zoom > 2
-    || zoom_animation - zoom > 0 && zoom < 300) {
-        offset.x += cursor.pos.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-        offset.y -= cursor.pos.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-        zoom -= (zoom - zoom_animation) / 8;
+    if(settings.zoom_animation) {
+        if((zoom_animation - zoom < 0 && zoom > 2
+         || zoom_animation - zoom > 0 && zoom < 300)) {
+            offset.x += cursor.pos.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
+            offset.y -= cursor.pos.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
+            zoom -= (zoom - zoom_animation) / 8;
+        }
+    } else {
+        offset.x += cursor.pos.x * (1 / zoom - 1 / (zoom_animation));
+        offset.y -= cursor.pos.y * (1 / zoom - 1 / (zoom_animation));
+        zoom = zoom_animation;
     }
 
     // Selectie animate
@@ -168,8 +166,16 @@ let cursor = {
     connecting: null
 }
 
+let settings = {
+    scroll_animation: 1,
+    zoom_animation: 1
+}
+let clipbord;
+
 if(localStorage.pws) {
-    let clipbord = JSON.parse(localStorage.pws).clipbord;
+    let data = JSON.parse(localStorage.pws);
+    if(data.settings) settings = data.settings;
+    if(data.clipbord) clipbord = data.clipbord;
 }
 
 window.onbeforeunload = function() {
