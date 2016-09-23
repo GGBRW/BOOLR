@@ -1,7 +1,7 @@
 let keys = {};
 
 document.onkeydown = function(e) {
-    keys[e.which] = true;
+    if(!keys[e.which]) keys[e.which] = new Date;
     switch(e.which) {
         case 37: // Arrow left
             scroll(-5,0);
@@ -79,7 +79,10 @@ document.onkeydown = function(e) {
             }
             break;
         case 114: // F3
-            debugInfo.style.display = debugInfo.style.display == "none" ? "block" : "none";
+            if(keys[114] instanceof Date && new Date - keys[114] > 50) {
+                debugInfo.style.display = debugInfo.style.display == "none" ? "block" : "none";
+                keys[114] = true;
+            }
             return false;
             break;
         case 83:
