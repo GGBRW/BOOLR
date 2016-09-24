@@ -1,121 +1,55 @@
-<link rel="stylesheet" href="_style.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<script src="/Local/stringifier.js"></script>
+    <meta charset="UTF-8">
+    <title>PWS</title>
+</head>
+<body>
+    <h1 id="title">Profielwerkstuk</h1>
 
-<title>PWS</title>
-
-<h1>Profielwerkstuk</h1>
-
-<button id="sandboxbtn">SANDBOX MODE</button>
-<button id="projectsbtn">LOAD PROJECT</button>
-
-<button id="optionsbtn">OPTIONS</button>
-<button id="helpbtn">HELP</button>
-
-<input id="open_file" type="file" accept="text/plain" style="display: none">
-
-<div id="projects">
-    <h1>Projects</h1>
-    <button class="closebtn material-icons">close</button>
-    <table>
-        <tr><th>NAME</th><th>LOCAL/SERVER</th><th>SIZE</th><th></th></tr>
-        <tr><td>Test</td><td>Local</td><td>20.3 MB</td><td class="material-icons">delete</td></tr>
-        <tr><td>Test 2</td><td>Local</td><td>5.6 MB</td><td class="material-icons">delete</td></tr>
-    </table>
-</div>
-
-<div id="options">
-    <h1>Options</h1>
-    <button class="closebtn material-icons">close</button>
-    <ul>
-        <li>Vsync<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
-        <li>Full screen<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
-        <li>Dark mode<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
-        <li>Scroll animation<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
-        <li>Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label></li>
-    </ul>
-
-</div>
-
-<div id="help">
-    <h1>Help</h1>
-    <button class="closebtn material-icons">close</button>
-    <!-- todo: tekst in het help-menu -->
-    <div class="container">
-        <h4>Kopje</h4>
-        <p>Tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst</p>
-        <h4>Kopje</h4>
-        <p>Tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst tekst</p>
+    <div id="container">
+        <button id="sandbox_btn" onclick="open_sandbox()">SANDBOX MODE</button>
+        <button id="project_btn" onclick="open_project()">LOAD PROJECT</button>
+        <button id="settings_btn" onclick="open_settings()">SETTINGS</button>
+        <button id="info_btn" onclick="open_info()">INFO</button>
     </div>
-</div>
 
-<div id="overlay"></div>
-
-<script>
-    localStorage.pws_settings = JSON.stringify({ scroll_animation: 1 });
-
-    document.getElementById("open_file").onchange = function(e) {
-        const input = e.target;
-
-        const reader = new FileReader;
-        reader.onload = function() {
-            const text = reader.result;
-
-            const project = window.open("Local/index.html");
-            project.onload = function() { alert(this) };
+    <script>
+        function open_sandbox() {
+            window.open("Local/index.html");
         }
-        reader.readAsText(input.files[0]);
-    }
 
-    document.getElementById("sandboxbtn").onclick = function() {
-        const sandbox = window.open("./Local/index.html");
-    }
-
-    document.getElementById("projectsbtn").onclick = function() {
-        document.getElementById("open_file").click();
-    }
-
-    document.getElementById("optionsbtn").onclick = function() {
-        document.getElementById("options").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-        setTimeout(function() {
-            document.getElementById("options").style.transform = "scale(1)";
-            document.getElementById("options").style.opacity = "1";
-            document.getElementById("overlay").style.opacity = ".5";
-        },1);
-
-        location.hash = "options";
-    }
-
-    document.getElementById("helpbtn").onclick = function() {
-        document.getElementById("help").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-        setTimeout(function() {
-            document.getElementById("help").style.transform = "scale(1)";
-            document.getElementById("help").style.opacity = "1";
-            document.getElementById("overlay").style.opacity = ".5";
-        },1);
-
-        location.hash = "help";
-    }
-
-    document.getElementById(location.hash.substr(1) + "btn") && document.getElementById(location.hash.substr(1) + "btn").onclick();
-
-    const closebtns = document.getElementsByClassName("closebtn");
-    for(let i = 0; i < closebtns.length; ++i) {
-        closebtns[i].onclick = function() {
-            const parent = this.parentElement;
-
-            parent.style.transform = "scale(.95)";
-            parent.style.opacity = "0";
-            document.getElementById("overlay").style.opacity = "0";
-            setTimeout(function() {
-                parent.style.display = "none";
-                document.getElementById("overlay").style.display = "none";
-            }, 200);
-
-            location.hash = "";
+        function open_project() {
+            document.getElementById("open_file").click();
         }
-    }
-</script>
+
+        function open_settings() {
+
+        }
+
+        function open_info() {
+
+        }
+    </script>
+
+    <input id="open_file" type="file" accept=".dat" style="display: none">
+
+    <script>
+        document.getElementById("open_file").onchange = function(e) {
+            const input = e.target;
+
+            const reader = new FileReader;
+            reader.onload = function() {
+                const text = reader.result;
+
+                const project = window.open("Local/index.html");
+                project.onload = () => project.parse(text);
+            }
+            reader.readAsText(input.files[0]);
+        }
+    </script>
+</body>
+</html>

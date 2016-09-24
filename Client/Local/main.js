@@ -15,7 +15,6 @@
     todo: [ADD] inloggen gebruikersnaam/wachtwoord
 */
 
-
 const c = document.getElementById("canvas");
 c.height = window.innerHeight;
 c.width = window.innerWidth;
@@ -158,25 +157,22 @@ let mouse = {
 }
 
 let settings = {
-    scroll_animation: 1,
-    zoom_animation: 1
+    scroll_animation: true,
+    zoom_animation: true
 }
-
-var clipbord;
+let clipbord;
 var dragging;
 var selecting;
 var connecting;
 
-if(localStorage.pws) {
-    let data = JSON.parse(localStorage.pws);
-    if(data.settings) settings = data.settings;
-    if(data.clipbord) clipbord = data.clipbord;
-}
-
 window.onbeforeunload = function() {
-    let storage = typeof JSON.parse(localStorage.pws) == 'object' ? JSON.parse(localStorage.pws) : {};
-    storage.clipbord = clipbord;
-    localStorage.pws = JSON.stringify(storage);
+    let data = {};
+    if(localStorage.pws) data = JSON.parse(localStorage.pws);
+
+    data.clipbord = clipbord;
+    data.settings = settings;
+    if(prompt.whatsnew.style.display == "none") data.version = VERSION;
+    localStorage.pws = JSON.stringify(data);
 }
 
 window.onresize = () => {
@@ -185,7 +181,6 @@ window.onresize = () => {
 }
 
 c.oncontextmenu = () => false;
-// c.onmouseleave = () => scroll_animation.animate = true;
 c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmouseleave = function(e) {

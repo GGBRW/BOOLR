@@ -1,5 +1,5 @@
 let update_queue = [];
-const delay = 1;
+const delay = 20;
 
 let tickrate = 0, lastTick = new Date;
 function tick() {

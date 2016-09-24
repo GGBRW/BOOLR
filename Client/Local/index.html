@@ -1,11 +1,11 @@
 <meta charset="utf-8">
 
 <link rel="stylesheet" href="style.css">
-<!--link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <title>PWS // SANDBOX MODE</title>
 
-<canvas id="canvas"></canvas>
+<canvas id="canvas" tabindex="1"></canvas>
 
 <!-- Console -->
 <div id="console">
@@ -36,7 +36,7 @@
 
 <!-- Credits -->
 <div id="credits">
-    PWS v0.1.57
+    PWS v0.1.58
     <button onclick="window.open('../index.html#options')" class="material-icons">settings</button>
     <button onclick="window.open('../index.html#help')" class="material-icons">help</button>
 </div>
@@ -50,6 +50,23 @@
 <!-- Context menu -->
 <ul id="contextMenu" tabindex="1" oncontextmenu="return false" style="display: none;"></ul>
 
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- What's new -->
+<div class="prompt" id="whatsnew">
+    <h1>Update 0.1.58</h1>
+    <ul>
+        <li>Clipbord blijft in het geheugen staan</li>
+        <li>Componenten selecteren met Tab</li>
+        <li>Een aantal commando's toegevoegd (probeer 'help' commando om alle commando's te zien)</li>
+        <li>Draden worden meegetrokken als componenten worden verplaatst</li>
+        <li>Mooiere pop-up menuutjes (zoals deze)</li>
+        <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
+    </ul>
+    <button id="ok">OK</button>
+</div>
+
 <!-- Scrippies -->
 <script src="main.js"></script>
 <script src="ticker.js"></script>
@@ -61,8 +78,21 @@
 <script src="debug.js"></script>
 <script src="contextmenu.js"></script>
 <script src="componentInfo.js"></script>
+<script src="prompt.js"></script>
 <script src="stringifier.js"></script>
 <script>
+    "use strict";
+
+    const VERSION = "0.1.58";
+
+    let data;
+    if(localStorage.pws) data = JSON.parse(localStorage.pws);
+    else data = {};
+
+    if(data.settings) settings = data.settings;
+    if(data.clipbord) clipbord = data.clipbord;
+    if(data.version != VERSION) { prompt.whatsnew.show() }
+
     draw();  // 'draw' loop starten
     tick(); // 'tick' loop starten
 </script>

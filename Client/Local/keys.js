@@ -1,6 +1,6 @@
 let keys = {};
 
-document.onkeydown = function(e) {
+c.onkeydown = function(e) {
     if(!keys[e.which]) keys[e.which] = new Date;
     switch(e.which) {
         case 37: // Arrow left
@@ -23,7 +23,7 @@ document.onkeydown = function(e) {
                 for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) };
                 selecting = null;
                 document.getElementById("contextMenu").style.display = "none";
-            } else remove(cursor.pos_r.x,cursor.pos_r.y);
+            } else remove(mouse.grid.x,mouse.grid.y);
             break;
         case 33: // Page Up
             changeZoom(zoom / 2);
@@ -64,19 +64,27 @@ document.onkeydown = function(e) {
         case 58: // 0
             break;
         case 69: // E:
-            var component = find(cursor.pos_r.x,cursor.pos_r.y);
+            var component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.label) {
                 const new_label = prompt("Enter the new label name:");
                 new_label && (component.label = new_label);
             }
             break;
         case 82: // R
-            var component = find(cursor.pos_r.x,cursor.pos_r.y);
+            var component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.height) {
                 const t = component.height;
                 component.height = component.width;
                 component.width = t;
             }
+            break;
+        case 9: // Tab
+            var component = find(mouse.grid.x,mouse.grid.y);
+            if(component) {
+                select(component.constructor);
+            }
+            keys[9] = true;
+            return false;
             break;
         case 114: // F3
             if(keys[114] instanceof Date && new Date - keys[114] > 50) {
@@ -95,4 +103,4 @@ document.onkeydown = function(e) {
     if(e.ctrlKey) return false;
 }
 
-document.onkeyup = function(e) { keys[e.which] = false }
+c.onkeyup = function(e) { keys[e.which] = false }

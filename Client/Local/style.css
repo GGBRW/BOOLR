@@ -88,11 +88,12 @@ canvas {
     background: #111;
     color: #888;
     width: 215px;
-    margin-top: 5px;
+    margin-top: 15px;
     padding: 20px 20px 20px 5px;
     font-family: "Inconsolata";
-    font-size: 20px;
+    font-size: 16px;
     transition: opacity 1s;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
 }
 
 /* Toolbar */
@@ -104,25 +105,26 @@ canvas {
     margin-left: -175px;
     width: 350px;
     height: 50px;
-    background: #eee;
-    color: #333;
+    background: #111;
+    color: #888;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
     font-size: 0;
-    opacity: .9;
+    opacity: 1;
 }
 
 #toolbar .slot {
     height: 50px;
     width: 50px;
-    font-family: "Roboto Condensed";
+    font-family: "Inconsolata";
     font-size: 20px;
+    font-weight: 300;
     text-align: center;
-    padding-top: 12px;
+    padding-top: 15px;
     margin: 0;
     display: inline-block;
 }
 #toolbar .slot:hover {
-    background: #ddd;
+    background: #222;
 }
 
 #toolbar #message {
@@ -149,7 +151,7 @@ canvas {
     font-family: "Roboto Condensed";
     font-size: 20px;
     list-style: none;
-    background: #eee;
+    background: #111;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
     outline: none;
 }
@@ -256,4 +258,66 @@ canvas {
 
 #contextMenu li:hover {
     background: #333;
+}
+
+/* Overlay */
+#overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.2);
+}
+
+/* Prompt */
+.prompt {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 350px;
+    padding-bottom: 100px;
+    margin-left: -175px;
+    text-align: center;
+    background: #ddd;
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+}
+
+.prompt h1 {
+    font-family: "Roboto";
+    font-size: 25px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+.prompt #ok {
+    position: absolute;
+    margin-left: -50px;
+    margin-bottom: 15px;
+    bottom: 0px;
+    left: 50%;
+    background: #ddd;
+    border: none;
+    padding: 10px;
+    min-width: 100px;
+    font-family: "Roboto Condensed";
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+}
+
+.prompt #ok:hover {
+    background: #bbb;
+}
+
+.prompt ul {
+    font-family: "Roboto Condensed";
+    font-size: 16px;
+    text-align: left;
+}
+.prompt li {
+    padding: 2px;
 }

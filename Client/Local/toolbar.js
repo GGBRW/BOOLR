@@ -42,7 +42,7 @@ document.getElementById("list").onblur = function() { this.style.display = "none
 
 const listItems = document.getElementById("list").children;
 for(let i = 0; i < listItems.length; ++i) {
-    listItems[i].onmouseenter = function() { this.style.background = "#ddd" };
-    listItems[i].onmouseleave = function() { this.style.background = "#eee" };
+    listItems[i].onmouseenter = function() { this.style.background = "#222" };
+    listItems[i].onmouseleave = function() { this.style.background = "#111" };
     listItems[i].onmouseup = function() { this.onclick() };
 }
