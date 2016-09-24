@@ -5,30 +5,18 @@ function select(Component) {
 }
 
 const toolbar = document.getElementById("toolbar");
+let hideToolbarMessage;
 toolbar.message = function(msg) {
+    clearTimeout(hideToolbarMessage);
+
     const message = document.getElementById("message");
     message.style.display = "block";
-    message.style.fontSize = 16;
-    message.time = 0;
-    setTimeout(() => {
-        message.innerHTML = msg;
-        message.style.opacity = .7;
-
-        while(message.clientWidth > 300 && +message.style.fontSize.slice(0,-2) > 8) {
-            message.style.fontSize = +message.style.fontSize.slice(0,-2) - 1;
-        }
-
-        message.style.marginLeft = -message.clientWidth / 2;
-
-        (function fade() {
-            ++message.time;
-            if(message.time > 200) {
-                message.style.opacity = 0;
-                setTimeout(() => message.style.display = "none", 250);
-            }
-            if(message.style.display != "none") requestAnimationFrame(fade);
-        })();
-    },10);
+    message.innerHTML = msg;
+    message.style.marginLeft = -message.clientWidth / 2 + "px";
+    message.style.opacity = .7;
+    hideToolbarMessage = setTimeout(() => {
+        message.style.opacity = 0;
+    },3000);
 }
 
 document.getElementsByClassName("slot")[0].onmousedown = function() {
