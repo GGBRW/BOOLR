@@ -59,21 +59,11 @@
     </div>
 
     <div id="container">
-        <button id="sandbox_btn" onclick="open_sandbox()">SANDBOX MODE</button>
-        <button id="project_btn" onclick="open_project()">LOAD PROJECT</button>
+        <button id="sandbox_btn" onclick="open_project()">SANDBOX MODE</button>
+        <button id="project_btn" onclick="document.getElementById('open_file').click();">LOAD PROJECT</button>
         <button id="settings_btn" onclick="popup.settings.show()">SETTINGS</button>
         <button id="info_btn" onclick="popup.info.show()">INFO</button>
     </div>
-
-    <script>
-        function open_sandbox() {
-            window.open("Local/index.html");
-        }
-
-        function open_project() {
-            document.getElementById("open_file").click();
-        }
-    </script>
 
     <input id="open_file" type="file" accept=".dat" style="display: none">
 
@@ -83,34 +73,21 @@
 
             const reader = new FileReader;
             reader.onload = function() {
-                const text = reader.result;
+                const data = reader.result;
 
-                const project = window.open("Local/index.html");
-                project.onload = () => project.parse(text);
+                open_project(data);
             }
             reader.readAsText(input.files[0]);
+        }
+
+        function open_project(data) {
+            const project = window.open("./Local/index.html");
+            if(data) {
+                project.a = data;
+            }
         }
     </script>
 
     <script src="popup.js"></script>
-    <script>
-        "use strict";
-
-        const VERSION = "0.1.58";
-
-        let data;
-        if(localStorage.pws) data = JSON.parse(localStorage.pws);
-        else data = {};
-
-        if(data.version != VERSION) { popup.whatsnew.show() }
-
-        window.onbeforeunload = function() {
-            let data = {};
-            if(localStorage.pws) data = JSON.parse(localStorage.pws);
-
-            if(popup.whatsnew.style.display == "none") data.version = VERSION;
-            localStorage.pws = JSON.stringify(data);
-        }
-    </script>
 </body>
 </html>

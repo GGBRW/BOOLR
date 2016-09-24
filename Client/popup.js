@@ -37,8 +37,8 @@ if(popup.confirm) {
             this.style.opacity = 1;
         }, 1);
     }
-    popup.confirm.submit = function () {
-        this.callback();
+    popup.confirm.submit = function() {
+        if(typeof this.callback == 'function') this.callback();
     }
 }
 
@@ -62,7 +62,7 @@ if(popup.prompt) {
         this.getElementsByTagName("input")[0].focus();
     }
     popup.prompt.submit = function () {
-        this.callback(this.getElementsByTagName("input")[0].value);
+        if(typeof this.callback == 'function') this.callback(this.getElementsByTagName("input")[0].value);
     }
 }
 
@@ -161,6 +161,7 @@ for(let i = 0; i < nodes.length; ++i) {
 document.onkeydown = e => {
     if(e.which == 13) {
         for(let i in popup) {
+            if(!popup[i]) continue;
             if(popup[i].submit) popup[i].submit();
 
             popup[i].style.transform = "scale(.9)";
