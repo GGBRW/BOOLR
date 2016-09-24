@@ -37,7 +37,7 @@
 
 <!-- Credits -->
 <div id="credits">
-    <span>PWS v0.1.58</span>
+    <span id="version" onclick="popup.whatsnew.show()">PWS v0.1.58</span>
     <button onclick="window.open('../index.html#options')" class="material-icons">settings</button>
     <button onclick="window.open('../index.html#help')" class="material-icons">help</button>
 </div>
@@ -83,6 +83,8 @@
         <li><b>Zoom-bug opgelost</b></li>
         <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
     </ul>
+    <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
+    <br>
     <button class="ok">Close</button>
 </div>
 
@@ -106,6 +108,22 @@ class Component {
     <button class="ok">Close</button>
 </div>
 
+<!-- Open files -->
+<input id="open_file" type="file" accept=".dat" style="display: none">
+
+<script>
+    document.getElementById("open_file").onchange = function(e) {
+        const input = e.target;
+
+        const reader = new FileReader;
+        reader.onload = function() {
+            components = [];
+            parse(reader.result);
+        }
+        reader.readAsText(input.files[0]);
+    }
+</script>
+
 <!-- Scrippies -->
 <script src="main.js"></script>
 <script src="ticker.js"></script>
@@ -122,7 +140,8 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.58";
+    const VERSION = "0.1.59";
+    document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;
     if(localStorage.pws) data = JSON.parse(localStorage.pws);

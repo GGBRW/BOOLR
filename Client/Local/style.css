@@ -183,6 +183,7 @@ canvas {
 #credits span {
     position: relative;
     bottom: 4px;
+    cursor: pointer;
 }
 
 #credits button {

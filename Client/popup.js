@@ -11,6 +11,7 @@ let popup = {
 // What's new
 if(popup.whatsnew) {
     popup.whatsnew.show = function () {
+        document.querySelector("#whatsnew h1").innerHTML = "Update " + VERSION;
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
         setTimeout(() => {

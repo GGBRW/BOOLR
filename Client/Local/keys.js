@@ -79,6 +79,16 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
+        case 79:
+            if(components.length) {
+                popup.confirm.show(
+                    "Open file",
+                    "Are you sure you want to open another project? If you don't want to lose your work, press 'cancel' and save this project.",
+                    () => document.getElementById("open_file").click()
+                );
+            } else document.getElementById("open_file").click();
+            return false;
+            break;
         case 82: // R
             var component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.height) {
