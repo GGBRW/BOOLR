@@ -192,6 +192,7 @@ c.onmouseleave = function(e) {
     scroll_animation.animate = true;
 }
 
+let wheel_click = false;
 c.onmousedown = function(e) {
     mouse.screen.x = e.x;
     mouse.screen.y = e.y;
@@ -264,6 +265,7 @@ c.onmousedown = function(e) {
         }
     }
     else if(e.which == 2) {
+        wheel_click = true;
         scroll_animation.animate = false;
         return false;
     }
@@ -412,6 +414,8 @@ c.onmousemove = function(e) {
 
         scroll_animation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
         scroll_animation.r = Math.atan2(e.movementX,e.movementY);
+
+        wheel_click = false;
     }
     else if(e.which == 3) {
 
@@ -478,6 +482,11 @@ c.onmouseup = function(e) {
     }
     else if(e.which == 2) {
         scroll_animation.animate = true;
+
+        if(wheel_click) {
+            const component = find(mouse.grid.x,mouse.grid.y);
+            if(component) select(component.constructor);
+        }
     }
     else if(e.which == 3) {
 

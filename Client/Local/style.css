@@ -170,10 +170,15 @@ canvas {
     position: absolute;
     right: 0;
     bottom: 0;
-    font-family: "Roboto", Arial;
+    font-family: "Inconsolata";
     font-size: 16px;
     font-weight: 600;
     opacity: .8;
+}
+
+#credits span {
+    position: relative;
+    bottom: 4px;
 }
 
 #credits button {
