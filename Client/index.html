@@ -65,6 +65,16 @@
         <button id="info_btn" onclick="popup.info.show()">INFO</button>
     </div>
 
+    <script>
+        function open_sandbox() {
+            window.open("Local/index.html");
+        }
+
+        function open_project() {
+            document.getElementById("open_file").click();
+        }
+    </script>
+
     <input id="open_file" type="file" accept=".dat" style="display: none">
 
     <script>
