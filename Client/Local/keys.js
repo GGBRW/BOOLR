@@ -107,7 +107,7 @@ c.onkeydown = function(e) {
             break;
         case 114: // F3
             if(keys[114] instanceof Date && new Date - keys[114] > 50) {
-                debugInfo.style.display = debugInfo.style.display == "none" ? "block" : "none";
+                settings.show_debugInfo = !settings.show_debugInfo;
                 keys[114] = true;
             }
             return false;

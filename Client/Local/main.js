@@ -158,7 +158,8 @@ let mouse = {
 
 let settings = {
     scroll_animation: true,
-    zoom_animation: true
+    zoom_animation: true,
+    show_debugInfo: true
 }
 let clipbord;
 var dragging;
@@ -171,7 +172,6 @@ window.onbeforeunload = function() {
 
     data.clipbord = clipbord;
     data.settings = settings;
-    if(popup.whatsnew.style.display == "none") data.version = VERSION;
     localStorage.pws = JSON.stringify(data);
 }
 

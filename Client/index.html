@@ -47,7 +47,7 @@
             <li>
                 Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
             </li>
-            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => localStorage.pws = '')">Clear localStorage</button></li>
+            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
         </ul>
         <button class="ok">OK</button>
         <button class="cancel">Cancel</button>

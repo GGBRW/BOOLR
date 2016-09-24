@@ -197,6 +197,7 @@ canvas {
 /* Debug info */
 
 #debugInfo {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;

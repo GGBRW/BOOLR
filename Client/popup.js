@@ -10,7 +10,7 @@ let popup = {
 
 // What's new
 if(popup.whatsnew) {
-    popup.whatsnew.show = function () {
+    popup.whatsnew.show = function() {
         document.querySelector("#whatsnew h1").innerHTML = "Update " + VERSION;
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
@@ -19,6 +19,12 @@ if(popup.whatsnew) {
             this.style.transform = "scale(1)";
             this.style.opacity = 1;
         }, 1);
+    }
+    popup.whatsnew.submit = function() {
+        let data = {};
+        if(localStorage.pws) data = JSON.parse(localStorage.pws);
+        data.version = VERSION;
+        localStorage.pws = JSON.stringify(data);
     }
 }
 
