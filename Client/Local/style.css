@@ -241,7 +241,7 @@ canvas {
 
 /* Context menu */
 #contextMenu {
-    position: absolute;
+    position: fixed;
     background: #111;
     opacity: .95;
     list-style: none;
