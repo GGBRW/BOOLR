@@ -35,6 +35,9 @@ Console.input.onkeydown = function(e) {
         const command = input[0];
         const args = input.slice(1);
         switch(command) {
+            case "help":
+                Console.message("- 'center': naar het midden <br>- 'goto x y': ga naar x,y <br>- Er komen nog meer commando's hoor!");
+                break;
             case "center":
                 scroll(-offset.x,-offset.y);
                 Console.message("Moved to center");

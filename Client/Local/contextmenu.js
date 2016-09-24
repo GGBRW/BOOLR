@@ -36,8 +36,7 @@ context_options["edit_label"].innerHTML = '<i class="material-icons">mode_edit</
 context_options["edit_label"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.label) {
-        const new_label = prompt("Enter the new label name:");
-        new_label && (component.label = new_label);
+        popup.prompt.show("Edit label","Enter label name:", label => label && label.length < 18 && (component.label = label));
     }
 }
 
@@ -47,8 +46,11 @@ context_options["edit_color"].innerHTML = '<i class="material-icons">color_lens<
 context_options["edit_color"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.color) {
-        const new_color = prompt("Enter the new color:");
-        new_color && (component.color = new_color);
+        popup.prompt.show("Edit color","Enter color value:",
+            color => color
+            && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
+            && (component.color = color)
+        )
     }
 }
 

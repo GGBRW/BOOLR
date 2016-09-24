@@ -1,6 +1,9 @@
+<!doctype html>
+
 <meta charset="utf-8">
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../popup.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <title>PWS // SANDBOX MODE</title>
@@ -20,8 +23,8 @@
     <div class="slot" onmousedown="select(AND)">&</div>
     <div class="slot" onmousedown="select(OR)">|</div>
     <div class="slot" onmousedown="select(XOR)">^</div>
-    <div class="slot" onmousedown="select(Component)">?</div>
-    <div class="slot">...</div>
+    <div class="slot" onmousedown="popup.custom_component.show()">?</div>
+    <div class="slot" onmousedown="popup.component_list.show()">...</div>
 
     <div id="message"></div>
 
@@ -53,19 +56,56 @@
 <!-- Overlay -->
 <div id="overlay"></div>
 
-<!-- What's new -->
-<div class="prompt" id="whatsnew">
+<!-- Pop-ups -->
+<div class="popup" id="confirm">
+    <h1></h1>
+    <p></p>
+    <button class="ok">OK</button>
+    <button class="cancel">Cancel</button>
+</div>
+
+<div class="popup" id="prompt">
+    <h1>Prompt</h1>
+    <p>Text</p>
+    <input spellcheck="false">
+    <button class="ok">OK</button>
+    <button class="cancel">Cancel</button>
+</div>
+
+<div class="popup" id="whatsnew">
     <h1>Update 0.1.58</h1>
     <ul>
-        <li>Clipbord blijft in het geheugen staan</li>
-        <li>Componenten selecteren met Tab</li>
+        <li><span style="font-family: 'Edwardian Script ITC', Kunstler Script; font-size: 30px">Nieuw design</span></li>
+        <li>Vernieuwd hoofdmenu</li>
+        <li>Clipbord blijft opgeslagen in lokale opslag</li>
+        <li>Componenten selecteren met Tab of middelste muisknop</li>
         <li>Een aantal commando's toegevoegd (probeer 'help' commando om alle commando's te zien)</li>
         <li>Draden worden meegetrokken als componenten worden verplaatst</li>
-        <li>Mooiere pop-up menuutjes (zoals deze)</li>
+        <li>Nieuwe pop-up menuutjes (zoals deze)</li>
         <li><b>Zoom-bug opgelost</b></li>
         <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
     </ul>
-    <button id="ok">OK</button>
+    <button class="ok">Close</button>
+</div>
+
+<div class="popup" id="custom_component">
+    <h1>Create custom component</h1>
+    <textarea spellcheck="false">
+class Component {
+    constructor() {
+
+    }
+}
+    </textarea>
+    <br>
+    <button class="ok" disabled="true">OK</button>
+    <button class="cancel">Cancel</button>
+</div>
+
+<div class="popup" id="component_list">
+    <h1>Component list</h1>
+    <p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>
+    <button class="ok">Close</button>
 </div>
 
 <!-- Scrippies -->
@@ -79,7 +119,7 @@
 <script src="debug.js"></script>
 <script src="contextmenu.js"></script>
 <script src="componentInfo.js"></script>
-<script src="prompt.js"></script>
+<script src="../popup.js"></script>
 <script src="stringifier.js"></script>
 <script>
     "use strict";
@@ -92,7 +132,9 @@
 
     if(data.settings) settings = data.settings;
     if(data.clipbord) clipbord = data.clipbord;
-    if(data.version != VERSION) { prompt.whatsnew.show() }
+    if(data.version != VERSION) { popup.whatsnew.show() }
+
+    c.focus();
 
     draw();  // 'draw' loop starten
     tick(); // 'tick' loop starten

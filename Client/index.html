@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="popup.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <meta charset="UTF-8">
@@ -10,30 +11,59 @@
 <body>
     <h1 id="title">Profielwerkstuk</h1>
 
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
+    <!-- Pop-ups -->
+    <div class="popup" id="confirm">
+        <h1></h1>
+        <p></p>
+        <button class="ok">OK</button>
+        <button class="cancel">Cancel</button>
+    </div>
+
+    <div class="popup" id="whatsnew">
+        <h1>Update 0.1.58</h1>
+        <ul>
+            <li><span style="font-family: 'Edwardian Script ITC', Kunstler Script; font-size: 30px">Nieuw design</span></li>
+            <li>Vernieuwd hoofdmenu</li>
+            <li>Clipbord blijft opgeslagen in lokale opslag</li>
+            <li>Componenten selecteren met Tab of middelste muisknop</li>
+            <li>Een aantal commando's toegevoegd (probeer 'help' commando om alle commando's te zien)</li>
+            <li>Draden worden meegetrokken als componenten worden verplaatst</li>
+            <li>Nieuwe pop-up menuutjes (zoals deze)</li>
+            <li><b>Zoom-bug opgelost</b></li>
+            <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
+        </ul>
+        <button class="ok">Close</button>
+    </div>
+
+    <div class="popup" id="settings">
+        <h1>Settings</h1>
+        <ul>
+            <li>
+                Scroll animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
+            </li>
+            <li>
+                Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
+            </li>
+            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => localStorage.pws = '')">Clear localStorage</button></li>
+        </ul>
+        <button class="ok">OK</button>
+        <button class="cancel">Cancel</button>
+    </div>
+
+    <div class="popup" id="info">
+        <h1>Info</h1>
+        <button class="ok">Close</button>
+    </div>
+
     <div id="container">
         <button id="sandbox_btn" onclick="open_sandbox()">SANDBOX MODE</button>
         <button id="project_btn" onclick="open_project()">LOAD PROJECT</button>
-        <button id="settings_btn" onclick="open_settings()">SETTINGS</button>
-        <button id="info_btn" onclick="open_info()">INFO</button>
+        <button id="settings_btn" onclick="popup.settings.show()">SETTINGS</button>
+        <button id="info_btn" onclick="popup.info.show()">INFO</button>
     </div>
-
-    <script>
-        function open_sandbox() {
-            window.open("Local/index.html");
-        }
-
-        function open_project() {
-            document.getElementById("open_file").click();
-        }
-
-        function open_settings() {
-
-        }
-
-        function open_info() {
-
-        }
-    </script>
 
     <input id="open_file" type="file" accept=".dat" style="display: none">
 
@@ -49,6 +79,27 @@
                 project.onload = () => project.parse(text);
             }
             reader.readAsText(input.files[0]);
+        }
+    </script>
+
+    <script src="popup.js"></script>
+    <script>
+        "use strict";
+
+        const VERSION = "0.1.58";
+
+        let data;
+        if(localStorage.pws) data = JSON.parse(localStorage.pws);
+        else data = {};
+
+        if(data.version != VERSION) { popup.whatsnew.show() }
+
+        window.onbeforeunload = function() {
+            let data = {};
+            if(localStorage.pws) data = JSON.parse(localStorage.pws);
+
+            if(popup.whatsnew.style.display == "none") data.version = VERSION;
+            localStorage.pws = JSON.stringify(data);
         }
     </script>
 </body>

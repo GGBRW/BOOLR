@@ -11,6 +11,7 @@ body {
 
 canvas {
     cursor: crosshair;
+    outline: none;
 }
 
 /* Icons */
@@ -274,55 +275,6 @@ canvas {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,.2);
-}
-
-/* Prompt */
-.prompt {
-    display: none;
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    width: 350px;
-    padding-bottom: 100px;
-    margin-left: -175px;
-    text-align: center;
-    background: #ddd;
-    box-shadow: 0 0 20px rgba(0,0,0,.2);
-}
-
-.prompt h1 {
-    font-family: "Roboto";
-    font-size: 25px;
-    font-weight: 400;
-    padding-bottom: 20px;
-}
-
-.prompt #ok {
-    position: absolute;
-    margin-left: -50px;
-    margin-bottom: 15px;
-    bottom: 0px;
-    left: 50%;
-    background: #ddd;
-    border: none;
-    padding: 10px;
-    min-width: 100px;
-    font-family: "Roboto Condensed";
-    font-size: 16px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
-}
-
-.prompt #ok:hover {
-    background: #bbb;
-}
-
-.prompt ul {
-    font-family: "Roboto Condensed";
-    font-size: 16px;
-    text-align: left;
-}
-.prompt li {
-    padding: 2px;
+    opacity: 0;
+    transition: opacity .1s;
 }

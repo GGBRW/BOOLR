@@ -171,7 +171,7 @@ window.onbeforeunload = function() {
 
     data.clipbord = clipbord;
     data.settings = settings;
-    if(prompt.whatsnew.style.display == "none") data.version = VERSION;
+    if(popup.whatsnew.style.display == "none") data.version = VERSION;
     localStorage.pws = JSON.stringify(data);
 }
 

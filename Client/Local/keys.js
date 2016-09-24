@@ -31,6 +31,8 @@ c.onkeydown = function(e) {
         case 34: // Page Down
             changeZoom(zoom / -2);
             break;
+        case 13: // Enter
+            break;
         case 27: // Escape
             document.getElementById("list").style.display = "none";
             document.getElementById("contextMenu").style.display = "none";
@@ -65,10 +67,17 @@ c.onkeydown = function(e) {
             break;
         case 69: // E:
             var component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.label) {
-                const new_label = prompt("Enter the new label name:");
-                new_label && (component.label = new_label);
+            if(component && component.constructor == Wire) {
+                popup.prompt.show("Edit color","Enter color value:",
+                    color => color
+                    && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
+                    && (component.color = color)
+                )
             }
+            else if(component && component.label) {
+                popup.prompt.show("Edit label","Enter label name:", label => label && label.length < 18 && (component.label = label));
+            }
+            return false;
             break;
         case 82: // R
             var component = find(mouse.grid.x,mouse.grid.y);
@@ -95,7 +104,7 @@ c.onkeydown = function(e) {
             break;
         case 83:
             if(e.ctrlKey) {
-                Export(stringify());
+                popup.prompt.show("Export", "Enter export file name:", name => name ? Export(name,stringify()) : Export(undefined,stringify()));
             }
             break;
     }
