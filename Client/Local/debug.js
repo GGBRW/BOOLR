@@ -20,7 +20,7 @@ function updateDebugInfo() {
         debugInfo.innerHTML += "Selected: " + Selected.name + "<br>";
         debugInfo.innerHTML += "Ticks/sec: " + Math.round(tickrate) + "<br>";
         debugInfo.innerHTML += "Updates: " + update_queue.length + "<br>";
-        debugInfo.innerHTML += "<br><span style='opacity: .5'>Hold F3 to hide this</span>";
+        debugInfo.innerHTML += "<br><span style='font-family: \"Roboto Condensed\"; opacity: .5'>Hold F3 to hide this</span>";
     } else {
         debugInfo.style.display = "none";
     }
