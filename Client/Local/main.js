@@ -1,6 +1,7 @@
 "use strict";
 
 /*
+    todo: [ADD] Draden rendering optimaliseren!!!
     todo: [ADD] asynchrone component updates
     todo: [BUG] overlappende draden niet tekenen
     todo: [ADD] rechte stukken draad in een keer tekenen
@@ -69,7 +70,7 @@ function draw() {
         const x = (components[i].pos.x - offset.x) * zoom;
         const y = -(components[i].pos.y - offset.y) * zoom;
         if(
-            Array.isArray(components[i].pos) || // todo: fix voor wires
+            Array.isArray(components[i].pos) ||
             x + zoom * components[i].width - zoom / 2 >= 0 &&
             x - zoom / 2 <= c.width &&
             y + zoom * components[i].height - zoom / 2 >= 0 &&
@@ -182,7 +183,6 @@ window.onresize = () => {
 
 window.onerror = function(msg,url,line) {
     Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
-    return true;
 }
 
 c.oncontextmenu = () => false;
