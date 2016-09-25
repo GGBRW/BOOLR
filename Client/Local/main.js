@@ -180,6 +180,11 @@ window.onresize = () => {
     c.width = window.innerWidth;
 }
 
+window.onerror = function(msg,url,line) {
+    Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
+    return true;
+}
+
 c.oncontextmenu = () => false;
 c.onmouseenter = () => scroll_animation.animate = false;
 
