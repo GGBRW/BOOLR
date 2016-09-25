@@ -131,7 +131,7 @@ function draw() {
         }
     } else {
         offset.x += mouse.screen.x * (1 / zoom - 1 / (zoom_animation));
-        offset.y -= mouse.screen.pos.y * (1 / zoom - 1 / (zoom_animation));
+        offset.y -= mouse.screen.y * (1 / zoom - 1 / (zoom_animation));
         zoom = zoom_animation;
     }
 
