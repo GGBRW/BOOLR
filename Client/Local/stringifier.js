@@ -51,6 +51,7 @@ function parse(string) {
     for(let i of string.components) {
         let component = eval("new " + i[0]);
         Object.assign(component,i[1]);
+        component.label = component.constructor.name + "#" + components.filter(n => n.constructor == component.constructor).length;
         component.constructor == Wire ? components.push(component) : components.unshift(component);
         result.push(component);
     }

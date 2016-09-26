@@ -411,6 +411,28 @@ c.onmousemove = function(e) {
 
                 connecting = null;
             }
+        } else {
+            const component = find(mouse.grid.x,mouse.grid.y);
+            if(component) {
+                const wire = new Wire();
+
+                if(component.constructor == Wire) {
+                    wire.from = component.from;
+
+                    let i = 0;
+                    while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
+                    && i < component.pos.length) {
+                        wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
+                        ++i;
+                    }
+                }
+                else wire.from = component;
+                connecting = wire;
+                components.push(wire);
+            }
+            else {
+                components.unshift(new Selected());
+            }
         }
     }
     else if(e.which == 2) {
@@ -480,7 +502,7 @@ c.onmouseup = function(e) {
         }
         else if(connecting) {
             const component = find(mouse.grid.x,mouse.grid.y);
-            if(component && connecting.from == component) component.onclick();
+            if(component && component.onclick && connecting.from == component) component.onclick();
             components.splice(components.indexOf(connecting),1);
             connecting = null;
         }

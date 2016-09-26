@@ -95,14 +95,14 @@ class Input {
         for(let output of this.output) {
             output.value = this.value;
             //output.to.update();
-            update_queue.push({ update: output.to.update, component: output.to });
+            setTimeout(output.to.update.bind(output.to));
         }
     }
 
     onclick() {
         this.value = +!this.value;
         //this.update();
-        update_queue.push({ update: this.update, component: this });
+        setTimeout(this.update.bind(this));
     }
 
     blink(duration) {
@@ -125,25 +125,27 @@ class Input {
         ctx.fill();
         ctx.stroke();
 
-        if(zoom < 5) return;
-        // Icoon tekenen
-        ctx.fillStyle = "#111";
-        ctx.font = zoom / 1.5 + "px Roboto Condensed";
-        ctx.fillText(
-            this.value,
-            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
-            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
-        );
+        if(zoom > 10) {
+            // Icoon tekenen
+            ctx.fillStyle = "#111";
+            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.fillText(
+                this.value,
+                (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+                (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+            );
+        }
 
-        if(zoom < 20) return;
-        // Label tekenen
-        ctx.font = zoom / 5 + "px Inconsolata";
-        ctx.fillStyle = "#888";
-        ctx.fillText(
-            this.label,
-            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
-            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
-        );
+        if(zoom > 20) {
+            // Label tekenen
+            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.label,
+                (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+                (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+            );
+        }
 
         // Blink
         if(this.blinking) {
@@ -233,24 +235,28 @@ class Output {
         ctx.fill();
         ctx.stroke();
 
-        // Icoon tekenen
-        ctx.font = zoom / 1.5 + "px Roboto Condensed";
-        ctx.fillStyle = "#111";
-        ctx.fillText(
-            this.value,
-            (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
-            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
-        );
+        if(zoom > 10) {
+            // Icoon tekenen
+            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.fillStyle = "#111";
+            ctx.fillText(
+                this.value,
+                (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
+                (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+            );
+        }
 
-        // Label tekenen
-        ctx.fillStyle = "#111";
-        ctx.font = zoom / 5 + "px Inconsolata";
-        ctx.fillStyle = "#888";
-        ctx.fillText(
-            this.label,
-            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
-            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
-        );
+        if(zoom > 20) {
+            // Label tekenen
+            ctx.fillStyle = "#111";
+            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.label,
+                (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+                (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+            );
+        }
 
         // Blink
         if(this.blinking) {
@@ -304,7 +310,7 @@ class Gate {
         for(let i = 0; i < this.output.length; ++i) {
             this.output[i].value = result[i] ? result[i] : result[result.length - 1];
             //this.output[i].to.update();
-            update_queue.push({ update: this.output[i].to.update, component: this.output[i].to });
+            setTimeout(this.output[i].to.update.bind(this.output[i].to));
         }
     }
 
@@ -328,25 +334,27 @@ class Gate {
         ctx.fill();
         ctx.stroke();
 
-        if(zoom < 5) return;
-        // Icoon tekenen
-        ctx.fillStyle = "#111";
-        ctx.font = zoom / 1.5 + "px Roboto Condensed";
-        ctx.fillText(
-            this.icon,
-            (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
-            (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
-        );
+        if(zoom > 10) {
+            // Icoon tekenen
+            ctx.fillStyle = "#111";
+            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.fillText(
+                this.icon,
+                (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
+                (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+            );
+        }
 
-        if(zoom < 20) return;
-        // Label tekenen
-        ctx.font = zoom / 5 + "px Inconsolata";
-        ctx.fillStyle = "#888";
-        ctx.fillText(
-            this.label,
-            (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
-            (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
-        );
+        if(zoom > 20) {
+            // Label tekenen
+            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.label,
+                (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+                (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+            );
+        }
 
         // Blink
         if(this.blinking) {
@@ -411,10 +419,18 @@ class Wire {
         if(this.pos.length < 1) return;
 
         ctx.beginPath();
-        for(let pos of this.pos) {
+        ctx.moveTo(
+            (this.pos[0].x - offset.x) * zoom,
+            (-this.pos[0].y + offset.y) * zoom
+        );
+        for(let i = 1; i < this.pos.length; ++i) {
+            if(i + 1 < this.pos.length
+            && this.pos[i].x - this.pos[i - 1].x == this.pos[i + 1].x - this.pos[i].x
+            && this.pos[i].y - this.pos[i - 1].y == this.pos[i + 1].y - this.pos[i].y) continue;
+
             ctx.lineTo(
-                (pos.x - offset.x) * zoom,
-                (-pos.y + offset.y) * zoom
+                (this.pos[i].x - offset.x) * zoom,
+                (-this.pos[i].y + offset.y) * zoom
             );
         }
 
