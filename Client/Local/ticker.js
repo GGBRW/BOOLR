@@ -1,7 +1,7 @@
 let update_queue = [];
 const delay = 20;
 
-let tickrate = 0, lastTick = new Date;
+let tickrate = 50, lastTick = new Date;
 function tick() {
     let start = new Date;
     while(update_queue.length && new Date - start < delay) {

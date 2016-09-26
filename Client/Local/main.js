@@ -42,11 +42,11 @@ const changeZoom = (dz) => {
     zoom_animation += dz;
 }
 
+let visible_components = 0;
 let framerate = 60, lastFrame = new Date;
 function draw() {
     // Scherm leegmaken
-    ctx.fillStyle = "#fff"; // BACKGROUND-COLOR
-    ctx.fillRect(0,0,c.width,c.height);
+    ctx.clearRect(0,0,c.width,c.height);
 
     // Roosterpunten tekenen
     if(zoom > 24) {
@@ -66,16 +66,31 @@ function draw() {
     }
 
     // Componenten tekenen
+    visible_components = 0;
     for(let i = components.length - 1; i >= 0; --i) {
-        const x = (components[i].pos.x - offset.x) * zoom;
-        const y = -(components[i].pos.y - offset.y) * zoom;
-        if(
-            Array.isArray(components[i].pos) ||
-            x + zoom * components[i].width - zoom / 2 >= 0 &&
-            x - zoom / 2 <= c.width &&
-            y + zoom * components[i].height - zoom / 2 >= 0 &&
-            y  - zoom / 2 <= c.height
-        ) components[i].draw();
+        if(Array.isArray(components[i].pos)) {
+            let visible = false;
+            for(let pos of components[i].pos) {
+                const x = (pos.x - offset.x) * zoom;
+                const y = -(pos.y - offset.y) * zoom;
+                if(
+                    x + zoom - zoom / 2 >= 0 &&
+                    x - zoom / 2 <= c.width &&
+                    y + zoom - zoom / 2 >= 0 &&
+                    y  - zoom / 2 <= c.height
+                ) { ++visible_components; visible = true; break; }
+            }
+            visible && components[i].draw();
+        } else {
+            const x = (components[i].pos.x - offset.x) * zoom;
+            const y = -(components[i].pos.y - offset.y) * zoom;
+            if(
+                x + zoom * components[i].width - zoom / 2 >= 0 &&
+                x - zoom / 2 <= c.width &&
+                y + zoom * components[i].height - zoom / 2 >= 0 &&
+                y  - zoom / 2 <= c.height
+            ) { ++visible_components; components[i].draw(); }
+        }
     }
 
     // Component info
@@ -130,8 +145,10 @@ function draw() {
             zoom -= (zoom - zoom_animation) / 8;
         }
     } else {
-        offset.x += mouse.screen.x * (1 / zoom - 1 / (zoom_animation));
-        offset.y -= mouse.screen.y * (1 / zoom - 1 / (zoom_animation));
+        offset.x = 0 | (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
+        offset.y = 0 | (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
+        offset.x = 0 | offset.x;
+        offset.y = 0 | offset.y;
         zoom = zoom_animation;
     }
 

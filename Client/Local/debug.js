@@ -40,6 +40,7 @@ function updateDebugInfo() {
         debugInfo.addLine("Selecting", !!selecting);
         debugInfo.addLine("Connecting", !!connecting);
         debugInfo.addLine("Components", components.length);
+        debugInfo.addLine("Visible components", visible_components);
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(tickrate));
         debugInfo.addLine("Updates", update_queue.length);

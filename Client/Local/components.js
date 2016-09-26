@@ -114,10 +114,10 @@ class Input {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            (this.pos.x - offset.x) * zoom - zoom / 2,
-            (-this.pos.y + offset.y) * zoom - zoom / 2,
-            zoom * this.width,
-            zoom * this.height
+            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
+            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
+            0 | (zoom * this.width),
+            0 | (zoom * this.height)
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -148,7 +148,7 @@ class Input {
         }
 
         // Blink
-        if(this.blinking) {
+        if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
                 (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
@@ -224,10 +224,10 @@ class Output {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            (this.pos.x - offset.x) * zoom - zoom / 2,
-            (-this.pos.y + offset.y) * zoom - zoom / 2,
-            zoom * this.width,
-            zoom * this.height
+            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
+            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
+            0 | (zoom * this.width),
+            0 | (zoom * this.height)
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -259,7 +259,7 @@ class Output {
         }
 
         // Blink
-        if(this.blinking) {
+        if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
                 (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
@@ -323,10 +323,10 @@ class Gate {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            (this.pos.x - offset.x) * zoom - zoom / 2,
-            (-this.pos.y + offset.y) * zoom - zoom / 2,
-            zoom * this.width,
-            zoom * this.height
+            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
+            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
+            0 | (zoom * this.width),
+            0 | (zoom * this.height)
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -357,7 +357,7 @@ class Gate {
         }
 
         // Blink
-        if(this.blinking) {
+        if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
                 (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
@@ -420,8 +420,8 @@ class Wire {
 
         ctx.beginPath();
         ctx.moveTo(
-            (this.pos[0].x - offset.x) * zoom,
-            (-this.pos[0].y + offset.y) * zoom
+            0 | ((this.pos[0].x - offset.x) * zoom),
+            0 | ((-this.pos[0].y + offset.y) * zoom)
         );
         for(let i = 1; i < this.pos.length; ++i) {
             if(i + 1 < this.pos.length
@@ -429,8 +429,8 @@ class Wire {
             && this.pos[i].y - this.pos[i - 1].y == this.pos[i + 1].y - this.pos[i].y) continue;
 
             ctx.lineTo(
-                (this.pos[i].x - offset.x) * zoom,
-                (-this.pos[i].y + offset.y) * zoom
+                0 | ((this.pos[i].x - offset.x) * zoom),
+                0 | ((-this.pos[i].y + offset.y) * zoom)
             );
         }
 
@@ -439,7 +439,7 @@ class Wire {
         ctx.stroke();
 
         // Blink
-        if(this.blinking) {
+        if(this.blinking && zoom > 8) {
             ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.beginPath();
             for(let pos of this.pos) {
