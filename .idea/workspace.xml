@@ -3,13 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/componentInfo.js" afterPath="$PROJECT_DIR$/Client/Local/componentInfo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/Local/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/contextmenu.js" afterPath="$PROJECT_DIR$/Client/Local/contextmenu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/index.html" afterPath="$PROJECT_DIR$/Client/Local/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/Local/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/stringifier.js" afterPath="$PROJECT_DIR$/Client/Local/stringifier.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/style.css" afterPath="$PROJECT_DIR$/Client/Local/style.css" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,8 +72,8 @@
       <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="339" column="28" selection-start-line="339" selection-start-column="28" selection-end-line="339" selection-end-column="28" />
+            <state relative-caret-position="648">
+              <caret line="365" column="95" selection-start-line="365" selection-start-column="95" selection-end-line="365" selection-end-column="95" />
               <folding />
             </state>
           </provider>
@@ -524,7 +517,8 @@
       <workItem from="1474903624972" duration="2131000" />
       <workItem from="1474990280499" duration="3778000" />
       <workItem from="1474997581894" duration="5813000" />
-      <workItem from="1475157383894" duration="5000" />
+      <workItem from="1475157383894" duration="40000" />
+      <workItem from="1475186771600" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1471944310271</created>
@@ -813,12 +807,19 @@
       <option name="project" value="LOCAL" />
       <updated>1474905747758</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Update 0.1.77!">
+      <created>1475157408719</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1475157408719</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="343980000" />
+    <option name="totallyTimeSpent" value="344042000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -831,7 +832,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1046875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1114,8 +1115,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="339" column="28" selection-start-line="339" selection-start-column="28" selection-end-line="339" selection-end-column="28" />
+        <state relative-caret-position="648">
+          <caret line="365" column="95" selection-start-line="365" selection-start-column="95" selection-end-line="365" selection-end-column="95" />
           <folding />
         </state>
       </provider>
