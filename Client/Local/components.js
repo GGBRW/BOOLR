@@ -51,15 +51,11 @@ const remove = function(x,y) {
 }
 
 const clone = function(target) {
-    let source = Object.assign({}, target);
-
-    if(Array.isArray(source.pos)) source.pos = target.pos.slice(0);
-    else source.pos = Object.assign({}, target.pos);
-
-    Object.setPrototypeOf(source, target.constructor.prototype);
-    source.input = [];
-    source.output = [];
-    return source;
+    let component = new target.constructor();
+    Object.assign(component,JSON.parse(JSON.stringify(target)));
+    component.label = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
+    component.constructor == Wire ? components.push(component) : components.unshift(component);
+    return component;
 }
 
 let Selected;
@@ -114,10 +110,10 @@ class Input {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
-            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
-            0 | (zoom * this.width),
-            0 | (zoom * this.height)
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -127,7 +123,10 @@ class Input {
 
         if(zoom > 10) {
             // Icoon tekenen
-            ctx.fillStyle = "#111";
+            if(zoom > 21) ctx.fillStyle = "#111";
+            else {
+                ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
+            }
             ctx.font = zoom / 1.5 + "px Roboto Condensed";
             ctx.fillText(
                 this.value,
@@ -224,10 +223,10 @@ class Output {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
-            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
-            0 | (zoom * this.width),
-            0 | (zoom * this.height)
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -237,8 +236,11 @@ class Output {
 
         if(zoom > 10) {
             // Icoon tekenen
+            if(zoom > 21) ctx.fillStyle = "#111";
+            else {
+                ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
+            }
             ctx.font = zoom / 1.5 + "px Roboto Condensed";
-            ctx.fillStyle = "#111";
             ctx.fillText(
                 this.value,
                 (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
@@ -323,10 +325,10 @@ class Gate {
         // Omlijning van component tekenen
         ctx.beginPath();
         ctx.rect(
-            0 | ((this.pos.x - offset.x) * zoom - zoom / 2),
-            0 | ((-this.pos.y + offset.y) * zoom - zoom / 2),
-            0 | (zoom * this.width),
-            0 | (zoom * this.height)
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
         );
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
@@ -336,7 +338,10 @@ class Gate {
 
         if(zoom > 10) {
             // Icoon tekenen
-            ctx.fillStyle = "#111";
+            if(zoom > 21) ctx.fillStyle = "#111";
+            else {
+                ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
+            }
             ctx.font = zoom / 1.5 + "px Roboto Condensed";
             ctx.fillText(
                 this.icon,
@@ -442,10 +447,18 @@ class Wire {
         if(this.blinking && zoom > 8) {
             ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.beginPath();
-            for(let pos of this.pos) {
+            ctx.moveTo(
+                0 | ((this.pos[0].x - offset.x) * zoom),
+                0 | ((-this.pos[0].y + offset.y) * zoom)
+            );
+            for(let i = 1; i < this.pos.length; ++i) {
+                if(i + 1 < this.pos.length
+                    && this.pos[i].x - this.pos[i - 1].x == this.pos[i + 1].x - this.pos[i].x
+                    && this.pos[i].y - this.pos[i - 1].y == this.pos[i + 1].y - this.pos[i].y) continue;
+
                 ctx.lineTo(
-                    (pos.x - offset.x) * zoom,
-                    (-pos.y + offset.y) * zoom
+                    0 | ((this.pos[i].x - offset.x) * zoom),
+                    0 | ((-this.pos[i].y + offset.y) * zoom)
                 );
             }
             ctx.stroke();

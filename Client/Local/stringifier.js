@@ -45,28 +45,52 @@ function stringify(area = components) {
     return JSON.stringify(result);
 }
 
-function parse(string) {
-    let result = [];
-    string = JSON.parse(string);
-    for(let i of string.components) {
-        let component = eval("new " + i[0]);
-        Object.assign(component,i[1]);
-        component.label = component.constructor.name + "#" + components.filter(n => n.constructor == component.constructor).length;
-        component.constructor == Wire ? components.push(component) : components.unshift(component);
-        result.push(component);
-    }
-    
-    for(let i of string.connections) {
-        const from = result[i[0]];
-        const to = result[i[1]];
-        const wire = result[i[2]];
-        
-        wire.from = from;
-        wire.to = to;
-        from.connect(to,wire);
-    }
+function parse(string,dx,dy,select) {
+    if(string.length > 10240) document.getElementById("loading").style.display = "block";
 
-    return result;
+    setTimeout(() => {
+        let result = [];
+        string = JSON.parse(string);
+        for(let i of string.components.reverse()) {
+            let component = eval("new " + i[0]);
+            Object.assign(component,i[1]);
+
+            if(dx && dy) {
+                if (Array.isArray(component.pos)) {
+                    for (let pos of component.pos) {
+                        pos.x = Math.round(pos.x + dx);
+                        pos.y = Math.round(pos.y + dy);
+                    }
+                } else {
+                    component.pos.x = Math.round(component.pos.x + dx);
+                    component.pos.y = Math.round(component.pos.y + dy);
+                }
+            }
+            component.label = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
+            component.constructor == Wire ? components.push(component) : components.unshift(component);
+            result.unshift(component);
+        }
+
+        for(let i of string.connections) {
+            const from = result[i[0]];
+            const to = result[i[1]];
+            const wire = result[i[2]];
+
+            wire.from = from;
+            wire.to = to;
+            from.connect(to,wire);
+        }
+
+        if(select) {
+            selecting = Object.assign({}, clipbord);
+            selecting.x = Math.round(contextMenu.pos.x);
+            selecting.y = Math.round(contextMenu.pos.y);
+            selecting.components = result;
+            showContextmenu({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
+        }
+
+        document.getElementById("loading").style.display = "none";
+    }, 10);
 }
 
 function Export(name, string) {

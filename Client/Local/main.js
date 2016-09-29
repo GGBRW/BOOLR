@@ -50,7 +50,7 @@ function draw() {
 
     // Roosterpunten tekenen
     if(zoom > 24) {
-        ctx.fillStyle = "rgba(160,160,160," + Math.min(1,zoom / 100) + ")"
+        ctx.fillStyle = "rgba(160,160,160," + Math.min(1,zoom / 100) + ")";
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
             for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
                 ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
@@ -95,8 +95,8 @@ function draw() {
 
     // Component info
     const component = find(mouse.grid.x,mouse.grid.y);
-    if(component && keys[32]) showComponentInfo(component,{ x: e.x, y: e.y });
-    else document.getElementById("componentInfo").style.display = "none";
+    if(component && keys[32]) componentInfo.show(component,{ x: mouse.screen.x, y: mouse.screen.y });
+    else componentInfo.hide();
 
     // Selecties tekenen
     if(selecting) {
@@ -139,7 +139,7 @@ function draw() {
     // Zoom animation
     if(settings.zoom_animation) {
         if((zoom_animation - zoom < 0 && zoom > 2
-         || zoom_animation - zoom > 0 && zoom < 300)) {
+            || zoom_animation - zoom > 0 && zoom < 300)) {
             offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
             offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
             zoom -= (zoom - zoom_animation) / 8;
@@ -239,7 +239,7 @@ c.onmousedown = function(e) {
             if(selecting) {
                 dragging = {
                     components: selecting.components,
-                    original_pos: {
+                    pos: {
                         x: selecting.x,
                         y: selecting.y
                     }
@@ -300,22 +300,22 @@ c.onmousedown = function(e) {
                 for(let i of dragging.components) {
                     if(Array.isArray(i.pos)) {
                         for(let j of i.pos) {
-                            j.x = j.x - selecting.x + dragging.original_pos.x;
-                            j.y = j.y - selecting.y + dragging.original_pos.y;
+                            j.x = j.x - selecting.x + dragging.pos.x;
+                            j.y = j.y - selecting.y + dragging.pos.y;
                         }
                     } else {
-                        i.pos.x = i.pos.x - selecting.x + dragging.original_pos.x;
-                        i.pos.y = i.pos.y - selecting.y + dragging.original_pos.y;
+                        i.pos.x = i.pos.x - selecting.x + dragging.pos.x;
+                        i.pos.y = i.pos.y - selecting.y + dragging.pos.y;
                     }
                 }
 
-                selecting.x = dragging.original_pos.x;
-                selecting.y = dragging.original_pos.y;
+                selecting.x = dragging.pos.x;
+                selecting.y = dragging.pos.y;
                 contextMenu.pos.x = selecting.x + selecting.w;
                 contextMenu.pos.y = selecting.y + selecting.h;
             } else {
-                dragging.components[0].pos.x = dragging.original_pos.x;
-                dragging.components[0].pos.y = dragging.original_pos.y;
+                dragging.components[0].pos.x = dragging.pos.x;
+                dragging.components[0].pos.y = dragging.pos.y;
             }
             dragging = null;
             c.style.cursor = "crosshair";

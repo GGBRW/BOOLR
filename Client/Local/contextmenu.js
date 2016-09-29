@@ -68,7 +68,7 @@ context_options["rotate"].onclick = () => {
 context_options["clone"] = document.createElement("li");
 context_options["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone [CTRL+D+Drag]</span>';
 context_options["clone"].onclick = () => {
-    find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && components.unshift(clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))));
+    find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
 }
 
 // Copy
@@ -83,27 +83,7 @@ context_options["copy"].onclick = () => {
 context_options["paste"] = document.createElement("li");
 context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste [CTRL+V]</span>';
 context_options["paste"].onclick = function() {
-    let result = parse(clipbord.components);
-
-    for(let i of result) {
-        if(Array.isArray(i.pos)) {
-            for(let j of i.pos) {
-                j.x = Math.round(j.x - clipbord.x + contextMenu.pos.x);
-                j.y = Math.round(j.y - clipbord.y + contextMenu.pos.y);
-            }
-        } else {
-            i.pos.x = Math.round(i.pos.x - clipbord.x + contextMenu.pos.x);
-            i.pos.y = Math.round(i.pos.y - clipbord.y + contextMenu.pos.y);
-        }
-    }
-
-    setTimeout(() => {
-        selecting = Object.assign({}, clipbord);
-        selecting.x = Math.round(contextMenu.pos.x);
-        selecting.y = Math.round(contextMenu.pos.y);
-        selecting.components = result;
-        showContextmenu({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
-    }, 1);
+    parse(clipbord.components,-(clipbord.x - contextMenu.pos.x),-(clipbord.y - contextMenu.pos.y),true);
 }
 
 // Delete
@@ -116,7 +96,7 @@ context_options["delete all"] = document.createElement("li");
 context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
 context_options["delete all"].onclick = () => { for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) } };
 
-contextMenu.onclick = function() { this.style.display = "none"; selecting = null };
+contextMenu.onclick = function() { this.style.display = "none"; selecting = null; c.focus() };
 
 
 

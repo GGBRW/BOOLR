@@ -206,6 +206,7 @@ canvas {
     font-size: 16px;
     color: #bbb;
     padding: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
 }
 
 /* Component info */
@@ -269,4 +270,20 @@ canvas {
 
 #contextMenu li:hover {
     background: #333;
+}
+
+/* Loading screen */
+#loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(16,16,16,.5);
+    text-align: center;
+    padding-top: 20%;
+    font-family: "Roboto Condensed";
+    font-size: 30px;
+    color: #fff;
 }
