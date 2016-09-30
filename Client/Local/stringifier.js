@@ -86,7 +86,7 @@ function parse(string,dx,dy,select) {
             selecting.x = Math.round(contextMenu.pos.x);
             selecting.y = Math.round(contextMenu.pos.y);
             selecting.components = result;
-            showContextmenu({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
+            contextMenu.show({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
         }
 
         document.getElementById("loading").style.display = "none";

@@ -1,6 +1,7 @@
 let keys = {};
 
 c.onkeydown = function(e) {
+    //console.log(e.which);
     if(!keys[e.which]) keys[e.which] = new Date;
     switch(e.which) {
         case 37: // Arrow left
@@ -97,12 +98,21 @@ c.onkeydown = function(e) {
                 component.width = t;
             }
             break;
-        case 9: // Tab
-            var component = find(mouse.grid.x,mouse.grid.y);
-            if(component) {
-                select(component.constructor);
+        case 83: // S
+            if(e.ctrlKey) {
+                popup.prompt.show("Export", "Enter export file name:", name => name ? Export(name,stringify()) : Export(undefined,stringify()));
             }
-            keys[9] = true;
+            break;
+        case 9: // Tab
+            if(componentInfo.style.display != "none") {
+                componentInfo.expanded = true;
+            } else {
+                var component = find(mouse.grid.x, mouse.grid.y);
+                if(component) {
+                    select(component.constructor);
+                }
+                keys[9] = true;
+            }
             return false;
             break;
         case 114: // F3
@@ -112,10 +122,8 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
-        case 83:
-            if(e.ctrlKey) {
-                popup.prompt.show("Export", "Enter export file name:", name => name ? Export(name,stringify()) : Export(undefined,stringify()));
-            }
+        case 93: // Context menu
+            contextMenu.show({ x: mouse.screen.x, y: mouse.screen.y });
             break;
     }
 

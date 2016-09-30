@@ -123,6 +123,7 @@ canvas {
     padding-top: 15px;
     margin: 0;
     display: inline-block;
+    cursor: pointer;
 }
 #toolbar .slot:hover {
     background: #222;
@@ -215,19 +216,40 @@ canvas {
     position: absolute;
     top: 100px;
     left: 100px;
-    background: #bbb;
-    opacity: .95;
+    background: #111;
     font-family: "Inconsolata";
     font-size: 16px;
-    color: #333;
-    padding: 20px;
-    -box-shadow: 0 0 20px rgba(0,0,0,.5);
+    color: #888;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 5px;
+    text-align: center;
+    line-height: 20px;
+
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform .2s, opacity .2s;
+}
+
+#componentInfo:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 15px 0;
+    border-color: #111 transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -15px;
+    left: 50%;
+    margin-left: -15px;
 }
 
 #componentInfo h1 {
     font-family: "Roboto";
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
+    color: #bbb;
     margin: 5px;
     text-align: center;
 }
@@ -245,31 +267,38 @@ canvas {
 /* Context menu */
 #contextMenu {
     position: fixed;
-    background: #111;
+    background: #ddd;
     opacity: .95;
     list-style: none;
     padding: 0;
     margin: 0;
-    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    box-shadow: 0 0 10px rgba(0,0,0,.25);
     outline: none;
+    transition: opacity .1s;
 }
 
 #contextMenu li {
-    font-family: Roboto;
+    font-family: "Roboto Condensed";
     font-size: 16px;
-    color: #bbb;
-    border-bottom: 1px solid #444;
-    padding: 10px;
+    color: #111;
+    border-bottom: 1px solid #bbb;
+    padding: 8px;
     cursor: pointer;
+    white-space: nowrap
+}
+
+#contextMenu li:last-child {
+    border: none;
 }
 
 #contextMenu .material-icons {
+    color: #333;
     margin-right: 10px;
     vertical-align: -5px;
 }
 
 #contextMenu li:hover {
-    background: #333;
+    background: #bbb;
 }
 
 /* Loading screen */

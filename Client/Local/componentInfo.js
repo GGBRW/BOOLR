@@ -1,14 +1,34 @@
 const componentInfo = document.getElementById("componentInfo");
+componentInfo.expanded = false;
 
 componentInfo.show = function(component,pos) {
+    this.innerHTML = `<h1>${ component.label }</h1>`;
+    this.innerHTML += `${ component.constructor.name }<br>`;
+    this.innerHTML += `x: ${ component.pos.x }, y: ${ component.pos.y }<br>`;
+
+    if(!this.expanded) {
+        this.innerHTML += "<span style='font-family: Roboto; font-size: 12px; color: #ddd; margin-top: 10px'>Press tab for more details</span>";
+    } else {
+        for(let i in component) {
+            this.innerHTML += `${i}: ${component[i]}<br>`;
+        }
+    }
+
     this.style.top = pos.y - this.clientHeight - zoom / 2;
     this.style.left = pos.x - this.clientWidth / 2;
 
-    this.innerHTML = `<h1>${ component.constructor.name }</h1>`;
-    this.innerHTML += `<p>x: <span>${ component.pos.x }</span></p>`;
-    this.innerHTML += `<p>y: <span>${ component.pos.y }</span></p>`;
-    component.label != undefined && (this.innerHTML += `<p>label: <span>${ component.label }</span></p>`);
-    component.value != undefined && (this.innerHTML += `<p>value: <span>${ component.value }</span></p>`);
-    setTimeout(() => this.style.display = "block", 1);
+    setTimeout(() => {
+        this.style.display = "block";
+        setTimeout(() => {
+            this.style.transform = "translateY(0px)";
+            this.style.opacity = 1;
+        }, 100);
+    });
 }
-componentInfo.hide = function() { this.style.display = "none" };
+componentInfo.hide = function() {
+    componentInfo.expanded = false;
+
+    this.style.transform = "translateY(20px)";
+    this.style.opacity = 0;
+    setTimeout(() => this.style.display = "none",100);
+};

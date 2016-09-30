@@ -46,11 +46,11 @@ let visible_components = 0;
 let framerate = 60, lastFrame = new Date;
 function draw() {
     // Scherm leegmaken
-    ctx.clearRect(0,0,c.width,c.height);
+    ctx.clearRect(0, 0, c.width, c.height);
 
     // Roosterpunten tekenen
     if(zoom > 24) {
-        ctx.fillStyle = "rgba(160,160,160," + Math.min(1,zoom / 100) + ")";
+        ctx.fillStyle = "rgba(160,160,160," + Math.min(1, zoom / 100) + ")";
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
             for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
                 ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
@@ -77,8 +77,12 @@ function draw() {
                     x + zoom - zoom / 2 >= 0 &&
                     x - zoom / 2 <= c.width &&
                     y + zoom - zoom / 2 >= 0 &&
-                    y  - zoom / 2 <= c.height
-                ) { ++visible_components; visible = true; break; }
+                    y - zoom / 2 <= c.height
+                ) {
+                    ++visible_components;
+                    visible = true;
+                    break;
+                }
             }
             visible && components[i].draw();
         } else {
@@ -88,34 +92,39 @@ function draw() {
                 x + zoom * components[i].width - zoom / 2 >= 0 &&
                 x - zoom / 2 <= c.width &&
                 y + zoom * components[i].height - zoom / 2 >= 0 &&
-                y  - zoom / 2 <= c.height
-            ) { ++visible_components; components[i].draw(); }
+                y - zoom / 2 <= c.height
+            ) {
+                ++visible_components;
+                components[i].draw();
+            }
         }
     }
 
     // Component info
-    const component = find(mouse.grid.x,mouse.grid.y);
-    if(component && keys[32]) componentInfo.show(component,{ x: mouse.screen.x, y: mouse.screen.y });
-    else componentInfo.hide();
+    const component = find(mouse.grid.x, mouse.grid.y);
+    if(keys[32] && component && component.constructor != Wire) componentInfo.show(component, { x: mouse.screen.x, y: -(component.pos.y - offset.y) * zoom - 20 });
+    else if(componentInfo.style.display != "none") componentInfo.hide();
 
     // Selecties tekenen
     if(selecting) {
-        ctx.fillStyle = "rgba(0,90,180,.1)";
-        ctx.strokeStyle = "rgba(0,90,180,1)";
-        ctx.setLineDash([10,5]);
-        ctx.lineDashOffset = selecting.dashOffset++;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.rect(
-            (selecting.x - offset.x) * zoom,
-            (-selecting.y + offset.y) * zoom,
-            selecting.w * zoom,
-            -selecting.h * zoom
-        );
-        ctx.fill();
-        ctx.stroke();
+        if(selecting.w && selecting.h) {
+            ctx.fillStyle = "rgba(0,90,180,.1)";
+            ctx.strokeStyle = "rgba(0,90,180,1)";
+            ctx.setLineDash([10, 5]);
+            ctx.lineDashOffset = selecting.dashOffset++;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.rect(
+                (selecting.x - offset.x) * zoom,
+                (-selecting.y + offset.y) * zoom,
+                selecting.w * zoom,
+                -selecting.h * zoom
+            );
+            ctx.fill();
+            ctx.stroke();
 
-        ctx.setLineDash([0,0]);
+            ctx.setLineDash([0, 0]);
+        }
     }
 
     // Context menu tekenen
@@ -137,19 +146,17 @@ function draw() {
     }
 
     // Zoom animation
-    if(settings.zoom_animation) {
-        if((zoom_animation - zoom < 0 && zoom > 2
-            || zoom_animation - zoom > 0 && zoom < 300)) {
+    if((zoom_animation - zoom < 0 && zoom > 2
+     || zoom_animation - zoom > 0 && zoom < 300)) {
+        if(settings.zoom_animation) {
             offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
             offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
             zoom -= (zoom - zoom_animation) / 8;
+        } else {
+            offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
+            offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
+            zoom = zoom_animation;
         }
-    } else {
-        offset.x = 0 | (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
-        offset.y = 0 | (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
-        offset.x = 0 | offset.x;
-        offset.y = 0 | offset.y;
-        zoom = zoom_animation;
     }
 
     // Selectie animate
@@ -202,6 +209,7 @@ window.onerror = function(msg,url,line) {
     Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
 }
 
+c.onfocus = () => contextMenu.style.display = "none";
 c.oncontextmenu = () => false;
 c.onmouseenter = () => scroll_animation.animate = false;
 
@@ -223,16 +231,21 @@ c.onmousedown = function(e) {
 
     if(e.which == 1) {
         if(e.shiftKey) {
-            selecting = {
-                x: Math.round(e.x / zoom + offset.x),
-                y: Math.round(-(e.y / zoom - offset.y)),
-                h: 0,
-                w: 0,
-                animate: {
-                  w: 0,
-                  h: 0
-                },
-                dashOffset: 0
+            if(selecting) {
+                selecting.animate.w = mouse.grid.x - selecting.x;
+                selecting.animate.h = mouse.grid.y - selecting.y;
+            } else {
+                selecting = {
+                    x: Math.round(e.x / zoom + offset.x),
+                    y: Math.round(-(e.y / zoom - offset.y)),
+                    h: 0,
+                    w: 0,
+                    animate: {
+                        w: 0,
+                        h: 0
+                    },
+                    dashOffset: 0
+                }
             }
         }
         else if(e.ctrlKey) {
@@ -256,8 +269,7 @@ c.onmousedown = function(e) {
             c.style.cursor = "move";
         }
         else {
-            if(contextMenu.style.display != "none" || document.getElementById("list").style.display != "none" || selecting) {
-                contextMenu.style.display = "none";
+            if(document.getElementById("list").style.display != "none" || selecting) {
                 document.getElementById("list").style.display = "none";
                 selecting = null;
             }
@@ -325,7 +337,7 @@ c.onmousedown = function(e) {
             connecting = null;
         }
         else {
-            showContextmenu({ x: e.x, y: e.y });
+            contextMenu.show({ x: e.x, y: e.y });
         }
     }
 }
@@ -474,13 +486,15 @@ c.onmouseup = function(e) {
 
     if(e.which == 1) {
         if(selecting && !selecting.components) {
+            if(!selecting.w && !selecting.h) return;
+
             selecting.components = find(
                 selecting.x,selecting.y,
                 selecting.w,
                 selecting.h
             );
 
-            showContextmenu({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
+            contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
 
             for(let i of selecting.components) {
                 i.blink(1000);

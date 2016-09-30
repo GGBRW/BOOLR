@@ -104,6 +104,13 @@ if(popup.settings) {
     popup.settings.show = function (callback) {
         this.callback = callback;
 
+        if(settings) {
+            const checkboxes = document.querySelectorAll("#settings input[type=checkbox]");
+            for(let i = 0; i < checkboxes.length; ++i) {
+                checkboxes[i].checked = settings[checkboxes[i].getAttribute("setting")];
+            }
+        }
+
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
         setTimeout(() => {
@@ -114,7 +121,10 @@ if(popup.settings) {
     }
 
     popup.settings.submit = function() {
-
+        if(settings) {
+            const checkboxes = document.querySelectorAll("#settings input[type=checkbox]");
+            for(let i = 0; i < checkboxes.length; ++i) settings[checkboxes[i].getAttribute("setting")] = checkboxes[i].checked;
+        }
     }
 }
 

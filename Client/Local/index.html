@@ -74,19 +74,11 @@
 </div>
 
 <div class="popup" id="whatsnew">
-    <h1>Update 0.1.58</h1>
+    <h1></h1>
     <ul>
-        <li><span style="font-family: 'Edwardian Script ITC', Kunstler Script; font-size: 30px">Nieuw design</span></li>
-        <li>Volledig asynchrone component updates</li>
-        <li>Vernieuwd hoofdmenu</li>
-        <li>Clipbord blijft opgeslagen in lokale opslag</li>
-        <li>Componenten selecteren met Tab of middelste muisknop</li>
-        <li>Een aantal commando's toegevoegd (probeer 'help' commando om alle commando's te zien)</li>
-        <li>Draden worden meegetrokken als componenten worden verplaatst</li>
-        <li>Handig: meerdere componenten tegelijk met elkaar verbinden in een beweging</li>
-        <li>Nieuwe pop-up menuutjes (zoals deze)</li>
-        <li><b>Zoom-bug opgelost</b></li>
-        <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
+        <li>Beter contextmenu</li>
+        <li>Selecteren door op twee plekken te klikken met shift ingedrukt</li>
+        <li>Spatie + muis boven component = menuutje!</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -116,12 +108,8 @@ class Component {
 <div class="popup" id="settings">
     <h1>Settings</h1>
     <ul>
-        <li>
-            Scroll animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
-        </li>
-        <li>
-            Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
-        </li>
+        <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
+        <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
         <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
     </ul>
     <button class="ok">OK</button>
@@ -165,16 +153,16 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.79";
+    const VERSION = "0.1.80";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;
     if(localStorage.pws) data = JSON.parse(localStorage.pws);
     else data = {};
 
-    if(data.settings) settings = data.settings;
-    if(data.clipbord) clipbord = data.clipbord;
     if(data.version != VERSION) { popup.whatsnew.show() }
+    if(data.clipbord) clipbord = data.clipbord;
+    if(data.settings) settings = data.settings;
 
     c.focus();
 

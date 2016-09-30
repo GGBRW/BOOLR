@@ -1,30 +1,39 @@
 const contextMenu = document.getElementById("contextMenu");
 contextMenu.pos = {};
 
-function showContextmenu(pos) {
+contextMenu.show = function(pos) {
     if(dragging || connecting) return false;
-    contextMenu.pos = { x: pos.x / zoom + offset.x, y: -pos.y / zoom + offset.y };
+    this.pos = {
+        x: pos.x / zoom + offset.x,
+        y: -pos.y / zoom + offset.y
+    }
 
-    contextMenu.innerHTML = "";
+    this.innerHTML = "";
     if(selecting) {
-        contextMenu.appendChild(context_options["copy"]);
-        contextMenu.appendChild(context_options["delete all"]);
+        this.appendChild(context_options["copy"]);
+        this.appendChild(context_options["delete all"]);
     } else {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
             if(component.constructor == Wire) {
-                contextMenu.appendChild(context_options["edit_color"]);
+                this.appendChild(context_options["edit_color"]);
             } else {
-                component.label && contextMenu.appendChild(context_options["edit_label"]);
-                contextMenu.appendChild(context_options["rotate"]);
-                contextMenu.appendChild(context_options["clone"]);
+                component.label && this.appendChild(context_options["edit_label"]);
+                this.appendChild(context_options["rotate"]);
+                this.appendChild(context_options["clone"]);
             }
-            contextMenu.appendChild(context_options["delete"]);
+            this.appendChild(context_options["delete"]);
         } else {
-            contextMenu.appendChild(context_options["paste"]);
+            this.appendChild(context_options["paste"]);
         }
     }
-    contextMenu.style.display = "block";
+
+    this.style.display = "block";
+
+    if(pos.x > c.width - this.clientWidth) this.pos.x = (c.width - this.clientWidth) / zoom + offset.x;
+    if(pos.y > c.height - this.clientHeight) this.pos.y = -(c.height - this.clientHeight) / zoom + offset.y;
+
+    setTimeout(() => contextMenu.focus())
 }
 
 /* Menu options */
