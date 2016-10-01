@@ -162,10 +162,10 @@ function draw() {
     // Selectie animate
     if(selecting) {
         if(selecting.w != selecting.animate.w) {
-            selecting.w += (selecting.animate.w - selecting.w) / 5;
+            selecting.w += (selecting.animate.w - selecting.w) / 2;
         }
         if(selecting.h != selecting.animate.h) {
-            selecting.h += (selecting.animate.h - selecting.h) / 5;
+            selecting.h += (selecting.animate.h - selecting.h) / 2;
         }
     }
 
