@@ -66,11 +66,13 @@ function draw() {
     }
 
     // Componenten tekenen
+    ctx.lineWidth = zoom / 16;
     visible_components = 0;
-    for(let i = components.length - 1; i >= 0; --i) {
-        if(Array.isArray(components[i].pos)) {
+    for(let i = 0, len = components.length; i < len; ++i) {
+        const component = components[i];
+        if(Array.isArray(component.pos)) {
             let visible = false;
-            for(let pos of components[i].pos) {
+            for(let pos of component.pos) {
                 const x = (pos.x - offset.x) * zoom;
                 const y = -(pos.y - offset.y) * zoom;
                 if(
@@ -84,18 +86,18 @@ function draw() {
                     break;
                 }
             }
-            visible && components[i].draw();
+            visible && component.draw();
         } else {
-            const x = (components[i].pos.x - offset.x) * zoom;
-            const y = -(components[i].pos.y - offset.y) * zoom;
+            const x = (component.pos.x - offset.x) * zoom;
+            const y = -(component.pos.y - offset.y) * zoom;
             if(
-                x + zoom * components[i].width - zoom / 2 >= 0 &&
+                x + zoom * component.width - zoom / 2 >= 0 &&
                 x - zoom / 2 <= c.width &&
-                y + zoom * components[i].height - zoom / 2 >= 0 &&
+                y + zoom * component.height - zoom / 2 >= 0 &&
                 y - zoom / 2 <= c.height
             ) {
                 ++visible_components;
-                components[i].draw();
+                component.draw();
             }
         }
     }
@@ -262,7 +264,7 @@ c.onmousedown = function(e) {
                 const component = find(mouse.grid.x,mouse.grid.y);
                 dragging = {
                     components: [component],
-                    original_pos: Object.assign([],component.pos)
+                    pos: Object.assign([],component.pos)
                 }
             }
 
@@ -290,10 +292,10 @@ c.onmousedown = function(e) {
                     }
                     else wire.from = component;
                     connecting = wire;
-                    components.push(wire);
+                    components.unshift(wire);
                 }
                 else {
-                    components.unshift(new Selected());
+                    components.push(new Selected());
                 }
             }
         }
@@ -457,10 +459,7 @@ c.onmousemove = function(e) {
                 }
                 else wire.from = component;
                 connecting = wire;
-                components.push(wire);
-            }
-            else {
-                components.unshift(new Selected());
+                components.unshift(wire);
             }
         }
     }

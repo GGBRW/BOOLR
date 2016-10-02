@@ -2,26 +2,28 @@ let components = [];
 
 const find = function(x,y,w,h) {
     if(!w && !h) {
-        for(let i of components) {
-            if(Array.isArray(i.pos)) {  // Component is a wire
-                for(let pos of i.pos) {
-                    if(pos.x == x && pos.y == y) return i;
+        for(let i = components.length - 1; i >= 0; --i) {
+            const component = components[i];
+            if(Array.isArray(component.pos)) {
+                for(let pos of component.pos) {
+                    if(pos.x == x && pos.y == y) return component;
                 }
-            } else if(x >= i.pos.x && x < i.pos.x + i.width &&
-                y <= i.pos.y && y > i.pos.y - i.height) return i;
+            } else if(x >= component.pos.x && x < component.pos.x + component.width &&
+                y <= component.pos.y && y > component.pos.y - component.height) return component;
         }
     } else {
         let result = [];
-        for(let i of components) {
-            if(Array.isArray(i.pos)) {  // Component is a wire
+        for(let i = components.length - 1; i >= 0; --i) {
+            const component = components[i];
+            if(Array.isArray(component.pos)) {
                 let v = false;
-                for(let pos of i.pos) {
+                for(let pos of component.pos) {
                     if(pos.x >= Math.min(x,x + w) && pos.x <= Math.max(x,x + w) &&
                        pos.y >= Math.min(y,y + h) && pos.y <= Math.max(y,y + h)) v = true;
                 }
-                v && result.push(i);
-            } else if(i.pos.x + i.width - .5 > Math.min(x,x + w) && i.pos.x - .5 < Math.max(x,x + w) &&
-                      i.pos.y + i.height - .5 > Math.min(y,y + h) && i.pos.y - .5 < Math.max(y,y + h)) result.push(i);
+                v && result.push(component);
+            } else if(component.pos.x + component.width - .5 > Math.min(x,x + w) && component.pos.x - .5 < Math.max(x,x + w) &&
+                      component.pos.y + component.height - .5 > Math.min(y,y + h) && component.pos.y - .5 < Math.max(y,y + h)) result.push(component);
         }
         return result;
     }
@@ -108,22 +110,8 @@ class Input {
 
     draw() {
         // Omlijning van component tekenen
-        // ctx.beginPath();
-        // ctx.rect(
-        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
-        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
-        //     (zoom * this.width + .5) | 0,
-        //     (zoom * this.height + .5) | 0
-        // );
-        // ctx.fillStyle = "#fff";
-        // ctx.strokeStyle = "#111";
-        // ctx.lineWidth = zoom / 16;
-        // ctx.fill();
-        // ctx.stroke();
-
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -238,22 +226,8 @@ class Output {
 
     draw() {
         // Omlijning van component tekenen
-        // ctx.beginPath();
-        // ctx.rect(
-        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
-        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
-        //     (zoom * this.width + .5) | 0,
-        //     (zoom * this.height + .5) | 0
-        // );
-        // ctx.fillStyle = "#fff";
-        // ctx.strokeStyle = "#111";
-        // ctx.lineWidth = zoom / 16;
-        // ctx.fill();
-        // ctx.stroke();
-
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -356,22 +330,8 @@ class Gate {
 
     draw() {
         // Omlijning van component tekenen
-        // ctx.beginPath();
-        // ctx.rect(
-        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
-        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
-        //     (zoom * this.width + .5) | 0,
-        //     (zoom * this.height + .5) | 0
-        // );
-        // ctx.fillStyle = "#fff";
-        // ctx.strokeStyle = "#111";
-        // ctx.lineWidth = zoom / 16;
-        // ctx.fill();
-        // ctx.stroke();
-
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -470,25 +430,25 @@ class Wire {
     }
 
     draw() {
-        if(this.pos.length < 1) return;
+        const pos = this.pos;
+        if(pos.length < 1) return;
 
         ctx.beginPath();
         ctx.moveTo(
-            0 | ((this.pos[0].x - offset.x) * zoom),
-            0 | ((-this.pos[0].y + offset.y) * zoom)
+            ((pos[0].x - offset.x) * zoom + .5) | 0,
+            ((-pos[0].y + offset.y) * zoom + .5) | 0
         );
-        for(let i = 1; i < this.pos.length; ++i) {
-            if(i + 1 < this.pos.length
-            && this.pos[i].x - this.pos[i - 1].x == this.pos[i + 1].x - this.pos[i].x
-            && this.pos[i].y - this.pos[i - 1].y == this.pos[i + 1].y - this.pos[i].y) continue;
+        for(let i = 1, len = pos.length; i < len; ++i) {
+            if(i + 1 < pos.length
+            && pos[i].x - pos[i - 1].x == pos[i + 1].x - pos[i].x
+            && pos[i].y - pos[i - 1].y == pos[i + 1].y - pos[i].y) continue;
 
             ctx.lineTo(
-                0 | ((this.pos[i].x - offset.x) * zoom),
-                0 | ((-this.pos[i].y + offset.y) * zoom)
+                ((pos[i].x - offset.x) * zoom + .5) | 0,
+                ((-pos[i].y + offset.y) * zoom + .5) | 0
             );
         }
 
-        ctx.lineWidth = zoom / 10;
         ctx.strokeStyle = this.value ? "#888" : this.color;
         ctx.stroke();
 
@@ -497,17 +457,17 @@ class Wire {
             ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.beginPath();
             ctx.moveTo(
-                0 | ((this.pos[0].x - offset.x) * zoom),
-                0 | ((-this.pos[0].y + offset.y) * zoom)
+                ((pos[0].x - offset.x) * zoom + .5) | 0,
+                ((-pos[0].y + offset.y) * zoom + .5) | 0
             );
-            for(let i = 1; i < this.pos.length; ++i) {
-                if(i + 1 < this.pos.length
-                    && this.pos[i].x - this.pos[i - 1].x == this.pos[i + 1].x - this.pos[i].x
-                    && this.pos[i].y - this.pos[i - 1].y == this.pos[i + 1].y - this.pos[i].y) continue;
+            for(let i = 1, len = pos.length; i < len; ++i) {
+                if(i + 1 < pos.length
+                    && pos[i].x - pos[i - 1].x == pos[i + 1].x - pos[i].x
+                    && pos[i].y - pos[i - 1].y == pos[i + 1].y - pos[i].y) continue;
 
                 ctx.lineTo(
-                    0 | ((this.pos[i].x - offset.x) * zoom),
-                    0 | ((-this.pos[i].y + offset.y) * zoom)
+                    ((pos[i].x - offset.x) * zoom + .5) | 0,
+                    ((-pos[i].y + offset.y) * zoom + .5) | 0
                 );
             }
             ctx.stroke();

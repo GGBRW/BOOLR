@@ -1,7 +1,6 @@
 const debugInfo = document.getElementById("debugInfo");
 debugInfo.addLine = function(name,val) {
     let value = document.createElement("span");
-    value.style.float = "right";
     switch(typeof val) {
         case "number":
             value.style.color = "#888";

@@ -67,7 +67,7 @@ function parse(string,dx,dy,select) {
                 }
             }
             component.label = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
-            component.constructor == Wire ? components.push(component) : components.unshift(component);
+            component.constructor == Wire ? components.unshift(component) : components.push(component);
             result.unshift(component);
         }
 

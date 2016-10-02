@@ -210,6 +210,11 @@ canvas {
     box-shadow: 0 0 20px rgba(0,0,0,.5);
 }
 
+#debugInfo span {
+    margin-left: 30px;
+    float: right;
+}
+
 /* Component info */
 #componentInfo {
     display: none;
@@ -278,8 +283,8 @@ canvas {
 }
 
 #contextMenu li {
-    font-family: "Roboto Condensed";
-    font-size: 16px;
+    font-family: "Roboto";
+    font-size: 14px;
     color: #111;
     border-bottom: 1px solid #bbb;
     padding: 8px;
