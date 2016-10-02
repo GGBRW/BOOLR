@@ -108,18 +108,35 @@ class Input {
 
     draw() {
         // Omlijning van component tekenen
-        ctx.beginPath();
-        ctx.rect(
+        // ctx.beginPath();
+        // ctx.rect(
+        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+        //     (zoom * this.width + .5) | 0,
+        //     (zoom * this.height + .5) | 0
+        // );
+        // ctx.fillStyle = "#fff";
+        // ctx.strokeStyle = "#111";
+        // ctx.lineWidth = zoom / 16;
+        // ctx.fill();
+        // ctx.stroke();
+
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
             (zoom * this.width + .5) | 0,
             (zoom * this.height + .5) | 0
         );
-        ctx.fillStyle = "#fff";
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
-        ctx.fill();
-        ctx.stroke();
+        ctx.strokeRect(
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
+        );
+
 
         if(zoom > 10) {
             // Icoon tekenen
@@ -221,18 +238,34 @@ class Output {
 
     draw() {
         // Omlijning van component tekenen
-        ctx.beginPath();
-        ctx.rect(
+        // ctx.beginPath();
+        // ctx.rect(
+        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+        //     (zoom * this.width + .5) | 0,
+        //     (zoom * this.height + .5) | 0
+        // );
+        // ctx.fillStyle = "#fff";
+        // ctx.strokeStyle = "#111";
+        // ctx.lineWidth = zoom / 16;
+        // ctx.fill();
+        // ctx.stroke();
+
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
             (zoom * this.width + .5) | 0,
             (zoom * this.height + .5) | 0
         );
-        ctx.fillStyle = "#fff";
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
-        ctx.fill();
-        ctx.stroke();
+        ctx.strokeRect(
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
+        );
 
         if(zoom > 10) {
             // Icoon tekenen
@@ -323,18 +356,34 @@ class Gate {
 
     draw() {
         // Omlijning van component tekenen
-        ctx.beginPath();
-        ctx.rect(
+        // ctx.beginPath();
+        // ctx.rect(
+        //     ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+        //     ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+        //     (zoom * this.width + .5) | 0,
+        //     (zoom * this.height + .5) | 0
+        // );
+        // ctx.fillStyle = "#fff";
+        // ctx.strokeStyle = "#111";
+        // ctx.lineWidth = zoom / 16;
+        // ctx.fill();
+        // ctx.stroke();
+
+        ctx.fillStyle = "#fff";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
+        ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
             (zoom * this.width + .5) | 0,
             (zoom * this.height + .5) | 0
         );
-        ctx.fillStyle = "#fff";
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = zoom / 16;
-        ctx.fill();
-        ctx.stroke();
+        ctx.strokeRect(
+            ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+            (zoom * this.width + .5) | 0,
+            (zoom * this.height + .5) | 0
+        );
 
         if(zoom > 10) {
             // Icoon tekenen
