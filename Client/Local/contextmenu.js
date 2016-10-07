@@ -54,11 +54,11 @@ context_options["edit_color"] = document.createElement("li");
 context_options["edit_color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color [E]</span>';
 context_options["edit_color"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
-    if(component && component.color) {
-        popup.prompt.show("Edit color","Enter color value:",
+    if(component && component.color_off) {
+        popup.color_picker.show(
             color => color
             && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-            && (component.color = color)
+            && (component.color_off = color) && (component.color_on = lighter(color,50))
         )
     }
 }

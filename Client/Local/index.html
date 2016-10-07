@@ -121,8 +121,22 @@ class Component {
     <button class="ok">Close</button>
 </div>
 
+<div class="popup" id="color_picker">
+    <h1>Color picker</h1>
+    <input type="color">
+    <br>
+    <button class="ok">OK</button>
+    <button class="cancel">Cancel</button>
+</div>
+
 <!-- Open files -->
 <input id="open_file" type="file" accept=".dat" style="display: none">
+
+<!-- Chrome -->
+<div id="usechrome">
+    <a href="https://www.google.nl/chrome/browser/desktop/"><img src="http://logok.org/wp-content/uploads/2014/12/Chrome-logo-2015.png"></a>
+    <h1>Please use Chrome to run this application</h1>
+</div>
 
 <script>
     document.getElementById("open_file").onchange = function(e) {
@@ -138,6 +152,9 @@ class Component {
 </script>
 
 <!-- Scrippies -->
+<script>
+    if(!window.chrome) { document.getElementById("usechrome").style.display = "block"; window.stop(); }
+</script>
 <script src="main.js"></script>
 <script src="ticker.js"></script>
 <script src="keys.js"></script>
@@ -160,14 +177,16 @@ class Component {
     if(localStorage.pws) data = JSON.parse(localStorage.pws);
     else data = {};
 
-    if(data.version != VERSION) { popup.whatsnew.show() }
+    if(data.version != VERSION) {
+        popup.whatsnew.show()
+    }
     if(data.clipbord) clipbord = data.clipbord;
     if(data.settings) settings = data.settings;
 
     c.focus();
 
     updateDebugInfo();
-    setInterval(updateDebugInfo,500);
+    setInterval(updateDebugInfo, 500);
 
     draw();  // 'draw' loop starten
     //tick(); // 'tick' loop starten

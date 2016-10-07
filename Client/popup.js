@@ -5,7 +5,8 @@ let popup = {
     custom_component: document.getElementById("custom_component"),
     component_list: document.getElementById("component_list"),
     settings: document.getElementById("settings"),
-    info: document.getElementById("info")
+    info: document.getElementById("info"),
+    color_picker: document.getElementById("color_picker")
 }
 
 // What's new
@@ -130,7 +131,7 @@ if(popup.settings) {
 
 // Info
 if(popup.info) {
-    popup.info.show = function (callback) {
+    popup.info.show = function(callback) {
         this.callback = callback;
 
         this.style.display = "block";
@@ -140,6 +141,26 @@ if(popup.info) {
             this.style.transform = "scale(1)";
             this.style.opacity = 1;
         }, 1);
+    }
+}
+
+// Color picker
+if(popup.color_picker) {
+    popup.color_picker.show = function(callback) {
+        this.callback = callback;
+
+        this.style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("overlay").style.opacity = 1;
+            this.style.transform = "scale(1)";
+            this.style.opacity = 1;
+        }, 1);
+    }
+
+    popup.color_picker.submit = function() {
+        this.value = document.querySelector("#color_picker input[type=color]").value;
+        this.callback(this.value);
     }
 }
 

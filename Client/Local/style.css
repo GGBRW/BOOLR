@@ -204,7 +204,7 @@ canvas {
     right: 0;
     background: #111;
     font-family: "Inconsolata";
-    font-size: 16px;
+    font-size: 14px;
     color: #bbb;
     padding: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
@@ -227,7 +227,6 @@ canvas {
     color: #888;
     padding: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
-    border-radius: 5px;
     text-align: center;
     line-height: 20px;
 
@@ -285,6 +284,7 @@ canvas {
 #contextMenu li {
     font-family: "Roboto";
     font-size: 14px;
+    font-weight: 700;
     color: #111;
     border-bottom: 1px solid #bbb;
     padding: 8px;
@@ -320,4 +320,30 @@ canvas {
     font-family: "Roboto Condensed";
     font-size: 30px;
     color: #fff;
+}
+
+/* "Use Chrome" screen */
+#usechrome {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(16,16,16,.98);
+    padding-top: 5%;
+    text-align: center;
+    z-index: 2000;
+}
+
+#usechrome h1 {
+    font-family: "Roboto Condensed", Arial, Ubuntu;
+    font-size: 50px;
+    color: rgba(255,255,255,.25);
+    margin-top: 0;
+}
+
+#usechrome img {
+    height: 50%;
+    opacity: .5;
 }

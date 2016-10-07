@@ -112,6 +112,7 @@ class Input {
         // Omlijning van component tekenen
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -228,6 +229,7 @@ class Output {
         // Omlijning van component tekenen
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -332,6 +334,7 @@ class Gate {
         // Omlijning van component tekenen
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 16;
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
@@ -413,15 +416,25 @@ class XOR extends Gate {
     }
 }
 
+function lighter(hex, percent){
+    if(hex.length == 4) hex = "#" + hex.slice(1).replace(/(.)/g, '$1$1');
+    const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+    return '#' +
+        ((0|(1<<8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
+        ((0|(1<<8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
+        ((0|(1<<8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
+}
+
 class Wire {
-    constructor(from,to, color = "#111") {
+    constructor(from,to, color = popup.color_picker.value || "#111") {
         this.from = from;
         this.to = to;
 
         this.value = 0;
 
         this.pos = [];
-        this.color = color;
+        this.color_off = color;
+        this.color_on = lighter(color,50);
     }
 
     blink(duration) {
@@ -449,7 +462,7 @@ class Wire {
             );
         }
 
-        ctx.strokeStyle = this.value ? "#888" : this.color;
+        ctx.strokeStyle = this.value ? this.color_on : this.color_off;
         ctx.stroke();
 
         // Blink

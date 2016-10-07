@@ -93,7 +93,7 @@ function parse(string,dx,dy,select) {
     }, 10);
 }
 
-function Export(name, string) {
+function download(name, string) {
     const a = document.createElement("a");
     const data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
     a.setAttribute('href', data);
@@ -101,3 +101,12 @@ function Export(name, string) {
     else a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".dat");
     a.click();
 }
+
+
+
+
+
+
+
+
+

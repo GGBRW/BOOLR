@@ -66,7 +66,7 @@ function draw() {
     }
 
     // Componenten tekenen
-    ctx.lineWidth = zoom / 16;
+    ctx.lineWidth = zoom / 10;
     visible_components = 0;
     for(let i = 0, len = components.length; i < len; ++i) {
         const component = components[i];
@@ -175,7 +175,7 @@ function draw() {
     framerate = 1000 / (new Date - lastFrame);
     lastFrame = new Date;
 
-    requestAnimationFrame(draw);
+    window.requestAnimationFrame(draw);
 }
 
 let mouse = {
@@ -500,6 +500,19 @@ c.onmouseup = function(e) {
             }
         }
         else if(dragging) {
+            // if(dragging.components.length == 1) {
+            //     const under = find(Math.round(dragging.components[0].pos.x),Math.round(dragging.components[0].pos.y));
+            //
+            //     if(under && under.constructor == Wire) {
+            //         popup.confirm.show(
+            //             "Split wire",
+            //             "Do you want to split this wire and connect it with " + dragging.components[0].label + "?",
+            //             () => {
+            //
+            //             });
+            //     }
+            // }
+
             for(let i of dragging.components) {
                 if(selecting) {
                     let dx, dy;

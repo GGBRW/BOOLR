@@ -69,10 +69,10 @@ c.onkeydown = function(e) {
         case 69: // E:
             var component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.constructor == Wire) {
-                popup.prompt.show("Edit color","Enter color value:",
+                popup.color_picker.show(
                     color => color
                     && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-                    && (component.color = color)
+                    && (component.color_off = color) && (component.color_on = lighter(color,50))
                 )
             }
             else if(component && component.label) {
@@ -100,7 +100,7 @@ c.onkeydown = function(e) {
             break;
         case 83: // S
             if(e.ctrlKey) {
-                popup.prompt.show("Export", "Enter export file name:", name => name ? Export(name,stringify()) : Export(undefined,stringify()));
+                popup.prompt.show("Export", "Enter export file name:", name => name ? download(name,stringify()) : download(undefined,stringify()));
             }
             break;
         case 9: // Tab

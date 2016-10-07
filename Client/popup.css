@@ -77,7 +77,7 @@
     background: #822;
 }
 
-.popup input {
+.popup input:not([type=color]) {
     width: 90%;
     padding: 10px;
     background: #ccc;
@@ -86,6 +86,21 @@
     font-family: "Inconsolata";
     font-size: 18px;
     color: #333;
+}
+
+.popup input[type=color] {
+    -webkit-appearance: none;
+    border: none;
+    width: 70px;
+    height: 50px;
+    outline: none;
+}
+
+.popup input[type=color]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.popup input[type=color]::-webkit-color-swatch {
+    border: none;
 }
 
 .popup textarea {
