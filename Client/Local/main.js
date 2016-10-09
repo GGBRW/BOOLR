@@ -203,7 +203,6 @@ window.onerror = function(msg,url,line) {
     Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
 }
 
-c.onfocus = () => !selecting && (contextMenu.style.display = "none");
 c.oncontextmenu = () => false;
 c.onmouseenter = () => scroll_animation.animate = false;
 
@@ -224,6 +223,8 @@ c.onmousedown = function(e) {
     mouse.grid.y = Math.round(-e.y / zoom + offset.y);
 
     if(e.which == 1) {
+        if(contextMenu.style.display == "block") { contextMenu.hide(); return }
+
         if(e.shiftKey) {
             if(selecting) {
                 selecting.animate.w = mouse.grid.x - selecting.x;
@@ -269,7 +270,7 @@ c.onmousedown = function(e) {
         }
         else {
             if(document.getElementById("list").style.display != "none" || selecting) {
-                contextMenu.style.display = "none";
+                contextMenu.hide();
                 document.getElementById("list").style.display = "none";
                 selecting = null;
             }
@@ -337,7 +338,7 @@ c.onmousedown = function(e) {
             connecting = null;
         }
         else {
-            contextMenu.show({ x: e.x, y: e.y });
+            if(contextMenu.style.display == "none") contextMenu.show({ x: e.x, y: e.y });
         }
     }
 }
@@ -576,7 +577,7 @@ c.onmouseup = function(e) {
         }
     }
     else if(e.which == 3) {
-
+        contextMenu.show({ x: e.x, y: e.y });
     }
 }
 

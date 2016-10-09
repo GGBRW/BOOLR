@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="../popup.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
 <title>PWS // SANDBOX MODE</title>
 
@@ -78,8 +79,9 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li>Copy-Paste verbeterd (sneller en betrouwbaarder)</li>
+        <li>Copy-Paste verbeterd (veeel sneller en betrouwbaarder)</li>
         <li>Copy-Paste met Ctrl+C en Ctrl+V</li>
+        <li>Scollen met Alt + Slepen (voor laptops)</li>
         <li>Draden trekken verbeterd</li>
         <li>DEC > BIN & BIN > DEC Converters</li>
     </ul>
@@ -174,7 +176,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.92";
+    const VERSION = "0.1.93";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

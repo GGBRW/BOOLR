@@ -176,7 +176,7 @@ for(let i = 0; i < nodes.length; ++i) {
             this.parentNode.style.display = "none";
             document.getElementById("overlay").style.display = "none";
             document.getElementById("overlay").style.zIndex = 100;
-        },100);
+        },200);
         c.focus();
     }
 }
@@ -191,7 +191,7 @@ for(let i = 0; i < nodes.length; ++i) {
             this.parentNode.style.display = "none";
             document.getElementById("overlay").style.display = "none";
             document.getElementById("overlay").style.zIndex = 100;
-        },100);
+        },200);
         c.focus();
     }
 }
@@ -209,7 +209,7 @@ document.onkeydown = e => {
                 popup[i].style.display = "none";
                 document.getElementById("overlay").style.display = "none";
                 document.getElementById("overlay").style.zIndex = 100;
-            },100);
+            },200);
             c.focus();
         }
     } else if(e.which == 27) {
@@ -221,7 +221,7 @@ document.onkeydown = e => {
                 popup[i].style.display = "none";
                 document.getElementById("overlay").style.display = "none";
                 document.getElementById("overlay").style.zIndex = 100;
-            },100);
+            },200);
             c.focus();
         }
     }

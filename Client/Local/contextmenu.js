@@ -29,11 +29,17 @@ contextMenu.show = function(pos) {
     }
 
     this.style.display = "block";
+    setTimeout(() => contextMenu.style.opacity = .95, 1);
 
     if(pos.x > c.width - this.clientWidth) this.pos.x = (c.width - this.clientWidth) / zoom + offset.x;
     if(pos.y > c.height - this.clientHeight) this.pos.y = -(c.height - this.clientHeight) / zoom + offset.y;
 
     setTimeout(() => contextMenu.focus())
+}
+
+contextMenu.hide = function() {
+    this.style.opacity = 0;
+    setTimeout(() => contextMenu.style.display = "none", 200);
 }
 
 /* Menu options */
@@ -116,6 +122,9 @@ contextMenu.onclick = function() { this.style.display = "none"; selecting = null
 
 contextMenu.onkeydown = function(e) {
     switch(e.which) {
+        case 27:
+            this.hide();
+            break;
         case 46: // Delete
             if(selecting) context_options["delete all"].onclick();
             else context_options["delete"].onclick();

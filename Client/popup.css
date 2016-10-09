@@ -6,9 +6,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,.2);
+    background: rgba(0,0,0,.25);
     opacity: 0;
-    transition: opacity .1s;
+    transition: opacity .2s;
 }
 
 /* Pop-ups */
@@ -26,7 +26,7 @@
 
     opacity: 0;
     transform: scale(.95);
-    transition: transform .1s, opacity .1s;
+    transition: transform .2s, opacity .2s;
     z-index: 101;
 }
 

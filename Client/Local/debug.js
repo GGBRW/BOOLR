@@ -3,15 +3,15 @@ debugInfo.addLine = function(name,val) {
     let value = document.createElement("span");
     switch(typeof val) {
         case "number":
-            value.style.color = "#888";
+            value.style.color = "#555";
             break;
         case "string":
-            value.style.color = "#888";
+            value.style.color = "#555";
             value.style.fontStyle = "italic";
             break;
         case "boolean":
-            if(val) value.style.color = "#060";
-            else value.style.color = "#600";
+            if(val) value.style.color = "#050";
+            else value.style.color = "#500";
             value.style.fontWeight = 800;
             break;
     }
@@ -43,7 +43,7 @@ function updateDebugInfo() {
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(tickrate));
         debugInfo.addLine("Updates", update_queue.length);
-        debugInfo.innerHTML += "<br><span style='font-family: \"Roboto Condensed\"; opacity: .5'>Hold F3 to hide this</span>";
+        debugInfo.innerHTML += "<br><span style='font-family: \"Roboto Condensed\"; float: left'>Hold F3 to hide this</span>";
     } else {
         debugInfo.style.display = "none";
     }

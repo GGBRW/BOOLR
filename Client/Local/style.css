@@ -201,13 +201,14 @@ canvas {
     position: absolute;
     top: 0;
     right: 0;
-    background: #111;
+    background: #ddd;
+    opacity: .95;
     font-family: "Ubuntu";
-    font-size: 16px;
+    font-size: 15px;
     -font-weight: 600;
-    color: #bbb;
+    color: #111;
     padding: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    box-shadow: 0 0 10px rgba(0,0,0,.25);
 }
 
 #debugInfo span {
@@ -223,12 +224,12 @@ canvas {
     left: 100px;
     background: #111;
     font-family: "Inconsolata";
-    font-size: 16px;
+    font-size: 14px;
     color: #888;
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
     text-align: center;
-    line-height: 20px;
+    -line-height: 20px;
 
     transform: translateY(20px);
     opacity: 0;
@@ -250,8 +251,8 @@ canvas {
 }
 
 #componentInfo h1 {
-    font-family: "Roboto";
-    font-size: 18px;
+    font-family: "Ubuntu";
+    font-size: 16px;
     font-weight: 400;
     color: #bbb;
     margin: 5px;
@@ -272,13 +273,14 @@ canvas {
 #contextMenu {
     position: fixed;
     background: #ddd;
-    opacity: .95;
     list-style: none;
     padding: 0;
     margin: 0;
     box-shadow: 0 0 10px rgba(0,0,0,.25);
     outline: none;
-    transition: opacity .1s;
+
+    opacity: 0;
+    transition: opacity .2s;
 }
 
 #contextMenu li {
