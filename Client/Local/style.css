@@ -116,11 +116,11 @@ canvas {
 #toolbar .slot {
     height: 50px;
     width: 50px;
-    font-family: "Inconsolata";
-    font-size: 20px;
-    font-weight: 300;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    -font-weight: 600;
     text-align: center;
-    padding-top: 15px;
+    padding-top: 18px;
     margin: 0;
     display: inline-block;
     cursor: pointer;
@@ -150,11 +150,10 @@ canvas {
     position: absolute;
     left: 0;
     bottom: 50px;
-    width: 100px;
     padding: 0;
     margin: 0;
-    font-family: "Inconsolata";
-    font-size: 20px;
+    font-family: "Ubuntu";
+    font-size: 16px;
     list-style: none;
     background: #111;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
@@ -162,7 +161,7 @@ canvas {
 }
 
 #toolbar #list li {
-    padding: 10px;
+    padding: 8px;
 }
 
 #toolbar #list li:hover, #toolbar #list li:active {
@@ -175,8 +174,8 @@ canvas {
     position: absolute;
     right: 0;
     bottom: 0;
-    font-family: "Inconsolata";
-    font-size: 16px;
+    font-family: "Ubuntu", Arial;
+    font-size: 14px;
     font-weight: 600;
     opacity: .8;
 }
@@ -203,8 +202,9 @@ canvas {
     top: 0;
     right: 0;
     background: #111;
-    font-family: "Inconsolata";
-    font-size: 14px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    -font-weight: 600;
     color: #bbb;
     padding: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
@@ -282,9 +282,8 @@ canvas {
 }
 
 #contextMenu li {
-    font-family: "Roboto";
+    font-family: "Ubuntu";
     font-size: 14px;
-    font-weight: 700;
     color: #111;
     border-bottom: 1px solid #bbb;
     padding: 8px;

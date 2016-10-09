@@ -54,9 +54,17 @@ const remove = function(x,y) {
 
 const clone = function(target) {
     let component = new target.constructor();
-    Object.assign(component,JSON.parse(JSON.stringify(target)));
-    component.label = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
-    component.constructor == Wire ? components.push(component) : components.unshift(component);
+
+    for(let key in target) {
+        if(key == "pos" ||
+           key == "input" ||
+           key == "output") continue;
+
+        if(typeof target[key] == "object") component[key] = Object.assign({}, target[key]);
+        else component[key] = target[key];
+    }
+    component.blinking = null;
+
     return component;
 }
 
@@ -67,10 +75,14 @@ class Input {
         pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
-        label
+        label,
+        func_in = n => +!n,
+        func_out = n => [n]
     ) {
         this.value = 0;
         this.output = [];
+        this.func_in = func_in;
+        this.func_out = func_out;
 
         this.pos = pos;
         this.height = height;
@@ -89,16 +101,16 @@ class Input {
     }
 
     update(value = this.value) {
-        this.value = value;
-        for(let output of this.output) {
-            output.value = this.value;
-            //output.to.update();
-            setTimeout(output.to.update.bind(output.to));
+        const result = this.func_out(this.value);
+        for(let i = 0; i < this.output.length; ++i) {
+            this.output[i].value = i < result.length ? result[i] : result[result.length - 1];
+            //this.output[i].to.update();
+            setTimeout(this.output[i].to.update.bind(this.output[i].to));
         }
     }
 
     onclick() {
-        this.value = +!this.value;
+        this.value = this.func_in(this.value);
         //this.update();
         setTimeout(this.update.bind(this));
     }
@@ -188,6 +200,22 @@ class Clock extends Input {
             this.value = +!this.value;
             update_queue.push({ update: this.update, component: this });
         }, this.delay);
+    }
+}
+
+class D2B extends Input {
+    constructor(pos,height = 3,width,label,bits = 8) {
+        super(pos,height,width,label);
+        this.width = bits;
+        this.func_in = function() {
+            popup.prompt.show(
+                "Enter value",
+                "Enter the value:",
+                n => { this.value = +n; this.update() }
+            );
+            return this.value;
+        }
+        this.func_out = n => ("0000000" + n.toString(2)).slice(-8).split("").map(m => +m);
     }
 }
 
@@ -284,6 +312,15 @@ class Output {
     }
 }
 
+class B2D extends Output {
+    constructor(pos,height,width,label,bits = 8) {
+        super(pos,height,width,label,bits);
+        this.func = input => parseInt(input.join(""),2);
+        this.width = bits;
+        this.height = 3;
+    }
+}
+
 class Gate {
     constructor(
         pos = { x: mouse.grid.x, y: mouse.grid.y },
@@ -317,6 +354,8 @@ class Gate {
     }
 
     update() {
+        console.log(this);
+
         const result = this.func(this.input.map(n => n.value));
         for(let i = 0; i < this.output.length; ++i) {
             this.output[i].value = result[i] ? result[i] : result[result.length - 1];
@@ -389,7 +428,7 @@ class Gate {
 }
 
 class NOT extends Gate {
-    constructor(pos,height = 1,width = 1,label) {
+    constructor(pos,height = 1,width = 2,label) {
         const func = input => input.map(n => +!n);
         super(pos,height,width,"!",label,1,func);
     }

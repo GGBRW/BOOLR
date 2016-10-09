@@ -20,7 +20,7 @@ contextMenu.show = function(pos) {
             } else {
                 component.label && this.appendChild(context_options["edit_label"]);
                 this.appendChild(context_options["rotate"]);
-                this.appendChild(context_options["clone"]);
+                this.appendChild(context_options["copy"]);
             }
             this.appendChild(context_options["delete"]);
         } else {
@@ -84,15 +84,22 @@ context_options["clone"].onclick = () => {
 context_options["copy"] = document.createElement("li");
 context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord [CTRL+C]</span>';
 context_options["copy"].onclick = () => {
-    clipbord = Object.assign({},selecting);
-    clipbord.components = stringify(selecting.components);
+    // clipbord = Object.assign({},selecting);
+    // clipbord.components = stringify(selecting.components);
+
+    if(selecting) {
+        clipbord.copy(selecting.components, selecting);
+    } else {
+        clipbord.copy([find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]);
+    }
 }
 
 // Paste
 context_options["paste"] = document.createElement("li");
 context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste [CTRL+V]</span>';
 context_options["paste"].onclick = function() {
-    parse(clipbord.components,-(clipbord.x - contextMenu.pos.x),-(clipbord.y - contextMenu.pos.y),true);
+    //parse(clipbord.components,-(clipbord.x - contextMenu.pos.x),-(clipbord.y - contextMenu.pos.y),true);
+    clipbord.paste(contextMenu.pos.x,contextMenu.pos.y);
 }
 
 // Delete
@@ -106,6 +113,22 @@ context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><
 context_options["delete all"].onclick = () => { for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) } };
 
 contextMenu.onclick = function() { this.style.display = "none"; selecting = null; c.focus() };
+
+contextMenu.onkeydown = function(e) {
+    switch(e.which) {
+        case 46: // Delete
+            if(selecting) context_options["delete all"].onclick();
+            else context_options["delete"].onclick();
+
+            this.style.display = "none";
+            selecting = null;
+            c.focus();
+            break;
+        case 67: // C
+            if(e.ctrlKey) context_options["copy"].onclick();
+            break;
+    }
+}
 
 
 

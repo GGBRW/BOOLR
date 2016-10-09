@@ -200,7 +200,7 @@ document.onkeydown = e => {
     if(e.which == 13) {
         for(let i in popup) {
             if(!popup[i]) continue;
-            if(popup[i].submit) popup[i].submit();
+            if(popup[i].style.display == "block" && popup[i].submit) popup[i].submit();
 
             popup[i].style.transform = "scale(.9)";
             popup[i].style.opacity = 0;

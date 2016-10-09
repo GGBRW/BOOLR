@@ -31,6 +31,8 @@
         <li onclick="select(Output)">Output</li>
         <li onclick="select(Constant)">Constant</li>
         <li onclick="select(Clock)">Clock</li>
+        <li onclick="select(D2B)">D2B Converter</li>
+        <li onclick="select(B2D)">B2D Converter</li>
         <li>LED</li>
     </ul>
 </div>
@@ -76,9 +78,10 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li>Beter contextmenu</li>
-        <li>Selecteren door op twee plekken te klikken met shift ingedrukt</li>
-        <li>Spatie + muis boven component = menuutje!</li>
+        <li>Copy-Paste verbeterd (sneller en betrouwbaarder)</li>
+        <li>Copy-Paste met Ctrl+C en Ctrl+V</li>
+        <li>Draden trekken verbeterd</li>
+        <li>DEC > BIN & BIN > DEC Converters</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -157,6 +160,7 @@ class Component {
 </script>
 <script src="main.js"></script>
 <script src="ticker.js"></script>
+<script src="clipbord.js"></script>
 <script src="keys.js"></script>
 <script src="console.js"></script>
 <script src="toolbar.js"></script>
@@ -170,7 +174,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.80";
+    const VERSION = "0.1.92";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;
@@ -180,7 +184,7 @@ class Component {
     if(data.version != VERSION) {
         popup.whatsnew.show()
     }
-    if(data.clipbord) clipbord = data.clipbord;
+    //if(data.clipbord) clipbord = data.clipbord;
     if(data.settings) settings = data.settings;
 
     c.focus();

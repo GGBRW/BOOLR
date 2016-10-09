@@ -1,19 +1,11 @@
 "use strict";
 
 /*
-    todo: [ADD] Draden rendering optimaliseren!!!
-    todo: [ADD] asynchrone component updates
     todo: [BUG] overlappende draden niet tekenen
-    todo: [ADD] rechte stukken draad in een keer tekenen
-    todo: [ADD] Ctrl + Z
-    todo: [BUG]: dragging + wire
-    todo: [BUG] muis positie omreken-fout
-    todo: [BUG] contextmenu overflow
-    todo: [ADD] mooie promptmenuutje
+    todo: [ADD] undo
     todo: [ADD] cable compressor (32)
     todo: [ADD] spectator mode
     todo: [ADD] smartphone support (spectator)
-    todo: [ADD] inloggen gebruikersnaam/wachtwoord
 */
 
 const c = document.getElementById("canvas");
@@ -188,7 +180,7 @@ let settings = {
     zoom_animation: true,
     show_debugInfo: true
 }
-let clipbord;
+
 var dragging;
 var selecting;
 var connecting;
@@ -197,7 +189,7 @@ window.onbeforeunload = function() {
     let data = {};
     if(localStorage.pws) data = JSON.parse(localStorage.pws);
 
-    data.clipbord = clipbord;
+    //data.clipbord = clipbord;
     data.settings = settings;
     localStorage.pws = JSON.stringify(data);
 }
@@ -211,7 +203,7 @@ window.onerror = function(msg,url,line) {
     Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
 }
 
-c.onfocus = () => contextMenu.style.display = "none";
+c.onfocus = () => !selecting && (contextMenu.style.display = "none");
 c.oncontextmenu = () => false;
 c.onmouseenter = () => scroll_animation.animate = false;
 
@@ -270,8 +262,14 @@ c.onmousedown = function(e) {
 
             c.style.cursor = "move";
         }
+        else if(e.altKey) {
+            e.preventDefault();
+            scroll_animation.animate = false;
+            return false;
+        }
         else {
             if(document.getElementById("list").style.display != "none" || selecting) {
+                contextMenu.style.display = "none";
                 document.getElementById("list").style.display = "none";
                 selecting = null;
             }
@@ -370,14 +368,18 @@ c.onmousemove = function(e) {
                             for(let input of i.input) {
                                 if(!dragging.components.includes(input)) {
                                     if(dx || dy) {
-                                        input.pos.push({
-                                            x: input.pos[input.pos.length - 1].x - dx,
-                                            y: input.pos[input.pos.length - 1].y - dy
-                                        });
+                                        if(input.pos.length > 1 &&
+                                           input.pos.slice(-2)[0].x == input.pos.slice(-1)[0].x - dx &&
+                                           input.pos.slice(-2)[0].y == input.pos.slice(-1)[0].y - dy) {
+                                           input.pos.splice(-1);
+                                        }
+                                        else {
+                                            input.pos.push({
+                                                x: input.pos.slice(-1)[0].x - dx,
+                                                y: input.pos.slice(-1)[0].y - dy
+                                            });
+                                        }
                                     }
-                                }
-                                else if(!dragging.components.includes(input.to)) {
-
                                 }
                             }
                         }
@@ -387,10 +389,17 @@ c.onmousemove = function(e) {
                                     let dx = Math.round(i.pos.x) - Math.round(i.pos.x + e.movementX / zoom);
                                     let dy = Math.round(i.pos.y) - Math.round(i.pos.y - e.movementY / zoom);
                                     if(dx || dy) {
-                                        output.pos.unshift({
-                                            x: output.pos[0].x - dx,
-                                            y: output.pos[0].y - dy
-                                        });
+                                        if(output.pos.length > 1 &&
+                                           output.pos[1].x == output.pos[0].x - dx &&
+                                           output.pos[1].y == output.pos[0].y - dy) {
+                                            output.pos.splice(0,1);
+                                        }
+                                        else {
+                                            output.pos.unshift({
+                                                x: output.pos[0].x - dx,
+                                                y: output.pos[0].y - dy
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -410,11 +419,19 @@ c.onmousemove = function(e) {
             }
         }
         else if(connecting) {
-            if(!connecting.pos.length ||
-               (connecting.pos.slice(-1)[0].x != mouse.grid.x ||
-                connecting.pos.slice(-1)[0].y != mouse.grid.y )) {
+            if(!connecting.pos.length) {
                 connecting.pos.push({ x: mouse.grid.x, y: mouse.grid.y });
             }
+            else if(connecting.pos.length > 1 &&
+                connecting.pos.slice(-2)[0].x == mouse.grid.x &&
+                connecting.pos.slice(-2)[0].y == mouse.grid.y) {
+                connecting.pos.splice(-1);
+            }
+            else if(connecting.pos.slice(-1)[0].x != mouse.grid.x ||
+                    connecting.pos.slice(-1)[0].y != mouse.grid.y ) {
+                connecting.pos.push({ x: mouse.grid.x, y: mouse.grid.y });
+            }
+
 
             const component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.constructor != Wire && component != connecting.from) {
@@ -422,10 +439,12 @@ c.onmousemove = function(e) {
                 else if([Input].includes(component.constructor)) {
                     toolbar.message("Cannot connect with " + component.label);
                     components.splice(components.indexOf(connecting),1);
+                    connecting = null;
                 }
                 else if(component.input.length >= component.max_inputs) {
                     toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} inputs`);
                     components.splice(components.indexOf(connecting), 1);
+                    connecting = null;
                 }
                 else {
                     connecting.to = component;
@@ -438,29 +457,24 @@ c.onmousemove = function(e) {
                     connecting.from.blink(1000);
                     connecting.blink(1000);
                     connecting.to.blink(1000);
+
+                    if(component.output) {
+                        const wire = new Wire();
+                        wire.from = component;
+                        connecting = wire;
+                        components.unshift(wire);
+                    } else connecting = null;
                 }
-
-                connecting = null;
             }
-        } else {
-            const component = find(mouse.grid.x,mouse.grid.y);
-            if(component) {
-                const wire = new Wire();
+        }
+        else if(e.altKey) {
+            e.preventDefault();
+            offset.x -= (e.movementX) / zoom;
+            offset.y += (e.movementY) / zoom;
 
-                if(component.constructor == Wire) {
-                    wire.from = component.from;
-
-                    let i = 0;
-                    while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
-                    && i < component.pos.length) {
-                        wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
-                        ++i;
-                    }
-                }
-                else wire.from = component;
-                connecting = wire;
-                components.unshift(wire);
-            }
+            scroll_animation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
+            scroll_animation.r = Math.atan2(e.movementX, e.movementY);
+            return false;
         }
     }
     else if(e.which == 2) {
@@ -484,13 +498,13 @@ c.onmouseup = function(e) {
     mouse.grid.y = Math.round(-e.y / zoom + offset.y);
 
     if(e.which == 1) {
-        if(selecting && !selecting.components) {
-            if(!selecting.w && !selecting.h) return;
+        if(selecting && !dragging) {
+            if(!selecting.animate.w && !selecting.animate.h) return;
 
             selecting.components = find(
                 selecting.x,selecting.y,
-                selecting.w,
-                selecting.h
+                selecting.animate.w,
+                selecting.animate.h
             );
 
             contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
@@ -525,8 +539,8 @@ c.onmouseup = function(e) {
                     }
                     selecting.x += dx;
                     selecting.y += dy;
-                    contextMenu.pos.x += dx;
-                    contextMenu.pos.y += dy;
+                    contextMenu.pos.x += dx / zoom;
+                    contextMenu.pos.y += dy / zoom;
                 }
 
                 if(Array.isArray(i.pos)) {
@@ -548,6 +562,9 @@ c.onmouseup = function(e) {
             if(component && component.onclick && connecting.from == component) component.onclick();
             components.splice(components.indexOf(connecting),1);
             connecting = null;
+        }
+        else if(e.altKey) {
+            scroll_animation.animate = true;
         }
     }
     else if(e.which == 2) {

@@ -71,10 +71,12 @@ function parse(string,dx,dy,select) {
             result.unshift(component);
         }
 
-        for(let i of string.connections) {
-            const from = result[i[0]];
-            const to = result[i[1]];
-            const wire = result[i[2]];
+        for(let i = string.connections.length - 1; i >= 0; --i) {
+            const connection = string.connections[i];
+
+            const from = result[connection[0]];
+            const to = result[connection[1]];
+            const wire = result[connection[2]];
 
             wire.from = from;
             wire.to = to;
@@ -101,12 +103,3 @@ function download(name, string) {
     else a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".dat");
     a.click();
 }
-
-
-
-
-
-
-
-
-

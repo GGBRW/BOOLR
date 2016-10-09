@@ -66,6 +66,15 @@ c.onkeydown = function(e) {
             break;
         case 58: // 0
             break;
+        case 67: // C
+            if(e.ctrlKey) {
+                if(selecting) {
+                    clipbord.copy(selecting.components, selecting);
+                } else {
+                    clipbord.copy([find(mouse.grid.x,mouse.grid.y)]);
+                }
+            }
+            break;
         case 69: // E:
             var component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.constructor == Wire) {
@@ -80,7 +89,7 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
-        case 79:
+        case 79: // O
             if(components.length) {
                 popup.confirm.show(
                     "Open file",
@@ -101,6 +110,11 @@ c.onkeydown = function(e) {
         case 83: // S
             if(e.ctrlKey) {
                 popup.prompt.show("Export", "Enter export file name:", name => name ? download(name,stringify()) : download(undefined,stringify()));
+            }
+            break;
+        case 86: // V
+            if(e.ctrlKey) {
+                clipbord.paste(mouse.grid.x,mouse.grid.y);
             }
             break;
         case 9: // Tab
