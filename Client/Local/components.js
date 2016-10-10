@@ -103,9 +103,13 @@ class Input {
     update(value = this.value) {
         const result = this.func_out(this.value);
         for(let i = 0; i < this.output.length; ++i) {
-            this.output[i].value = i < result.length ? result[i] : result[result.length - 1];
-            //this.output[i].to.update();
-            setTimeout(this.output[i].to.update.bind(this.output[i].to));
+            const value = i < result.length ? result[i] : result[result.length - 1];
+
+            if(value != this.output[i].value) {
+                this.output[i].value = value;
+                //this.output[i].to.update();
+                setTimeout(this.output[i].to.update.bind(this.output[i].to), +settings.update_delay);
+            }
         }
     }
 
@@ -358,9 +362,13 @@ class Gate {
 
         const result = this.func(this.input.map(n => n.value));
         for(let i = 0; i < this.output.length; ++i) {
-            this.output[i].value = result[i] ? result[i] : result[result.length - 1];
-            //this.output[i].to.update();
-            setTimeout(this.output[i].to.update.bind(this.output[i].to));
+            const value = i < result.length ? result[i] : result[result.length - 1];
+
+            if(value != this.output[i].value) {
+                this.output[i].value = result[i] ? result[i] : result[result.length - 1];
+                //this.output[i].to.update();
+                setTimeout(this.output[i].to.update.bind(this.output[i].to), +settings.update_delay);
+            }
         }
     }
 

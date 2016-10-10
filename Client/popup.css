@@ -96,6 +96,11 @@
     outline: none;
 }
 
+.popup input[type=number] {
+    width: 100px;
+    float: right;
+}
+
 .popup input[type=color]::-webkit-color-swatch-wrapper {
     padding: 0;
 }

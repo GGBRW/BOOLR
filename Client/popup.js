@@ -110,6 +110,11 @@ if(popup.settings) {
             for(let i = 0; i < checkboxes.length; ++i) {
                 checkboxes[i].checked = settings[checkboxes[i].getAttribute("setting")];
             }
+
+            const number_inputs = document.querySelectorAll("#settings input[type=number]");
+            for(let i = 0; i < number_inputs.length; ++i) {
+                number_inputs[i].value = settings[number_inputs[i].getAttribute("setting")];
+            }
         }
 
         this.style.display = "block";
@@ -125,6 +130,9 @@ if(popup.settings) {
         if(settings) {
             const checkboxes = document.querySelectorAll("#settings input[type=checkbox]");
             for(let i = 0; i < checkboxes.length; ++i) settings[checkboxes[i].getAttribute("setting")] = checkboxes[i].checked;
+
+            const number_inputs = document.querySelectorAll("#settings input[type=number]");
+            for(let i = 0; i < number_inputs.length; ++i) settings[number_inputs[i].getAttribute("setting")] = +number_inputs[i].value;
         }
     }
 }

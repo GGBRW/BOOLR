@@ -4,8 +4,8 @@ contextMenu.pos = {};
 contextMenu.show = function(pos) {
     if(dragging || connecting) return false;
     this.pos = {
-        x: pos.x / zoom + offset.x,
-        y: -pos.y / zoom + offset.y
+        x: (pos.x + 1) / zoom + offset.x,
+        y: (-pos.y - 1) / zoom + offset.y
     }
 
     this.innerHTML = "";
@@ -33,8 +33,6 @@ contextMenu.show = function(pos) {
 
     if(pos.x > c.width - this.clientWidth) this.pos.x = (c.width - this.clientWidth) / zoom + offset.x;
     if(pos.y > c.height - this.clientHeight) this.pos.y = -(c.height - this.clientHeight) / zoom + offset.y;
-
-    setTimeout(() => contextMenu.focus())
 }
 
 contextMenu.hide = function() {

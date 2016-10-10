@@ -115,6 +115,7 @@ class Component {
     <ul>
         <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
         <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
+        <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
         <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
     </ul>
     <button class="ok">OK</button>

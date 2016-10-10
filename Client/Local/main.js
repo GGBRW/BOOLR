@@ -178,7 +178,8 @@ let mouse = {
 let settings = {
     scroll_animation: true,
     zoom_animation: true,
-    show_debugInfo: true
+    show_debugInfo: true,
+    update_delay: 0
 }
 
 var dragging;
@@ -223,7 +224,7 @@ c.onmousedown = function(e) {
     mouse.grid.y = Math.round(-e.y / zoom + offset.y);
 
     if(e.which == 1) {
-        if(contextMenu.style.display == "block") { contextMenu.hide(); return }
+        if(contextMenu.style.display == "block" && !selecting) { contextMenu.hide(); return }
 
         if(e.shiftKey) {
             if(selecting) {
@@ -540,8 +541,8 @@ c.onmouseup = function(e) {
                     }
                     selecting.x += dx;
                     selecting.y += dy;
-                    contextMenu.pos.x += dx / zoom;
-                    contextMenu.pos.y += dy / zoom;
+                    contextMenu.pos.x += dx;
+                    contextMenu.pos.y += dy;
                 }
 
                 if(Array.isArray(i.pos)) {

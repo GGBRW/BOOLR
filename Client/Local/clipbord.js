@@ -19,8 +19,9 @@ clipbord.copy = function(components,selection) {
                     components.indexOf(components[i])
                 ]);
             } else if(components[i].constructor == Wire) {
-                components.splice(i,1); // TODO: TESTEN
+                components.splice(i,1);
                 --i;
+                --len;
             }
         }
     }
