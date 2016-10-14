@@ -1,13 +1,5 @@
 "use strict";
 
-/*
-    todo: [BUG] overlappende draden niet tekenen
-    todo: [ADD] undo
-    todo: [ADD] cable compressor (32)
-    todo: [ADD] spectator mode
-    todo: [ADD] smartphone support (spectator)
-*/
-
 const c = document.getElementById("canvas");
 c.height = window.innerHeight;
 c.width = window.innerWidth;
