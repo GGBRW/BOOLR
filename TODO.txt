@@ -1,2 +1,3 @@
 [ADD] Undo
 [BUG] Draden gaan soms schuin
+[BUG] Zoomen gaat te ver door
