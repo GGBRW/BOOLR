@@ -132,8 +132,8 @@ function draw() {
     }
 
     // Zoom animation
-    if((zoom_animation - zoom < 0 && zoom > 2)
-     || (zoom_animation - zoom > 0 && zoom < 300)) {
+    if((zoom_animation - zoom < 0 && zoom > 2
+     || zoom_animation - zoom > 0 && zoom < 300)) {
         if(settings.zoom_animation) {
             offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
             offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
