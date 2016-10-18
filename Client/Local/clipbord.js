@@ -32,7 +32,7 @@ clipbord.paste = function(x,y) {
         const dx = x - clipbord.selection.x;
         const dy = y - clipbord.selection.y;
 
-        for(let i = 0, len = clipbord.components.length; i < len; ++i) {
+        for(let i = clipbord.components.length - 1; i >= 0; --i) {
             const pos = clipbord.components[i].pos;
 
             clipbord.components[i] = clone(clipbord.components[i]);

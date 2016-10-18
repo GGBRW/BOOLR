@@ -112,6 +112,11 @@ c.onkeydown = function(e) {
                 popup.prompt.show("Export", "Enter export file name:", name => name ? download(name,stringify()) : download(undefined,stringify()));
             }
             break;
+        case 84:
+            DOMconsole.show();
+            DOMconsole.input.focus();
+            return false;
+            break;
         case 86: // V
             if(e.ctrlKey) {
                 clipbord.paste(mouse.grid.x,mouse.grid.y);

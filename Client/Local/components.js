@@ -63,6 +63,12 @@ const clone = function(target) {
         if(typeof target[key] == "object") component[key] = Object.assign({}, target[key]);
         else component[key] = target[key];
     }
+
+    if(component.label &&
+       component.label.split("#").length == 2 &&
+       component.label.split("#")[0] == component.constructor.name) {
+        component.label = component.label.split("#")[0] + "#" + components.filter(n => n.constructor == component.constructor).length;
+    }
     component.blinking = null;
 
     return component;
@@ -172,10 +178,10 @@ class Input {
         if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
-                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
-                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
-                zoom * this.width + zoom / 16,
-                zoom * this.height + zoom / 16
+                (((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                (((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                ((zoom * this.width + .5 ) | 0) + zoom / 16,
+                ((zoom * this.height + .5) | 0) + zoom / 16
             );
 
             this.blinking += .1;
@@ -305,10 +311,10 @@ class Output {
         if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
-                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
-                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
-                zoom * this.width + zoom / 16,
-                zoom * this.height + zoom / 16
+                (((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                (((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                ((zoom * this.width + .5 ) | 0) + zoom / 16,
+                ((zoom * this.height + .5) | 0) + zoom / 16
             );
 
             this.blinking += .1;
@@ -424,10 +430,10 @@ class Gate {
         if(this.blinking && zoom > 8) {
             ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.fillRect(
-                (this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32,
-                (-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32,
-                zoom * this.width + zoom / 16,
-                zoom * this.height + zoom / 16
+                (((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                (((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                ((zoom * this.width + .5 ) | 0) + zoom / 16,
+                ((zoom * this.height + .5) | 0) + zoom / 16
             );
 
             this.blinking += .1;

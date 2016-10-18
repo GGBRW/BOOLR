@@ -10,9 +10,16 @@
 <canvas id="canvas" tabindex="1"></canvas>
 
 <!-- Console -->
-<div id="console">
+<!--div id="console">
     <ul id="output"></ul>
     <input id="input" spellcheck="false">
+</div-->
+
+<div id="console">
+    <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
+
+    <div id="input" contenteditable="true" spellcheck="false"></div>
+    <div id="messages"></div>
 </div>
 
 <!-- Component toolbar -->

@@ -132,17 +132,14 @@ function draw() {
     }
 
     // Zoom animation
-    if((zoom_animation - zoom < 0 && zoom > 2
-     || zoom_animation - zoom > 0 && zoom < 300)) {
-        if(settings.zoom_animation) {
-            offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-            offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-            zoom -= (zoom - zoom_animation) / 8;
-        } else {
-            offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
-            offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
-            zoom = zoom_animation;
-        }
+    if(settings.zoom_animation) {
+        offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
+        offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
+        zoom -= (zoom - zoom_animation) / 8;
+    } else {
+        offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
+        offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
+        zoom = zoom_animation;
     }
 
     // Selectie animate
@@ -193,7 +190,7 @@ window.onresize = () => {
 }
 
 window.onerror = function(msg,url,line) {
-    Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
+    //Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
 }
 
 c.oncontextmenu = () => false;
@@ -423,7 +420,18 @@ c.onmousemove = function(e) {
             }
             else if(connecting.pos.slice(-1)[0].x != mouse.grid.x ||
                     connecting.pos.slice(-1)[0].y != mouse.grid.y ) {
-                connecting.pos.push({ x: mouse.grid.x, y: mouse.grid.y });
+                let dx = connecting.pos.slice(-1)[0].x - mouse.grid.x;
+                let dy = connecting.pos.slice(-1)[0].y - mouse.grid.y;
+
+                while(dx || dy) {
+                    if(Math.abs(dx) > Math.abs(dy)) {
+                        connecting.pos.push({ x: connecting.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.pos.slice(-1)[0].y });
+                        dx -= Math.sign(dx);
+                    } else {
+                        connecting.pos.push({ x: connecting.pos.slice(-1)[0].x, y: connecting.pos.slice(-1)[0].y - Math.sign(dy) });
+                        dy -= Math.sign(dy);
+                    }
+                }
             }
 
 
@@ -576,7 +584,12 @@ c.onmouseup = function(e) {
 
 c.onmousewheel = function(e) {
     e.preventDefault();
-    zoom_animation -= zoom / 8 * Math.sign(e.deltaY);
+    zoom_animation = Math.min(
+        Math.max(
+            zoom_animation - zoom / 8 * Math.sign(e.deltaY),
+            2),
+        300
+    );
     return false;
 }
 

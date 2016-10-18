@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="update 0.1.80">
+    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="update 0.1.93">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/clipbord.js" afterPath="$PROJECT_DIR$/Client/Local/clipbord.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/Local/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/contextmenu.js" afterPath="$PROJECT_DIR$/Client/Local/contextmenu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/console.js" afterPath="$PROJECT_DIR$/Client/Local/console.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/index.html" afterPath="$PROJECT_DIR$/Client/Local/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/keys.js" afterPath="$PROJECT_DIR$/Client/Local/keys.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/Local/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/popup.css" afterPath="$PROJECT_DIR$/Client/popup.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/popup.js" afterPath="$PROJECT_DIR$/Client/popup.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/style.css" afterPath="$PROJECT_DIR$/Client/Local/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/index.html" afterPath="$PROJECT_DIR$/Client/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/style.css" afterPath="$PROJECT_DIR$/Client/style.css" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2808">
-              <caret line="117" column="87" selection-start-line="117" selection-start-column="87" selection-end-line="117" selection-end-column="87" />
+            <state relative-caret-position="96">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -42,80 +44,8 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5016">
-              <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4488">
-              <caret line="187" column="0" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="popup.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/popup.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3216">
-              <caret line="134" column="128" selection-start-line="134" selection-start-column="128" selection-end-line="134" selection-end-column="128" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="popup.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/popup.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2400">
-              <caret line="100" column="16" selection-start-line="100" selection-start-column="16" selection-end-line="100" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="debug.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/debug.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1080">
-              <caret line="45" column="95" selection-start-line="45" selection-start-column="95" selection-end-line="45" selection-end-column="95" />
-              <folding>
-                <marker date="1476086210176" expanded="true" signature="1971:2017" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
-              <caret line="370" column="13" selection-start-line="370" selection-start-column="13" selection-end-line="370" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="contextmenu.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/contextmenu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="34" column="108" selection-start-line="34" selection-start-column="108" selection-end-line="34" selection-end-column="108" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="21" column="39" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+            <state relative-caret-position="2568">
+              <caret line="107" column="17" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -124,8 +54,68 @@
       <file leaf-file-name="keys.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3072">
-              <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="132" selection-end-column="18" />
+            <state relative-caret-position="2808">
+              <caret line="117" column="25" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="console.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/Local/console.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4608">
+              <caret line="192" column="6" selection-start-line="192" selection-start-column="6" selection-end-line="192" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1392">
+              <caret line="58" column="26" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="popup.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/popup.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3408">
+              <caret line="142" column="33" selection-start-line="142" selection-start-column="33" selection-end-line="142" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="popup.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/popup.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2544">
+              <caret line="106" column="1" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="816">
+              <caret line="34" column="62" selection-start-line="34" selection-start-column="62" selection-end-line="34" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -173,28 +163,28 @@
         <option value="$PROJECT_DIR$/Client/_style.css" />
         <option value="$PROJECT_DIR$/Client/menu.html" />
         <option value="$PROJECT_DIR$/Client/Local/prompt.js" />
-        <option value="$PROJECT_DIR$/Client/Local/console.js" />
         <option value="$PROJECT_DIR$/Client/Local/popup.js" />
         <option value="$PROJECT_DIR$/Client/Local/popup.css" />
         <option value="$PROJECT_DIR$/Client/run.bat" />
-        <option value="$PROJECT_DIR$/Client/style.css" />
         <option value="$PROJECT_DIR$/Client/Local/toolbar.js" />
-        <option value="$PROJECT_DIR$/Client/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/ticker.js" />
         <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/componentInfo.js" />
         <option value="$PROJECT_DIR$/Client/Local/stringifier2.js" />
         <option value="$PROJECT_DIR$/Client/Local/stringifier.js" />
-        <option value="$PROJECT_DIR$/Client/Local/keys.js" />
-        <option value="$PROJECT_DIR$/Client/Local/style.css" />
         <option value="$PROJECT_DIR$/Client/Local/debug.js" />
-        <option value="$PROJECT_DIR$/Client/Local/clipbord.js" />
         <option value="$PROJECT_DIR$/Client/Local/contextmenu.js" />
         <option value="$PROJECT_DIR$/Client/popup.js" />
         <option value="$PROJECT_DIR$/Client/popup.css" />
+        <option value="$PROJECT_DIR$/Client/Local/clipbord.js" />
         <option value="$PROJECT_DIR$/Client/Local/components.js" />
-        <option value="$PROJECT_DIR$/Client/Local/index.html" />
+        <option value="$PROJECT_DIR$/Client/index.html" />
+        <option value="$PROJECT_DIR$/Client/style.css" />
         <option value="$PROJECT_DIR$/Client/Local/main.js" />
+        <option value="$PROJECT_DIR$/Client/Local/keys.js" />
+        <option value="$PROJECT_DIR$/Client/Local/style.css" />
+        <option value="$PROJECT_DIR$/Client/Local/console.js" />
+        <option value="$PROJECT_DIR$/Client/Local/index.html" />
       </list>
     </option>
   </component>
@@ -209,10 +199,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="59" />
-    <option name="y" value="24" />
-    <option name="width" value="1307" />
-    <option name="height" value="744" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -239,11 +229,42 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane />
-      </pane>
       <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PWS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PWS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PWS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PWS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PWS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Server (Node.js)" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -256,7 +277,7 @@
     <property name="JavaScriptPreferStrict" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="settings.editor.splitter.proportion" value="0.23212537" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/PWS-master/PWS-master/Client" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/JavaScript" />
     <property name="nodejs_interpreter_path" value="C:\Program Files\nodejs\node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="SearchEverywhereHistoryKey" value="pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/popup.css&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/Local/keys.js" />
@@ -488,6 +509,18 @@
       <workItem from="1476036807069" duration="3850000" />
       <workItem from="1476086311954" duration="4856000" />
       <workItem from="1476134604259" duration="6000" />
+      <workItem from="1476202976970" duration="902000" />
+      <workItem from="1476288575258" duration="18000" />
+      <workItem from="1476386129778" duration="1249000" />
+      <workItem from="1476458042456" duration="47000" />
+      <workItem from="1476458114643" duration="1951000" />
+      <workItem from="1476473727469" duration="1553000" />
+      <workItem from="1476539785102" duration="95000" />
+      <workItem from="1476541080297" duration="6388000" />
+      <workItem from="1476550620446" duration="2000" />
+      <workItem from="1476792091940" duration="404000" />
+      <workItem from="1476813510070" duration="1049000" />
+      <workItem from="1476824377542" duration="20000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1471944310271</created>
@@ -816,7 +849,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="416998000" />
+    <option name="totallyTimeSpent" value="430676000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -828,10 +861,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="24" width="1307" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17291507" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.115625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32735425" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -850,26 +883,6 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32735425" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17291507" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32848838" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291039" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -897,7 +910,8 @@
     <MESSAGE value="Update 0.1.77!" />
     <MESSAGE value="update 0.1.79" />
     <MESSAGE value="update 0.1.80" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.80" />
+    <MESSAGE value="update 0.1.93" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.93" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -906,7 +920,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Client/_style.css" />
     <entry file="file://$PROJECT_DIR$/animation.html" />
     <entry file="file://$PROJECT_DIR$/Client/Sandbox/sandbox.html" />
     <entry file="file://$PROJECT_DIR$/Client/settings.css" />
@@ -963,13 +976,6 @@
     <entry file="file://$PROJECT_DIR$/Client/Local/popup.js" />
     <entry file="file://$PROJECT_DIR$/Client/Local/popup.css" />
     <entry file="file://$PROJECT_DIR$/Client/run.bat" />
-    <entry file="file://$PROJECT_DIR$/Client/Local/console.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1296">
-          <caret line="54" column="5" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/toolbar.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -986,20 +992,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/_index.html" />
     <entry file="file://$PROJECT_DIR$/Client/_style.css" />
-    <entry file="file://$PROJECT_DIR$/Client/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="57" column="3" selection-start-line="57" selection-start-column="1" selection-end-line="57" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="774">
-          <caret line="49" column="179" selection-start-line="49" selection-start-column="179" selection-end-line="49" selection-end-column="179" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/componentInfo.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -1022,13 +1014,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -1043,84 +1028,117 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3072">
-          <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="132" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="21" column="39" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5016">
-          <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/debug.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1080">
           <caret line="45" column="95" selection-start-line="45" selection-start-column="95" selection-end-line="45" selection-end-column="95" />
-          <folding>
-            <marker date="1476086210176" expanded="true" signature="1971:2017" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/contextmenu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="34" column="108" selection-start-line="34" selection-start-column="108" selection-end-line="34" selection-end-column="108" />
+        <state relative-caret-position="768">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/popup.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2400">
-          <caret line="100" column="16" selection-start-line="100" selection-start-column="16" selection-end-line="100" selection-end-column="16" />
+        <state relative-caret-position="2544">
+          <caret line="106" column="1" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/popup.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3216">
-          <caret line="134" column="128" selection-start-line="134" selection-start-column="128" selection-end-line="134" selection-end-column="128" />
+        <state relative-caret-position="3408">
+          <caret line="142" column="33" selection-start-line="142" selection-start-column="33" selection-end-line="142" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
+    <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2808">
-          <caret line="117" column="87" selection-start-line="117" selection-start-column="87" selection-end-line="117" selection-end-column="87" />
+        <state relative-caret-position="816">
+          <caret line="34" column="62" selection-start-line="34" selection-start-column="62" selection-end-line="34" selection-end-column="62" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TODO.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="43" column="34" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="81" selection-start-line="6" selection-start-column="81" selection-end-line="6" selection-end-column="81" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4488">
-          <caret line="187" column="0" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+        <state relative-caret-position="4608">
+          <caret line="192" column="6" selection-start-line="192" selection-start-column="6" selection-end-line="192" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="370" column="13" selection-start-line="370" selection-start-column="13" selection-end-line="370" selection-end-column="13" />
+        <state relative-caret-position="1392">
+          <caret line="58" column="26" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2808">
+          <caret line="117" column="25" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2568">
+          <caret line="107" column="17" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/console.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="19" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="77" />
           <folding />
         </state>
       </provider>
