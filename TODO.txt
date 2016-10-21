@@ -1,3 +1,3 @@
 [ADD] Undo
-[BUG] Draden gaan soms schuin
-[BUG] Zoomen gaat te ver door
+[ADD] Weergave kruisende draden verbonden wel/niet 
+[BUG] Draden schuin bij draggen
