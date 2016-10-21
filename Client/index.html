@@ -23,48 +23,24 @@
         <button class="cancel">Cancel</button>
     </div>
 
-    <div class="popup" id="whatsnew">
-        <h1>Update 0.1.58</h1>
-        <ul>
-            <li><span style="font-family: 'Edwardian Script ITC', Kunstler Script; font-size: 30px">Nieuw design</span></li>
-            <li>Vernieuwd hoofdmenu</li>
-            <li>Clipbord blijft opgeslagen in lokale opslag</li>
-            <li>Componenten selecteren met Tab of middelste muisknop</li>
-            <li>Een aantal commando's toegevoegd (probeer 'help' commando om alle commando's te zien)</li>
-            <li>Draden worden meegetrokken als componenten worden verplaatst</li>
-            <li>Nieuwe pop-up menuutjes (zoals deze)</li>
-            <li><b>Zoom-bug opgelost</b></li>
-            <li>Heel veel insecten eruit gehaald en verbeteringen in de achtergrond</li>
-        </ul>
-        <button class="ok">Close</button>
-    </div>
-
-    <div class="popup" id="settings">
-        <h1>Settings</h1>
-        <ul>
-            <li>
-                Scroll animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
-            </li>
-            <li>
-                Zoom animation<label class="switch"><input type="checkbox"><div class="slider"></div></label>
-            </li>
-            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
-        </ul>
-        <button class="ok">OK</button>
-        <button class="cancel">Cancel</button>
-    </div>
-
-    <div class="popup" id="info">
-        <h1>Info</h1>
-        <button class="ok">Close</button>
-    </div>
-
     <div id="container">
         <button id="sandbox_btn" onclick="open_project()">SANDBOX MODE</button>
-        <button id="project_btn" onclick="document.getElementById('open_file').click();">LOAD PROJECT</button>
-        <button id="settings_btn" onclick="popup.settings.show()">SETTINGS</button>
-        <button id="info_btn" onclick="popup.info.show()">INFO</button>
+        <button id="load_project_btn" onclick="load_project.show()">LOAD PROJECT</button>
+        <button id="settings_btn" onclick="">SETTINGS</button>
+        <button id="info_btn" onclick="">INFO</button>
     </div>
+
+    <div id="load_project">
+        <h1>LOAD PROJECT</h1>
+        <button class="material-icons close" onclick="this.parentNode.style.display = 'none'">close</button>
+    </div>
+
+    <script>
+        let load_project = document.getElementById("load_project");
+        load_project.show = function() {
+            this.style.display = "block";
+        }
+    </script>
 
     <input id="open_file" type="file" accept=".dat" style="display: none">
 

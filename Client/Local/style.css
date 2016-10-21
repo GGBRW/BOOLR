@@ -291,6 +291,11 @@ canvas {
     font-size: 20px;
     outline: none;
     cursor: pointer;
+    transition: color .2s;
+}
+
+#credits button:hover {
+    color: #822;
 }
 
 /* Debug info */

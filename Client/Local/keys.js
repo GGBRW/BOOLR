@@ -21,10 +21,24 @@ c.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(selecting) {
-                for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) };
+                actions.push({
+                    method: "remove_selection",
+                    data: Object.assign(selecting)
+                });
+
+                for(let i of selecting.components) {
+                    Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
+                }
                 selecting = null;
                 document.getElementById("contextMenu").style.display = "none";
-            } else remove(mouse.grid.x,mouse.grid.y);
+            } else {
+                actions.push({
+                    method: "remove",
+                    data: [find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]
+                });
+
+                remove(mouse.grid.x,mouse.grid.y);
+            }
             break;
         case 33: // Page Up
             changeZoom(zoom / 2);
@@ -120,6 +134,11 @@ c.onkeydown = function(e) {
         case 86: // V
             if(e.ctrlKey) {
                 clipbord.paste(mouse.grid.x,mouse.grid.y);
+            }
+            break;
+        case 90: // Z
+            if(e.ctrlKey) {
+                undo();
             }
             break;
         case 9: // Tab

@@ -282,9 +282,18 @@ c.onmousedown = function(e) {
                     else wire.from = component;
                     connecting = wire;
                     components.unshift(wire);
+
+                    actions.push({
+                        method: "add",
+                        data: [0]
+                    });
                 }
                 else {
                     components.push(new Selected());
+                    actions.push({
+                        method: "add",
+                        data: [components.length - 1]
+                    });
                 }
             }
         }
@@ -365,10 +374,18 @@ c.onmousemove = function(e) {
                                            input.pos.splice(-1);
                                         }
                                         else {
-                                            input.pos.push({
-                                                x: input.pos.slice(-1)[0].x - dx,
-                                                y: input.pos.slice(-1)[0].y - dy
-                                            });
+                                            let dx = input.pos.slice(-1)[0].x - mouse.grid.x;
+                                            let dy = input.pos.slice(-1)[0].y - mouse.grid.y;
+
+                                            while(dx || dy) {
+                                                if(Math.abs(dx) > Math.abs(dy)) {
+                                                    input.pos.push({ x: input.pos.slice(-1)[0].x - Math.sign(dx), y: input.pos.slice(-1)[0].y });
+                                                    dx -= Math.sign(dx);
+                                                } else {
+                                                    input.pos.push({ x: input.pos.slice(-1)[0].x, y: input.pos.slice(-1)[0].y - Math.sign(dy) });
+                                                    dy -= Math.sign(dy);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -386,10 +403,18 @@ c.onmousemove = function(e) {
                                             output.pos.splice(0,1);
                                         }
                                         else {
-                                            output.pos.unshift({
-                                                x: output.pos[0].x - dx,
-                                                y: output.pos[0].y - dy
-                                            });
+                                            let dx = output.pos[0].x - mouse.grid.x;
+                                            let dy = output.pos[0].y - mouse.grid.y;
+
+                                            while(dx || dy) {
+                                                if(Math.abs(dx) > Math.abs(dy)) {
+                                                    output.pos.unshift({ x: output.pos[0].x - Math.sign(dx), y: output.pos[0].y });
+                                                    dx -= Math.sign(dx);
+                                                } else {
+                                                    output.pos.unshift({ x: output.pos[0].x, y: output.pos[0].y - Math.sign(dy) });
+                                                    dy -= Math.sign(dy);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -465,6 +490,11 @@ c.onmousemove = function(e) {
                         wire.from = component;
                         connecting = wire;
                         components.unshift(wire);
+
+                        actions.push({
+                            method: "add",
+                            data: [0]
+                        });
                     } else connecting = null;
                 }
             }
@@ -554,6 +584,18 @@ c.onmouseup = function(e) {
                     i.pos.x = Math.round(i.pos.x);
                     i.pos.y = Math.round(i.pos.y);
                 }
+            }
+
+            if(selecting) {
+                actions.push({
+                    method: "move_selection",
+                    data: Object.assign({ selection: Object.assign({},selecting) }, dragging)
+                });
+            } else {
+                actions.push({
+                    method: "move",
+                    data: Object.assign({}, dragging)
+                });
             }
 
             dragging = null;

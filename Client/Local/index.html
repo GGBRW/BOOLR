@@ -86,11 +86,8 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li>Copy-Paste verbeterd (veeel sneller en betrouwbaarder)</li>
-        <li>Copy-Paste met Ctrl+C en Ctrl+V</li>
-        <li>Scollen met Alt + Slepen (voor laptops)</li>
-        <li>Draden trekken verbeterd</li>
-        <li>DEC > BIN & BIN > DEC Converters</li>
+        <li>Undo met Ctrl + Z (miss nog instabiel)</li>
+        <li>Bugjes weg</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -170,6 +167,7 @@ class Component {
 </script>
 <script src="main.js"></script>
 <script src="ticker.js"></script>
+<script src="actions.js"></script>
 <script src="clipbord.js"></script>
 <script src="keys.js"></script>
 <script src="console.js"></script>
@@ -184,7 +182,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.93";
+    const VERSION = "0.1.102";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

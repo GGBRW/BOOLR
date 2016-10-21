@@ -37,6 +37,12 @@ function updateDebugInfo() {
         debugInfo.addLine("Zoom", Math.round(zoom));
         debugInfo.addLine("Dragging", !!dragging);
         debugInfo.addLine("Selecting", !!selecting);
+        if(selecting) {
+            debugInfo.addLine("Selection size", Math.round(selecting.w) + "*" + Math.round(selecting.h));
+        }
+        if(selecting && selecting.components) {
+            debugInfo.addLine("Selected components", selecting.components.length);
+        }
         debugInfo.addLine("Connecting", !!connecting);
         debugInfo.addLine("Components", components.length);
         debugInfo.addLine("Visible components", visible_components);

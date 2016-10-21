@@ -109,12 +109,31 @@ context_options["paste"].onclick = function() {
 // Delete
 context_options["delete"] = document.createElement("li");
 context_options["delete"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete"].onclick = () => remove(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+context_options["delete"].onclick = () => {
+    actions.push({
+        method: "remove",
+        data: [find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]
+    });
+
+    remove(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+}
 
 // Delete All
 context_options["delete all"] = document.createElement("li");
 context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete all"].onclick = () => { for(let i of selecting.components) { Array.isArray(i.pos) ? remove(i.pos[2].x,i.pos[2].y) : remove(i.pos.x,i.pos.y) } };
+context_options["delete all"].onclick = () => {
+    const old_clipbord = Object.assign({}, clipbord);
+    clipbord.copy(selecting.components, selecting);
+    actions.push({
+        method: "remove_selection",
+        data: clipbord
+    });
+    clipbord = old_clipbord;
+
+    for(let i of selecting.components) {
+        Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
+    }
+};
 
 contextMenu.onclick = function() { this.style.display = "none"; selecting = null; c.focus() };
 

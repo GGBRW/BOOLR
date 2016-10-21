@@ -32,7 +32,8 @@ const find = function(x,y,w,h) {
 const remove = function(x,y) {
     const component = find(x,y);
     if(!component) return;
-    else if(component.constructor == Wire) {
+
+    if(component.constructor == Wire) {
         component.from && component.from.output.splice(component.from.output.indexOf(component),1);
         component.to && component.to.input.splice(component.to.input.indexOf(component),1);
     } else {
@@ -364,8 +365,6 @@ class Gate {
     }
 
     update() {
-        console.log(this);
-
         const result = this.func(this.input.map(n => n.value));
         for(let i = 0; i < this.output.length; ++i) {
             const value = i < result.length ? result[i] : result[result.length - 1];
@@ -479,7 +478,7 @@ function lighter(hex, percent){
 }
 
 class Wire {
-    constructor(from,to, color = popup.color_picker.value || "#111") {
+    constructor(from,to, color = popup.color_picker.value || "#822") {
         this.from = from;
         this.to = to;
 

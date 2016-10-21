@@ -23,6 +23,7 @@ body {
     margin: 0;
     background: url("wallpaper.png");
     text-align: center;
+    overflow: hidden;
 }
 
 body > h1 {
@@ -33,8 +34,14 @@ body > h1 {
 }
 
 #container {
-    margin: 100px auto;
-    padding: 80px;
+    position: fixed;
+    top: 33%;
+
+    background: rgba(221,221,221,.8);
+
+    height: 340px;
+    width: 100%;
+    padding-top: 20px;
 }
 
 #container button {
@@ -53,7 +60,7 @@ body > h1 {
     box-shadow: 0 8px 0 0 #822;
 
     top: 0px;
-    transition: top .1s, box-shadow .1s, background .1s;
+    transition: top .1s, box-shadow .1s, background .1s, transform .2s, height .2s;
 }
 #container button:hover {
     background: #c44;
@@ -69,4 +76,32 @@ body > h1 {
     display: inline-block !important;
     margin: 0 3px !important;
     padding: 20px 10px !important;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: transparent;
+    width: 50px;
+    height: 50px;
+    outline: none;
+}
+
+#load_project {
+    display: none;
+    position: fixed;
+    top: 33%;
+
+    background: #a33;
+
+    height: 340px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+#load_project h1 {
+    font-family: "Roboto", Arial;
+    font-weight: 400;
 }
