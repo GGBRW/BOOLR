@@ -1,21 +1,24 @@
+<!-- Charset aangeven, namelijk UTF-8 -->
 <meta charset="utf-8">
 
+<!-- Algemene CSS stylesheet -->
 <link rel="stylesheet" href="style.css">
+<!-- Stylesheet met daarin de opmaak van alle pop-ups -->
 <link rel="stylesheet" href="../popup.css">
+<!-- Stylesheet van Google om gebruik te maken van hun 'Material' icon-pack, die ook gebruikt wordt in Android -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Ubuntu lettertype stylesheet van Google Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
+<!-- Titel van de pagina -->
 <title>PWS // SANDBOX MODE</title>
-
+<!-- Het belangrijkste deel van de hele pagina. Dit is een HTML5-element die uitgestrekt is over de hele pagina waarmee met JavaScript op getekent kan worden. -->
+<!-- Ik heb hier het attribuut 'tabindex' met waarde '1' aangegeven als snelle oplossing om met JavaScript te checken of het canvas element 'focus' heeft. -->
 <canvas id="canvas" tabindex="1"></canvas>
 
-<!-- Console -->
-<!--div id="console">
-    <ul id="output"></ul>
-    <input id="input" spellcheck="false">
-</div-->
-
+<!-- De console die verschijnt als je op de toets 't' drukt. -->
 <div id="console">
+    <!-- Button om de console te verbergen -->
     <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
 
     <div id="input" contenteditable="true" spellcheck="false"></div>
