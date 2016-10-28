@@ -447,13 +447,6 @@ c.onmousemove = function(e) {
                     connecting.pos.slice(-1)[0].y != mouse.grid.y ) {
                 let dx = connecting.pos.slice(-1)[0].x - mouse.grid.x;
                 let dy = connecting.pos.slice(-1)[0].y - mouse.grid.y;
-                
-                if(e.shiftKey && !connecting.lock) {
-                    connecting.lock = { x: dx, y: dy };
-                } else if(e.shiftKey) {
-                    dx = dx == 0 ? dx : connecting.lock.x;
-                    dy = dy == 0 ? dy : connecting.lock.y;
-                }
 
                 while(dx || dy) {
                     if(Math.abs(dx) > Math.abs(dy)) {
