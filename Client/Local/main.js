@@ -1,3 +1,4 @@
+// We
 "use strict";
 
 const c = document.getElementById("canvas");
@@ -5,10 +6,6 @@ c.height = window.innerHeight;
 c.width = window.innerWidth;
 
 const ctx = c.getContext("2d");
-
-const tau = 2 * Math.PI;
-const rsin = n => Math.round(Math.sin(n));
-const rcos = n => Math.round(Math.cos(n));
 
 let offset = { x: 0, y: 0 };
 let zoom = 50;
@@ -435,29 +432,99 @@ c.onmousemove = function(e) {
             }
         }
         else if(connecting) {
+            // 'connecting' is gewoon een verwijzing naar de draad die de gebruiker aan het trekken is
+            // 'connecting.pos' is een array met alle punten v.d. draad
+
+            // Als die array nog leeg is, pompt hij het eerste punt in het lijstje
             if(!connecting.pos.length) {
-                connecting.pos.push({ x: mouse.grid.x, y: mouse.grid.y });
-            }
-            else if(connecting.pos.length > 1 &&
-                connecting.pos.slice(-2)[0].x == mouse.grid.x &&
-                connecting.pos.slice(-2)[0].y == mouse.grid.y) {
-                connecting.pos.splice(-1);
-            }
-            else if(connecting.pos.slice(-1)[0].x != mouse.grid.x ||
-                    connecting.pos.slice(-1)[0].y != mouse.grid.y ) {
+                connecting.pos.push({
+                    x: mouse.grid.x,
+                    y: mouse.grid.y
+                });
+            } else {
+                // Het verschil in x en y van de muis met het als laatst geplaatste stukje draad wordt opgeslagen in 'dx' en 'dy'
                 let dx = connecting.pos.slice(-1)[0].x - mouse.grid.x;
                 let dy = connecting.pos.slice(-1)[0].y - mouse.grid.y;
 
-                while(dx || dy) {
-                    if(Math.abs(dx) > Math.abs(dy)) {
-                        connecting.pos.push({ x: connecting.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.pos.slice(-1)[0].y });
-                        dx -= Math.sign(dx);
-                    } else {
-                        connecting.pos.push({ x: connecting.pos.slice(-1)[0].x, y: connecting.pos.slice(-1)[0].y - Math.sign(dy) });
-                        dy -= Math.sign(dy);
+                // Als de verschillen in x en y beiden 0 zijn, hoeft er niks meer te gebeuren; hij stopt meteen
+                if(!dx && !dy) return;
+
+                /*
+                  Als de shift-key is ingedrukt, en 'connecting.lock' nog niet gedefinieerd is, dan wordt 'connecting.lock' TRUE als de rechte lijn in de x-richting moet worden getrokken,
+                  FALSE als de rechte lijn in de y-richting moet worden getrokken
+                */
+                if(e.shiftKey && connecting.lock == undefined) connecting.lock = Math.abs(dx) < Math.abs(dy);
+                else if(e.shiftKey) { // Als connecting.lock gedefinieerd is, wordt dy 0 als de rechte lijn in de x-richting moet worden getrokken
+                                      // en dx 0 als de rechte lijn in de y-richting moet worden getrokken
+                    connecting.lock ? dx = 0 : dy = 0;
+                } else connecting.lock = undefined; // Als shift niet meer wordt ingedrukt, wordt 'connecting.lock' gede-definieerd
+
+                // Nogmaals, als de verschillen in x en y beiden 0 zijn, hoeft er niks meer te gebeuren; hij stopt meteen
+                if(!dx && !dy) return;
+
+                // Als de afstand tussen de muis en het laatst geplaatste stukje draad meer is dan 1, wordt de afstand gesplitst in meerdere stukjes van lengte 1,
+                // anders was het zoals eerst zo'n lelijk schuin stukje draad
+                if(Math.abs(dx) + Math.abs(dy) > 1) {
+                    while(dx || dy) {
+                        if(Math.abs(dx) > Math.abs(dy)) {
+                            connecting.pos.push({ x: connecting.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.pos.slice(-1)[0].y });
+                            dx -= Math.sign(dx);
+                        } else {
+                            connecting.pos.push({ x: connecting.pos.slice(-1)[0].x, y: connecting.pos.slice(-1)[0].y - Math.sign(dy) });
+                            dy -= Math.sign(dy);
+                        }
                     }
                 }
+                // Als je met je muis over het laatst geplaatste stukje draad gaat, wordt het verwijderd: zo kun je een stuk draad weer weghalen
+                else if(connecting.pos.slice(-1)[0].x - dx == connecting.pos.slice(-2)[0].x
+                       && connecting.pos.slice(-1)[0].y - dy == connecting.pos.slice(-2)[0].y) {
+                    connecting.pos.splice(-1);
+                }
+                // Als er geen van de speciale gevallen hierboven gelden, dan wordt er gewoon een nieuw punt in 'connecting.pos' gezet
+                else {
+                    connecting.pos.push({
+                        x: connecting.pos.slice(-1)[0].x - dx,
+                        y: connecting.pos.slice(-1)[0].y - dy
+                    });
+                }
+                // Dat was t
             }
+
+            // // Als de muis terugbewogen is naar het vorig geplaatste stukje draad, verwijdert hij dat stukje draad
+            // else if(connecting.pos.length > 1 &&
+            //     connecting.pos.slice(-2)[0].x == mouse.grid.x &&
+            //     connecting.pos.slice(-2)[0].y == mouse.grid.y) {
+            //     connecting.pos.splice(-1);
+            // }
+            // // Als de muis bewogen is naar een stukje waar nog GEEN punt van in het lijstje 'connecting.pos' staat (anders komen er heel veel dezelfde punten in het lijstje), dan ...
+            // else if(connecting.pos.slice(-1)[0].x != mouse.grid.x ||
+            //         connecting.pos.slice(-1)[0].y != mouse.grid.y ) {
+            //
+            //     // Het verschil in x en y van de muis met het als laatst geplaatste stukje draad wordt opgeslagen in 'dx' en 'dy'
+            //     let dx = connecting.pos.slice(-1)[0].x - mouse.grid.x;
+            //     let dy = connecting.pos.slice(-1)[0].y - mouse.grid.y;
+            //
+            //     /*
+            //      Als de shift-key is ingedrukt, en 'connecting.lock' nog niet gedefinieerd is, dan wordt 'connecting.lock' true als de rechte lijn in de x-richting moet worden getrokken,
+            //      false als de rechte lijn in de y-richting moet worden getrokken
+            //       */
+            //     if(e.shiftKey && connecting.lock == undefined) connecting.lock = Math.abs(dx) > Math.abs(dy);
+            //     // Als connecting.lock gedefinieerd is, wordt afhankelijk van zijn waarde 'dx' of 'dy' op 0 gesteld
+            //     else if(e.shiftKey) {
+            //         connecting.lock ? dx = 0 : dy = 0;
+            //     }
+            //
+            //     // Alle nieuwe punten tussen het als laatst geplaatste stukje draad en de muis in 'connecting.pos' stoppen
+            //     while(dx || dy) {
+            //         if(Math.abs(dx) > Math.abs(dy)) {
+            //             connecting.pos.push({ x: connecting.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.pos.slice(-1)[0].y });
+            //             dx -= Math.sign(dx);
+            //         } else {
+            //             connecting.pos.push({ x: connecting.pos.slice(-1)[0].x, y: connecting.pos.slice(-1)[0].y - Math.sign(dy) });
+            //             dy -= Math.sign(dy);
+            //         }
+            //     }
+            // }
 
 
             const component = find(mouse.grid.x,mouse.grid.y);
