@@ -450,9 +450,9 @@ c.onmousemove = function(e) {
                 
                 if(e.shiftKey && !connecting.lock) {
                     connecting.lock = { x: dx, y: dy };
-                } else {
-                    dx = connecting.lock.x;
-                    dy = connecting.lock.y;
+                } else if(e.shiftKey) {
+                    dx = dx == 0 ? dx : connecting.lock.x;
+                    dy = dy == 0 ? dy : connecting.lock.y;
                 }
 
                 while(dx || dy) {
