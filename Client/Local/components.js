@@ -200,17 +200,23 @@ class Constant extends Input {
 }
 
 class Clock extends Input {
-    constructor(pos,height,width,label,delay = prompt("Enter the delay in ms")) {
+    constructor(pos,height,width,label) {
         super(pos,height,width,label);
         this.onclick = undefined;
 
-        this.delay = delay;
-        this.label += "@" + this.delay + "ms";
-
-        setInterval(() => {
-            this.value = +!this.value;
-            update_queue.push({ update: this.update, component: this });
-        }, this.delay);
+        this.delay;
+        popup.prompt.show(
+            "Enter delay",
+            "Enter the delay in ms",
+            n => {
+                this.delay = +n;
+                this.label += "@" + this.delay + "ms";
+                setInterval(() => {
+                    this.value = +!this.value;
+                    this.update();
+                }, this.delay);
+            }
+        );
     }
 }
 

@@ -4,9 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/Client/Local/actions.js" line="62" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="update 0.1.93">
+    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/Local/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/Local/components.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,7 +25,7 @@
     <favorites_list name="Profielwerkstuk" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -39,28 +39,28 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
+            <state relative-caret-position="6279">
               <caret line="273" column="13" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
+            <state relative-caret-position="-529">
               <caret line="448" column="111" selection-start-line="448" selection-start-column="111" selection-end-line="448" selection-end-column="111" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="410" column="26" selection-start-line="410" selection-start-column="26" selection-end-line="410" selection-end-column="26" />
+            <state relative-caret-position="736">
+              <caret line="225" column="26" selection-start-line="225" selection-start-column="26" selection-end-line="225" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -69,7 +69,7 @@
       <file leaf-file-name="debug.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/debug.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
+            <state relative-caret-position="805">
               <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
               <folding>
                 <marker date="1477502943438" expanded="true" signature="2252:2298" ph="..." />
@@ -81,7 +81,7 @@
       <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
+            <state relative-caret-position="138">
               <caret line="6" column="34" selection-start-line="6" selection-start-column="34" selection-end-line="6" selection-end-column="34" />
               <folding />
             </state>
@@ -91,7 +91,7 @@
       <file leaf-file-name="contextmenu.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/contextmenu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="2967">
               <caret line="129" column="7" selection-start-line="129" selection-start-column="7" selection-end-line="129" selection-end-column="7" />
               <folding />
             </state>
@@ -101,7 +101,7 @@
       <file leaf-file-name="actions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
+            <state relative-caret-position="690">
               <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
               <folding />
             </state>
@@ -169,10 +169,10 @@
         <option value="$PROJECT_DIR$/Client/Local/style.css" />
         <option value="$PROJECT_DIR$/Client/Local/contextmenu.js" />
         <option value="$PROJECT_DIR$/Client/Local/actions.js" />
-        <option value="$PROJECT_DIR$/Client/Local/components.js" />
         <option value="$PROJECT_DIR$/Client/Local/debug.js" />
         <option value="$PROJECT_DIR$/Client/Local/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/main.js" />
+        <option value="$PROJECT_DIR$/Client/Local/components.js" />
       </list>
     </option>
   </component>
@@ -531,7 +531,8 @@
       <workItem from="1477502963184" duration="825000" />
       <workItem from="1477676877939" duration="73000" />
       <workItem from="1477683229750" duration="31000" />
-      <workItem from="1477683270904" duration="3405000" />
+      <workItem from="1477683270904" duration="3491000" />
+      <workItem from="1477688053877" duration="279000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1471944310271</created>
@@ -862,12 +863,19 @@
       <option name="project" value="LOCAL" />
       <updated>1476824418352</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="update 0.1.102">
+      <created>1477686692933</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1477686692934</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="447227000" />
+    <option name="totallyTimeSpent" value="447592000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -949,7 +957,8 @@
     <MESSAGE value="update 0.1.79" />
     <MESSAGE value="update 0.1.80" />
     <MESSAGE value="update 0.1.93" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.93" />
+    <MESSAGE value="update 0.1.102" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.102" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1126,7 +1135,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
+        <state relative-caret-position="690">
           <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
           <folding />
         </state>
@@ -1134,7 +1143,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/contextmenu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="2967">
           <caret line="129" column="7" selection-start-line="129" selection-start-column="7" selection-end-line="129" selection-end-column="7" />
           <folding />
         </state>
@@ -1142,7 +1151,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="138">
           <caret line="6" column="34" selection-start-line="6" selection-start-column="34" selection-end-line="6" selection-end-column="34" />
           <folding />
         </state>
@@ -1150,7 +1159,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/debug.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
+        <state relative-caret-position="805">
           <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
           <folding>
             <marker date="1477502943438" expanded="true" signature="2252:2298" ph="..." />
@@ -1158,17 +1167,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="410" column="26" selection-start-line="410" selection-start-column="26" selection-end-line="410" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="6279">
           <caret line="273" column="13" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
           <folding />
         </state>
@@ -1184,8 +1185,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
+        <state relative-caret-position="-529">
           <caret line="448" column="111" selection-start-line="448" selection-start-column="111" selection-end-line="448" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="736">
+          <caret line="225" column="26" selection-start-line="225" selection-start-column="26" selection-end-line="225" selection-end-column="26" />
           <folding />
         </state>
       </provider>
