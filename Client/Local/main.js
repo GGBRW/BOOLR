@@ -1,4 +1,3 @@
-// We
 "use strict";
 
 const c = document.getElementById("canvas");
