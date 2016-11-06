@@ -37,7 +37,8 @@ body > h1 {
     position: fixed;
     top: 33%;
 
-    background: rgba(221,221,221,.8);
+    background: #222;
+    box-shadow: inset 0 0 20px #000, 0 0;
 
     height: 340px;
     width: 100%;
@@ -47,20 +48,20 @@ body > h1 {
 #container button {
     background: #a33;
     border: none;
-
+    box-shadow: 0 8px 0 0 #822;
+    outline: none;
     font-family: "Roboto Condensed";
     font-size: 30px;
 
     display: block;
+    height: 80px;
+    width: 300px;
     position: relative;
+    top: 0;
     margin: 16px auto;
     padding: 20px;
-    width: 300px;
-    outline: none;
-    box-shadow: 0 8px 0 0 #822;
 
-    top: 0px;
-    transition: top .1s, box-shadow .1s, background .1s, transform .2s, height .2s;
+    transition: top .1s, box-shadow .1s, background .1s, transform .2s, width .2s, height .2s;
 }
 #container button:hover {
     background: #c44;
@@ -93,15 +94,15 @@ body > h1 {
     display: none;
     position: fixed;
     top: 33%;
-
     background: #a33;
-
-    height: 340px;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    height: 350px;
     width: 100%;
     padding-top: 10px;
 }
 
 #load_project h1 {
-    font-family: "Roboto", Arial;
+    font-family: "Roboto Condensed";
+    font-size: 30px;
     font-weight: 400;
 }

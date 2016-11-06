@@ -31,20 +31,36 @@
 
     <div id="container">
         <button id="sandbox_btn" onclick="open_project()">SANDBOX MODE</button>
-        <button id="load_project_btn" onclick="load_project.show()">LOAD PROJECT</button>
+        <button id="load_project_btn">LOAD PROJECT</button>
         <button id="settings_btn" onclick="">SETTINGS</button>
         <button id="info_btn" onclick="">INFO</button>
     </div>
 
     <div id="load_project">
         <h1>LOAD PROJECT</h1>
-        <button class="material-icons close" onclick="this.parentNode.style.display = 'none'">close</button>
     </div>
 
     <script>
-        let load_project = document.getElementById("load_project");
-        load_project.show = function() {
-            this.style.display = "block";
+        document.getElementById("load_project_btn").onclick = function() {
+            this.innerHTML = "";
+            this.style.zIndex = 1;
+            this.style.background = "#a33";
+            this.style.border = "none";
+            this.style.transform = "scale(1.5)";
+        }
+
+        document.getElementById("settings_btn").onclick = function() {
+            this.innerHTML = "";
+            this.style.zIndex = 1;
+            this.style.background = "#a33";
+            this.style.border = "none";
+            this.style.transform = `scaleX(${ window.innerWidth / this.clientWidth })`;
+            setTimeout(() => this.style.transform += `scaleY(${ (this.parentNode.clientHeight - 40) / this.clientHeight })`, 200);
+
+            setTimeout(() => {
+                document.getElementById("load_project").style.display = "block";
+                this.style.display = "none";
+            }, 400);
         }
     </script>
 
