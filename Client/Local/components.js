@@ -50,6 +50,7 @@ const remove = function(x,y) {
         }
     }
 
+    toolbar.message("Removed " + component.label);
     components.splice(components.indexOf(component),1);
 }
 
@@ -520,8 +521,32 @@ class Wire {
             );
         }
 
+        ctx.lineWidth = zoom / 10;
         ctx.strokeStyle = this.value ? this.color_on : this.color_off;
         ctx.stroke();
+
+        if(zoom > 20) {
+            ctx.fillStyle = this.value ? this.color_on : this.color_off;
+            ctx.beginPath();
+            ctx.arc(
+                ((pos[0].x - offset.x) * zoom + .5) | 0,
+                ((-pos[0].y + offset.y) * zoom + .5) | 0,
+                zoom / 9,
+                0, Math.PI * 2
+            );
+            ctx.fill();
+
+            if(this.to) {
+                ctx.beginPath();
+                ctx.arc(
+                    ((pos.slice(-1)[0].x - offset.x) * zoom + .5) | 0,
+                    ((-pos.slice(-1)[0].y + offset.y) * zoom + .5) | 0,
+                    zoom / 9,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
 
         // Blink
         if(this.blinking && zoom > 8) {
@@ -542,6 +567,29 @@ class Wire {
                 );
             }
             ctx.stroke();
+
+            if(zoom > 20) {
+                ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+                ctx.beginPath();
+                ctx.arc(
+                    ((pos[0].x - offset.x) * zoom + .5) | 0,
+                    ((-pos[0].y + offset.y) * zoom + .5) | 0,
+                    zoom / 9,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+
+                if(this.to) {
+                    ctx.beginPath();
+                    ctx.arc(
+                        ((pos.slice(-1)[0].x - offset.x) * zoom + .5) | 0,
+                        ((-pos.slice(-1)[0].y + offset.y) * zoom + .5) | 0,
+                        zoom / 9,
+                        0, Math.PI * 2
+                    );
+                    ctx.fill();
+                }
+            }
 
             this.blinking += .1;
         }

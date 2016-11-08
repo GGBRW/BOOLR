@@ -46,7 +46,6 @@ function draw() {
     }
 
     // Componenten tekenen
-    ctx.lineWidth = zoom / 10;
     visible_components = 0;
     for(let i = 0, len = components.length; i < len; ++i) {
         const component = components[i];
@@ -194,7 +193,7 @@ c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmouseleave = function(e) {
     if(connecting) {
-        components.splice(components.indexOf(connecting),1);
+        components.splice(components.indexOf(connecting.wire),1);
         connecting = null;
     }
 
@@ -276,8 +275,9 @@ c.onmousedown = function(e) {
                         }
                     }
                     else wire.from = component;
-                    connecting = wire;
-                    components.unshift(wire);
+
+                    connecting = { wire };
+                    components.push(wire);
 
                     actions.push({
                         method: "add",
@@ -285,7 +285,7 @@ c.onmousedown = function(e) {
                     });
                 }
                 else {
-                    components.push(new Selected());
+                    components.unshift(new Selected());
                     actions.push({
                         method: "add",
                         data: [components.length - 1]
@@ -329,7 +329,7 @@ c.onmousedown = function(e) {
             c.style.cursor = "crosshair";
         }
         else if(connecting) {
-            components.splice(components.indexOf(connecting),1);
+            components.splice(components.indexOf(connecting.wire),1);
             connecting = null;
         }
         else {
@@ -434,16 +434,48 @@ c.onmousemove = function(e) {
             // 'connecting' is gewoon een verwijzing naar de draad die de gebruiker aan het trekken is
             // 'connecting.pos' is een array met alle punten v.d. draad
 
+            const component = find(mouse.grid.x,mouse.grid.y);
+
             // Als die array nog leeg is, pompt hij het eerste punt in het lijstje
-            if(!connecting.pos.length) {
-                connecting.pos.push({
+            if(connecting.wire.from == component) {
+                connecting.wire.pos = [];
+                connecting.start = {
+                    x: mouse.grid.x,
+                    y: mouse.grid.y
+                }
+            } else if(!connecting.wire.pos.length && connecting.wire.from != component) {
+                let dx = connecting.start.x - mouse.grid.x;
+                let dy = connecting.start.y - mouse.grid.y;
+
+
+                if(Math.abs(dx) > Math.abs(dy)) {
+                    connecting.wire.pos.push({
+                        x: connecting.start.x - Math.sign(dx) / 2,
+                        y: connecting.start.y
+                    });
+                } else {
+                    connecting.wire.pos.push({
+                        x: connecting.start.x,
+                        y: connecting.start.y - Math.sign(dy) / 2
+                    });
+                }
+
+                connecting.wire.pos.push({
                     x: mouse.grid.x,
                     y: mouse.grid.y
                 });
+            } else if(component && component.input) {
+                let dx = connecting.wire.pos.slice(-1)[0].x - mouse.grid.x;
+                let dy = connecting.wire.pos.slice(-1)[0].y - mouse.grid.y;
+
+                connecting.wire.pos.push({
+                    x: connecting.wire.pos.slice(-1)[0].x - Math.sign(dx) / 2,
+                    y: connecting.wire.pos.slice(-1)[0].y - Math.sign(dy) / 2
+                });
             } else {
                 // Het verschil in x en y van de muis met het als laatst geplaatste stukje draad wordt opgeslagen in 'dx' en 'dy'
-                let dx = connecting.pos.slice(-1)[0].x - mouse.grid.x;
-                let dy = connecting.pos.slice(-1)[0].y - mouse.grid.y;
+                let dx = connecting.wire.pos.slice(-1)[0].x - mouse.grid.x;
+                let dy = connecting.wire.pos.slice(-1)[0].y - mouse.grid.y;
 
                 // Als de verschillen in x en y beiden 0 zijn, hoeft er niks meer te gebeuren; hij stopt meteen
                 if(!dx && !dy) return;
@@ -466,24 +498,24 @@ c.onmousemove = function(e) {
                 if(Math.abs(dx) + Math.abs(dy) > 1) {
                     while(dx || dy) {
                         if(Math.abs(dx) > Math.abs(dy)) {
-                            connecting.pos.push({ x: connecting.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.pos.slice(-1)[0].y });
+                            connecting.wire.pos.push({ x: connecting.wire.pos.slice(-1)[0].x - Math.sign(dx), y: connecting.wire.pos.slice(-1)[0].y });
                             dx -= Math.sign(dx);
                         } else {
-                            connecting.pos.push({ x: connecting.pos.slice(-1)[0].x, y: connecting.pos.slice(-1)[0].y - Math.sign(dy) });
+                            connecting.wire.pos.push({ x: connecting.wire.pos.slice(-1)[0].x, y: connecting.wire.pos.slice(-1)[0].y - Math.sign(dy) });
                             dy -= Math.sign(dy);
                         }
                     }
                 }
                 // Als je met je muis over het laatst geplaatste stukje draad gaat, wordt het verwijderd: zo kun je een stuk draad weer weghalen
-                else if(connecting.pos.slice(-1)[0].x - dx == connecting.pos.slice(-2)[0].x
-                       && connecting.pos.slice(-1)[0].y - dy == connecting.pos.slice(-2)[0].y) {
-                    connecting.pos.splice(-1);
+                else if(connecting.wire.pos.slice(-1)[0].x - dx == connecting.wire.pos.slice(-2)[0].x
+                       && connecting.wire.pos.slice(-1)[0].y - dy == connecting.wire.pos.slice(-2)[0].y) {
+                    connecting.wire.pos.splice(-1);
                 }
                 // Als er geen van de speciale gevallen hierboven gelden, dan wordt er gewoon een nieuw punt in 'connecting.pos' gezet
                 else {
-                    connecting.pos.push({
-                        x: connecting.pos.slice(-1)[0].x - dx,
-                        y: connecting.pos.slice(-1)[0].y - dy
+                    connecting.wire.pos.push({
+                        x: connecting.wire.pos.slice(-1)[0].x - dx,
+                        y: connecting.wire.pos.slice(-1)[0].y - dy
                     });
                 }
                 // Dat was t
@@ -525,37 +557,35 @@ c.onmousemove = function(e) {
             //     }
             // }
 
-
-            const component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.constructor != Wire && component != connecting.from) {
-                if(connecting.from == component) return;
+            if(component && component.constructor != Wire && component != connecting.wire.from) {
+                if(connecting.wire.from == component) return;
                 else if([Input].includes(component.constructor)) {
                     toolbar.message("Cannot connect with " + component.label);
-                    components.splice(components.indexOf(connecting),1);
+                    components.splice(components.indexOf(connecting.wire),1);
                     connecting = null;
                 }
                 else if(component.input.length >= component.max_inputs) {
                     toolbar.message(`Component ${component.label} has a maximum of ${component.max_inputs} inputs`);
-                    components.splice(components.indexOf(connecting), 1);
+                    components.splice(components.indexOf(connecting.wire), 1);
                     connecting = null;
                 }
                 else {
-                    connecting.to = component;
-                    connecting.from.connect(component,connecting);
+                    connecting.wire.to = component;
+                    connecting.wire.from.connect(component,connecting.wire);
 
-                    connecting.from.update();
+                    connecting.wire.from.update();
 
-                    toolbar.message(`Connected ${connecting.from.label} with ${component.label}`);
+                    toolbar.message(`Connected ${connecting.wire.from.label} with ${component.label}`);
 
-                    connecting.from.blink(1000);
-                    connecting.blink(1000);
-                    connecting.to.blink(1000);
+                    connecting.wire.from.blink(1000);
+                    connecting.wire.blink(1000);
+                    connecting.wire.to.blink(1000);
 
                     if(component.output) {
                         const wire = new Wire();
                         wire.from = component;
                         connecting = wire;
-                        components.unshift(wire);
+                        components.push(wire);
 
                         actions.push({
                             method: "add",
@@ -669,8 +699,8 @@ c.onmouseup = function(e) {
         }
         else if(connecting) {
             const component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.onclick && connecting.from == component) component.onclick();
-            components.splice(components.indexOf(connecting),1);
+            if(component && component.onclick && connecting.wire.from == component) component.onclick();
+            components.splice(components.indexOf(connecting.wire),1);
             connecting = null;
         }
         else if(e.altKey) {

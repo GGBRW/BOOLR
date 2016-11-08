@@ -9,13 +9,13 @@ let hideToolbarMessage;
 toolbar.message = function(msg) {
     clearTimeout(hideToolbarMessage);
 
-    const message = document.getElementById("message");
-    message.style.display = "block";
-    message.innerHTML = msg;
-    message.style.marginLeft = -message.clientWidth / 2 + "px";
-    message.style.opacity = .7;
+    const toast = document.getElementById("toast");
+    toast.style.display = "block";
+    toast.innerHTML = msg + "<button class=\"material-icons\">undo</button> Undo";
+    toast.style.marginLeft = -toast.clientWidth / 2 + "px";
+    toast.style.opacity = 1;
     hideToolbarMessage = setTimeout(() => {
-        message.style.opacity = 0;
+        toast.style.opacity = 0;
     },3000);
 }
 
