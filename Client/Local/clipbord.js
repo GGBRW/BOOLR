@@ -44,12 +44,12 @@ clipbord.paste = function(x,y) {
                         y: Math.round(pos[j].y + dy)
                     });
                 }
-                components.push(clipbord.components[i]);
+                components.unshift(clipbord.components[i]);
             }
             else {
                 clipbord.components[i].pos.x = Math.round(pos.x + dx);
                 clipbord.components[i].pos.y = Math.round(pos.y + dy);
-                components.unshift(clipbord.components[i]);
+                components.push(clipbord.components[i]);
             }
         }
 
@@ -81,6 +81,6 @@ clipbord.paste = function(x,y) {
         const component = clone(clipbord.components[0]);
         component.pos.x = x;
         component.pos.y = y;
-        components.unshift(component);
+        components.push(component);
     }
 }

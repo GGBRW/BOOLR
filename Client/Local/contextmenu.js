@@ -21,6 +21,7 @@ contextMenu.show = function(pos) {
                 component.label && this.appendChild(context_options["edit_label"]);
                 this.appendChild(context_options["rotate"]);
                 this.appendChild(context_options["copy"]);
+                this.appendChild(context_options["view connections"]);
             }
             this.appendChild(context_options["delete"]);
         } else {
@@ -133,6 +134,15 @@ context_options["delete all"].onclick = () => {
     for(let i of selecting.components) {
         Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
     }
+};
+
+// Input/Output
+context_options["view connections"] = document.createElement("li");
+context_options["view connections"].innerHTML = '<i class="material-icons">compare_arrows</i><span>View connections</span>';
+context_options["view connections"].onclick = () => {
+    popup.connections.show(
+        find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
+    );
 };
 
 contextMenu.onclick = function() { this.style.display = "none"; selecting = null; c.focus() };

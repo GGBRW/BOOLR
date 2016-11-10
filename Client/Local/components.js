@@ -104,6 +104,9 @@ class Input {
     }
 
     connect(component,wire) {
+        wire.outputLabel = String.fromCharCode(65 + this.output.length);
+        wire.inputLabel = String.fromCharCode(65 + component.input.length);
+
         this.output.push(wire);
         component.input.push(wire);
     }
@@ -367,6 +370,9 @@ class Gate {
     }
 
     connect(component,wire) {
+        wire.outputLabel = String.fromCharCode(65 + this.output.length);
+        wire.inputLabel = String.fromCharCode(65 + component.input.length);
+
         this.output.push(wire);
         component.input.push(wire);
     }
@@ -448,7 +454,7 @@ class Gate {
 }
 
 class NOT extends Gate {
-    constructor(pos,height = 1,width = 2,label) {
+    constructor(pos,height = 1,width = 1,label) {
         const func = input => input.map(n => +!n);
         super(pos,height,width,"!",label,1,func);
     }
@@ -492,6 +498,8 @@ class Wire {
         this.value = 0;
 
         this.pos = [];
+        this.startPos;
+        this.endPos;
         this.color_off = color;
         this.color_on = lighter(color,50);
     }
@@ -506,7 +514,15 @@ class Wire {
         if(pos.length < 1) return;
 
         ctx.beginPath();
-        ctx.moveTo(
+
+        if(this.startPos) {
+            ctx.moveTo(
+                ((this.startPos.x - offset.x) * zoom + .5) | 0,
+                ((-this.startPos.y + offset.y) * zoom + .5) | 0
+            );
+        }
+
+        ctx.lineTo(
             ((pos[0].x - offset.x) * zoom + .5) | 0,
             ((-pos[0].y + offset.y) * zoom + .5) | 0
         );
@@ -521,26 +537,35 @@ class Wire {
             );
         }
 
+        if(this.endPos) {
+            ctx.lineTo(
+                ((this.endPos.x - offset.x) * zoom + .5) | 0,
+                ((-this.endPos.y + offset.y) * zoom + .5) | 0
+            );
+        }
+
         ctx.lineWidth = zoom / 10;
         ctx.strokeStyle = this.value ? this.color_on : this.color_off;
         ctx.stroke();
 
         if(zoom > 20) {
-            ctx.fillStyle = this.value ? this.color_on : this.color_off;
-            ctx.beginPath();
-            ctx.arc(
-                ((pos[0].x - offset.x) * zoom + .5) | 0,
-                ((-pos[0].y + offset.y) * zoom + .5) | 0,
-                zoom / 9,
-                0, Math.PI * 2
-            );
-            ctx.fill();
-
-            if(this.to) {
+            if(this.startPos) {
+                ctx.fillStyle = this.value ? this.color_on : this.color_off;
                 ctx.beginPath();
                 ctx.arc(
-                    ((pos.slice(-1)[0].x - offset.x) * zoom + .5) | 0,
-                    ((-pos.slice(-1)[0].y + offset.y) * zoom + .5) | 0,
+                    ((this.startPos.x - offset.x) * zoom + .5) | 0,
+                    ((-this.startPos.y + offset.y) * zoom + .5) | 0,
+                    zoom / 9,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+
+            if(this.endPos) {
+                ctx.beginPath();
+                ctx.arc(
+                    ((this.endPos.x - offset.x) * zoom + .5) | 0,
+                    ((-this.endPos.y + offset.y) * zoom + .5) | 0,
                     zoom / 9,
                     0, Math.PI * 2
                 );
@@ -548,11 +573,40 @@ class Wire {
             }
         }
 
+        // Input/Output label tekenen
+        if(zoom > 40) {
+            if(this.outputLabel) {
+                ctx.font = zoom / 5 + "px Inconsolata";
+                ctx.fillStyle = "#000";
+                ctx.fillText(
+                    this.outputLabel,
+                    ((this.startPos.x - offset.x) * zoom + .5) - ctx.measureText(this.outputLabel).width / 2 | 0,
+                    ((-this.startPos.y + offset.y) * zoom + .5) + zoom / 16 | 0
+                );
+            }
+
+            if(this.inputLabel && this.endPos) {
+                ctx.font = zoom / 5 + "px Inconsolata";
+                ctx.fillStyle = "#000";
+                ctx.fillText(
+                    this.inputLabel,
+                    ((this.endPos.x - offset.x) * zoom + .5) - ctx.measureText(this.inputLabel).width / 2 | 0,
+                    ((-this.endPos.y + offset.y) * zoom + .5) + zoom / 16 | 0
+                );
+            }
+        }
+
         // Blink
         if(this.blinking && zoom > 8) {
-            ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.beginPath();
-            ctx.moveTo(
+            if(this.startPos) {
+                ctx.moveTo(
+                    ((this.startPos.x - offset.x) * zoom + .5) | 0,
+                    ((-this.startPos.y + offset.y) * zoom + .5) | 0
+                );
+            }
+
+            ctx.lineTo(
                 ((pos[0].x - offset.x) * zoom + .5) | 0,
                 ((-pos[0].y + offset.y) * zoom + .5) | 0
             );
@@ -566,24 +620,36 @@ class Wire {
                     ((-pos[i].y + offset.y) * zoom + .5) | 0
                 );
             }
+
+            if(this.endPos) {
+                ctx.lineTo(
+                    ((this.endPos.x - offset.x) * zoom + .5) | 0,
+                    ((-this.endPos.y + offset.y) * zoom + .5) | 0
+                );
+            }
+
+            ctx.lineWidth = zoom / 10;
+            ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.stroke();
 
             if(zoom > 20) {
                 ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
-                ctx.beginPath();
-                ctx.arc(
-                    ((pos[0].x - offset.x) * zoom + .5) | 0,
-                    ((-pos[0].y + offset.y) * zoom + .5) | 0,
-                    zoom / 9,
-                    0, Math.PI * 2
-                );
-                ctx.fill();
-
-                if(this.to) {
+                if(this.startPos) {
                     ctx.beginPath();
                     ctx.arc(
-                        ((pos.slice(-1)[0].x - offset.x) * zoom + .5) | 0,
-                        ((-pos.slice(-1)[0].y + offset.y) * zoom + .5) | 0,
+                        ((this.startPos.x - offset.x) * zoom + .5) | 0,
+                        ((-this.startPos.y + offset.y) * zoom + .5) | 0,
+                        zoom / 9,
+                        0, Math.PI * 2
+                    );
+                    ctx.fill();
+                }
+
+                if(this.endPos) {
+                    ctx.beginPath();
+                    ctx.arc(
+                        ((this.endPos.x - offset.x) * zoom + .5) | 0,
+                        ((-this.endPos.y + offset.y) * zoom + .5) | 0,
                         zoom / 9,
                         0, Math.PI * 2
                     );

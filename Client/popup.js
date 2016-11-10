@@ -6,7 +6,8 @@ let popup = {
     component_list: document.getElementById("component_list"),
     settings: document.getElementById("settings"),
     info: document.getElementById("info"),
-    color_picker: document.getElementById("color_picker")
+    color_picker: document.getElementById("color_picker"),
+    connections: document.getElementById("connections")
 }
 
 // What's new
@@ -169,6 +170,34 @@ if(popup.color_picker) {
     popup.color_picker.submit = function() {
         this.value = document.querySelector("#color_picker input[type=color]").value;
         this.callback(this.value);
+    }
+}
+
+if(popup.connections) {
+    popup.connections.show = function(component) {
+        this.style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+
+        const table = document.querySelector("#connections table");
+        if(component.input) {
+            for(let i = 0; i < component.input.length; ++i) {
+                table.innerHTML +=
+                    `<tr><td>${component.input[i].inputLabel}</td><td>${component.input[i].from.label}</td></tr>`;
+            }
+        }
+
+        if(component.output) {
+            for(let i = 0; i < component.output.length; ++i) {
+                table.innerHTML +=
+                    `<tr><td>${component.output[i].outputLabel}</td><td>${component.output[i].to.label}</td></tr>`;
+            }
+        }
+
+        setTimeout(() => {
+            document.getElementById("overlay").style.opacity = 1;
+            this.style.transform = "scale(1)";
+            this.style.opacity = 1;
+        }, 1);
     }
 }
 

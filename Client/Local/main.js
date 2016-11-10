@@ -240,9 +240,11 @@ c.onmousedown = function(e) {
             }
             else {
                 const component = find(mouse.grid.x,mouse.grid.y);
-                dragging = {
-                    components: [component],
-                    pos: Object.assign([],component.pos)
+                if(component.constructor != Wire) {
+                    dragging = {
+                        components: [component],
+                        pos: Object.assign([], component.pos)
+                    }
                 }
             }
 
@@ -277,7 +279,7 @@ c.onmousedown = function(e) {
                     else wire.from = component;
 
                     connecting = { wire };
-                    components.push(wire);
+                    components.unshift(wire);
 
                     actions.push({
                         method: "add",
@@ -285,7 +287,7 @@ c.onmousedown = function(e) {
                     });
                 }
                 else {
-                    components.unshift(new Selected());
+                    components.push(new Selected());
                     actions.push({
                         method: "add",
                         data: [components.length - 1]
@@ -359,6 +361,21 @@ c.onmousemove = function(e) {
                 } else {
                     let dx = Math.round(i.pos.x) - Math.round(i.pos.x + e.movementX / zoom);
                     let dy = Math.round(i.pos.y) - Math.round(i.pos.y - e.movementY / zoom);
+
+                    if(i.input) {
+                        for(let input of i.input) {
+                            input.endPos.x += e.movementX / zoom;
+                            input.endPos.y -= e.movementY / zoom;
+                        }
+                    }
+
+                    if(i.output) {
+                        for(let output of i.output) {
+                            output.startPos.x += e.movementX / zoom;
+                            output.startPos.y -= e.movementY / zoom;
+                        }
+                    }
+
                     if(dx || dy) {
                         if(i.input) {
                             for(let input of i.input) {
@@ -390,6 +407,9 @@ c.onmousemove = function(e) {
                         if(i.output) {
                             for(let output of i.output) {
                                 if(!dragging.components.includes(output)) {
+                                    output.startPos.x += e.movementX / zoom;
+                                    output.startPos.y -= e.movementY / zoom;
+
                                     let dx = Math.round(i.pos.x) - Math.round(i.pos.x + e.movementX / zoom);
                                     let dy = Math.round(i.pos.y) - Math.round(i.pos.y - e.movementY / zoom);
                                     if(dx || dy) {
@@ -402,7 +422,7 @@ c.onmousemove = function(e) {
                                             let dx = output.pos[0].x - mouse.grid.x;
                                             let dy = output.pos[0].y - mouse.grid.y;
 
-                                            while(dx || dy) {
+                                            while(dx || dx) {
                                                 if(Math.abs(dx) > Math.abs(dy)) {
                                                     output.pos.unshift({ x: output.pos[0].x - Math.sign(dx), y: output.pos[0].y });
                                                     dx -= Math.sign(dx);
@@ -443,21 +463,20 @@ c.onmousemove = function(e) {
                     x: mouse.grid.x,
                     y: mouse.grid.y
                 }
-            } else if(!connecting.wire.pos.length && connecting.wire.from != component) {
+            } else if(!connecting.wire.pos.length && connecting.wire.from != component && connecting.start) {
                 let dx = connecting.start.x - mouse.grid.x;
                 let dy = connecting.start.y - mouse.grid.y;
 
-
                 if(Math.abs(dx) > Math.abs(dy)) {
-                    connecting.wire.pos.push({
+                    connecting.wire.startPos = {
                         x: connecting.start.x - Math.sign(dx) / 2,
                         y: connecting.start.y
-                    });
+                    };
                 } else {
-                    connecting.wire.pos.push({
+                    connecting.wire.startPos = {
                         x: connecting.start.x,
                         y: connecting.start.y - Math.sign(dy) / 2
-                    });
+                    };
                 }
 
                 connecting.wire.pos.push({
@@ -468,10 +487,10 @@ c.onmousemove = function(e) {
                 let dx = connecting.wire.pos.slice(-1)[0].x - mouse.grid.x;
                 let dy = connecting.wire.pos.slice(-1)[0].y - mouse.grid.y;
 
-                connecting.wire.pos.push({
+                connecting.wire.endPos = {
                     x: connecting.wire.pos.slice(-1)[0].x - Math.sign(dx) / 2,
                     y: connecting.wire.pos.slice(-1)[0].y - Math.sign(dy) / 2
-                });
+                }
             } else {
                 // Het verschil in x en y van de muis met het als laatst geplaatste stukje draad wordt opgeslagen in 'dx' en 'dy'
                 let dx = connecting.wire.pos.slice(-1)[0].x - mouse.grid.x;
@@ -584,8 +603,8 @@ c.onmousemove = function(e) {
                     if(component.output) {
                         const wire = new Wire();
                         wire.from = component;
-                        connecting = wire;
-                        components.push(wire);
+                        connecting = { wire };
+                        components.unshift(wire);
 
                         actions.push({
                             method: "add",
