@@ -1,5 +1,27 @@
 let actions = [];
 
+class Action {
+    constructor(method,data) {
+        this.method = method;
+        this.data = data;
+
+        switch(method) {
+            case "add":
+                if(data.length > 1) {
+                    toolbar.message(`Added selection`, "action")
+                } else {
+                    const component = components[data[0]];
+                    if(component.constructor == Wire) {
+                        toolbar.message(`Added connection between ${component.from.name} and ${component.to.name}`, "action")
+                    } else {
+                        toolbar.message(`Added ${component.name}`, "action")
+                    }
+                }
+                break;
+        }
+    }
+}
+
 function undo() {
     if(!actions.length) return;
 

@@ -66,7 +66,7 @@ function parse(string,dx,dy,select) {
                     component.pos.y = Math.round(component.pos.y + dy);
                 }
             }
-            component.label = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
+            component.name = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
             component.constructor == Wire ? components.unshift(component) : components.push(component);
             result.unshift(component);
         }

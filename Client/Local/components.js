@@ -34,23 +34,28 @@ const remove = function(x,y) {
     if(!component) return;
 
     if(component.constructor == Wire) {
-        component.from && component.from.output.splice(component.from.output.indexOf(component),1);
-        component.to && component.to.input.splice(component.to.input.indexOf(component),1);
+        if(component.from) {
+            component.from.output.forEach((output,i) => output.wire == component && component.from.output.splice(i,1));
+        }
+        if(component.to) {
+            component.to.input.forEach((input,i) => input.wire == component && component.to.input.splice(i,1));
+        }
     } else {
         if(component.input) {
             for(let input of component.input) {
-                input.from.output.splice(input.from.output.indexOf(input),1);
-                components.splice(components.indexOf(input),1);              }
+                input.wire.from.output.splice(input.wire.from.output.indexOf(input.wire),1);
+                components.splice(components.indexOf(input.wire),1);
+            }
         }
         if(component.output) {
             for(let output of component.output) {
-                output.to.input.splice(output.to.input.indexOf(output),1);
-                components.splice(components.indexOf(output),1);
+                output.wire.to.input.splice(output.wire.to.input.indexOf(output.wire),1);
+                components.splice(components.indexOf(output.wire),1);
             }
         }
     }
 
-    toolbar.message("Removed " + component.label);
+    toolbar.message("Removed " + component.name, "action");
     components.splice(components.indexOf(component),1);
 }
 
@@ -66,14 +71,33 @@ const clone = function(target) {
         else component[key] = target[key];
     }
 
-    if(component.label &&
-       component.label.split("#").length == 2 &&
-       component.label.split("#")[0] == component.constructor.name) {
-        component.label = component.label.split("#")[0] + "#" + components.filter(n => n.constructor == component.constructor).length;
+    if(component.name &&
+       component.name.split("#").length == 2 &&
+       component.name.split("#")[0] == component.constructor.name) {
+        component.name = component.name.split("#")[0] + "#" + components.filter(n => n.constructor == component.constructor).length;
     }
     component.blinking = null;
 
     return component;
+}
+
+function connect(from,to,wire,outputLabel,inputLabel) {
+    if(!outputLabel) outputLabel = String.fromCharCode(65 + from.output.length);
+    if(!inputLabel) inputLabel = String.fromCharCode(65 + to.input.length);
+
+    from.output.push({
+        wire,
+        value: wire.value,
+        label: outputLabel
+    });
+
+    to.input.push({
+        wire,
+        value: wire.value,
+        label: inputLabel
+    });
+
+    from.update();
 }
 
 let Selected;
@@ -83,7 +107,7 @@ class Input {
         pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
-        label,
+        name,
         func_in = n => +!n,
         func_out = n => [n]
     ) {
@@ -96,11 +120,11 @@ class Input {
         this.height = height;
         this.width = width;
 
-        if(!label) {
+        if(!name) {
             const n = components.filter(n => n.constructor == this.constructor).length;
-            label = this.constructor.name + "#" + n;
+            name = this.constructor.name + "#" + n;
         }
-        this.label = label;
+        this.name = name;
     }
 
     connect(component,wire) {
@@ -109,6 +133,8 @@ class Input {
 
         this.output.push(wire);
         component.input.push(wire);
+
+        this.update();
     }
 
     update(value = this.value) {
@@ -116,10 +142,9 @@ class Input {
         for(let i = 0; i < this.output.length; ++i) {
             const value = i < result.length ? result[i] : result[result.length - 1];
 
-            if(value != this.output[i].value) {
-                this.output[i].value = value;
-                //this.output[i].to.update();
-                setTimeout(this.output[i].to.update.bind(this.output[i].to), +settings.update_delay);
+            if(value != this.output[i].wire.value) {
+                this.output[i].wire.value = value;
+                setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
             }
         }
     }
@@ -169,11 +194,11 @@ class Input {
         }
 
         if(zoom > 20) {
-            // Label tekenen
+            // Naam van component tekenen
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
             ctx.fillText(
-                this.label,
+                this.name,
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
@@ -195,8 +220,8 @@ class Input {
 }
 
 class Constant extends Input {
-    constructor(pos,height,width,label,value = prompt("Enter the value")) {
-        super(pos,height,width,label);
+    constructor(pos,height,width,name,value = prompt("Enter the value")) {
+        super(pos,height,width,name);
         this.onclick = undefined;
 
         this.value = +!isNaN(value) && +!!value;
@@ -204,8 +229,8 @@ class Constant extends Input {
 }
 
 class Clock extends Input {
-    constructor(pos,height,width,label) {
-        super(pos,height,width,label);
+    constructor(pos,height,width,name) {
+        super(pos,height,width,name);
         this.onclick = undefined;
 
         this.delay;
@@ -214,7 +239,7 @@ class Clock extends Input {
             "Enter the delay in ms",
             n => {
                 this.delay = +n;
-                this.label += "@" + this.delay + "ms";
+                this.name += "@" + this.delay + "ms";
                 setInterval(() => {
                     this.value = +!this.value;
                     this.update();
@@ -225,8 +250,8 @@ class Clock extends Input {
 }
 
 class D2B extends Input {
-    constructor(pos,height = 3,width,label,bits = 8) {
-        super(pos,height,width,label);
+    constructor(pos,height = 3,width,name,bits = 8) {
+        super(pos,height,width,name);
         this.width = bits;
         this.func_in = function() {
             popup.prompt.show(
@@ -245,7 +270,7 @@ class Output {
         pos = { x: mouse.grid.x, y: mouse.grid.y },
         height = 1,
         width = 2,
-        label,
+        name,
         max_inputs = 1,
         func = input => input[0]
     ) {
@@ -258,11 +283,11 @@ class Output {
         this.height = height;
         this.width = width;
 
-        if(!label) {
+        if(!name) {
             const n = components.filter(n => n.constructor == this.constructor).length;
-            label = this.constructor.name + "#" + n;
+            name = this.constructor.name + "#" + n;
         }
-        this.label = label;
+        this.name = name;
     }
 
     update() {
@@ -307,12 +332,12 @@ class Output {
         }
 
         if(zoom > 20) {
-            // Label tekenen
+            // Naam van component tekenen
             ctx.fillStyle = "#111";
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
             ctx.fillText(
-                this.label,
+                this.name,
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
@@ -334,8 +359,8 @@ class Output {
 }
 
 class B2D extends Output {
-    constructor(pos,height,width,label,bits = 8) {
-        super(pos,height,width,label,bits);
+    constructor(pos,height,width,name,bits = 8) {
+        super(pos,height,width,name,bits);
         this.func = input => parseInt(input.join(""),2);
         this.width = bits;
         this.height = 3;
@@ -348,7 +373,7 @@ class Gate {
         height = 1,
         width = 2,
         icon = "?",
-        label,
+        name,
         max_inputs = 2,
         func = input => input
     ) {
@@ -362,11 +387,11 @@ class Gate {
         this.width = width;
 
         this.icon = icon;
-        if(!label) {
+        if(!name) {
             const n = components.filter(n => n.constructor == this.constructor).length;
-            label = this.constructor.name + "#" + n;
+            name = this.constructor.name + "#" + n;
         }
-        this.label = label;
+        this.name = name;
     }
 
     connect(component,wire) {
@@ -375,6 +400,8 @@ class Gate {
 
         this.output.push(wire);
         component.input.push(wire);
+
+        this.update();
     }
 
     update() {
@@ -382,10 +409,9 @@ class Gate {
         for(let i = 0; i < this.output.length; ++i) {
             const value = i < result.length ? result[i] : result[result.length - 1];
 
-            if(value != this.output[i].value) {
-                this.output[i].value = result[i] ? result[i] : result[result.length - 1];
-                //this.output[i].to.update();
-                setTimeout(this.output[i].to.update.bind(this.output[i].to), +settings.update_delay);
+            if(value != this.output[i].wire.value) {
+                this.output[i].wire.value = result[i] ? result[i] : result[result.length - 1];
+                setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
             }
         }
     }
@@ -428,11 +454,11 @@ class Gate {
         }
 
         if(zoom > 20) {
-            // Label tekenen
+            // Naam van component tekenen
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
             ctx.fillText(
-                this.label,
+                this.name,
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
@@ -454,30 +480,30 @@ class Gate {
 }
 
 class NOT extends Gate {
-    constructor(pos,height = 1,width = 1,label) {
+    constructor(pos,height = 1,width = 1,name) {
         const func = input => input.map(n => +!n);
-        super(pos,height,width,"!",label,1,func);
+        super(pos,height,width,"!",name,1,func);
     }
 }
 
 class AND extends Gate {
-    constructor(pos,height = 2,width = 2,label) {
+    constructor(pos,height = 2,width = 2,name) {
         const func = input => [input[0] & input[1]];
-        super(pos,height,width,"&",label,2,func);
+        super(pos,height,width,"&",name,2,func);
     }
 }
 
 class OR extends Gate {
-    constructor(pos,height = 2,width = 2,label) {
+    constructor(pos,height = 2,width = 2,name) {
         const func = input => [input[0] | input[1]];
-        super(pos,height,width,"|",label,2,func);
+        super(pos,height,width,"|",name,2,func);
     }
 }
 
 class XOR extends Gate {
-    constructor(pos,height = 2,width = 2,label) {
+    constructor(pos,height = 2,width = 2,name) {
         const func = input => [input[0] ^ input[1]];
-        super(pos,height,width,"^",label,2,func);
+        super(pos,height,width,"^",name,2,func);
     }
 }
 
@@ -573,29 +599,6 @@ class Wire {
             }
         }
 
-        // Input/Output label tekenen
-        if(zoom > 40) {
-            if(this.outputLabel) {
-                ctx.font = zoom / 5 + "px Inconsolata";
-                ctx.fillStyle = "#000";
-                ctx.fillText(
-                    this.outputLabel,
-                    ((this.startPos.x - offset.x) * zoom + .5) - ctx.measureText(this.outputLabel).width / 2 | 0,
-                    ((-this.startPos.y + offset.y) * zoom + .5) + zoom / 16 | 0
-                );
-            }
-
-            if(this.inputLabel && this.endPos) {
-                ctx.font = zoom / 5 + "px Inconsolata";
-                ctx.fillStyle = "#000";
-                ctx.fillText(
-                    this.inputLabel,
-                    ((this.endPos.x - offset.x) * zoom + .5) - ctx.measureText(this.inputLabel).width / 2 | 0,
-                    ((-this.endPos.y + offset.y) * zoom + .5) + zoom / 16 | 0
-                );
-            }
-        }
-
         // Blink
         if(this.blinking && zoom > 8) {
             ctx.beginPath();
@@ -631,31 +634,6 @@ class Wire {
             ctx.lineWidth = zoom / 10;
             ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.stroke();
-
-            if(zoom > 20) {
-                ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
-                if(this.startPos) {
-                    ctx.beginPath();
-                    ctx.arc(
-                        ((this.startPos.x - offset.x) * zoom + .5) | 0,
-                        ((-this.startPos.y + offset.y) * zoom + .5) | 0,
-                        zoom / 9,
-                        0, Math.PI * 2
-                    );
-                    ctx.fill();
-                }
-
-                if(this.endPos) {
-                    ctx.beginPath();
-                    ctx.arc(
-                        ((this.endPos.x - offset.x) * zoom + .5) | 0,
-                        ((-this.endPos.y + offset.y) * zoom + .5) | 0,
-                        zoom / 9,
-                        0, Math.PI * 2
-                    );
-                    ctx.fill();
-                }
-            }
 
             this.blinking += .1;
         }

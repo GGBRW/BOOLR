@@ -36,8 +36,8 @@ DOMconsole.input.onkeydown = function(e) {
                     "<b>help</b>: get list of all commands<br>" +
                     "<b>center</b>: move to center of the map<br>" +
                     "<b>goto [x] [y]</b>: move to a point on the map<br>" +
-                    "<b>find [label]</b>: find and move to component<br>" +
-                    "<b>connect [label] [label]</b>: connect two components<br>"
+                    "<b>find [name]</b>: find and move to component<br>" +
+                    "<b>connect [name] [name]</b>: connect two components<br>"
                 );
                 break;
             case "center":
@@ -57,14 +57,14 @@ DOMconsole.input.onkeydown = function(e) {
                 scroll(dx,dy);
                 break;
             case "find":
-                let component = components.find(n => n.label == args[0]);
+                let component = components.find(n => n.name == args[0]);
                 if(component) {
                     DOMconsole.messages.innerHTML += "<div class='output'>Component '" + args[0] + "' found at " + component.pos.x + " " + component.pos.y + "</div>";
                 } else DOMconsole.messages.innerHTML += "<div class='output'>No component called '" + args[0] + "' found</div>";
                 break;
             case "connect":
-                let from = components.find(n => n.label == args[0]);
-                let to = components.find(n => n.label == args[1]);
+                let from = components.find(n => n.name == args[0]);
+                let to = components.find(n => n.name == args[1]);
                 if(!from && !to) {
                     DOMconsole.messages.innerHTML += "<div class='output'>No components called '" + args[0] + "' and '" + args[1] + "' found</div>";
                 } else if(!from) {

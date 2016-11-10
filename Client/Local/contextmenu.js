@@ -18,7 +18,7 @@ contextMenu.show = function(pos) {
             if(component.constructor == Wire) {
                 this.appendChild(context_options["edit_color"]);
             } else {
-                component.label && this.appendChild(context_options["edit_label"]);
+                component.name && this.appendChild(context_options["edit_name"]);
                 this.appendChild(context_options["rotate"]);
                 this.appendChild(context_options["copy"]);
                 this.appendChild(context_options["view connections"]);
@@ -44,13 +44,13 @@ contextMenu.hide = function() {
 /* Menu options */
 const context_options = {};
 
-// Edit label
-context_options["edit_label"] = document.createElement("li");
-context_options["edit_label"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit Label [E]</span>';
-context_options["edit_label"].onclick = () => {
+// Edit name
+context_options["edit_name"] = document.createElement("li");
+context_options["edit_name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name [E]</span>';
+context_options["edit_name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
-    if(component && component.label) {
-        popup.prompt.show("Edit label","Enter label name:", label => label && label.length < 18 && (component.label = label));
+    if(component && component.name) {
+        popup.prompt.show("Edit name","Enter a name for this component:", name => name && name.length < 18 && (component.name = name));
     }
 }
 

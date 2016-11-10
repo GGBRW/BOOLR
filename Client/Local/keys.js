@@ -98,8 +98,8 @@ c.onkeydown = function(e) {
                     && (component.color_off = color) && (component.color_on = lighter(color,50))
                 )
             }
-            else if(component && component.label) {
-                popup.prompt.show("Edit label","Enter label name:", label => label && label.length < 18 && (component.label = label));
+            else if(component && component.name) {
+                popup.prompt.show("Edit name","Enter a name for this component:", name => name && name.length < 18 && (component.name = name));
             }
             return false;
             break;

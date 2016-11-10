@@ -2,7 +2,7 @@ const componentInfo = document.getElementById("componentInfo");
 componentInfo.expanded = false;
 
 componentInfo.show = function(component,pos) {
-    this.innerHTML = `<h1>${ component.label }</h1>`;
+    this.innerHTML = `<h1>${ component.name }</h1>`;
     this.innerHTML += `${ component.constructor.name }<br>`;
     this.innerHTML += `x: ${ component.pos.x }, y: ${ component.pos.y }<br>`;
 

@@ -123,11 +123,18 @@
 
 .popup table {
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
+    font-family: "Ubuntu";
 }
 
 .popup table, .popup td, .popup th {
     border: 2px solid #bbb;
+}
+
+.popup th {
+    font-family: "Roboto", Arial;
+    font-size: 12px;
 }
 
 #confirm, #prompt { z-index: 102 }

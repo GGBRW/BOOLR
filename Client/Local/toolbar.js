@@ -6,17 +6,23 @@ function select(Component) {
 
 const toolbar = document.getElementById("toolbar");
 let hideToolbarMessage;
-toolbar.message = function(msg) {
+toolbar.message = function(msg,type) {
     clearTimeout(hideToolbarMessage);
 
     const toast = document.getElementById("toast");
     toast.style.display = "block";
-    toast.innerHTML = msg + "<button class=\"material-icons\">undo</button> Undo";
+    toast.innerHTML = msg;
     toast.style.marginLeft = -toast.clientWidth / 2 + "px";
     toast.style.opacity = 1;
     hideToolbarMessage = setTimeout(() => {
         toast.style.opacity = 0;
     },3000);
+
+    if(type == "warning") {
+        toast.innerHTML = "<span class='material-icons' style='opacity: .5'>warning</span>" + toast.innerHTML;
+    } else if(type == "action") {
+        toast.innerHTML += "<button onclick='undo()'><span class='material-icons'>undo</span>Undo</button>";
+    }
 }
 
 document.getElementsByClassName("slot")[0].onmousedown = function() {

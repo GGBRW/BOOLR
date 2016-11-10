@@ -182,14 +182,14 @@ if(popup.connections) {
         if(component.input) {
             for(let i = 0; i < component.input.length; ++i) {
                 table.innerHTML +=
-                    `<tr><td>${component.input[i].inputLabel}</td><td>${component.input[i].from.label}</td></tr>`;
+                    `<tr><td>${component.input[i].inputLabel}</td><td>${component.input[i].from.label}</td><td>${component.input[i].value}</td></tr>`;
             }
         }
 
         if(component.output) {
             for(let i = 0; i < component.output.length; ++i) {
                 table.innerHTML +=
-                    `<tr><td>${component.output[i].outputLabel}</td><td>${component.output[i].to.label}</td></tr>`;
+                    `<tr><td>${component.output[i].outputLabel}</td><td>${component.output[i].to.label}</td><td>${component.output[i].value}</td></tr>`;
             }
         }
 

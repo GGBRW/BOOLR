@@ -246,17 +246,24 @@ canvas {
     border-radius: 1000px;
 }
 
-#toolbar #toast button {
-    margin: 0 0 0 10px;
-    padding: 0 0 0 10px;
-    background: transparent;
-    border: none;
-    border-left: 1px solid #222;
-    font-size: 18px;
+#toolbar .material-icons {
+    font-size: 20px;
+    margin-right: 5px;
 }
 
-#toolbar #toast button:hover {
-    background: rgba(0,0,0,.33);
+#toolbar button {
+    cursor: pointer;
+    pointer-events: auto;
+    background: transparent;
+    border: none;
+    border-left: 1px solid rgba(0,0,0,.5);
+    margin: 0 0 0 10px;
+    padding: 0 0 0 10px;
+    outline: none;
+}
+
+#toolbar button .material-icons {
+    margin-right: 5px;
 }
 
 #toolbar #list {
