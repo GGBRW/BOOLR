@@ -178,19 +178,33 @@ if(popup.connections) {
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
 
-        const table = document.querySelector("#connections table");
-        if(component.input) {
+        const container = document.querySelector("#connections div");
+        container.innerHTML = "";
+
+        if(component.input && component.input.length) {
+            const inputTable = document.createElement("table");
+            inputTable.innerHTML += "<tr><th>Label</th><th>Connected with</th><th>Value</th></tr>";
             for(let i = 0; i < component.input.length; ++i) {
-                table.innerHTML +=
-                    `<tr><td>${component.input[i].inputLabel}</td><td>${component.input[i].from.label}</td><td>${component.input[i].value}</td></tr>`;
+                inputTable.innerHTML +=
+                    `<tr><td>${component.input[i].label}</td><td>${component.input[i].wire.from.name}</td><td>${component.input[i].wire.value}</td></tr>`;
             }
+            container.appendChild(inputTable);
+        } else {
+            container.innerHTML += "<span>This component has no input</span>";
         }
 
-        if(component.output) {
+        container.innerHTML += "<br><br>";
+
+        if(component.output && component.output.length) {
+            const outputTable = document.createElement("table");
+            outputTable.innerHTML += "<tr><th>Label</th><th>Connected with</th><th>Value</th></tr>";
             for(let i = 0; i < component.output.length; ++i) {
-                table.innerHTML +=
-                    `<tr><td>${component.output[i].outputLabel}</td><td>${component.output[i].to.label}</td><td>${component.output[i].value}</td></tr>`;
+                outputTable.innerHTML +=
+                    `<tr><td>${component.output[i].label}</td><td>${component.output[i].wire.to.name}</td><td>${component.output[i].wire.value}</td></tr>`;
             }
+            container.appendChild(outputTable);
+        } else {
+            container.innerHTML += "<span>This component has no output</span>";
         }
 
         setTimeout(() => {

@@ -5,10 +5,6 @@
 <link rel="stylesheet" href="style.css">
 <!-- Stylesheet met daarin de opmaak van alle pop-ups -->
 <link rel="stylesheet" href="../popup.css">
-<!-- Stylesheet van Google om gebruik te maken van hun 'Material' icon-pack, die ook gebruikt wordt in Android -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!-- Ubuntu lettertype stylesheet van Google Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
 <!-- Titel van de pagina -->
 <title>PWS // SANDBOX MODE</title>
@@ -89,8 +85,11 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li>Undo met Ctrl + Z (miss nog instabiel)</li>
-        <li>Bugjes weg</li>
+        <li><span style="font-family: Edwardian Script ITC; font-size: 30px">Verbeterd design</span></li>
+        <li><i class="material-icons">lightbulb_outline</i>(tips)</li>
+        <li>Draden trekken verbeterd</li>
+        <li>Input/Output labels</li>
+        <li>Een paar nieuwe fancy animatietjes</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -144,11 +143,18 @@ class Component {
 
 <div class="popup" id="connections">
     <h1>Connections</h1>
-    <h3>Input</h3>
-    <table id="input">
-        <tr><th>LABEL</th><th>CONNECTED WITH</th><th>VALUE</th></tr>
-    </table>
+    <div></div>
     <button class="ok">Close</button>
+</div>
+
+<!-- Tips -->
+<div class="tip" id="dragging">
+    <i class="material-icons">lightbulb_outline</i>
+    Press the right mouse button to cancel dragging
+</div>
+<div class="tip" id="connecting">
+    <i class="material-icons">lightbulb_outline</i>
+    Hold the shift key to draw the wire in a straight line
 </div>
 
 <!-- Open files -->
@@ -189,12 +195,13 @@ class Component {
 <script src="debug.js"></script>
 <script src="contextmenu.js"></script>
 <script src="componentInfo.js"></script>
+<script src="tips.js"></script>
 <script src="../popup.js"></script>
 <script src="stringifier.js"></script>
 <script>
     "use strict";
 
-    const VERSION = "0.1.102";
+    const VERSION = "0.1.121";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

@@ -87,13 +87,11 @@ function connect(from,to,wire,outputLabel,inputLabel) {
 
     from.output.push({
         wire,
-        value: wire.value,
         label: outputLabel
     });
 
     to.input.push({
         wire,
-        value: wire.value,
         label: inputLabel
     });
 
@@ -180,7 +178,7 @@ class Input {
 
 
         if(zoom > 10) {
-            // Icoon tekenen
+            // Draw the icon of the component
             if(zoom > 21) ctx.fillStyle = "#111";
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
@@ -194,7 +192,7 @@ class Input {
         }
 
         if(zoom > 20) {
-            // Naam van component tekenen
+            // Draw the name of the component in the upper left side of the component
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
             ctx.fillText(
@@ -202,6 +200,30 @@ class Input {
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
+        }
+
+        if(zoom > 20) {
+            // Draw the labels of the connections of the component
+            for(let i = 0; i < this.output.length; ++i) {
+                const output = this.output[i];
+                ctx.beginPath();
+                ctx.arc(
+                    (output.wire.pos[0].x - offset.x) * zoom,
+                    (-output.wire.pos[0].y + offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+
+                ctx.font = zoom / 6 + "px Roboto Condensed";
+                ctx.fillStyle = "#ddd";
+                ctx.fillText(
+                    output.label,
+                    (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
+                    (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
+                );
+            }
         }
 
         // Blink
@@ -291,7 +313,7 @@ class Output {
     }
 
     update() {
-        this.value = this.func(this.input.map(n => n.value));
+        this.value = this.func(this.input.map(n => n.wire.value));
     }
 
     blink(duration = 1000) {
@@ -318,7 +340,7 @@ class Output {
         );
 
         if(zoom > 10) {
-            // Icoon tekenen
+            // Draw the icon of the component
             if(zoom > 21) ctx.fillStyle = "#111";
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
@@ -332,7 +354,7 @@ class Output {
         }
 
         if(zoom > 20) {
-            // Naam van component tekenen
+            // Draw the name of the component in the upper left side of the component
             ctx.fillStyle = "#111";
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
@@ -341,6 +363,29 @@ class Output {
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
+        }
+
+        if(zoom > 20) {
+            // Draw the labels of the connections of the component
+            for(let i = 0; i < this.input.length; ++i) {
+                ctx.beginPath();
+                ctx.arc(
+                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+
+                ctx.font = zoom / 6 + "px Roboto Condensed";
+                ctx.fillStyle = "#ddd";
+                ctx.fillText(
+                    this.input[i].label,
+                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(this.input[i].label).width / 2,
+                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                );
+            }
         }
 
         // Blink
@@ -405,7 +450,7 @@ class Gate {
     }
 
     update() {
-        const result = this.func(this.input.map(n => n.value));
+        const result = this.func(this.input.map(n => n.wire.value));
         for(let i = 0; i < this.output.length; ++i) {
             const value = i < result.length ? result[i] : result[result.length - 1];
 
@@ -440,7 +485,7 @@ class Gate {
         );
 
         if(zoom > 10) {
-            // Icoon tekenen
+            // Draw the icon of the component
             if(zoom > 21) ctx.fillStyle = "#111";
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
@@ -454,7 +499,7 @@ class Gate {
         }
 
         if(zoom > 20) {
-            // Naam van component tekenen
+            // Draw the name of the component in the upper left side of the component
             ctx.font = zoom / 5 + "px Inconsolata";
             ctx.fillStyle = "#888";
             ctx.fillText(
@@ -462,6 +507,49 @@ class Gate {
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
             );
+        }
+
+        if(zoom > 20) {
+            // Draw the labels of the connections of the component
+            for(let i = 0; i < this.input.length; ++i) {
+                ctx.beginPath();
+                ctx.arc(
+                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+
+                ctx.font = zoom / 6 + "px Roboto Condensed";
+                ctx.fillStyle = "#ddd";
+                ctx.fillText(
+                    this.input[i].label,
+                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(this.input[i].label).width / 2,
+                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                );
+            }
+
+            for(let i = 0; i < this.output.length; ++i) {
+                ctx.beginPath();
+                ctx.arc(
+                    (this.output[i].wire.pos[0].x - offset.x) * zoom,
+                    (-this.output[i].wire.pos[0].y + offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+
+                ctx.font = zoom / 6 + "px Roboto Condensed";
+                ctx.fillStyle = "#ddd";
+                ctx.fillText(
+                    this.output[i].label,
+                    (this.output[i].wire.pos[0].x - offset.x) * zoom - ctx.measureText(this.output[i].label).width / 2,
+                    (-this.output[i].wire.pos[0].y + offset.y) * zoom + zoom / 18
+                );
+            }
         }
 
         // Blink

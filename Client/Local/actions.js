@@ -8,11 +8,11 @@ class Action {
         switch(method) {
             case "add":
                 if(data.length > 1) {
-                    toolbar.message(`Added selection`, "action")
+                    toolbar.message(`Added selection`, "action");
                 } else {
                     const component = components[data[0]];
                     if(component.constructor == Wire) {
-                        toolbar.message(`Added connection between ${component.from.name} and ${component.to.name}`, "action")
+                        toolbar.message(`Added a connection between ${component.from.name} and ${component.to.name}`, "action")
                     } else {
                         toolbar.message(`Added ${component.name}`, "action")
                     }

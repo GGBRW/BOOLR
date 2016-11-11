@@ -32,7 +32,7 @@
 }
 
 .popup h1 {
-    font-family: "Roboto";
+    font-family: "Ubuntu";
     font-size: 25px;
     font-weight: 400;
     padding-bottom: 20px;
@@ -125,17 +125,26 @@
     border-collapse: collapse;
     width: 90%;
     margin: 0 auto;
-    font-family: "Ubuntu";
 }
 
 .popup table, .popup td, .popup th {
     border: 2px solid #bbb;
+    font-family: "Roboto", Arial;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
 }
 
 .popup th {
-    font-family: "Roboto", Arial;
-    font-size: 12px;
+    background: #bbb;
+    font-weight: 800;
 }
+
+.popup span {
+    text-align: left;
+    color: #444444;
+}
+
 
 #confirm, #prompt { z-index: 102 }
 

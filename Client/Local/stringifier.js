@@ -55,9 +55,23 @@ function parse(string,dx,dy,select) {
             let component = eval("new " + i[0]);
             Object.assign(component,i[1]);
 
+            if(component.constructor == Wire) {
+                if(component.pos[0].x % 1 == 0 && component.pos[0].y % 1 == 0
+                && component.pos.slice(-1)[0].x % 1 == 0 && component.pos.slice(-1)[0].y % 1 == 0) {
+                    const dx1 = component.pos[1].x - component.pos[0].x;
+                    const dy1 = component.pos[1].y - component.pos[0].y;
+                    const dx2 = component.pos.slice(-2)[0].x - component.pos.slice(-1)[0].x;
+                    const dy2 = component.pos.slice(-2)[0].y - component.pos.slice(-1)[0].y;
+                    component.pos[0].x += dx1 / 2;
+                    component.pos[0].y += dy1 / 2;
+                    component.pos.slice(-1)[0].x += dx2 / 2;
+                    component.pos.slice(-1)[0].y += dy2 / 2;
+                }
+            }
+
             if(dx && dy) {
-                if (Array.isArray(component.pos)) {
-                    for (let pos of component.pos) {
+                if(Array.isArray(component.pos)) {
+                    for(let pos of component.pos) {
                         pos.x = Math.round(pos.x + dx);
                         pos.y = Math.round(pos.y + dy);
                     }
@@ -80,7 +94,7 @@ function parse(string,dx,dy,select) {
 
             wire.from = from;
             wire.to = to;
-            from.connect(to,wire);
+            connect(from,to,wire);
         }
 
         if(select) {

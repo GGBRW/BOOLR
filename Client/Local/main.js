@@ -19,7 +19,12 @@ const scroll = (dx,dy) => {
 }
 
 const changeZoom = (dz) => {
-    zoom_animation += dz;
+    zoom_animation = Math.min(
+        Math.max(
+            zoom_animation + dz,
+            2),
+        300
+    );
 }
 
 let visible_components = 0;
@@ -81,12 +86,12 @@ function draw() {
         }
     }
 
-    // Component info
+    // Draw component info
     const component = find(mouse.grid.x, mouse.grid.y);
     if(keys[32] && component && component.constructor != Wire) componentInfo.show(component, { x: mouse.screen.x, y: -(component.pos.y - offset.y) * zoom - 20 });
     else if(componentInfo.style.display != "none") componentInfo.hide();
 
-    // Selecties tekenen
+    // Draw selections
     if(selecting) {
         if(selecting.w && selecting.h) {
             ctx.fillStyle = "rgba(0,90,180,.1)";
@@ -108,7 +113,7 @@ function draw() {
         }
     }
 
-    // Context menu tekenen
+    // Draw context menu
     if(document.getElementById("contextMenu").style.display != "none") {
         const contextMenu = document.getElementById("contextMenu");
         contextMenu.style.left = (contextMenu.pos.x - offset.x) * zoom;
@@ -306,49 +311,33 @@ c.onmousedown = function(e) {
         else if(dragging) {
             // Cancel dragging
             if(dragging.selection) {
-                // Put all the old positions of the components in an array
-                let old = [];
-                for(let i = 0; i < selecting.components.length; ++i) {
-                    const component = selecting.components[i];
-                    if(component.constructor == Wire) {
-                        old.push([
-                            ...component.pos.map(function(pos) {
-                                return {
-                                    x: pos.x - selecting.x + dragging.pos.x,
-                                    y: pos.y - selecting.y + dragging.pos.y
-                                }
-                            })
-                        ]);
-                    } else {
-                        old.push({
-                            x: component.pos.x - selecting.x + dragging.pos.x,
-                            y: component.pos.y - selecting.y + dragging.pos.y
-                        });
-                    }
-                }
-
                 // An animation for the selection flying back to his old position
                 (function animate() {
-                    selecting.x += (dragging.pos.x - selecting.x) / 2.5;
-                    selecting.y += (dragging.pos.y - selecting.y) / 2.5;
-                    contextMenu.pos.x += (dragging.pos.x + selecting.w - contextMenu.pos.x) / 2.5;
-                    contextMenu.pos.y += (dragging.pos.y + selecting.h - contextMenu.pos.y) / 2.5;
+                    let dx = dragging.pos.x - selecting.x;
+                    let dy = dragging.pos.y - selecting.y;
+
+                    selecting.x += dx / 2.5;
+                    selecting.y += dy / 2.5;
+                    contextMenu.pos.x += dx / 2.5;
+                    contextMenu.pos.y += dy / 2.5;
 
                     for(let i = 0; i < selecting.components.length; ++i) {
                         const component = selecting.components[i];
                         if(component.constructor == Wire) {
                             component.pos.map((pos,j) => {
-                                pos.x += (old[i][j].x - pos.x) / 2.5;
-                                pos.y += (old[i][j].y - pos.y) / 2.5;
+                                pos.x += dx / 2.5;
+                                pos.y += dy / 2.5;
                             });
                         } else {
-                            component.pos.x += (old[i].x - component.pos.x) / 2.5;
-                            component.pos.y += (old[i].y - component.pos.y) / 2.5;
+                            component.pos.x += dx / 2.5;
+                            component.pos.y += dy / 2.5;
                         }
                     }
 
-                    if(Math.abs(dragging.pos.x - selecting.x) * zoom > 1 ||
-                        Math.abs(dragging.pos.y - selecting.y) * zoom > 1) {
+                    if(Math.abs(dx) * zoom > 1 ||
+                        Math.abs(dy) * zoom > 1) {
+                        dx -= dx / 2.5;
+                        dy -= dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
@@ -441,7 +430,19 @@ c.onmousemove = function(e) {
                 dragging.component.pos.y -= e.movementY / zoom;
 
                 // Then, all the wires to and from the component need to be fixed...
+                if(dragging.component.input) {
+                    for(let i = 0; i < dragging.component.input.length; ++i) {
+                        dragging.component.input[i].wire.pos.slice(-1)[0].x += e.movementX / zoom;
+                        dragging.component.input[i].wire.pos.slice(-1)[0].y -= e.movementY / zoom;
+                    }
+                }
 
+                if(dragging.component.output) {
+                    for(let i = 0; i < dragging.component.output.length; ++i) {
+                        dragging.component.output[i].wire.pos[0].x += e.movementX / zoom;
+                        dragging.component.output[i].wire.pos[0].y -= e.movementY / zoom;
+                    }
+                }
             }
         }
         else if(connecting) {
@@ -455,38 +456,65 @@ c.onmousemove = function(e) {
             // If dx and dy are both 0, no new positions have to be put into the wire's 'pos' array: return
             if(!dx && !dy) return;
 
+            // If the shift key is down, we want the wire to be drawn in a straight line
+            if(e.shiftKey) {
+                if(!connecting.hasOwnProperty("lock")) {
+                    if(e.movementX != e.movementY) connecting.lock = Math.abs(e.movementX) < Math.abs(e.movementY);
+                } else {
+                    connecting.lock ? dx = 0 : dy = 0;
+                }
+            }
+
             while((dx || dy) && dx + dy < 10000) {
                 if(Math.abs(dx) > Math.abs(dy)) {
-                    wire.pos.push({
-                        x: wire.pos.slice(-1)[0].x + Math.sign(dx),
-                        y: wire.pos.slice(-1)[0].y
-                    });
+                    if(wire.pos.slice(-1)[0].x + Math.sign(dx) == wire.pos.slice(-2)[0].x &&
+                       wire.pos.slice(-1)[0].y == wire.pos.slice(-2)[0].y) {
+                        wire.pos.splice(-1);
+                    } else {
+                        wire.pos.push({
+                            x: wire.pos.slice(-1)[0].x + Math.sign(dx),
+                            y: wire.pos.slice(-1)[0].y
+                        });
+                    }
                     dx -= Math.sign(dx);
                 } else {
-                    wire.pos.push({
-                        x: wire.pos.slice(-1)[0].x,
-                        y: wire.pos.slice(-1)[0].y + Math.sign(dy)
-                    });
+                    if(wire.pos.slice(-1)[0].x == wire.pos.slice(-2)[0].x &&
+                        wire.pos.slice(-1)[0].y + Math.sign(dy) == wire.pos.slice(-2)[0].y) {
+                        wire.pos.splice(-1);
+                    } else {
+                        wire.pos.push({
+                            x: wire.pos.slice(-1)[0].x,
+                            y: wire.pos.slice(-1)[0].y + Math.sign(dy)
+                        });
+                    }
                     dy -= Math.sign(dy);
                 }
             }
 
             // Get component under user's mouse
             const component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.constructor != Wire && component != connecting.wire.from && component.input) {
+            if(component == connecting.wire.from) {
+                connecting.wire.pos = [{
+                    x: mouse.grid.x,
+                    y: mouse.grid.y
+                }];
+            } else if(component && component.constructor != Wire && component.input) {
                 // If there's a component under the user's mouse that has free input ports, connect with this component
                 if(component.input.length >= component.max_inputs) {
                     toolbar.message(`Component ${component.name} has no free input ports`, "warning");
                 } else {
                     // Remove the wire parts under the two components
-                    wire.pos[0].x += (wire.pos[1].x - wire.pos[0].x) / 2;
-                    wire.pos[0].y += (wire.pos[1].y - wire.pos[0].y) / 2;
+                    const dx1 = wire.pos[1].x - wire.pos[0].x;
+                    const dy1 = wire.pos[1].y - wire.pos[0].y;
+                    const dx2 = wire.pos.slice(-2)[0].x - wire.pos.slice(-1)[0].x;
+                    const dy2 = wire.pos.slice(-2)[0].y - wire.pos.slice(-1)[0].y;
+                    wire.pos[0].x += dx1 / 2;
+                    wire.pos[0].y += dy1 / 2;
+                    wire.pos.slice(-1)[0].x += dx2 / 2;
+                    wire.pos.slice(-1)[0].y += dy2 / 2;
 
-                    wire.pos.slice(-1)[0].x += (wire.pos.slice(-2)[0].x - wire.pos.slice(-1)[0].x) / 2;
-                    wire.pos.slice(-1)[0].y += (wire.pos.slice(-2)[0].y - wire.pos.slice(-1)[0].y) / 2;
-
-                    connect(connecting.wire.from,component,connecting.wire);
                     connecting.wire.to = component;
+                    connect(connecting.wire.from,component,connecting.wire);
 
                     actions.push(new Action(
                         "add", [0]
@@ -568,28 +596,32 @@ c.onmouseup = function(e) {
                  and y coordinates of the selection becoming integers.
                  */
 
-                // FIXME: uitendes draad godverdomme
                 (function animate() {
-                    selecting.x += (Math.round(selecting.x) - selecting.x) / 2.5;
-                    selecting.y += (Math.round(selecting.y) - selecting.y) / 2.5;
-                    contextMenu.pos.x += (Math.round(contextMenu.pos.x) - contextMenu.pos.x) / 2.5;
-                    contextMenu.pos.y += (Math.round(contextMenu.pos.y) - contextMenu.pos.y) / 2.5;
+                    let dx = Math.round(selecting.x) - selecting.x;
+                    let dy = Math.round(selecting.y) - selecting.y;
+
+                    selecting.x += dx / 2.5;
+                    selecting.y += dy / 2.5;
+                    contextMenu.pos.x += dx / 2.5;
+                    contextMenu.pos.y += dy / 2.5;
 
                     for(let i = 0; i < selecting.components.length; ++i) {
                         const component = selecting.components[i];
                         if(component.constructor == Wire) {
                             component.pos.map((pos,j) => {
-                                pos.x += (Math.round(pos.x) - pos.x) / 2.5;
-                                pos.y += (Math.round(pos.y) - pos.y) / 2.5;
+                                pos.x += dx / 2.5;
+                                pos.y += dy / 2.5;
                             });
                         } else {
-                            component.pos.x += (Math.round(component.pos.x) - component.pos.x) / 2.5;
-                            component.pos.y += (Math.round(component.pos.y) - component.pos.y) / 2.5;
+                            component.pos.x += dx / 2.5;
+                            component.pos.y += dy / 2.5;
                         }
                     }
 
-                    if(Math.abs(Math.round(selecting.x) - selecting.x) * zoom > 1 ||
-                        Math.abs(Math.round(selecting.y)- selecting.y) * zoom > 1) {
+                    if(Math.abs(dx) * zoom > 1 ||
+                        Math.abs(dy) * zoom > 1) {
+                        dx -= dx / 2.5;
+                        dy -= dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
@@ -602,8 +634,8 @@ c.onmouseup = function(e) {
                             const component = selecting.components[i];
                             if(component.constructor == Wire) {
                                 component.pos.map((pos,j) => {
-                                    pos.x = Math.round(pos.x);
-                                    pos.y = Math.round(pos.y);
+                                    pos.x = Math.round(pos.x * 2) / 2;
+                                    pos.y = Math.round(pos.y * 2) / 2;
                                 });
                             } else {
                                 component.pos.x = Math.round(component.pos.x);
@@ -627,16 +659,53 @@ c.onmouseup = function(e) {
                   */
                 const component = dragging.component;
                 (function animate() {
-                    component.pos.x += (Math.round(component.pos.x) - component.pos.x) / 2.5;
-                    component.pos.y += (Math.round(component.pos.y) - component.pos.y) / 2.5;
+                    let dx = Math.round(component.pos.x) - component.pos.x;
+                    let dy = Math.round(component.pos.y) - component.pos.y;
+
+                    component.pos.x += dx / 2.5;
+                    component.pos.y += dy / 2.5;
+
+                    if(dragging.component.input) {
+                        const input = dragging.component.input;
+                        for(let i = 0; i < input.length; ++i) {
+                            input[i].wire.pos.slice(-1)[0].x += dx / 2.5;
+                            input[i].wire.pos.slice(-1)[0].y += dy / 2.5;
+                        }
+                    }
+
+                    if(dragging.component.output) {
+                        const output = dragging.component.output;
+                        for(let i = 0; i < output.length; ++i) {
+                            output[i].wire.pos[0].x += dx / 2.5;
+                            output[i].wire.pos[0].y += dy / 2.5;
+                        }
+                    }
 
                     if(Math.abs(Math.round(component.pos.x) - component.pos.x) * zoom > 1 ||
                        Math.abs(Math.round(component.pos.y) - component.pos.y) * zoom > 1) {
+                        dx -= dx / 2.5;
+                        dy -= dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
                         component.pos.x = Math.round(component.pos.x);
                         component.pos.y = Math.round(component.pos.y);
+
+                        if(dragging.component.input) {
+                            const input = dragging.component.input;
+                            for(let i = 0; i < input.length; ++i) {
+                                input[i].wire.pos.slice(-1)[0].x = Math.round(input[i].wire.pos.slice(-1)[0].x * 2) / 2;
+                                input[i].wire.pos.slice(-1)[0].y = Math.round(input[i].wire.pos.slice(-1)[0].y * 2) / 2;
+                            }
+                        }
+
+                        if(dragging.component.output) {
+                            const output = dragging.component.output;
+                            for(let i = 0; i < output.length; ++i) {
+                                output[i].wire.pos[0].x = Math.round(output[i].wire.pos[0].x * 2) / 2;
+                                output[i].wire.pos[0].y = Math.round(output[i].wire.pos[0].y * 2) / 2;
+                            }
+                        }
 
                         dragging = null;
                         c.style.cursor = "crosshair";
