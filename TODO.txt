@@ -1,3 +1,4 @@
-[ADD] Undo
-[ADD] Weergave kruisende draden verbonden wel/niet 
-[BUG] Draden schuin bij draggen
+[ADD] I/O labels
+[BUG] toast niet in het midden
+[BUG] dragging wires
+[BUG] begin/eindpunt draden bij draggen
