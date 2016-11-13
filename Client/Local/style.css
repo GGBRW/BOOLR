@@ -202,6 +202,37 @@ canvas {
     color: #2080dd;
 }
 
+/* Notifications */
+#notifications {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    list-style: none;
+    padding: 0;
+}
+
+#notifications li {
+    background: #ddd;
+    font-family: "Ubuntu", Arial;
+    font-size: 16px;
+    color: #111;
+    padding: 16px;
+    margin-top: 10px;
+    width: 200px;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+    border-radius: 0 5px 5px 0;
+    opacity: 1;
+    position: relative;
+    left: -200px;
+    transition: opacity 1s, left .1s;
+    word-break: break-all;
+}
+
+#notifications li.error {
+    background: #a33;
+    color: #ddd;
+}
+
 /* Toolbar */
 
 #toolbar {
@@ -214,6 +245,7 @@ canvas {
     background: #111;
     color: #888;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 5px 5px 0 0;
     font-size: 0;
     opacity: 1;
 }
@@ -229,6 +261,7 @@ canvas {
     margin: 0;
     display: inline-block;
     cursor: pointer;
+    border-radius: 5px;
 }
 #toolbar .slot:hover {
     background: #222;
@@ -283,11 +316,13 @@ canvas {
     list-style: none;
     background: #111;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 5px;
     outline: none;
 }
 
 #toolbar #list li {
     padding: 8px;
+    border-radius: 5px;
 }
 
 #toolbar #list li:hover, #toolbar #list li:active {
@@ -340,6 +375,7 @@ canvas {
     color: #111;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,.25);
+    pointer-events: none;
 }
 
 #debugInfo span {
@@ -355,6 +391,7 @@ canvas {
     left: 100px;
     background: #ddd;
     font-family: "Ubuntu";
+    font-size: 15px;
     color: #333;
     padding: 5px;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
@@ -381,9 +418,8 @@ canvas {
 }
 
 #componentInfo h1 {
-    font-family: "Ubuntu";
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 600;
     color: #111;
     margin: 5px;
     text-align: center;

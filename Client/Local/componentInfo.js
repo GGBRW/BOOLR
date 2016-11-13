@@ -7,7 +7,8 @@ componentInfo.show = function(component,pos) {
     this.innerHTML += `x: ${ component.pos.x }, y: ${ component.pos.y }<br>`;
 
     if(!this.expanded) {
-        this.innerHTML += "<span style='font-family: Roboto; font-size: 12px; color: #ddd; margin-top: 10px'>Press tab for more details</span>";
+        this.innerHTML +=
+            "<span style='font-size: 12px; color: #444; margin-top: 10px'>Press tab for more details</span>";
     } else {
         for(let i in component) {
             this.innerHTML += `${i}: ${component[i]}<br>`;

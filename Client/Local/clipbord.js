@@ -40,10 +40,11 @@ clipbord.paste = function(x,y) {
             if(Array.isArray(pos)) {
                 for(let j = 0, len2 = pos.length; j < len2; ++j) {
                     clipbord.components[i].pos.push({
-                        x: Math.round(pos[j].x + dx),
-                        y: Math.round(pos[j].y + dy)
+                        x: Math.round((pos[j].x + dx) * 2) / 2,
+                        y: Math.round((pos[j].y + dy) * 2) / 2
                     });
                 }
+
                 components.unshift(clipbord.components[i]);
             }
             else {
@@ -61,7 +62,7 @@ clipbord.paste = function(x,y) {
             wire.from = from;
             wire.to = to;
 
-            from.connect(to, wire);
+            connect(from,to,wire);
         }
 
         if(clipbord.selection) {

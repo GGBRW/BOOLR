@@ -11,7 +11,7 @@ contextMenu.show = function(pos) {
     this.innerHTML = "";
     if(selecting) {
         this.appendChild(context_options["copy"]);
-        this.appendChild(context_options["delete all"]);
+        this.appendChild(context_options["remove all"]);
     } else {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
@@ -23,7 +23,7 @@ contextMenu.show = function(pos) {
                 this.appendChild(context_options["copy"]);
                 this.appendChild(context_options["view connections"]);
             }
-            this.appendChild(context_options["delete"]);
+            this.appendChild(context_options["remove"]);
         } else {
             this.appendChild(context_options["paste"]);
         }
@@ -108,27 +108,22 @@ context_options["paste"].onclick = function() {
 }
 
 // Delete
-context_options["delete"] = document.createElement("li");
-context_options["delete"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete"].onclick = () => {
-    actions.push({
-        method: "remove",
-        data: [find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]
-    });
-
+context_options["remove"] = document.createElement("li");
+context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
+context_options["remove"].onclick = () => {
     remove(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
 }
 
 // Delete All
-context_options["delete all"] = document.createElement("li");
-context_options["delete all"].innerHTML = '<i class="material-icons">delete</i><span>Delete [Del]</span>';
-context_options["delete all"].onclick = () => {
+context_options["remove all"] = document.createElement("li");
+context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
+context_options["remove all"].onclick = () => {
     const old_clipbord = Object.assign({}, clipbord);
     clipbord.copy(selecting.components, selecting);
-    actions.push({
-        method: "remove_selection",
-        data: clipbord
-    });
+    actions.push(new Action(
+        "remove_selection",
+        clipbord
+    ));
     clipbord = old_clipbord;
 
     for(let i of selecting.components) {
@@ -153,8 +148,8 @@ contextMenu.onkeydown = function(e) {
             this.hide();
             break;
         case 46: // Delete
-            if(selecting) context_options["delete all"].onclick();
-            else context_options["delete"].onclick();
+            if(selecting) context_options["remove all"].onclick();
+            else context_options["remove"].onclick();
 
             this.style.display = "none";
             selecting = null;

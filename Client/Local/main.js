@@ -6,7 +6,10 @@ c.width = window.innerWidth;
 
 const ctx = c.getContext("2d");
 
-let offset = { x: 0, y: 0 };
+let offset = {
+    x: 0,
+    y: 0
+};
 let zoom = 50;
 
 let scroll_animation = { v: 0, r: 0, animate: false };
@@ -179,7 +182,7 @@ window.onbeforeunload = function() {
     let data = {};
     if(localStorage.pws) data = JSON.parse(localStorage.pws);
 
-    //data.clipbord = clipbord;
+    data.clipbord = stringify(clipbord);
     data.settings = settings;
     localStorage.pws = JSON.stringify(data);
 }
@@ -190,7 +193,11 @@ window.onresize = () => {
 }
 
 window.onerror = function(msg,url,line) {
-    //Console.message("ERROR: '" + msg + "' @" + url + ":" + line, Console.types.error);
+    notifications.push(
+        `${msg}<br>` +
+        `<span style="color: #888">${url}:${line}</span>`,
+        "error"
+    );
 }
 
 c.oncontextmenu = () => false;
@@ -268,6 +275,8 @@ c.onmousedown = function(e) {
             else {
                 const component = find(mouse.grid.x,mouse.grid.y);
                 if(component) {
+                    if(!component.output) return;
+
                     const wire = new Wire();
                     components.unshift(wire);
 
@@ -350,8 +359,8 @@ c.onmousedown = function(e) {
                             const component = selecting.components[i];
                             if(component.constructor == Wire) {
                                 component.pos.map((pos,j) => {
-                                    pos.x = Math.round(pos.x);
-                                    pos.y = Math.round(pos.y);
+                                    pos.x = Math.round(pos.x * 2) / 2;
+                                    pos.y = Math.round(pos.y * 2) / 2;
                                 });
                             } else {
                                 component.pos.x = Math.round(component.pos.x);
@@ -367,16 +376,53 @@ c.onmousedown = function(e) {
                 // An animation for the component flying back to his old position
                 const component = dragging.component;
                 (function animate() {
-                    component.pos.x += (dragging.pos.x - component.pos.x) / 2.5;
-                    component.pos.y += (dragging.pos.y - component.pos.y) / 2.5;
+                    let dx = dragging.pos.x - component.pos.x;
+                    let dy = dragging.pos.y - component.pos.y;
 
-                    if(Math.abs(dragging.pos.x - component.pos.x) * zoom > 1 ||
-                       Math.abs(dragging.pos.y - component.pos.y) * zoom > 1) {
+                    component.pos.x += dx / 2.5;
+                    component.pos.y += dy / 2.5;
+
+                    if(dragging.component.input) {
+                        const input = dragging.component.input;
+                        for(let i = 0; i < input.length; ++i) {
+                            input[i].wire.pos.slice(-1)[0].x += dx / 2.5;
+                            input[i].wire.pos.slice(-1)[0].y += dy / 2.5;
+                        }
+                    }
+
+                    if(dragging.component.output) {
+                        const output = dragging.component.output;
+                        for(let i = 0; i < output.length; ++i) {
+                            output[i].wire.pos[0].x += dx / 2.5;
+                            output[i].wire.pos[0].y += dy / 2.5;
+                        }
+                    }
+
+                    if(Math.abs(dx) * zoom > 1 ||
+                       Math.abs(dy) * zoom > 1) {
+                        dx -= dx / 2.5;
+                        dy -= dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
                         component.pos.x = Math.round(component.pos.x);
                         component.pos.y = Math.round(component.pos.y);
+
+                        if(dragging.component.input) {
+                            const input = dragging.component.input;
+                            for(let i = 0; i < input.length; ++i) {
+                                input[i].wire.pos.slice(-1)[0].x = Math.round(input[i].wire.pos.slice(-1)[0].x * 2) / 2;
+                                input[i].wire.pos.slice(-1)[0].y = Math.round(input[i].wire.pos.slice(-1)[0].y * 2) / 2;
+                            }
+                        }
+
+                        if(dragging.component.output) {
+                            const output = dragging.component.output;
+                            for(let i = 0; i < output.length; ++i) {
+                                output[i].wire.pos[0].x = Math.round(output[i].wire.pos[0].x * 2) / 2;
+                                output[i].wire.pos[0].y = Math.round(output[i].wire.pos[0].y * 2) / 2;
+                            }
+                        }
 
                         dragging = null;
                         c.style.cursor = "crosshair";
@@ -500,7 +546,7 @@ c.onmousemove = function(e) {
                 }];
             } else if(component && component.constructor != Wire && component.input) {
                 // If there's a component under the user's mouse that has free input ports, connect with this component
-                if(component.input.length >= component.max_inputs) {
+                if(component.input.length >= component.inputPorts) {
                     toolbar.message(`Component ${component.name} has no free input ports`, "warning");
                 } else {
                     // Remove the wire parts under the two components
@@ -577,13 +623,13 @@ c.onmouseup = function(e) {
         if(selecting && !dragging) {
             if(!selecting.animate.w && !selecting.animate.h) return;
 
+            if(!selecting.components) contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
+
             selecting.components = find(
                 selecting.x,selecting.y,
                 selecting.animate.w,
                 selecting.animate.h
             );
-
-            contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
 
             for(let i of selecting.components) {
                 i.blink(1000);

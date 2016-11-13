@@ -21,21 +21,25 @@ c.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(selecting) {
-                actions.push({
-                    method: "remove_selection",
-                    data: Object.assign(selecting)
-                });
+                const old_clipbord = Object.assign({}, clipbord);
+                clipbord.copy(selecting.components, selecting);
+                actions.push(new Action(
+                    "remove_selection",
+                    clipbord
+                ));
+                clipbord = old_clipbord;
 
                 for(let i of selecting.components) {
                     Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
                 }
+
                 selecting = null;
-                document.getElementById("contextMenu").style.display = "none";
+                contextMenu.hide();
             } else {
-                actions.push({
-                    method: "remove",
-                    data: [find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]
-                });
+                actions.push(new Action(
+                    "remove",
+                    [find(Math.round(mouse.grid.x),Math.round(mouse.grid.y))]
+                ));
 
                 remove(mouse.grid.x,mouse.grid.y);
             }
@@ -123,12 +127,16 @@ c.onkeydown = function(e) {
             break;
         case 83: // S
             if(e.ctrlKey) {
-                popup.prompt.show("Export", "Enter export file name:", name => name ? download(name,stringify()) : download(undefined,stringify()));
+                popup.prompt.show(
+                    "Export",
+                    "Enter export file name:",
+                    name => name ? download(name,stringify({components})) : download(undefined,stringify({components}))
+                );
             }
             break;
         case 84:
-            DOMconsole.show();
-            DOMconsole.input.focus();
+            Console.show();
+            Console.input.focus();
             return false;
             break;
         case 86: // V
@@ -146,7 +154,7 @@ c.onkeydown = function(e) {
                 componentInfo.expanded = true;
             } else {
                 var component = find(mouse.grid.x, mouse.grid.y);
-                if(component) {
+                if(component && component.constructor != Wire) {
                     select(component.constructor);
                 }
                 keys[9] = true;
@@ -169,3 +177,7 @@ c.onkeydown = function(e) {
 }
 
 c.onkeyup = function(e) { keys[e.which] = false }
+
+c.onblur = function() {
+    for(let i in keys) keys[i] = false;
+}

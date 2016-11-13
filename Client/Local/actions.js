@@ -7,14 +7,22 @@ class Action {
 
         switch(method) {
             case "add":
-                if(data.length > 1) {
-                    toolbar.message(`Added selection`, "action");
+                const component = components[data[0]];
+                if(component.constructor == Wire) {
+                    toolbar.message(`Added a connection between ${component.from.name} and ${component.to.name}`, "action")
                 } else {
-                    const component = components[data[0]];
+                    toolbar.message(`Added ${component.name}`, "action")
+                }
+                break;
+            case "remove":
+                if(data.length > 1) {
+                    toolbar.message(`Removed selection`, "action");
+                } else {
+                    const component = data[0];
                     if(component.constructor == Wire) {
-                        toolbar.message(`Added a connection between ${component.from.name} and ${component.to.name}`, "action")
+                        toolbar.message(`Removed a connection between ${component.from.name} and ${component.to.name}`, "action")
                     } else {
-                        toolbar.message(`Added ${component.name}`, "action")
+                        toolbar.message(`Removed ${component.name}`, "action")
                     }
                 }
                 break;
@@ -41,8 +49,7 @@ function undo() {
             for(let i = 0; i < action.data.length; ++i) {
                 if(action.data[i].constructor == Wire) {
                     const wire = action.data[i];
-                    wire.from.output.push(wire);
-                    wire.to.input.push(wire);
+                    connect(wire.from,wire.to,wire);
                     components.unshift(wire);
                 } else {
                     components.push(action.data[i]);

@@ -32,9 +32,9 @@ function updateDebugInfo() {
         debugInfo.addLine("Mouse screen y", Math.round(mouse.screen.y));
         debugInfo.addLine("Mouse grid x", Math.round(mouse.grid.x));
         debugInfo.addLine("Mouse grid y", Math.round(mouse.grid.y));
-        debugInfo.addLine("Offset x", Math.round(offset.x));
-        debugInfo.addLine("Offset y", Math.round(offset.y));
-        debugInfo.addLine("Zoom", Math.round(zoom));
+        debugInfo.addLine("Offset x", Math.round(offset.x * 10) / 10);
+        debugInfo.addLine("Offset y", Math.round(offset.y * 10) / 10);
+        debugInfo.addLine("Zoom", Math.round(zoom * 10) / 10);
         debugInfo.addLine("Dragging", !!dragging);
         debugInfo.addLine("Selecting", !!selecting);
         if(selecting) {

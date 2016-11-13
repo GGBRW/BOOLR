@@ -39,23 +39,44 @@ const remove = function(x,y) {
         }
         if(component.to) {
             component.to.input.forEach((input,i) => input.wire == component && component.to.input.splice(i,1));
+            component.to.update();
         }
     } else {
         if(component.input) {
             for(let input of component.input) {
-                input.wire.from.output.splice(input.wire.from.output.indexOf(input.wire),1);
+                const from = input.wire.from;
+                from.output.splice(from.output.findIndex(n => n.wire == input.wire),1);
                 components.splice(components.indexOf(input.wire),1);
             }
         }
         if(component.output) {
             for(let output of component.output) {
-                output.wire.to.input.splice(output.wire.to.input.indexOf(output.wire),1);
+                const to = output.wire.to;
+                to.input.splice(to.input.findIndex(n => n.wire == output.wire),1);
                 components.splice(components.indexOf(output.wire),1);
+            }
+
+            for(let output of component.output) {
+                output.wire.to.update();
             }
         }
     }
 
-    toolbar.message("Removed " + component.name, "action");
+    data = [component];
+    if(component.input) {
+        for(let i = 0; i < component.input.length; ++i) data.push(component.input[i].wire);
+    }
+    if(component.output) {
+        for(let i = 0; i < component.output.length; ++i) data.push(component.output[i].wire);
+    }
+
+    component.input = [];
+    component.output = [];
+
+    actions.push(new Action(
+        "remove",
+        data
+    ));
     components.splice(components.indexOf(component),1);
 }
 
@@ -82,8 +103,23 @@ const clone = function(target) {
 }
 
 function connect(from,to,wire,outputLabel,inputLabel) {
-    if(!outputLabel) outputLabel = String.fromCharCode(65 + from.output.length);
-    if(!inputLabel) inputLabel = String.fromCharCode(65 + to.input.length);
+    if(!outputLabel) {
+        if(from.outputLabels && from.outputLabels[from.output.length]) {
+            outputLabel = from.outputLabels[from.output.length];
+        } else {
+            outputLabel = String.fromCharCode(65 + from.output.length);
+        }
+    }
+    if(!inputLabel) {
+        if(to.inputLabels && to.inputLabels[to.input.length]) {
+            inputLabel = to.inputLabels[to.input.length];
+        } else {
+            inputLabel = String.fromCharCode(65 + to.input.length);
+        }
+    }
+
+    wire.from = from;
+    wire.to = to;
 
     from.output.push({
         wire,
@@ -284,6 +320,10 @@ class D2B extends Input {
             return this.value;
         }
         this.func_out = n => ("0000000" + n.toString(2)).slice(-8).split("").map(m => +m);
+        this.outputLabels = [];
+        for(let i = 0; i < bits; ++i) {
+            this.outputLabels.push(Math.pow(2,i));
+        }
     }
 }
 
@@ -293,12 +333,12 @@ class Output {
         height = 1,
         width = 2,
         name,
-        max_inputs = 1,
+        inputPorts = 1,
         func = input => input[0]
     ) {
         this.input = [];
         this.value = 0;
-        this.max_inputs = max_inputs;
+        this.inputPorts = inputPorts;
         this.func = func;
 
         this.pos = pos;
@@ -313,7 +353,7 @@ class Output {
     }
 
     update() {
-        this.value = this.func(this.input.map(n => n.wire.value));
+        this.value = +!!this.func(this.input.map(n => n.wire.value));
     }
 
     blink(duration = 1000) {
@@ -406,9 +446,15 @@ class Output {
 class B2D extends Output {
     constructor(pos,height,width,name,bits = 8) {
         super(pos,height,width,name,bits);
-        this.func = input => parseInt(input.join(""),2);
+        this.func = input => {
+            parseInt(input.join(""),2);
+        }
         this.width = bits;
         this.height = 3;
+        this.inputLabels = [];
+        for(let i = 0; i < bits; ++i) {
+            this.inputLabels.push(Math.pow(2,i));
+        }
     }
 }
 
@@ -419,12 +465,12 @@ class Gate {
         width = 2,
         icon = "?",
         name,
-        max_inputs = 2,
+        inputPorts = 2,
         func = input => input
     ) {
         this.input = [];
         this.output = [];
-        this.max_inputs = max_inputs;
+        this.inputPorts = inputPorts;
         this.func = func;
 
         this.pos = pos;
@@ -452,7 +498,7 @@ class Gate {
     update() {
         const result = this.func(this.input.map(n => n.wire.value));
         for(let i = 0; i < this.output.length; ++i) {
-            const value = i < result.length ? result[i] : result[result.length - 1];
+            const value = i < result.length ? +!!result[i] : +!!result[result.length - 1];
 
             if(value != this.output[i].wire.value) {
                 this.output[i].wire.value = result[i] ? result[i] : result[result.length - 1];

@@ -19,9 +19,6 @@ socket.onmessage = function(e) {
     switch(msg.type) {
         case "message":
             break;
-        case "components":
-            parse(msg.data);
-            break;
         case "add":
             break;
         case "remove":
