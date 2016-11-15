@@ -2,30 +2,39 @@ const url = "ws://localhost:3000";
 const socket = new WebSocket(url);
 
 socket.onopen = function() {
-    Console.message("Connected to " + url);
+    notifications.push("Connected to " + url);
 }
 
 socket.onclose = function() {
-    Console.message("Connection closed", Console.types.error);
+    notifications.push("Connection closed", "error");
 }
 
 socket.onerror = function(err) {
-    Console.message("Connection error: " + err);
+    notifications.push("Connection error: " + err, "error");
 }
 
 socket.onmessage = function(e) {
     const msg = JSON.parse(e.data);
 
     switch(msg.type) {
-        case "message":
+        case "loginRequest":
+            popup.login.show();
+            break;
+        case "chat":
+            notifications.push(`[${msg.data.from}] ${msg.data.msg}`);
+            break;
+        case "notification":
+            notifications.push(msg.data);
             break;
         case "add":
-            break;
-        case "remove":
-            break;
-        case "connect":
-            break;
-        case "disconnect":
+            parse(msg.data.data);
             break;
     }
+}
+
+function send(type,data) {
+    socket.send(JSON.stringify({
+        type,
+        data
+    }));
 }

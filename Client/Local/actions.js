@@ -8,6 +8,11 @@ class Action {
         switch(method) {
             case "add":
                 const component = components[data[0]];
+
+                if(socket) {
+                    send("add", stringify({components: [component] }));
+                }
+
                 if(component.constructor == Wire) {
                     toolbar.message(`Added a connection between ${component.from.name} and ${component.to.name}`, "action")
                 } else {

@@ -57,6 +57,7 @@ function stringify(data) {
 
 function parse(data,clip) {
     data = JSON.parse(data);
+    if(!data[0] && !data[1]) return;
 
     let parsed = [];
     for(let i = 0, len = data[0].length; i < len; ++i) {
@@ -71,7 +72,7 @@ function parse(data,clip) {
     if(clip) {
         clipbord.components = parsed;
         clipbord.connections = data[1];
-        clipbord.selection = JSON.parse(data[2]);
+        data[2] && (clipbord.selection = JSON.parse(data[2]));
     } else {
         const connections = data[1];
         for(let i = 0, len = connections.length; i < len; ++i) {

@@ -45,9 +45,8 @@
     border: none;
     padding: 10px;
     min-width: 100px;
-    font-family: "Roboto Condensed";
+    font-family: "Ubuntu";
     font-size: 16px;
-    font-weight: 600;
     outline: none;
     cursor: pointer;
 }
@@ -84,7 +83,7 @@
     background: #ccc;
     border: 1px solid #bbb;
     outline: none;
-    font-family: "Inconsolata";
+    font-family: "Ubuntu";
     font-size: 18px;
     color: #333;
 }

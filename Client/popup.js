@@ -6,6 +6,7 @@ let popup = {
     component_list: document.getElementById("component_list"),
     settings: document.getElementById("settings"),
     info: document.getElementById("info"),
+    login: document.getElementById("login"),
     color_picker: document.getElementById("color_picker"),
     connections: document.getElementById("connections")
 }
@@ -150,6 +151,25 @@ if(popup.info) {
             this.style.transform = "scale(1)";
             this.style.opacity = 1;
         }, 1);
+    }
+}
+
+// Login
+if(popup.login) {
+    popup.login.show = function() {
+        this.style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("overlay").style.opacity = 1;
+            this.style.transform = "scale(1)";
+            this.style.opacity = 1;
+        }, 1);
+    }
+    popup.login.submit = function() {
+        const username = document.querySelector("#login #username").value;
+        const password = document.querySelector("#login #password").value;
+
+        send("login", { username, password });
     }
 }
 
