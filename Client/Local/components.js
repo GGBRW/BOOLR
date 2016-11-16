@@ -331,7 +331,11 @@ class Clock extends Input {
             "Enter the delay in ms",
             n => {
                 this.delay = +n;
-                this.name = this.name.substr(0,this.name.indexOf("@") + 1) + this.delay + "ms";
+                if(this.name.indexOf("@") >= 0) {
+                    this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
+                } else {
+                    
+                }
                 updateInterval.call(this);
             }
         );
@@ -653,9 +657,9 @@ class Delay extends Gate {
             this.delay = +n;
             this.update = function() {
                 this.values.push(this.input[0].wire.value);
+                const value = this.values.splice(0,1)[0];
                 for(let i = 0; i < this.output.length; ++i) {
                     setTimeout(() => {
-                        const value = this.values.splice(0,1)[0];
                         this.output[i].wire.value = value;
                         this.output[i].wire.to.update.call(this.output[i].wire.to);
                     }, this.delay);
