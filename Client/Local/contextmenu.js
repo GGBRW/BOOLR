@@ -19,6 +19,7 @@ contextMenu.show = function(pos) {
                 this.appendChild(context_options["edit_color"]);
             } else {
                 component.name && this.appendChild(context_options["edit_name"]);
+                component.delay && this.appendChild(context_options["edit_delay"]);
                 this.appendChild(context_options["rotate"]);
                 this.appendChild(context_options["copy"]);
                 this.appendChild(context_options["view connections"]);
@@ -50,7 +51,11 @@ context_options["edit_name"].innerHTML = '<i class="material-icons">mode_edit</i
 context_options["edit_name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.name) {
-        popup.prompt.show("Edit name","Enter a name for this component:", name => name && name.length < 18 && edit(component,"name",n => name));
+        popup.prompt.show(
+            "Edit name",
+            "Enter a name for this component:",
+            name => name && name.length < 18 && edit(component,"name",n => name)
+        );
     }
 }
 
@@ -64,7 +69,23 @@ context_options["edit_color"].onclick = () => {
             color => color
             && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
             && edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
-        )
+        );
+    }
+}
+
+// Edit delay
+context_options["edit_delay"] = document.createElement("li");
+context_options["edit_delay"].innerHTML = '<i class="material-icons">timer</i><span>Edit delay</span>';
+context_options["edit_delay"].onclick = () => {
+    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    if(component && component.delay) {
+        popup.prompt.show(
+            "Edit delay",
+            "Enter the new delay in ms",
+            delay => {
+                edit(component,"delay",n => +delay);
+            }
+        );
     }
 }
 

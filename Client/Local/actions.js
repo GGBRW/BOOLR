@@ -41,7 +41,12 @@ class Action {
                     dat.component = components.indexOf(dat.component);
                     send("edit", dat);
                 }
-                toolbar.message("Edited property '" + data.property + "' of " + data.oldValue);
+                toolbar.message("Edited property '" +
+                    data.property +
+                    "' of " +
+                    (data.property == "name" ? data.oldValue : data.component.name),
+                    "action"
+                );
                 break;
         }
     }
@@ -78,6 +83,10 @@ function undo() {
             clipbord = action.data;
             clipbord.paste(clipbord.selection.x,clipbord.selection.y);
             setTimeout(() => clipbord = old_clipbord ,2);
+            break;
+        case "edit":
+            console.log(data);
+            data.component[data.property] = data.oldValue;
             break;
         case "move":
             action.data.components[0].pos.x = action.data.pos.x;

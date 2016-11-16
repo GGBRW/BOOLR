@@ -1,4 +1,5 @@
-const url = "ws://localhost:3000";
+const url = "";
+// const url = "ws://localhost:3000";
 let socket;
 
 if(url) {
@@ -38,11 +39,11 @@ if(url) {
                 break;
         }
     }
-}
 
-function send(type,data) {
-    socket.send(JSON.stringify({
-        type,
-        data
-    }));
+    function send(type,data) {
+        socket.send(JSON.stringify({
+            type,
+            data
+        }));
+    }
 }

@@ -86,11 +86,15 @@ c.onkeydown = function(e) {
                 popup.color_picker.show(
                     color => color
                     && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-                    && (component.color_off = color) && (component.color_on = lighter(color,50))
-                )
+                    && edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
+                );
             }
             else if(component && component.name) {
-                popup.prompt.show("Edit name","Enter a name for this component:", name => name && name.length < 18 && (component.name = name));
+                popup.prompt.show(
+                    "Edit name",
+                    "Enter a name for this component:",
+                    name => name && name.length < 18 && edit(component,"name",n => name)
+                );
             }
             return false;
             break;
