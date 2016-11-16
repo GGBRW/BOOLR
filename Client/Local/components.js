@@ -80,6 +80,20 @@ const remove = function(x,y) {
     components.splice(components.indexOf(component),1);
 }
 
+function edit(component,property,f) {
+    const oldValue = component[property];
+
+    component[property] = f(component[property]);
+
+    actions.push(new Action(
+        "edit", {
+            component,
+            property,
+            oldValue
+        }
+    ));
+}
+
 const clone = function(target) {
     let component = new target.constructor();
 
@@ -612,6 +626,28 @@ class Gate {
         }
     }
 }
+
+class Delay extends Gate {
+    constructor(pos,height = 1, width = 2,name,delay) {
+        super(pos,height,width,"~",name,1);
+
+        popup.prompt.show("Enter delay", "Enter the delay in ms", n => {
+            this.delay = +n;
+            this.update = function() {
+                const result = this.func(this.input.map(n => n.wire.value));
+                for(let i = 0; i < this.output.length; ++i) {
+                    const value = i < result.length ? +!!result[i] : +!!result[result.length - 1];
+
+                    if(value != this.output[i].wire.value) {
+                        this.output[i].wire.value = result[i] ? result[i] : result[result.length - 1];
+                        setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), this.delay);
+                    }
+                }
+            }
+        });
+    }
+}
+
 
 class NOT extends Gate {
     constructor(pos,height = 1,width = 1,name) {

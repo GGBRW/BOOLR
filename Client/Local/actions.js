@@ -9,7 +9,7 @@ class Action {
             case "add":
                 const component = components[data[0]];
 
-                if(window.socket) {
+                if(socket) {
                     send("add", stringify({components: [component] }));
                 }
 
@@ -23,6 +23,10 @@ class Action {
                 if(data.length > 1) {
                     toolbar.message(`Removed selection`, "action");
                 } else {
+                    if(socket) {
+                        send("remove", components.indexOf(data[0]));
+                    }
+
                     const component = data[0];
                     if(component.constructor == Wire) {
                         toolbar.message(`Removed a connection between ${component.from.name} and ${component.to.name}`, "action")
@@ -30,6 +34,14 @@ class Action {
                         toolbar.message(`Removed ${component.name}`, "action")
                     }
                 }
+                break;
+            case "edit":
+                if(socket) {
+                    let dat = Object.assign({}, data);
+                    dat.component = components.indexOf(dat.component);
+                    send("edit", dat);
+                }
+                toolbar.message("Edited property '" + data.property + "' of " + data.oldValue);
                 break;
         }
     }

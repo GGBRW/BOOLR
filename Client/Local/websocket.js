@@ -1,34 +1,42 @@
 const url = "ws://localhost:3000";
-const socket = new WebSocket(url);
+let socket;
 
-socket.onopen = function() {
-    notifications.push("Connected to " + url);
-}
+if(url) {
+    socket = new WebSocket(url);
 
-socket.onclose = function() {
-    notifications.push("Connection closed", "error");
-}
+    socket.onopen = function() {
+        notifications.push("Connected to " + url);
+    }
 
-socket.onerror = function(err) {
-    notifications.push("Connection error: " + err, "error");
-}
+    socket.onclose = function() {
+        notifications.push("Connection closed", "error");
+    }
 
-socket.onmessage = function(e) {
-    const msg = JSON.parse(e.data);
+    socket.onerror = function(err) {
+        notifications.push("Connection error: " + err, "error");
+    }
 
-    switch(msg.type) {
-        case "loginRequest":
-            popup.login.show();
-            break;
-        case "chat":
-            notifications.push(`[${msg.data.from}] ${msg.data.msg}`);
-            break;
-        case "notification":
-            notifications.push(msg.data);
-            break;
-        case "add":
-            parse(msg.data.data);
-            break;
+    socket.onmessage = function(e) {
+        const msg = JSON.parse(e.data);
+
+        switch(msg.type) {
+            case "loginRequest":
+                popup.login.show();
+                break;
+            case "chat":
+                notifications.push(`[${msg.data.from}] ${msg.data.msg}`);
+                break;
+            case "notification":
+                notifications.push(msg.data);
+                break;
+            case "add":
+                parse(msg.data.data);
+                break;
+            case "remove":
+                console.log(msg.data.data);
+                if(msg.data.data >= 0) components.splice(msg.data.data,1);
+                break;
+        }
     }
 }
 

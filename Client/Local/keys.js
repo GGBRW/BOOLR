@@ -21,14 +21,6 @@ c.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(selecting) {
-                const old_clipbord = Object.assign({}, clipbord);
-                clipbord.copy(selecting.components, selecting);
-                actions.push(new Action(
-                    "remove_selection",
-                    clipbord
-                ));
-                clipbord = old_clipbord;
-
                 for(let i of selecting.components) {
                     Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
                 }
@@ -36,11 +28,6 @@ c.onkeydown = function(e) {
                 selecting = null;
                 contextMenu.hide();
             } else {
-                actions.push(new Action(
-                    "remove",
-                    [find(Math.round(mouse.grid.x),Math.round(mouse.grid.y))]
-                ));
-
                 remove(mouse.grid.x,mouse.grid.y);
             }
             break;

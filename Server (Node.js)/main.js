@@ -41,6 +41,8 @@ function onmessage(msg) {
         return;
     }
 
+    console.log(msg);
+
     // Get the user agent of the sender
     const userAgent = this.upgradeReq.headers["user-agent"];
 
@@ -80,6 +82,12 @@ function onmessage(msg) {
             case "remove":
                 if(!isNaN(msg.data) && +msg.data >= 0) {
                     components.splice(+msg.data,1);
+                    broadcast(
+                        "remove", {
+                            data: msg.data,
+                        },
+                        [this]
+                    )
                 }
                 break;
         }
