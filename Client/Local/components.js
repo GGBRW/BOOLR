@@ -334,7 +334,7 @@ class Clock extends Input {
                 if(this.name.indexOf("@") >= 0) {
                     this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
                 } else {
-                    
+                    this.name += "@" + this.delay + "ms";
                 }
                 updateInterval.call(this);
             }
