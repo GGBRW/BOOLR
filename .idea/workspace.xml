@@ -27,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+            <state relative-caret-position="295">
+              <caret line="87" column="27" selection-start-line="87" selection-start-column="27" selection-end-line="87" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -90,13 +90,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="322" column="35" selection-start-line="322" selection-start-column="35" selection-end-line="322" selection-end-column="35" />
+            <state relative-caret-position="148">
+              <caret line="649" column="25" selection-start-line="649" selection-start-column="25" selection-end-line="649" selection-end-column="25" />
               <folding>
-                <marker date="1479322667911" expanded="true" signature="9319:9330" ph="..." />
+                <marker date="1479322848898" expanded="true" signature="9319:9330" ph="..." />
               </folding>
             </state>
           </provider>
@@ -189,8 +189,8 @@
         <option value="$PROJECT_DIR$/Client/Local/keys.js" />
         <option value="$PROJECT_DIR$/Client/Local/actions.js" />
         <option value="$PROJECT_DIR$/Client/Local/websocket.js" />
-        <option value="$PROJECT_DIR$/Client/Local/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/components.js" />
+        <option value="$PROJECT_DIR$/Client/Local/index.html" />
       </list>
     </option>
   </component>
@@ -523,14 +523,7 @@
       <workItem from="1479113802332" duration="1256000" />
       <workItem from="1479199872379" duration="2751000" />
       <workItem from="1479286584331" duration="5056000" />
-      <workItem from="1479296582940" duration="8026000" />
-    </task>
-    <task id="LOCAL-00008" summary="Updated component system&#10;">
-      <created>1472239130915</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1472239130915</updated>
+      <workItem from="1479296582940" duration="8251000" />
     </task>
     <task id="LOCAL-00009" summary="Updated component system&#10;">
       <created>1472301427905</created>
@@ -868,12 +861,19 @@
       <option name="project" value="LOCAL" />
       <updated>1479313315148</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="update 0.1.102">
+      <created>1479322745069</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1479322745069</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="543021000" />
+    <option name="totallyTimeSpent" value="543246000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1219,14 +1219,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-324">
@@ -1240,11 +1232,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="322" column="35" selection-start-line="322" selection-start-column="35" selection-end-line="322" selection-end-column="35" />
+        <state relative-caret-position="148">
+          <caret line="649" column="25" selection-start-line="649" selection-start-column="25" selection-end-line="649" selection-end-column="25" />
           <folding>
-            <marker date="1479322667911" expanded="true" signature="9319:9330" ph="..." />
+            <marker date="1479322848898" expanded="true" signature="9319:9330" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="87" column="27" selection-start-line="87" selection-start-column="27" selection-end-line="87" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

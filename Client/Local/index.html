@@ -35,7 +35,7 @@
         <li onclick="select(Input)">Input</li>
         <li onclick="select(Output)">Output</li>
         <li onclick="select(Constant)">Constant</li>
-        <li onclick="select(Paprikalay)">Paprikalay</li>
+        <li onclick="select(Delay)">Delay</li>
         <li onclick="select(Clock)">Clock</li>
         <li onclick="select(D2B)">D2B Converter</li>
         <li onclick="select(B2D)">B2D Converter</li>
@@ -84,6 +84,8 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
+        <li>Paprikalay toegevoegd en verbeterd</li>
+        <li>Clock verbeterd</li>
         <li><span style="font-family: Edwardian Script ITC; font-size: 30px">Verbeterd design</span></li>
         <li><i class="material-icons">lightbulb_outline</i>(tips)</li>
         <li>Draden trekken verbeterd</li>
@@ -212,7 +214,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.121";
+    const VERSION = "0.1.129";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

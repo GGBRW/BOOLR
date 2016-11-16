@@ -644,7 +644,7 @@ class Gate {
     }
 }
 
-class Paprikalay extends Gate {
+class Delay extends Gate {
     constructor(pos,height = 1, width = 2,name,delay) {
         super(pos,height,width,"~",name,1);
         this.values = [];
