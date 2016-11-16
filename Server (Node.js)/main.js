@@ -77,6 +77,11 @@ function onmessage(msg) {
                     [this]
                 );
                 break;
+            case "remove":
+                if(!isNaN(msg.data) && +msg.data >= 0) {
+                    components.splice(+msg.data,1);
+                }
+                break;
         }
     }
 }

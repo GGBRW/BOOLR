@@ -9,7 +9,7 @@ class Action {
             case "add":
                 const component = components[data[0]];
 
-                if(socket) {
+                if(window.socket) {
                     send("add", stringify({components: [component] }));
                 }
 

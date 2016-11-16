@@ -275,8 +275,6 @@ c.onmousedown = function(e) {
             else {
                 const component = find(mouse.grid.x,mouse.grid.y);
                 if(component) {
-                    if(!component.output) return;
-
                     const wire = new Wire();
                     components.unshift(wire);
 
@@ -290,7 +288,9 @@ c.onmousedown = function(e) {
                             ++i;
                         }
                     }
-                    else wire.from = component;
+                    else if(component.output) {
+                        wire.from = component;
+                    }
 
                     connecting = { wire };
                     connecting.wire.pos.push({
