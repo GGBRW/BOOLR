@@ -320,12 +320,10 @@ class Clock extends Input {
         super(pos,height,width,name);
         this.onclick = undefined;
 
-        this.delay;
-
         function updateInterval() {
             this.value = +!this.value;
             this.update();
-            setTimeout(updateInterval,this.delay);
+            setTimeout(updateInterval.bind(this),this.delay);
         }
 
         popup.prompt.show(
@@ -333,11 +331,8 @@ class Clock extends Input {
             "Enter the delay in ms",
             n => {
                 this.delay = +n;
-                this.name = this.name.substr(this.name.indexOf("@")) + "@" + this.delay + "ms";
-                setInterval(() => {
-                    this.value = +!this.value;
-                    this.update();
-                }, this.delay);
+                this.name = this.name.substr(0,this.name.indexOf("@") + 1) + this.delay + "ms";
+                updateInterval.call(this);
             }
         );
     }
@@ -649,23 +644,21 @@ class Gate {
     }
 }
 
-class Delay extends Gate {
+class Paprikalay extends Gate {
     constructor(pos,height = 1, width = 2,name,delay) {
         super(pos,height,width,"~",name,1);
+        this.values = [];
 
         popup.prompt.show("Enter delay", "Enter the delay in ms", n => {
             this.delay = +n;
             this.update = function() {
-                const result = this.func(this.input.map(n => n.wire.value));
+                this.values.push(this.input[0].wire.value);
                 for(let i = 0; i < this.output.length; ++i) {
-                    const value = i < result.length ? +!!result[i] : +!!result[result.length - 1];
-
-                    if(value != this.output[i].wire.value) {
-                        setTimeout(() => {
-                            this.output[i].wire.value = result[i] ? result[i] : result[result.length - 1];
-                            this.output[i].wire.to.update.call(this.output[i].wire.to);
-                        }, this.delay);
-                    }
+                    setTimeout(() => {
+                        const value = this.values.splice(0,1)[0];
+                        this.output[i].wire.value = value;
+                        this.output[i].wire.to.update.call(this.output[i].wire.to);
+                    }, this.delay);
                 }
             }
         });
