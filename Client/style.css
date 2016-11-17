@@ -19,11 +19,30 @@
     src: url(./Fonts/Inconsolata-Regular.ttf);
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.5);
+    border-radius: 5px;
+}
+
 body {
     margin: 0;
     background: url("wallpaper.png");
     text-align: center;
     overflow: hidden;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body > h1 {
@@ -35,14 +54,14 @@ body > h1 {
 
 #container {
     position: fixed;
-    top: 33%;
+    top: 30%;
 
     background: #222;
     box-shadow: inset 0 0 20px #000, 0 0;
 
-    height: 340px;
+    height: 380px;
     width: 100%;
-    padding-top: 20px;
+    padding-top: 50px;
 }
 
 #container button {
@@ -88,21 +107,208 @@ body > h1 {
     width: 50px;
     height: 50px;
     outline: none;
+    cursor: pointer;
+    opacity: .5;
+
+    transform: rotateZ(0deg) scale(1);
+    transition: opacity .2s, transform .2s;
 }
 
-#load_project {
+.close:hover {
+    font-weight: 800;
+    transform: rotateZ(90deg) scale(1.2);
+    opacity: .7;
+}
+
+.close:active {
+    transform: rotateZ(90deg) scale(.5);
+}
+
+#background {
     display: none;
     position: fixed;
-    top: 33%;
+    top: 30%;
     background: #a33;
-    box-shadow: 0 0 20px rgba(0,0,0,.5);
-    height: 350px;
     width: 100%;
-    padding-top: 10px;
+    overflow: hidden;
+
+    margin-top: 200px;
+    height: 0px;
+    opacity: 0;
+    transition: height .2s, margin-top .2s, opacity .2s;
 }
 
-#load_project h1 {
+.over {
+    display: none;
+    position: fixed;
+    top: 30%;
+    background: transparent;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    width: 100%;
+    z-index: 1;
+    padding-top: 20px;
+    overflow: hidden;
+
+    height: 410px;
+    opacity: 0;
+    transition: opacity .5s;
+}
+
+.over h1 {
     font-family: "Roboto Condensed";
     font-size: 30px;
     font-weight: 400;
+}
+
+#load_project #local, #load_project #server {
+    margin: 2px auto;
+    background: rgba(0,0,0,.2);
+    width: 500px;
+    height: 250px;
+}
+
+#load_project #local_btn, #load_project #server_btn {
+    background: rgba(0,0,0,.1);
+    border: none;
+    padding: 10px;
+    margin: -2px;
+    width: 100px;
+    font-family: Ubuntu;
+    font-size: 18px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+}
+
+#load_project button.selected {
+    background: rgba(0,0,0,.2) !important;
+}
+
+#load_project #local #upload_file {
+    position: absolute;
+    left: 50%;
+    width: 380px;
+    height: 200px;
+    margin: 20px auto 0 -190px;
+    border: 3px dashed rgba(0,0,0,.5);
+    outline-offset: -10px;
+}
+
+#load_project #local #upload_file .material-icons {
+    font-size: 70px;
+    color: rgba(0,0,0,.5);
+    margin-top: 40px;
+}
+
+#load_project #local #upload_file p {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 0;
+}
+
+#load_project #local #upload_file b:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#load_project #server input {
+    font-family: "Inconsolata", Consolas;
+    font-size: 18px;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(255,255,255,.8);
+}
+
+#load_project #server button {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(0,0,0,.2);
+}
+
+#load_project #server ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+#load_project #server li {
+    padding: 10px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    text-align: left;
+}
+
+#load_project #server li:nth-child(odd) {
+    background: rgba(0,0,0,.1);
+}
+
+#load_project #server li button {
+    float: right;
+    font-size: 16px;
+    padding: 5px;
+    margin: -5px;
+    background: #888;
+}
+
+
+#settings ul {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    width: 500px;
+    margin: 0 auto;
+    background: rgba(0,0,0,.2);
+}
+
+#settings li {
+    text-align: left;
+}
+
+#settings input[type=number] {
+    width: 40px;
+    height: 22px;
+    padding: 0 5px;
+    font-family: "Inconsolata";
+    font-size: 16px;
+    float: right;
+    border: none;
+    outline: none;
+    background: #ccc;
+    margin-right: 16px;
+}
+
+#settings button:not(.close) {
+    background: rgba(0,0,0,.25);
+    border: none;
+    padding: 10px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+}
+
+#info #content {
+    width: 460px;
+    max-height: 260px;
+    background: rgba(0,0,0,.2);
+    font-family: Ubuntu;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 20px;
+}
+
+#info #content h4 {
+    font-family: "Ubuntu";
+    font-weight: 600;
+    margin: 0;
 }

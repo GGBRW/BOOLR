@@ -1,9 +1,15 @@
-const url = "";
-// const url = "ws://localhost:3000";
+if(typeof url == undefined) {
+    var url = "";
+}
+
 let socket;
 
-if(url) {
-    socket = new WebSocket(url);
+function connect() {
+    try {
+        socket = new WebSocket(url);
+    } catch(e) {
+        return;
+    }
 
     socket.onopen = function() {
         notifications.push("Connected to " + url);

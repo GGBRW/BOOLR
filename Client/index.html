@@ -16,7 +16,7 @@
     <title>PWS</title>
 </head>
 <body>
-    <h1 id="title">Profielwerkstuk</h1>
+    <h1 id="title"><span style="color: #822">D</span>igital <span style="color: #822">L</span>ogic <span style="color: #822">S</span>imulator</h1>
 
     <!-- Overlay -->
     <div id="overlay"></div>
@@ -30,37 +30,129 @@
     </div>
 
     <div id="container">
-        <button id="sandbox_btn" onclick="open_project()">SANDBOX MODE</button>
+        <button id="sandbox_btn" onclick="openProject()">SANDBOX MODE</button>
         <button id="load_project_btn">LOAD PROJECT</button>
         <button id="settings_btn" onclick="">SETTINGS</button>
         <button id="info_btn" onclick="">INFO</button>
     </div>
 
-    <div id="load_project">
+    <div class="over" id="load_project">
+        <button class="close material-icons">close</button>
         <h1>LOAD PROJECT</h1>
+
+        <button id="local_btn" class="selected">Local</button>
+        <button id="server_btn">Server</button>
+        <div id="local">
+            <div id="upload_file">
+                <i class="material-icons">file_upload</i>
+                <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
+            </div>
+        </div>
+        <div id="server" style="display: none;">
+            <input id="url" placeholder="Enter server url">
+            <button onclick="openServerProject(document.getElementById('url').value)">Connect</button>
+            <ul>
+                <li>ws://localhost:3000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://ggbrw.nl:8080<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://localhost:5000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://localhost:3000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://ggbrw.nl:8080<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://localhost:5000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://localhost:3000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://ggbrw.nl:8080<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>ws://localhost:5000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+            </ul>
+        </div>
+
+        <script>
+            document.querySelector("#load_project #local_btn").onclick = function() {
+                this.className = "selected";
+                document.querySelector("#load_project #server_btn").className = "";
+                document.querySelector("#load_project #local").style.display = "block";
+                document.querySelector("#load_project #server").style.display = "none";
+            }
+
+            document.querySelector("#load_project #server_btn").onclick = function() {
+                this.className = "selected";
+                document.querySelector("#load_project #local_btn").className = "";
+                document.querySelector("#load_project #server").style.display = "block";
+                document.querySelector("#load_project #local").style.display = "none";
+            }
+        </script>
+    </div>
+
+    <div class="over" id="settings">
+        <button class="close material-icons">close</button>
+        <h1>SETTINGS</h1>
+
+        <ul>
+            <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
+            <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
+            <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
+            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
+        </ul>
+    </div>
+
+    <div id="background"></div>
+
+    <div class="over" id="info">
+        <button class="close material-icons">close</button>
+        <h1>INFO</h1>
+        <div id="content">
+            <h4>Onzin</h4>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
+            <br><br>
+            <h4>Nog meer onzin</h4>
+            Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+        </div>
     </div>
 
     <script>
         document.getElementById("load_project_btn").onclick = function() {
-            this.innerHTML = "";
-            this.style.zIndex = 1;
-            this.style.background = "#a33";
-            this.style.border = "none";
-            this.style.transform = "scale(1.5)";
+            document.getElementById("load_project").style.display = "block";
+            document.getElementById("background").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("background").style.height = "430px";
+                document.getElementById("background").style.marginTop = "0px";
+                document.getElementById("background").style.opacity = "1";
+                document.getElementById("load_project").style.opacity = "1";
+            }, 1);
         }
 
         document.getElementById("settings_btn").onclick = function() {
-            this.innerHTML = "";
-            this.style.zIndex = 1;
-            this.style.background = "#a33";
-            this.style.border = "none";
-            this.style.transform = `scaleX(${ window.innerWidth / this.clientWidth })`;
-            setTimeout(() => this.style.transform += `scaleY(${ (this.parentNode.clientHeight - 40) / this.clientHeight })`, 200);
-
+            document.getElementById("settings").style.display = "block";
+            document.getElementById("background").style.display = "block";
             setTimeout(() => {
-                document.getElementById("load_project").style.display = "block";
-                this.style.display = "none";
-            }, 400);
+                document.getElementById("background").style.height = "430px";
+                document.getElementById("background").style.marginTop = "0px";
+                document.getElementById("background").style.opacity = "1";
+                document.getElementById("settings").style.opacity = "1";
+            }, 1);
+        }
+
+        document.getElementById("info_btn").onclick = function() {
+            document.getElementById("info").style.display = "block";
+            document.getElementById("background").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("background").style.height = "430px";
+                document.getElementById("background").style.marginTop = "0px";
+                document.getElementById("background").style.opacity = "1";
+                document.getElementById("info").style.opacity = "1";
+            }, 1);
+        }
+
+        const closeButtons = document.getElementsByClassName("close");
+        for(let i = 0; i < closeButtons.length; ++i) {
+            closeButtons[i].onclick = function() {
+                document.getElementById("background").style.height = "0";
+                document.getElementById("background").style.marginTop = "200px";
+                document.getElementById("background").style.opacity = "0";
+                this.parentNode.style.opacity = "0";
+                setTimeout(() => {
+                    this.parentNode.style.display = "none";
+                    document.getElementById("background").style.display = "none";
+                }, 200);
+            };
         }
     </script>
 
@@ -74,15 +166,23 @@
             reader.onload = function() {
                 const data = reader.result;
 
-                open_project(data);
+                openProject(data);
             }
             reader.readAsText(input.files[0]);
         }
 
-        function open_project(data) {
+        function openProject(data) {
             const project = window.open("./Local/index.html");
             if(data) {
                 project.a = data;
+            }
+        }
+
+        function openServerProject(url) {
+            const project = window.open("./Local/index.html");
+            project.onload = () => {
+                project.url = url;
+                project.connect();
             }
         }
     </script>
