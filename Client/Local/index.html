@@ -183,8 +183,19 @@ class Component {
 
         const reader = new FileReader;
         reader.onload = function() {
-            components = [];
-            parse(reader.result);
+            if(reader.result[0] == "{") {
+                popup.confirm.show(
+                        "Do you want to convert this file?",
+                        "This is an old save file. Do you want to convert this file?",
+                        () => {
+                            components = [];
+                            parse_old(reader.result);
+                        }
+                );
+            } else {
+                components = [];
+                parse(reader.result);
+            }
         }
         reader.readAsText(input.files[0]);
     }
@@ -209,7 +220,7 @@ class Component {
 <script src="componentInfo.js"></script>
 <script src="tips.js"></script>
 <script src="../popup.js"></script>
-<!--script src="stringifier.js"></script-->
+<script src="stringifier.js"></script>
 <script src="localStorage.js"></script>
 <script src="websocket.js"></script>
 <script>

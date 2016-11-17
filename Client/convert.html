@@ -1,0 +1,17 @@
+<input id="open_file" type="file" accept=".dat">
+<canvas id="canvas"></canvas>
+
+<script src="Local/main.js"></script>
+<script src="Local/components.js"></script>
+<script src="Local/stringifier.js"></script>
+<script>
+    document.getElementById("open_file").onchange = function(e) {
+        const input = e.target;
+
+        const reader = new FileReader;
+        reader.onload = function() {
+            console.log(parse(reader.result));
+        }
+        reader.readAsText(input.files[0]);
+    }
+</script>

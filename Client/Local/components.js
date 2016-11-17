@@ -256,29 +256,29 @@ class Input {
             // Draw the labels of the connections of the component
             for(let i = 0; i < this.output.length; ++i) {
                 const output = this.output[i];
-                // ctx.beginPath();
-                // ctx.arc(
-                //     (output.wire.pos[0].x - offset.x) * zoom,
-                //     (-output.wire.pos[0].y + offset.y) * zoom,
-                //     zoom / 8,
-                //     0, Math.PI * 2
-                // );
-                // ctx.fillStyle = "#111";
-                // ctx.fill();
-
-                const dx = Math.sign(output.wire.pos[1].x - output.wire.pos[0].x);
-                const dy = Math.sign(output.wire.pos[1].y - output.wire.pos[0].y);
-
-                const startAngle = dx ? Math.PI / 2 + Math.max(Math.PI * dx,0) : Math.max(Math.PI * dy,0);
                 ctx.beginPath();
-                for(let i = 0; i < 3; ++i) {
-                    const angle = startAngle + i * (Math.PI * 2 / 3);
-                    const x = (output.wire.pos[0].x - offset.x) * zoom;
-                    const y = (-output.wire.pos[0].y + offset.y) * zoom;
-                    ctx.lineTo(x - Math.sin(angle) * (zoom / 5), y + Math.cos(angle) * (zoom / 5));
-                }
+                ctx.arc(
+                    (output.wire.pos[0].x - offset.x) * zoom,
+                    (-output.wire.pos[0].y + offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
                 ctx.fillStyle = "#111";
                 ctx.fill();
+
+                // const dx = Math.sign(output.wire.pos[1].x - output.wire.pos[0].x);
+                // const dy = Math.sign(output.wire.pos[1].y - output.wire.pos[0].y);
+                //
+                // const startAngle = dx ? Math.PI / 2 + Math.max(Math.PI * dx,0) : Math.max(Math.PI * dy,0);
+                // ctx.beginPath();
+                // for(let i = 0; i < 3; ++i) {
+                //     const angle = startAngle + i * (Math.PI * 2 / 3);
+                //     const x = (output.wire.pos[0].x - offset.x) * zoom;
+                //     const y = (-output.wire.pos[0].y + offset.y) * zoom;
+                //     ctx.lineTo(x - Math.sin(angle) * (zoom / 5), y + Math.cos(angle) * (zoom / 5));
+                // }
+                // ctx.fillStyle = "#111";
+                // ctx.fill();
 
 
                 ctx.font = zoom / 6 + "px Roboto Condensed";
@@ -331,11 +331,13 @@ class Clock extends Input {
             "Enter the delay in ms",
             n => {
                 this.delay = +n;
+
                 if(this.name.indexOf("@") >= 0) {
                     this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
                 } else {
                     this.name += "@" + this.delay + "ms";
                 }
+
                 updateInterval.call(this);
             }
         );
@@ -655,6 +657,13 @@ class Delay extends Gate {
 
         popup.prompt.show("Enter delay", "Enter the delay in ms", n => {
             this.delay = +n;
+
+            if(this.name.indexOf("@") >= 0) {
+                this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
+            } else {
+                this.name += "@" + this.delay + "ms";
+            }
+
             this.update = function() {
                 this.values.push(this.input[0].wire.value);
                 const value = this.values.splice(0,1)[0];

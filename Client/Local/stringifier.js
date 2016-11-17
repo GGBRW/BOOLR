@@ -1,4 +1,4 @@
-function stringify(area = components) {
+function stringify_old(area = components) {
     let result = {
         components: [],
         connections: []
@@ -45,9 +45,7 @@ function stringify(area = components) {
     return JSON.stringify(result);
 }
 
-function parse(string,dx,dy,select) {
-    if(string.length > 10240) document.getElementById("loading").style.display = "block";
-
+function parse_old(string,dx,dy,select) {
     setTimeout(() => {
         let result = [];
         string = JSON.parse(string);
@@ -105,15 +103,5 @@ function parse(string,dx,dy,select) {
             contextMenu.show({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
         }
 
-        document.getElementById("loading").style.display = "none";
     }, 10);
-}
-
-function download(name, string) {
-    const a = document.createElement("a");
-    const data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
-    a.setAttribute('href', data);
-    if(name) a.setAttribute('download', name + ".dat");
-    else a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".dat");
-    a.click();
 }

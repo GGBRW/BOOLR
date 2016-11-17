@@ -84,6 +84,12 @@ context_options["edit_delay"].onclick = () => {
             "Enter the new delay in ms",
             delay => {
                 edit(component,"delay",n => +delay);
+
+                if(component.name.indexOf("@") >= 0) {
+                    component.name = component.name.substr(0, component.name.indexOf("@") + 1) + component.delay + "ms";
+                } else {
+                    component.name += "@" + component.delay + "ms";
+                }
             }
         );
     }
