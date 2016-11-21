@@ -66,6 +66,7 @@ function parse(data,clip) {
             component,
             JSON.parse(data[0][i][1])
         );
+
         parsed.push(component);
     }
 
@@ -85,6 +86,20 @@ function parse(data,clip) {
 
         for(let i = 0, len = parsed.length; i < len; ++i) {
             if(parsed[i].constructor == Wire) {
+
+                // Fix voor oude versies
+                const dx = Math.sign(parsed[i].pos.slice(-2)[0].x - parsed[i].pos.slice(-1)[0].x) / 2;
+                const dy = Math.sign(parsed[i].pos.slice(-2)[0].y - parsed[i].pos.slice(-1)[0].y) / 2;
+                if(parsed[i].from.constructor == Input && parsed[i].to.constructor == AND) console.log(dx,dy);
+                if(parsed[i].pos[0].x % 1 != .5 || parsed[i].pos[0].y % 1 == .5) {
+                    parsed[i].pos[0].x = parsed[i].pos[1].x - Math.sign(parsed[i].pos[1].x - parsed[i].pos[0].x) / 2;
+                    parsed[i].pos[0].y = parsed[i].pos[1].y - Math.sign(parsed[i].pos[1].y - parsed[i].pos[0].y) / 2;
+                }
+                if(parsed[i].pos.slice(-1)[0].x % 1 != .5 || parsed[i].pos.slice(-1)[0].y % 1 == .5) {
+                    parsed[i].pos.slice(-1)[0].x = parsed[i].pos.slice(-1)[0].x + dx;
+                    parsed[i].pos.slice(-1)[0].y = parsed[i].pos.slice(-1)[0].y + dy;
+                }
+
                 components.unshift(parsed[i]);
             } else {
                 components.push(parsed[i]);

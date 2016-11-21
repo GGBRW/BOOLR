@@ -46,62 +46,59 @@ function stringify_old(area = components) {
 }
 
 function parse_old(string,dx,dy,select) {
-    setTimeout(() => {
-        let result = [];
-        string = JSON.parse(string);
-        for(let i of string.components.reverse()) {
-            let component = eval("new " + i[0]);
-            Object.assign(component,i[1]);
+    let result = [];
+    string = JSON.parse(string);
+    for(let i of string.components.reverse()) {
+        let component = eval("new " + i[0]);
+        Object.assign(component,i[1]);
 
-            if(component.constructor == Wire) {
-                if(component.pos[0].x % 1 == 0 && component.pos[0].y % 1 == 0
-                && component.pos.slice(-1)[0].x % 1 == 0 && component.pos.slice(-1)[0].y % 1 == 0) {
-                    const dx1 = component.pos[1].x - component.pos[0].x;
-                    const dy1 = component.pos[1].y - component.pos[0].y;
-                    const dx2 = component.pos.slice(-2)[0].x - component.pos.slice(-1)[0].x;
-                    const dy2 = component.pos.slice(-2)[0].y - component.pos.slice(-1)[0].y;
-                    component.pos[0].x += dx1 / 2;
-                    component.pos[0].y += dy1 / 2;
-                    component.pos.slice(-1)[0].x += dx2 / 2;
-                    component.pos.slice(-1)[0].y += dy2 / 2;
-                }
+        if(component.constructor == Wire) {
+            if(component.pos[0].x % 1 == 0 && component.pos[0].y % 1 == 0
+            && component.pos.slice(-1)[0].x % 1 == 0 && component.pos.slice(-1)[0].y % 1 == 0) {
+                const dx1 = component.pos[1].x - component.pos[0].x;
+                const dy1 = component.pos[1].y - component.pos[0].y;
+                const dx2 = component.pos.slice(-2)[0].x - component.pos.slice(-1)[0].x;
+                const dy2 = component.pos.slice(-2)[0].y - component.pos.slice(-1)[0].y;
+                component.pos[0].x += dx1 / 2;
+                component.pos[0].y += dy1 / 2;
+                component.pos.slice(-1)[0].x += dx2 / 2;
+                component.pos.slice(-1)[0].y += dy2 / 2;
             }
+        }
 
-            if(dx && dy) {
-                if(Array.isArray(component.pos)) {
-                    for(let pos of component.pos) {
-                        pos.x = Math.round(pos.x + dx);
-                        pos.y = Math.round(pos.y + dy);
-                    }
-                } else {
-                    component.pos.x = Math.round(component.pos.x + dx);
-                    component.pos.y = Math.round(component.pos.y + dy);
+        if(dx && dy) {
+            if(Array.isArray(component.pos)) {
+                for(let pos of component.pos) {
+                    pos.x = Math.round(pos.x + dx);
+                    pos.y = Math.round(pos.y + dy);
                 }
+            } else {
+                component.pos.x = Math.round(component.pos.x + dx);
+                component.pos.y = Math.round(component.pos.y + dy);
             }
-            component.name = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
-            component.constructor == Wire ? components.unshift(component) : components.push(component);
-            result.unshift(component);
         }
+        component.name = component.constructor.name + "#" + (components.filter(n => n.constructor == component.constructor).length);
+        component.constructor == Wire ? components.unshift(component) : components.push(component);
+        result.unshift(component);
+    }
 
-        for(let i = string.connections.length - 1; i >= 0; --i) {
-            const connection = string.connections[i];
+    for(let i = string.connections.length - 1; i >= 0; --i) {
+        const connection = string.connections[i];
 
-            const from = result[connection[0]];
-            const to = result[connection[1]];
-            const wire = result[connection[2]];
+        const from = result[connection[0]];
+        const to = result[connection[1]];
+        const wire = result[connection[2]];
 
-            wire.from = from;
-            wire.to = to;
-            connect(from,to,wire);
-        }
+        wire.from = from;
+        wire.to = to;
+        connect(from,to,wire);
+    }
 
-        if(select) {
-            selecting = Object.assign({}, clipbord);
-            selecting.x = Math.round(contextMenu.pos.x);
-            selecting.y = Math.round(contextMenu.pos.y);
-            selecting.components = result;
-            contextMenu.show({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
-        }
-
-    }, 10);
+    if(select) {
+        selecting = Object.assign({}, clipbord);
+        selecting.x = Math.round(contextMenu.pos.x);
+        selecting.y = Math.round(contextMenu.pos.y);
+        selecting.components = result;
+        contextMenu.show({ x: (selecting.x + selecting.w + offset.x) * zoom, y: (-(selecting.y + selecting.h) + offset.y) * zoom });
+    }
 }

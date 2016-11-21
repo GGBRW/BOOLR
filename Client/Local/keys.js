@@ -137,7 +137,8 @@ c.onkeydown = function(e) {
             break;
         case 90: // Z
             if(e.ctrlKey) {
-                undo();
+                if(e.shiftKey) redo();
+                else undo();
             }
             break;
         case 9: // Tab

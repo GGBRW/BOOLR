@@ -299,7 +299,7 @@ c.onmousedown = function(e) {
                 }
                 else {
                     components.push(new Selected());
-                    actions.push(new Action(
+                    undos.push(new Action(
                         "add", [components.length - 1]
                     ));
                 }
@@ -561,7 +561,7 @@ c.onmousemove = function(e) {
                     connecting.wire.to = component;
                     connect(connecting.wire.from,component,connecting.wire);
 
-                    actions.push(new Action(
+                    undos.push(new Action(
                         "add", [0]
                     ));
 
@@ -691,7 +691,7 @@ c.onmouseup = function(e) {
                         dragging = null;
                         c.style.cursor = "crosshair";
 
-                        actions.push(new Action(
+                        undos.push(new Action(
                             "move_selection",
                             Object.assign({ selection: Object.assign({},selecting) }, dragging)
                         ));
@@ -755,7 +755,7 @@ c.onmouseup = function(e) {
                         dragging = null;
                         c.style.cursor = "crosshair";
 
-                        actions.push(new Action(
+                        undos.push(new Action(
                             "move",
                             Object.assign({}, dragging)
                         ));

@@ -147,7 +147,7 @@ context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><
 context_options["remove all"].onclick = () => {
     const old_clipbord = Object.assign({}, clipbord);
     clipbord.copy(selecting.components, selecting);
-    actions.push(new Action(
+    undo.push(new Action(
         "remove_selection",
         clipbord
     ));

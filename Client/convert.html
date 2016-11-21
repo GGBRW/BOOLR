@@ -1,16 +1,26 @@
 <input id="open_file" type="file" accept=".dat">
-<canvas id="canvas"></canvas>
 
-<script src="Local/main.js"></script>
+<style>
+    body { text-align: center }
+    input {
+        font-size: 20px;
+        padding-top: 20%;
+    }
+</style>
+
 <script src="Local/components.js"></script>
 <script src="Local/stringifier.js"></script>
+<script src="Local/localStorage.js"></script>
 <script>
+    mouse = { grid: {x: 0, y: 0}};
+    popup = {color_picker: {}};
     document.getElementById("open_file").onchange = function(e) {
         const input = e.target;
 
         const reader = new FileReader;
         reader.onload = function() {
-            console.log(parse(reader.result));
+            parse_old(reader.result);
+            download("converted", stringify({ components }));
         }
         reader.readAsText(input.files[0]);
     }

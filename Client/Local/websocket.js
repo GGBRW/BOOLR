@@ -4,7 +4,7 @@ if(typeof url == undefined) {
 
 let socket;
 
-function connect() {
+function connectToSocket() {
     try {
         socket = new WebSocket(url);
     } catch(e) {

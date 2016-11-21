@@ -29,6 +29,16 @@ const find = function(x,y,w,h) {
     }
 }
 
+function add(component,x,y) {
+    for(let i = x; i < x + component.width; ++i) {
+        for(let j = y; j < y + component.height; ++j) {
+            if(find(i,j)) return;
+        }
+    }
+
+    component.constructor == Wire ? components.unshift(component) : components.push(component);
+}
+
 const remove = function(x,y) {
     const component = find(x,y);
     if(!component) return;
@@ -73,7 +83,7 @@ const remove = function(x,y) {
     component.input = [];
     component.output = [];
 
-    actions.push(new Action(
+    undos.push(new Action(
         "remove",
         data
     ));
@@ -85,7 +95,7 @@ function edit(component,property,f) {
 
     component[property] = f(component[property]);
 
-    actions.push(new Action(
+    undos.push(new Action(
         "edit", {
             component,
             property,

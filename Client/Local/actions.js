@@ -1,4 +1,5 @@
-let actions = [];
+let undos = [];
+let redos = [];
 
 class Action {
     constructor(method,data) {
@@ -53,11 +54,17 @@ class Action {
 }
 
 function undo() {
-    if(!actions.length) return;
+    if(!undos.length) return;
 
-    const action = actions.splice(-1)[0];
+    const action = undos.splice(-1)[0];
+
     switch(action.method) {
         case "add":
+            redos.push(new Action(
+                "remove",
+                action.data.map(n => components[n])
+            ));
+
             for(let i = 0; i < action.data.length; ++i) {
                 const component = components[action.data[i]];
                 if(component.constructor == Wire) {
@@ -66,8 +73,14 @@ function undo() {
                 }
                 components.splice(action.data[i],1);
             }
+
             break;
         case "remove":
+            redos.push(new Action(
+                "add",
+                action.data.map(n => components.indexOf(n))
+            ));
+
             for(let i = 0; i < action.data.length; ++i) {
                 if(action.data[i].constructor == Wire) {
                     const wire = action.data[i];
@@ -112,6 +125,47 @@ function undo() {
             selecting.y = action.data.pos.y;
             contextMenu.pos.x = selecting.x + selecting.w;
             contextMenu.pos.y = selecting.y + selecting.h;
+            break;
+    }
+}
+
+function redo() {
+    if(!redos.length) return;
+
+    const action = redos.splice(-1)[0];
+    undos.push(action);
+
+    switch(action.method) {
+        case "add":
+            for(let i = 0; i < action.data.length; ++i) {
+                const component = components[action.data[i]];
+                if(component.constructor == Wire) {
+                    component.from && component.from.output.splice(component.from.output.indexOf(component), 1);
+                    component.to && component.to.input.splice(component.to.input.indexOf(component), 1);
+                }
+                components.splice(action.data[i], 1);
+            }
+
+            undos.push(new Action(
+                "remove",
+                action.data.map(n => components[n])
+            ));
+            break;
+        case "remove":
+            for(let i = 0; i < action.data.length; ++i) {
+                if(action.data[i].constructor == Wire) {
+                    const wire = action.data[i];
+                    connect(wire.from, wire.to, wire);
+                    components.unshift(wire);
+                } else {
+                    components.push(action.data[i]);
+                }
+            }
+
+            undos.push(new Action(
+                "add",
+                action.data.map(n => components.indexOf(n))
+            ));
             break;
     }
 }
