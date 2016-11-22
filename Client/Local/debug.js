@@ -44,8 +44,13 @@ function updateDebugInfo() {
             debugInfo.addLine("Selected components", selecting.components.length);
         }
         debugInfo.addLine("Connecting", !!connecting);
-        debugInfo.addLine("Components", components.length);
-        debugInfo.addLine("Visible components", visible_components);
+        let i = 0;
+        components.map(n => n.constructor != Wire && ++i);
+        debugInfo.addLine("Components", i);
+        i = 0;
+        components.map(n => n.constructor == Wire && ++i);
+        debugInfo.addLine("Wires", i);
+        debugInfo.addLine("Visible elements", visible_components);
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(tickrate));
         debugInfo.addLine("Updates", update_queue.length);

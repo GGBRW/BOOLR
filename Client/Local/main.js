@@ -53,6 +53,9 @@ function draw() {
         labels[i].draw();
     }
 
+    // Draw connecting wire
+    if(connecting) connecting.wire.draw();
+
     // Componenten tekenen
     visible_components = 0;
     for(let i = 0, len = components.length; i < len; ++i) {
@@ -205,7 +208,6 @@ c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmouseleave = function(e) {
     if(connecting) {
-        components.splice(components.indexOf(connecting.wire),1);
         connecting = null;
     }
 
@@ -276,7 +278,6 @@ c.onmousedown = function(e) {
                 const component = find(mouse.grid.x,mouse.grid.y);
                 if(component && (component.output || component.from)) {
                     const wire = new Wire();
-                    components.unshift(wire);
 
                     if(component.from) {
                         wire.from = component.from;
@@ -298,10 +299,7 @@ c.onmousedown = function(e) {
                     });
                 }
                 else {
-                    components.push(new Selected());
-                    undos.push(new Action(
-                        "add", [components.length - 1]
-                    ));
+                    add(new Selected());
                 }
             }
         }
@@ -429,7 +427,6 @@ c.onmousedown = function(e) {
                 })();
             }
         } else if(connecting) {
-            components.splice(components.indexOf(connecting.wire),1);
             connecting = null;
         } else {
             contextMenu.show(Object.assign({}, mouse.screen));
@@ -561,9 +558,8 @@ c.onmousemove = function(e) {
                     connecting.wire.to = component;
                     connect(connecting.wire.from,component,connecting.wire);
 
-                    undos.push(new Action(
-                        "add", [0]
-                    ));
+                    // Add the wire to the components
+                    add(connecting.wire);
 
                     // Blink the two components and the wire
                     connecting.wire.from.blink(1000);
@@ -573,7 +569,6 @@ c.onmousemove = function(e) {
                     if(component.output) {
                         // If the component under the user's mouse has output ports, we'll keep connecting
                         const wire = new Wire();
-                        components.unshift(wire);
                         wire.from = component;
                         connecting = { wire };
                         connecting.wire.pos.push({
@@ -765,7 +760,6 @@ c.onmouseup = function(e) {
         } else if(connecting) {
             const component = find(mouse.grid.x,mouse.grid.y);
             if(component && component.onclick && connecting.wire.from == component) component.onclick();
-            components.splice(components.indexOf(connecting.wire),1);
             connecting = null;
         } else if(e.altKey) {
             scroll_animation.animate = true;

@@ -1,6 +1,6 @@
 let components = [];
 
-const find = function(x,y,w,h) {
+function find(x,y,w,h) {
     if(!w && !h) {
         for(let i = components.length - 1; i >= 0; --i) {
             const component = components[i];
@@ -29,7 +29,7 @@ const find = function(x,y,w,h) {
     }
 }
 
-function add(component,x,y) {
+function add(component,x = component.pos.x,y = component.pos.y) {
     for(let i = x; i < x + component.width; ++i) {
         for(let j = y; j < y + component.height; ++j) {
             if(find(i,j)) return;
@@ -37,9 +37,14 @@ function add(component,x,y) {
     }
 
     component.constructor == Wire ? components.unshift(component) : components.push(component);
+
+    undos.push(new Action(
+        "add",
+        [component.constructor == Wire ? 0 : components.length - 1]
+    ));
 }
 
-const remove = function(x,y) {
+function remove(x,y) {
     const component = find(x,y);
     if(!component) return;
 
@@ -104,7 +109,7 @@ function edit(component,property,f) {
     ));
 }
 
-const clone = function(target) {
+function clone(target) {
     let component = new target.constructor();
 
     for(let key in target) {

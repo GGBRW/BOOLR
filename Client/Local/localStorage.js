@@ -90,12 +90,11 @@ function parse(data,clip) {
                 // Fix voor oude versies
                 const dx = Math.sign(parsed[i].pos.slice(-2)[0].x - parsed[i].pos.slice(-1)[0].x) / 2;
                 const dy = Math.sign(parsed[i].pos.slice(-2)[0].y - parsed[i].pos.slice(-1)[0].y) / 2;
-                if(parsed[i].from.constructor == Input && parsed[i].to.constructor == AND) console.log(dx,dy);
-                if(parsed[i].pos[0].x % 1 != .5 || parsed[i].pos[0].y % 1 == .5) {
-                    parsed[i].pos[0].x = parsed[i].pos[1].x - Math.sign(parsed[i].pos[1].x - parsed[i].pos[0].x) / 2;
-                    parsed[i].pos[0].y = parsed[i].pos[1].y - Math.sign(parsed[i].pos[1].y - parsed[i].pos[0].y) / 2;
+                if(!(Math.abs(parsed[i].pos[0].x % 1) == .5 || Math.abs(parsed[i].pos[0].y % 1) == .5)) {
+                    parsed[i].pos[0].x = parsed[i].pos[0].x + Math.sign(parsed[i].pos[1].x - parsed[i].pos[0].x) / 2;
+                    parsed[i].pos[0].y = parsed[i].pos[0].y + Math.sign(parsed[i].pos[1].y - parsed[i].pos[0].y) / 2;
                 }
-                if(parsed[i].pos.slice(-1)[0].x % 1 != .5 || parsed[i].pos.slice(-1)[0].y % 1 == .5) {
+                if(!(Math.abs(parsed[i].pos.slice(-1)[0].x % 1) == .5 || Math.abs(parsed[i].pos.slice(-1)[0].y % 1) == .5)) {
                     parsed[i].pos.slice(-1)[0].x = parsed[i].pos.slice(-1)[0].x + dx;
                     parsed[i].pos.slice(-1)[0].y = parsed[i].pos.slice(-1)[0].y + dy;
                 }
