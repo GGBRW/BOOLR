@@ -86,7 +86,7 @@ c.onkeydown = function(e) {
                 popup.color_picker.show(
                     color => color
                     && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-                    && edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
+                    && !edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
                 );
             }
             else if(component && component.name) {
@@ -123,6 +123,8 @@ c.onkeydown = function(e) {
                     "Enter export file name:",
                     name => name ? download(name,stringify({components})) : download(undefined,stringify({components}))
                 );
+            } else {
+                setWaypoint(mouse.grid.x,mouse.grid.y);
             }
             break;
         case 84:
@@ -134,6 +136,9 @@ c.onkeydown = function(e) {
             if(e.ctrlKey) {
                 clipbord.paste(mouse.grid.x,mouse.grid.y);
             }
+            break;
+        case 87: //W
+            gotoWaypoint(waypoints.length - 1);
             break;
         case 90: // Z
             if(e.ctrlKey) {

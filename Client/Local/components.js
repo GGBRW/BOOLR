@@ -323,9 +323,17 @@ class Input {
 }
 
 class Constant extends Input {
-    constructor(pos,height,width,name,value = prompt("Enter the value")) {
+    constructor(pos,height,width,name,value = 0) {
         super(pos,height,width,name);
         this.onclick = undefined;
+        this.value = value;
+        popup.prompt.show(
+            "Enter value",
+            "Enter the value of the constant port",
+            value => {
+                this.value = +!!(+value);
+            }
+        );
 
         this.value = +!isNaN(value) && +!!value;
     }

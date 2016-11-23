@@ -68,7 +68,7 @@ context_options["edit_color"].onclick = () => {
         popup.color_picker.show(
             color => color
             && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-            && edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
+            && !edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
         );
     }
 }
