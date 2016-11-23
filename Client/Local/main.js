@@ -505,6 +505,8 @@ c.onmousemove = function(e) {
                 } else {
                     connecting.lock ? dx = 0 : dy = 0;
                 }
+            } else {
+                delete connecting.lock;
             }
 
             while((dx || dy) && dx + dy < 10000) {
@@ -579,6 +581,26 @@ c.onmousemove = function(e) {
                         connecting = null;
                     }
                 }
+            } else if(component && component.output) {
+                const output = [...component.output];
+                const wire = connecting.wire;
+
+                popup.confirm.show(
+                    "Replace input port?",
+                    "Do you want to replace this input port?",
+                    () => {
+                        remove(component.pos.x,component.pos.y);
+
+                        for(let i = 0; i < output.length; ++i) {
+                            wire.pos[0].x += Math.sign(wire.pos[1].x - wire.pos[0].x) / 2;
+                            wire.pos[0].y += Math.sign(wire.pos[1].y - wire.pos[0].y) / 2;
+                            output[i].wire.pos = wire.pos.concat(output[i].wire.pos);
+                            components.unshift(output[i].wire);
+
+                            connect(wire.from,output[i].wire.to,output[i].wire);
+                        }
+                    }
+                );
             } else if(component && component.constructor != Wire && component && component != connecting.wire.from) {
                 toolbar.message(`Can't connect to ${component.name}`)
             }

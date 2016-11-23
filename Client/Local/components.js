@@ -30,11 +30,12 @@ function find(x,y,w,h) {
 }
 
 function add(component,x = component.pos.x,y = component.pos.y) {
-    for(let i = x; i < x + component.width; ++i) {
-        for(let j = y; j < y + component.height; ++j) {
-            if(find(i,j)) return;
-        }
-    }
+    // FIXME: place free?
+    // for(let i = x; i < x + component.width; ++i) {
+    //     for(let j = y; j < y + component.height; ++j) {
+    //         if(find(i,j)) return;
+    //     }
+    // }
 
     component.constructor == Wire ? components.unshift(component) : components.push(component);
 
