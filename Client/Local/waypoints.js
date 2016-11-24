@@ -5,7 +5,7 @@ function setWaypoint(x,y,label = `Waypoint#${waypoints.length}`) {
         x,y,
         label
     });
-    toolbar.message(`Waypoint <i>${label}</i> set at x:<i>${x}</i>, y:<i>${y}</i>`);
+    toolbar.message(`Waypoint <i>${label}</i> set at <i>${x}</i>,<i>${y}</i>`);
 }
 
 function gotoWaypoint(index) {
