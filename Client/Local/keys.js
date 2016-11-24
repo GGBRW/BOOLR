@@ -41,7 +41,8 @@ c.onkeydown = function(e) {
             break;
         case 27: // Escape
             document.getElementById("list").style.display = "none";
-            document.getElementById("contextMenu").style.display = "none";
+            contextMenu.hide();
+            waypointsMenu.hide();
             selecting = null;
             break;
         case 49: // 1
@@ -124,7 +125,13 @@ c.onkeydown = function(e) {
                     name => name ? download(name,stringify({components})) : download(undefined,stringify({components}))
                 );
             } else {
-                setWaypoint(mouse.grid.x,mouse.grid.y);
+                waypointsMenu.hide();
+
+                const component = find(mouse.grid.x,mouse.grid.y);
+                setWaypoint(
+                    mouse.grid.x,mouse.grid.y,
+                    component && component.name
+                );
             }
             break;
         case 84:
@@ -137,8 +144,9 @@ c.onkeydown = function(e) {
                 clipbord.paste(mouse.grid.x,mouse.grid.y);
             }
             break;
-        case 87: //W
-            gotoWaypoint(waypoints.length - 1);
+        case 87: // W
+            waypointsMenu.show(Object.assign({},mouse.grid));
+            // gotoWaypoint(waypoints.length - 1);
             break;
         case 90: // Z
             if(e.ctrlKey) {

@@ -110,6 +110,7 @@
     <script>
         document.getElementById("load_project_btn").onclick = function() {
             document.getElementById("load_project").style.display = "block";
+            document.getElementById("load_project").style.transition = "opacity .5s";
             document.getElementById("background").style.display = "block";
             setTimeout(() => {
                 document.getElementById("background").style.height = "430px";
@@ -121,6 +122,7 @@
 
         document.getElementById("settings_btn").onclick = function() {
             document.getElementById("settings").style.display = "block";
+            document.getElementById("settings").style.transition = "opacity .5s";
             document.getElementById("background").style.display = "block";
             setTimeout(() => {
                 document.getElementById("background").style.height = "430px";
@@ -132,6 +134,7 @@
 
         document.getElementById("info_btn").onclick = function() {
             document.getElementById("info").style.display = "block";
+            document.getElementById("info").style.transition = "opacity .5s";
             document.getElementById("background").style.display = "block";
             setTimeout(() => {
                 document.getElementById("background").style.height = "430px";
@@ -147,6 +150,7 @@
                 document.getElementById("background").style.height = "0";
                 document.getElementById("background").style.marginTop = "200px";
                 document.getElementById("background").style.opacity = "0";
+                this.parentNode.style.transition = "opacity .2s";
                 this.parentNode.style.opacity = "0";
                 setTimeout(() => {
                     this.parentNode.style.display = "none";

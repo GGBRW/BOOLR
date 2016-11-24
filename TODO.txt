@@ -1,4 +1,3 @@
-[ADD] I/O labels
-[BUG] toast niet in het midden
-[BUG] dragging wires
-[BUG] begin/eindpunt draden bij draggen
+[FIX] Undo / redo
+[FIX] Draden bij draggen
+

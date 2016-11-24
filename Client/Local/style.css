@@ -14,6 +14,21 @@ canvas {
     outline: none;
 }
 
+/* Custom scroll bars */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.5);
+    border-radius: 5px;
+}
+
 /* Icons */
 
 @font-face {
@@ -444,6 +459,7 @@ canvas {
     margin: 0;
     box-shadow: 0 0 10px rgba(0,0,0,.25);
     outline: none;
+    border-radius: 5px;
 
     opacity: 0;
     transition: opacity .2s;
@@ -459,6 +475,10 @@ canvas {
     white-space: nowrap
 }
 
+#contextMenu li.disabled {
+    opacity: .5;
+}
+
 #contextMenu li:last-child {
     border: none;
 }
@@ -471,6 +491,56 @@ canvas {
 
 #contextMenu li:hover {
     background: rgba(0,0,0,.1);
+}
+
+/* Waypoints menu */
+#waypointsMenu {
+    position: fixed;
+    background: #111;
+    list-style: none;
+    padding: 0;
+    padding-top: 10px;
+    text-align: center;
+    margin: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,.25);
+    outline: none;
+    max-height: 300px;
+    overflow: auto;
+    border-radius: 5px;
+
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+#waypointsMenu li {
+    font-family: "Ubuntu";
+    font-size: 14px;
+    color: #888;
+    border-bottom: 1px solid #333;
+    padding: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: left;
+}
+
+#waypointsMenu li:last-child {
+    border: none;
+}
+
+#waypointsMenu li .remove {
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 10px;
+    transition: color .2s;
+}
+
+#waypointsMenu li .remove:hover {
+    color: #822;
+}
+
+#waypointsMenu li:hover {
+    background: rgba(255,255,255,.1);
 }
 
 /* Tips */

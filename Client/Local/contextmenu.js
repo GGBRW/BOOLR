@@ -18,15 +18,30 @@ contextMenu.show = function(pos) {
             if(component.constructor == Wire) {
                 this.appendChild(context_options["edit_color"]);
             } else {
-                component.name && this.appendChild(context_options["edit_name"]);
-                component.delay && this.appendChild(context_options["edit_delay"]);
+                component.hasOwnProperty("name") && this.appendChild(context_options["edit_name"]);
+                component.hasOwnProperty("delay") && this.appendChild(context_options["edit_delay"]);
                 this.appendChild(context_options["rotate"]);
                 this.appendChild(context_options["copy"]);
                 this.appendChild(context_options["view connections"]);
             }
+
+            this.appendChild(context_options["set waypoint"]);
+            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${component.name}</span>`;
+
             this.appendChild(context_options["remove"]);
         } else {
             this.appendChild(context_options["paste"]);
+
+            this.appendChild(context_options["set waypoint"]);
+            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${Math.round(contextMenu.pos.x)},${Math.round(contextMenu.pos.y)}</span>`;
+
+            this.appendChild(context_options["goto waypoint"]);
+            context_options["goto waypoint"].innerHTML = '<i class="material-icons">redo</i><span>Jump to waypoint</span>';
+            if(waypoints.length == 0) context_options["goto waypoint"].className = "disabled";
+            else {
+                context_options["goto waypoint"].className = "";
+                context_options["goto waypoint"].innerHTML += '<i class="material-icons" style="float: right; margin: 0">navigate_next</i>';
+            }
         }
     }
 
@@ -40,6 +55,8 @@ contextMenu.show = function(pos) {
 contextMenu.hide = function() {
     this.style.opacity = 0;
     setTimeout(() => contextMenu.style.display = "none", 200);
+
+    waypointsMenu.hide();
 }
 
 /* Menu options */
@@ -50,7 +67,7 @@ context_options["edit_name"] = document.createElement("li");
 context_options["edit_name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name [E]</span>';
 context_options["edit_name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
-    if(component && component.name) {
+    if(component && component.hasOwnProperty("name")) {
         popup.prompt.show(
             "Edit name",
             "Enter a name for this component:",
@@ -78,7 +95,7 @@ context_options["edit_delay"] = document.createElement("li");
 context_options["edit_delay"].innerHTML = '<i class="material-icons">timer</i><span>Edit delay</span>';
 context_options["edit_delay"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
-    if(component && component.delay) {
+    if(component && component.hasOwnProperty("delay")) {
         popup.prompt.show(
             "Edit delay",
             "Enter the new delay in ms",
@@ -147,7 +164,7 @@ context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><
 context_options["remove all"].onclick = () => {
     const old_clipbord = Object.assign({}, clipbord);
     clipbord.copy(selecting.components, selecting);
-    undo.push(new Action(
+    undos.push(new Action(
         "remove_selection",
         clipbord
     ));
@@ -166,6 +183,35 @@ context_options["view connections"].onclick = () => {
         find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
     );
 };
+
+// Set waypoint
+context_options["set waypoint"] = document.createElement("li");
+context_options["set waypoint"].innerHTML = '<i class="material-icons">my_location</i><span>Set waypoint</span>';
+context_options["set waypoint"].onclick = () => {
+    setWaypoint(
+        Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y),
+        find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).name
+    );
+};
+
+// Go to waypoint
+context_options["goto waypoint"] = document.createElement("li");
+
+context_options["goto waypoint"].onmouseenter = () => {
+    waypointsMenu.show({
+        x: contextMenu.pos.x + contextMenu.clientWidth / zoom,
+        y: -context_options["goto waypoint"].getBoundingClientRect().top / zoom + offset.y
+    });
+
+    for(let i in context_options) {
+        i != "goto waypoint" && (context_options[i].onmouseover = function() {
+            waypointsMenu.hide();
+            for(let i in context_options) i != "goto waypoint" && (context_options[i].onmouseover = undefined);
+        });
+    }
+}
+
+
 
 contextMenu.onclick = function() { this.style.display = "none"; selecting = null; c.focus() };
 

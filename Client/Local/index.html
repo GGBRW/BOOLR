@@ -84,15 +84,9 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li>NIEUW hoofdmenu</li>
-        <li>Paprikalay toegevoegd en verbeterd</li>
-        <li>Clock verbeterd</li>
-        <li>Visualisatie van input/output richting</li>
-        <li><span style="font-family: Edwardian Script ITC; font-size: 30px">Verbeterd design</span></li>
-        <li><i class="material-icons">lightbulb_outline</i>(tips)</li>
-        <li>Draden trekken verbeterd</li>
-        <li>Input/Output labels</li>
-        <li>Een paar nieuwe fancy animatietjes</li>
+        <li><i class="material-icons">my_location</i> Waypoints!</li>
+        <li><i class="material-icons">gesture</i> Druk CTRL in om te scrollen tijdens het trekken van een draad</li>
+        <li><i class="material-icons">bug_report</i> Een paar vervelende bugs eruit gehaald</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -159,6 +153,8 @@ class Component {
     <button class="ok">Close</button>
 </div>
 
+<!-- Waypoints menu -->
+<ul id="waypointsMenu"></ul>
 
 
 <!-- Tips -->
@@ -230,7 +226,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.136";
+    const VERSION = "0.1.142";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

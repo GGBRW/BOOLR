@@ -64,6 +64,11 @@
     padding: 2px;
 }
 
+.popup .material-icons {
+    color: #333;
+    vertical-align: -5px;
+}
+
 #settings ul {
     list-style: none;
     padding: 0;

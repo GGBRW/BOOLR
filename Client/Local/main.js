@@ -16,9 +16,16 @@ let scroll_animation = { v: 0, r: 0, animate: false };
 let zoom_animation = zoom;
 
 const scroll = (dx,dy) => {
-    scroll_animation.v = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2)) / 16;
-    scroll_animation.r = Math.atan2(-dx,dy);
-    scroll_animation.animate = true;
+    if(settings.scroll_animation) {
+        scroll_animation.v = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 16;
+        scroll_animation.r = Math.atan2(-dx, dy);
+        scroll_animation.animate = true;
+    } else {
+        offset.x += dx;
+        offset.y += dy;
+        mouse.grid.x += dx;
+        mouse.grid.y += dy;
+    }
 }
 
 const changeZoom = (dz) => {
@@ -126,6 +133,13 @@ function draw() {
         contextMenu.style.top = (-contextMenu.pos.y + offset.y) * zoom;
     }
 
+    // Draw waypoints menu
+    if(document.getElementById("waypointsMenu").style.display != "none") {
+        const waypointsMenu = document.getElementById("waypointsMenu");
+        waypointsMenu.style.left = (waypointsMenu.pos.x - offset.x) * zoom;
+        waypointsMenu.style.top = (-waypointsMenu.pos.y + offset.y) * zoom;
+    }
+
     // Scroll animatie
     if(settings.scroll_animation) {
         if(scroll_animation.animate && settings.scroll_animation) {
@@ -155,6 +169,11 @@ function draw() {
         }
         if(selecting.h != selecting.animate.h) {
             selecting.h += (selecting.animate.h - selecting.h) / 2;
+        }
+
+        if(contextMenu.style.display == "block") {
+            contextMenu.pos.x = selecting.x + selecting.w;
+            contextMenu.pos.y = selecting.y + selecting.h;
         }
     }
 
@@ -204,7 +223,7 @@ window.onerror = function(msg,url,line) {
 }
 
 c.oncontextmenu = () => false;
-c.onmouseenter = () => scroll_animation.animate = false;
+// c.onmouseenter = () => scroll_animation.animate = false;
 
 c.onmouseleave = function(e) {
     if(connecting) {
@@ -223,11 +242,24 @@ c.onmousedown = function(e) {
 
     if(e.which == 1) {
         if(contextMenu.style.display == "block" && !selecting) { contextMenu.hide(); return }
+        if(waypointsMenu.style.display == "block") { waypointsMenu.hide(); return }
 
         if(e.shiftKey) {
             if(selecting) {
                 selecting.animate.w = mouse.grid.x - selecting.x;
                 selecting.animate.h = mouse.grid.y - selecting.y;
+
+                contextMenu.show({ x: (selecting.x + selecting.w - offset.x) * zoom, y: -(selecting.y + selecting.h - offset.y) * zoom })
+
+                selecting.components = find(
+                    selecting.x,selecting.y,
+                    selecting.animate.w,
+                    selecting.animate.h
+                );
+
+                for(let i of selecting.components) {
+                    i.blink(1000);
+                }
             } else {
                 selecting = {
                     x: Math.round(e.x / zoom + offset.x),
@@ -310,6 +342,8 @@ c.onmousedown = function(e) {
         return false;
     }
     else if(e.which == 3) {
+        waypointsMenu.hide();
+
         if(selecting && !dragging) {
             // Cancel selection
             selecting = null;
@@ -488,6 +522,13 @@ c.onmousemove = function(e) {
             }
         }
         else if(connecting) {
+            // Scroll and return if the user is holding the ctrl key
+            if(e.ctrlKey) {
+                offset.x -= e.movementX / zoom;
+                offset.y += e.movementY / zoom;
+                return;
+            }
+
             // The wire where we are connecting two components with
             const wire = connecting.wire;
 
