@@ -22,13 +22,15 @@ c.onkeydown = function(e) {
         case 46: // Delete
             if(selecting) {
                 for(let i of selecting.components) {
-                    Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
+                    Array.isArray(i.pos) ? remove(i) : remove(i)
                 }
 
                 selecting = null;
                 contextMenu.hide();
             } else {
-                remove(mouse.grid.x,mouse.grid.y);
+                remove(
+                    find(mouse.grid.x,mouse.grid.y)
+                );
             }
             break;
         case 33: // Page Up

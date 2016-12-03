@@ -185,7 +185,7 @@ class Component {
             if(reader.result[0] == "{") {
                 popup.confirm.show(
                         "Do you want to convert this file?",
-                        "This is an old save file. Do you want to convert this file?",
+                        "This is an old-formatted save file. Do you want to convert this file? This may take a while.",
                         () => {
                             components = [];
                             parse_old(reader.result);

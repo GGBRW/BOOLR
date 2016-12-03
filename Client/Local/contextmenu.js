@@ -155,7 +155,12 @@ context_options["paste"].onclick = function() {
 context_options["remove"] = document.createElement("li");
 context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
 context_options["remove"].onclick = () => {
-    remove(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    remove(
+        find(
+            Math.round(contextMenu.pos.x),
+            Math.round(contextMenu.pos.y)
+        )
+    );
 }
 
 // Delete All
@@ -164,14 +169,14 @@ context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><
 context_options["remove all"].onclick = () => {
     const old_clipbord = Object.assign({}, clipbord);
     clipbord.copy(selecting.components, selecting);
-    undos.push(new Action(
+    undoStack.push(new Action(
         "remove_selection",
         clipbord
     ));
     clipbord = old_clipbord;
 
     for(let i of selecting.components) {
-        Array.isArray(i.pos) ? remove(i.pos[0].x,i.pos[0].y) : remove(i.pos.x,i.pos.y)
+        Array.isArray(i.pos) ? remove(i) : remove(i);
     }
 };
 

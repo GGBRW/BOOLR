@@ -1,5 +1,5 @@
-let undos = [];
-let redos = [];
+let undoStack = [];
+let redoStack = [];
 
 class Action {
     constructor(method,data) {
@@ -54,13 +54,13 @@ class Action {
 }
 
 function undo() {
-    if(!undos.length) return;
+    if(!undoStack.length) return;
 
-    const action = undos.splice(-1)[0];
+    const action = undoStack.splice(-1)[0];
 
     switch(action.method) {
         case "add":
-            redos.push(new Action(
+            redoStack.push(new Action(
                 "remove",
                 action.data.map(n => components[n])
             ));
@@ -76,7 +76,7 @@ function undo() {
 
             break;
         case "remove":
-            redos.push(new Action(
+            redoStack.push(new Action(
                 "add",
                 action.data.map(n => components.indexOf(n))
             ));
@@ -130,10 +130,10 @@ function undo() {
 }
 
 function redo() {
-    if(!redos.length) return;
+    if(!redoStack.length) return;
 
-    const action = redos.splice(-1)[0];
-    undos.push(action);
+    const action = redoStack.splice(-1)[0];
+    undoStack.push(action);
 
     switch(action.method) {
         case "add":
@@ -146,7 +146,7 @@ function redo() {
                 components.splice(action.data[i], 1);
             }
 
-            undos.push(new Action(
+            undoStack.push(new Action(
                 "remove",
                 action.data.map(n => components[n])
             ));
@@ -162,7 +162,7 @@ function redo() {
                 }
             }
 
-            undos.push(new Action(
+            undoStack.push(new Action(
                 "add",
                 action.data.map(n => components.indexOf(n))
             ));

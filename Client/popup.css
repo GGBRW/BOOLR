@@ -24,6 +24,7 @@
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.2);
     font-family: "Roboto Condensed";
+    padding: 10px;
 
     opacity: 0;
     transform: scale(.95);

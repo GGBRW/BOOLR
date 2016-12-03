@@ -23,9 +23,10 @@ const scroll = (dx,dy) => {
     } else {
         offset.x += dx;
         offset.y += dy;
-        mouse.grid.x += dx;
-        mouse.grid.y += dy;
     }
+
+    mouse.grid.x += dx;
+    mouse.grid.y += dy;
 }
 
 const changeZoom = (dz) => {
@@ -148,6 +149,10 @@ function draw() {
 
             scroll_animation.v -= scroll_animation.v / 16;
             scroll_animation <= 0 && (scroll_animation.animate = false);
+            if(scroll_animation <= 0) {
+                scroll_animation.animate = false;
+
+            }
         }
     }
 
@@ -630,7 +635,7 @@ c.onmousemove = function(e) {
                     "Replace input port?",
                     "Do you want to replace this input port?",
                     () => {
-                        remove(component.pos.x,component.pos.y);
+                        remove(component);
 
                         for(let i = 0; i < output.length; ++i) {
                             wire.pos[0].x += Math.sign(wire.pos[1].x - wire.pos[0].x) / 2;
@@ -749,7 +754,7 @@ c.onmouseup = function(e) {
                         dragging = null;
                         c.style.cursor = "crosshair";
 
-                        undos.push(new Action(
+                        undoStack.push(new Action(
                             "move_selection",
                             Object.assign({ selection: Object.assign({},selecting) }, dragging)
                         ));
@@ -813,7 +818,7 @@ c.onmouseup = function(e) {
                         dragging = null;
                         c.style.cursor = "crosshair";
 
-                        undos.push(new Action(
+                        undoStack.push(new Action(
                             "move",
                             Object.assign({}, dragging)
                         ));

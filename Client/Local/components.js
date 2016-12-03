@@ -39,60 +39,68 @@ function add(component,x = component.pos.x,y = component.pos.y) {
 
     component.constructor == Wire ? components.unshift(component) : components.push(component);
 
-    undos.push(new Action(
+    undoStack.push(new Action(
         "add",
         [component.constructor == Wire ? 0 : components.length - 1]
     ));
 }
 
-function remove(x,y) {
-    const component = find(x,y);
+function remove(component) {
     if(!component) return;
 
     if(component.constructor == Wire) {
-        if(component.from) {
-            component.from.output.forEach((output,i) => output.wire == component && component.from.output.splice(i,1));
-        }
-        if(component.to) {
-            component.to.input.forEach((input,i) => input.wire == component && component.to.input.splice(i,1));
-            component.to.update();
-        }
+        // If the component to remove is a wire, 'tell' the connected components that the connection is removed
+        component.from && component.from.output.splice(
+            component.from.output.findIndex(n => n.wire == component), 1
+        );
+
+        component.to && component.to.input.splice(
+            component.to.input.findIndex(n => n.wire == component), 1
+        ) && component.to.update();
     } else {
+        // If the component to remove is not a wire, remove all connected wires and 'tell' all connected components that the connection is removed
         if(component.input) {
-            for(let input of component.input) {
-                const from = input.wire.from;
-                from.output.splice(from.output.findIndex(n => n.wire == input.wire),1);
-                components.splice(components.indexOf(input.wire),1);
+            for(let i = 0; i < component.input.length; ++i) {
+                const wire = component.input[i].wire;
+                wire.from.output.splice(
+                    wire.from.output.findIndex(n => n.wire == wire), 1
+                );
+
+                components.splice(components.indexOf(wire),1);
             }
         }
+
         if(component.output) {
-            for(let output of component.output) {
-                const to = output.wire.to;
-                to.input.splice(to.input.findIndex(n => n.wire == output.wire),1);
-                components.splice(components.indexOf(output.wire),1);
+            for(let i = 0; i < component.output.length; ++i) {
+                const wire = component.output[i].wire;
+                wire.to.input.splice(
+                    wire.to.input.findIndex(n => n.wire == wire), 1
+                );
+
+                components.splice(components.indexOf(wire),1);
             }
 
-            for(let output of component.output) {
-                output.wire.to.update();
+            for(let i = 0; i < component.output.length; ++i) {
+                component.output[i].wire.to.update();
             }
         }
     }
 
-    data = [component];
+    // Collect all removed components
+    let removed = [component];
     if(component.input) {
-        for(let i = 0; i < component.input.length; ++i) data.push(component.input[i].wire);
+        for(let i = 0; i < component.input.length; ++i) removed.push(component.input[i].wire);
     }
     if(component.output) {
-        for(let i = 0; i < component.output.length; ++i) data.push(component.output[i].wire);
+        for(let i = 0; i < component.output.length; ++i) removed.push(component.output[i].wire);
     }
 
-    component.input = [];
-    component.output = [];
-
-    undos.push(new Action(
+    undoStack.push(new Action(
         "remove",
-        data
+        removed
     ));
+
+    // And finally, remove the actual component
     components.splice(components.indexOf(component),1);
 }
 
@@ -101,7 +109,7 @@ function edit(component,property,f) {
 
     component[property] = f(component[property]);
 
-    undos.push(new Action(
+    undoStack.push(new Action(
         "edit", {
             component,
             property,
@@ -271,6 +279,8 @@ class Input {
         if(zoom > 20) {
             // Draw the labels of the connections of the component
             for(let i = 0; i < this.output.length; ++i) {
+                if(!this.output[i].label) continue;
+
                 const output = this.output[i];
                 ctx.beginPath();
                 ctx.arc(
@@ -469,10 +479,13 @@ class Output {
         if(zoom > 20) {
             // Draw the labels of the connections of the component
             for(let i = 0; i < this.input.length; ++i) {
+                if(!this.input[i].label) continue;
+
+                const input = this.input[i];
                 ctx.beginPath();
                 ctx.arc(
-                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom,
-                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
                     zoom / 8,
                     0, Math.PI * 2
                 );
@@ -482,9 +495,9 @@ class Output {
                 ctx.font = zoom / 6 + "px Roboto Condensed";
                 ctx.fillStyle = "#ddd";
                 ctx.fillText(
-                    this.input[i].label,
-                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(this.input[i].label).width / 2,
-                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                    input.label,
+                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
                 );
             }
         }
@@ -619,10 +632,13 @@ class Gate {
         if(zoom > 20) {
             // Draw the labels of the connections of the component
             for(let i = 0; i < this.input.length; ++i) {
+                if(!this.input[i].label) continue;
+
+                const input = this.input[i];
                 ctx.beginPath();
                 ctx.arc(
-                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom,
-                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
                     zoom / 8,
                     0, Math.PI * 2
                 );
@@ -632,17 +648,20 @@ class Gate {
                 ctx.font = zoom / 6 + "px Roboto Condensed";
                 ctx.fillStyle = "#ddd";
                 ctx.fillText(
-                    this.input[i].label,
-                    (this.input[i].wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(this.input[i].label).width / 2,
-                    (-this.input[i].wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                    input.label,
+                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
                 );
             }
 
             for(let i = 0; i < this.output.length; ++i) {
+                if(!this.output[i].label) continue;
+
+                const output = this.output[i];
                 ctx.beginPath();
                 ctx.arc(
-                    (this.output[i].wire.pos[0].x - offset.x) * zoom,
-                    (-this.output[i].wire.pos[0].y + offset.y) * zoom,
+                    (output.wire.pos[0].x - offset.x) * zoom,
+                    (-output.wire.pos[0].y + offset.y) * zoom,
                     zoom / 8,
                     0, Math.PI * 2
                 );
@@ -652,9 +671,9 @@ class Gate {
                 ctx.font = zoom / 6 + "px Roboto Condensed";
                 ctx.fillStyle = "#ddd";
                 ctx.fillText(
-                    this.output[i].label,
-                    (this.output[i].wire.pos[0].x - offset.x) * zoom - ctx.measureText(this.output[i].label).width / 2,
-                    (-this.output[i].wire.pos[0].y + offset.y) * zoom + zoom / 18
+                    output.label,
+                    (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
+                    (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
                 );
             }
         }
