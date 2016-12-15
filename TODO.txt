@@ -7,3 +7,5 @@
 [ADD] Gebied invouwen 
 [ADD] labels 
 [BUG] Clock paste
+[ADD] 7-segment display
+[ADD][OPTIONAL] Decimale output weergeven van outputs naast elkaar
