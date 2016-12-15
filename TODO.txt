@@ -1,5 +1,9 @@
-[FIX] Undo / redo
+[FIX] Actions
 [FIX] Draden bij draggen
 [ADD] Edit color bij selecties
-
-
+[ADD] 1/0 font
+[ADD] Resize
+[BUG] Name overflow
+[ADD] Gebied invouwen 
+[ADD] labels 
+[BUG] Clock paste
