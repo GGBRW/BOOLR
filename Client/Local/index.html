@@ -21,13 +21,13 @@
 
 <!-- Component toolbar -->
 <div id="toolbar">
-    <div class="slot">I/O</div>
-    <div class="slot" onmousedown="select(NOT)">!</div>
-    <div class="slot" onmousedown="select(AND)">&</div>
-    <div class="slot" onmousedown="select(OR)">|</div>
-    <div class="slot" onmousedown="select(XOR)">^</div>
-    <div class="slot" onmousedown="popup.custom_component.show()">+</div>
-    <div class="slot" onmousedown="popup.component_list.show()">...</div>
+    <div class="slot" tooltip="Input and output ports">I/O</div>
+    <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
+    <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
+    <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
+    <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
+    <div class="slot" tooltip="Custom component" onmousedown="popup.custom_component.show()">+</div>
+    <div class="slot" tooltip="Component list" onmousedown="popup.component_list.show()">...</div>
 
     <div id="toast"></div>
 
@@ -37,11 +37,13 @@
         <li onclick="select(Constant)">Constant</li>
         <li onclick="select(Delay)">Delay</li>
         <li onclick="select(Clock)">Clock</li>
+        <li onclick="select(LED)">LED</li>
+        <li onclick="select(Display)">Display</li>
         <li onclick="select(D2B)">D2B Converter</li>
         <li onclick="select(B2D)">B2D Converter</li>
-        <li>LED</li>
     </ul>
 </div>
+<div id="toolbartip">Input & Output</div>
 
 <!-- Credits -->
 <div id="credits">
@@ -84,9 +86,8 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li><i class="material-icons">my_location</i> Waypoints! (Check het contextmenu of gebruik de toetsen <i>W</i> en <i>S</i> )</li>
-        <li><i class="material-icons">gesture</i> Druk CTRL in om te scrollen tijdens het trekken van een draad</li>
-        <li><i class="material-icons">bug_report</i> Een paar vervelende bugs eruit gehaald</li>
+        <li><i class="material-icons">settings_brightness</i> 7-segment display</li>
+        <li><i class="material-icons">highlight</i> LEDs</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -167,6 +168,9 @@ class Component {
     Hold the shift key to draw the wire in a straight line
 </div>
 
+<!-- Value of inputs/outputs -->
+<div id="hoverBalloon"></div>
+
 <!-- Open files -->
 <input id="open_file" type="file" accept=".dat" style="display: none">
 
@@ -216,6 +220,7 @@ class Component {
 <script src="misc.js"></script>
 <script src="debug.js"></script>
 <script src="contextmenu.js"></script>
+<script src="hover.js"></script>
 <script src="componentInfo.js"></script>
 <script src="tips.js"></script>
 <script src="../popup.js"></script>
@@ -226,7 +231,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.143";
+    const VERSION = "0.1.147";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;

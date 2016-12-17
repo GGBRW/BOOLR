@@ -108,7 +108,7 @@ function parse(data,clip) {
     return parsed;
 }
 
-function download   (name, string) {
+function download(name, string) {
     const a = document.createElement("a");
     const data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
     a.setAttribute('href', data);

@@ -186,7 +186,7 @@
             const project = window.open("./Local/index.html");
             project.onload = () => {
                 project.url = url;
-                project.connectToSocket();
+                project.connectToSocket(url);
             }
         }
     </script>

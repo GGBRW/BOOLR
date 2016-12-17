@@ -37,6 +37,8 @@ function add(component,x = component.pos.x,y = component.pos.y) {
     //     }
     // }
 
+    if(find(x,y)) return;
+
     component.constructor == Wire ? components.unshift(component) : components.push(component);
 
     undoStack.push(new Action(
@@ -257,7 +259,7 @@ class Input {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.font = zoom / 1.5 + "px Monospace";
             ctx.fillText(
                 this.value,
                 (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
@@ -273,6 +275,17 @@ class Input {
                 this.name,
                 (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
                 (-this.pos.y + offset.y) * zoom - .5 * zoom + zoom / 5
+            );
+        }
+
+        if(this.hasOwnProperty("delay") && zoom > 20) {
+            // If this input component works on a delay, draw the delay in the bottom left side of the component
+            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.delay + "ms",
+                (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+                (-this.pos.y + this.height + offset.y) * zoom - .5 * zoom - zoom / 16
             );
         }
 
@@ -337,13 +350,16 @@ class Constant extends Input {
         super(pos,height,width,name);
         this.onclick = undefined;
         this.value = value;
-        popup.prompt.show(
-            "Enter value",
-            "Enter the value of the constant port",
-            value => {
-                this.value = +!!(+value);
-            }
-        );
+
+        setTimeout(() => {
+            popup.prompt.show(
+                "Enter value",
+                "Enter the value of the constant port",
+                value => {
+                    this.value = +!!(+value);
+                }
+            );
+        }, 100);
 
         this.value = +!isNaN(value) && +!!value;
     }
@@ -360,21 +376,21 @@ class Clock extends Input {
             setTimeout(updateInterval.bind(this),this.delay);
         }
 
-        popup.prompt.show(
-            "Enter delay",
-            "Enter the delay in ms",
-            n => {
-                this.delay = +n;
+        setTimeout(() => {
+            if(!this.delay) {
+                popup.prompt.show(
+                    "Enter delay",
+                    "Enter the delay in ms",
+                    n => {
+                        this.delay = +n;
 
-                if(this.name.indexOf("@") >= 0) {
-                    this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
-                } else {
-                    this.name += "@" + this.delay + "ms";
-                }
-
+                        updateInterval.call(this);
+                    }
+                );
+            } else {
                 updateInterval.call(this);
             }
-        );
+        }, 100);
     }
 }
 
@@ -456,7 +472,7 @@ class Output {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.font = zoom / 1.5 + "px Monospace";
             ctx.fillText(
                 this.value,
                 (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
@@ -513,6 +529,315 @@ class Output {
             );
 
             this.blinking += .1;
+        }
+    }
+}
+
+class LED extends Output {
+    constructor(pos,height,width,name) {
+        super(pos,height = 1,width = 1,name);
+        this.color_off = "#411";
+        this.color_on = "#a22";
+        this.draw = function() {
+            ctx.fillStyle = "#111";
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = zoom / 16;
+            ctx.fillRect(
+                ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+                ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+                (zoom * this.width + .5) | 0,
+                (zoom * this.height + .5) | 0
+            );
+            ctx.strokeRect(
+                ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+                ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+                (zoom * this.width + .5) | 0,
+                (zoom * this.height + .5) | 0
+            );
+
+            ctx.fillStyle = this.value ? this.color_on : this.color_off;
+            if(this.value) {
+                ctx.shadowColor = this.color_on;
+                ctx.shadowBlur = zoom / 2;
+            }
+
+            ctx.beginPath();
+            ctx.arc(
+                ((this.pos.x + this.width / 2 - offset.x) * zoom - zoom / 2 + .5) | 0,
+                ((-this.pos.y + this.height / 2 + offset.y) * zoom - zoom / 2 + .5) | 0,
+                zoom / 4,
+                0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            if(zoom > 20) {
+                // Draw the labels of the connections of the component
+                for(let i = 0; i < this.input.length; ++i) {
+                    if(!this.input[i].label) continue;
+
+                    const input = this.input[i];
+                    ctx.beginPath();
+                    ctx.arc(
+                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                        zoom / 8,
+                        0, Math.PI * 2
+                    );
+                    ctx.fillStyle = "#111";
+                    ctx.fill();
+
+                    ctx.font = zoom / 6 + "px Roboto Condensed";
+                    ctx.fillStyle = "#ddd";
+                    ctx.fillText(
+                        input.label,
+                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                    );
+                }
+            }
+
+            // Blink
+            if(this.blinking && zoom > 8) {
+                ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+                ctx.fillRect(
+                    (((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                    (((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                    ((zoom * this.width + .5 ) | 0) + zoom / 16,
+                    ((zoom * this.height + .5) | 0) + zoom / 16
+                );
+
+                this.blinking += .1;
+            }
+        }
+    }
+}
+
+class Display extends Output {
+    constructor(pos,height,width,name,lineWidth = .1) {
+        super(pos,height = 5,width = 4,name);
+        this.inputPorts = 10;
+        this.value = 0;
+        this.dp = 0;
+
+        this.lineWidth = lineWidth;
+        this.hOffset = this.width / 8;
+        this.colorOff = "#222";
+        this.colorOn = "#a22";
+
+        this.draw = function() {
+            const x = ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0;
+            const y = ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0;
+
+            ctx.fillStyle = "#111";
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = zoom / 16;
+            ctx.fillRect(
+                x, y,
+                (zoom * this.width + .5) | 0,
+                (zoom * this.height + .5) | 0
+            );
+            ctx.strokeRect(
+                ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
+                ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+                (zoom * this.width + .5) | 0,
+                (zoom * this.height + .5) | 0
+            );
+
+            // Draw display
+            const hOffset = this.width / 8 * zoom;
+            const vOffset = this.width / 8 / 2 / (this.width - 1) * this.height * zoom;
+            const lineWidth = this.lineWidth * this.height * zoom;
+            const margin = zoom / 20;
+
+            ctx.shadowColor = this.colorOn;
+            if([0,2,3,5,6,7,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+            }
+            let sx = x + hOffset + lineWidth + margin;
+            let sy = y + vOffset;
+            let sLength = (this.width - 1) * zoom - 2 * lineWidth - hOffset - margin * 2;
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + sLength,sy);
+            ctx.lineTo(sx + sLength + lineWidth / 2,sy + lineWidth / 2);
+            ctx.lineTo(sx + sLength,sy + lineWidth);
+            ctx.lineTo(sx,sy + lineWidth);
+            ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
+            ctx.fill();
+
+            if([2,3,4,5,6,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sy = y + (this.height / 2 * zoom - lineWidth / 2);
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + sLength,sy);
+            ctx.lineTo(sx + sLength + lineWidth / 2,sy + lineWidth / 2);
+            ctx.lineTo(sx + sLength,sy + lineWidth);
+            ctx.lineTo(sx,sy + lineWidth);
+            ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
+            ctx.fill();
+
+            if([0,2,3,5,6,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sy = y + (this.height * zoom - vOffset - lineWidth);
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + sLength,sy);
+            ctx.lineTo(sx + sLength + lineWidth / 2,sy + lineWidth / 2);
+            ctx.lineTo(sx + sLength,sy + lineWidth);
+            ctx.lineTo(sx,sy + lineWidth);
+            ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
+            ctx.fill();
+
+            if([0,4,5,6,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sx = x + hOffset;
+            sy = y + vOffset + lineWidth + margin;
+            sLength = (this.height / 2) * zoom - lineWidth * 1.5 - vOffset - margin * 2;
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
+            ctx.lineTo(sx + lineWidth,sy);
+            ctx.lineTo(sx + lineWidth,sy + sLength);
+            ctx.lineTo(sx + lineWidth / 2,sy + sLength + lineWidth / 2);
+            ctx.lineTo(sx,sy + sLength);
+            ctx.fill();
+
+            if([0,1,2,3,4,7,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sx = x + (this.width - 1) * zoom - lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
+            ctx.lineTo(sx + lineWidth,sy);
+            ctx.lineTo(sx + lineWidth,sy + sLength);
+            ctx.lineTo(sx + lineWidth / 2,sy + sLength + lineWidth / 2);
+            ctx.lineTo(sx,sy + sLength);
+            ctx.fill();
+
+            if([0,2,6,8].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sx = x + hOffset;
+            sy = y + (this.height / 2) * zoom + lineWidth / 2 + margin;
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
+            ctx.lineTo(sx + lineWidth,sy);
+            ctx.lineTo(sx + lineWidth,sy + sLength);
+            ctx.lineTo(sx + lineWidth / 2,sy + sLength + lineWidth / 2);
+            ctx.lineTo(sx,sy + sLength);
+            ctx.fill();
+
+            if([0,1,3,4,5,6,7,8,9].includes(this.value)) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            sx = x + (this.width - 1) * zoom - lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(sx,sy);
+            ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
+            ctx.lineTo(sx + lineWidth,sy);
+            ctx.lineTo(sx + lineWidth,sy + sLength);
+            ctx.lineTo(sx + lineWidth / 2,sy + sLength + lineWidth / 2);
+            ctx.lineTo(sx,sy + sLength);
+            ctx.fill();
+
+            if(this.dp) {
+                ctx.fillStyle = this.colorOn;
+                ctx.shadowBlur = zoom / 2;
+            } else {
+                ctx.fillStyle = this.colorOff;
+                ctx.shadowBlur = 0;
+            }
+            ctx.beginPath();
+            ctx.arc(
+                x + (this.width - .5) * zoom,
+                y + (this.height - .5) * zoom,
+                zoom / 4,
+                0, Math.PI * 2
+            );
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+
+            if(zoom > 20) {
+                // Draw the labels of the connections of the component
+                for(let i = 0; i < this.input.length; ++i) {
+                    if(!this.input[i].label) continue;
+
+                    const input = this.input[i];
+                    ctx.beginPath();
+                    ctx.arc(
+                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
+                        zoom / 8,
+                        0, Math.PI * 2
+                    );
+                    ctx.fillStyle = "#ddd";
+                    ctx.fill();
+
+                    ctx.font = zoom / 6 + "px Roboto Condensed";
+                    ctx.fillStyle = "#111";
+                    ctx.fillText(
+                        input.label,
+                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+                    );
+                }
+            }
+
+            // Blink
+            if(this.blinking && zoom > 8) {
+                ctx.fillStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
+                ctx.fillRect(
+                    (((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                    (((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0) - zoom / 32,
+                    ((zoom * this.width + .5 ) | 0) + zoom / 16,
+                    ((zoom * this.height + .5) | 0) + zoom / 16
+                );
+
+                this.blinking += .1;
+            }
+        }
+
+        this.onclick = function(x,y) {
+            if(x == this.width - 1 && y == this.height - 1) {
+                this.dp = !this.dp;
+            } else {
+                this.value = ++this.value % 10;
+            }
         }
     }
 }
@@ -629,6 +954,17 @@ class Gate {
             );
         }
 
+        if(this.hasOwnProperty("delay") && zoom > 20) {
+            // If this component works on a delay, draw the delay in the bottom left side of the component
+            ctx.font = zoom / 5 + "px Ubuntu";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.delay + "ms",
+                (this.pos.x - offset.x) * zoom - .5 * zoom + zoom / 16,
+                (-this.pos.y + this.height + offset.y) * zoom - .5 * zoom - zoom / 16
+            );
+        }
+
         if(zoom > 20) {
             // Draw the labels of the connections of the component
             for(let i = 0; i < this.input.length; ++i) {
@@ -696,28 +1032,36 @@ class Gate {
 class Delay extends Gate {
     constructor(pos,height = 1, width = 2,name,delay) {
         super(pos,height,width,"~",name,1);
-        this.values = [];
 
-        popup.prompt.show("Enter delay", "Enter the delay in ms", n => {
-            this.delay = +n;
-
-            if(this.name.indexOf("@") >= 0) {
-                this.name = this.name.substr(0, this.name.indexOf("@") + 1) + this.delay + "ms";
-            } else {
-                this.name += "@" + this.delay + "ms";
-            }
-
-            this.update = function() {
-                this.values.push(this.input[0].wire.value);
-                const value = this.values.splice(0,1)[0];
+        this.update = function() {
+            if(this.input.length && this.input[0].wire.value) {
                 for(let i = 0; i < this.output.length; ++i) {
                     setTimeout(() => {
-                        this.output[i].wire.value = value;
+                        this.output[i].wire.value = 1;
+                        this.output[i].wire.to.update.call(this.output[i].wire.to);
+                    }, this.delay);
+                }
+            } else {
+                for(let i = 0; i < this.output.length; ++i) {
+                    setTimeout(() => {
+                        this.output[i].wire.value = 0;
                         this.output[i].wire.to.update.call(this.output[i].wire.to);
                     }, this.delay);
                 }
             }
-        });
+        }
+
+        setTimeout(() => {
+            if(!this.delay) {
+                popup.prompt.show(
+                    "Enter delay",
+                    "Enter the delay in ms",
+                    n => {
+                        this.delay = +n;
+                    }
+                );
+            }
+        }, 100);
     }
 }
 

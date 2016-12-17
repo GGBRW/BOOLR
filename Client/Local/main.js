@@ -101,30 +101,55 @@ function draw() {
     }
 
     // Draw component info
-    const component = find(mouse.grid.x, mouse.grid.y);
-    if(keys[32] && component && component.constructor != Wire) componentInfo.show(component, { x: mouse.screen.x, y: -(component.pos.y - offset.y) * zoom - 20 });
-    else if(componentInfo.style.display != "none") componentInfo.hide();
+    if(hover.length > 3) {
+        ctx.strokeStyle = "#a22";
+        ctx.strokeRect(
+            (hover[0].pos.x - offset.x) * zoom - zoom / 2,
+            (-hover[0].pos.y + offset.y) * zoom - zoom / 2,
+            (hover.length * hover[0].width) * zoom,
+            (hover[0].height) * zoom
+        );
+
+        let value = [];
+        for(let i of hover) value.push(i.value);
+        value = parseInt(value.join(""),2);
+
+        const hoverBalloon = document.getElementById("hoverBalloon");
+        hoverBalloon.style.display = "block";
+        hoverBalloon.innerHTML =
+            `<span style="font-size: 30px; color: #888">${value}</span> <br>` +
+            `0b${value.toString(2)} <br>` +
+            `0x${value.toString(16).toUpperCase()} <br>` +
+            `0${value.toString(8)} <br>`;
+        hoverBalloon.style.top = (-mouse.grid.y + offset.y - 1) * zoom - hoverBalloon.clientHeight - 20;
+        hoverBalloon.style.left = (hover[0].pos.x - offset.x - .5) * zoom + ((hover.length * hover[0].width / 2) * zoom) - hoverBalloon.clientWidth / 2;
+        //hoverBalloon.style.width = (hover.length * hover[0].width) * zoom;
+        setTimeout(() => hoverBalloon.style.opacity = 1);
+    } else if(document.getElementById("hoverBalloon").style.display == "block") {
+        const hoverBalloon = document.getElementById("hoverBalloon");
+        hoverBalloon.style.opacity = 0;
+        setTimeout(() => hoverBalloon.style.display = "none",200);
+    }
 
     // Draw selections
     if(selecting) {
-        if(selecting.w && selecting.h) {
-            ctx.fillStyle = "rgba(0,90,180,.1)";
-            ctx.strokeStyle = "rgba(0,90,180,1)";
-            ctx.setLineDash([10, 5]);
-            ctx.lineDashOffset = selecting.dashOffset++;
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.rect(
-                (selecting.x - offset.x) * zoom,
-                (-selecting.y + offset.y) * zoom,
-                selecting.w * zoom,
-                -selecting.h * zoom
-            );
-            ctx.fill();
-            ctx.stroke();
+        ctx.fillStyle = "rgba(0,90,180,.1)";
+        ctx.strokeStyle = "rgba(0,90,180,1)";
+        ctx.setLineDash([10, 5]);
+        ctx.lineDashOffset = selecting.dashOffset++;
+        ctx.lineWidth = 2;
 
-            ctx.setLineDash([0, 0]);
-        }
+        ctx.beginPath();
+        ctx.rect(
+            (selecting.x - offset.x) * zoom,
+            (-selecting.y + offset.y) * zoom,
+            selecting.w * zoom,
+            -selecting.h * zoom
+        );
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.setLineDash([0, 0]);
     }
 
     // Draw context menu
@@ -334,8 +359,14 @@ c.onmousedown = function(e) {
                         x: mouse.grid.x,
                         y: mouse.grid.y
                     });
-                }
-                else {
+                } else if(component) {
+                    if(component.onclick) {
+                        component.onclick(
+                            mouse.grid.x - component.pos.x,
+                            component.pos.y - mouse.grid.y
+                        );
+                    }
+                } else {
                     add(new Selected());
                 }
             }

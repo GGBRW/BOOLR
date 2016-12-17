@@ -1,6 +1,72 @@
 let undoStack = [];
 let redoStack = [];
 
+// class Action {
+//     constructor(type,data,undoable) {
+//         // Send action to server
+//         if(socket) {
+//             socket.send(JSON.stringify({
+//                 type,
+//                 data
+//             }));
+//         }
+//
+//         // Push this action into the undo stack
+//         if(undoable) {
+//             this.type = type;
+//             this.data = data;
+//             undoStack.push(this);
+//         }
+//
+//         // Execute action
+//         switch(type) {
+//             case "add":
+//                 if(data.constructor == Wire) {
+//                     components.unshift(data);
+//                     toolbar.message(
+//                         "Added a connection between " +
+//                         data.from.name +
+//                         " and " +
+//                         data.to.name,
+//                         "action"
+//                     );
+//                 } else {
+//                     components.push(data);
+//                     toolbar.message(
+//                         "Added " + data.name,
+//                         "action"
+//                     );
+//                 }
+//                 break;
+//             case "remove":
+//
+//                 break;
+//         }
+//
+//         // Toolbar message
+//         toolbar.message(
+//             actionMessage(this),
+//             "action"
+//         );
+//     }
+// }
+//
+// function actionMessage(action) {
+//     switch(action.type) {
+//         case "add":
+//             break;
+//         case "remove":
+//             break;
+//         case "addSelection":
+//             break;
+//         case "removeSelection":
+//             break;
+//         case "edit":
+//             break;
+//
+//     }
+// }
+
 class Action {
     constructor(method,data) {
         this.method = method;

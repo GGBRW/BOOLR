@@ -1,10 +1,6 @@
-if(typeof url == undefined) {
-    var url = "";
-}
+var socket;
 
-let socket;
-
-function connectToSocket() {
+function connectToSocket(url) {
     try {
         socket = new WebSocket(url);
     } catch(e) {
@@ -44,12 +40,5 @@ function connectToSocket() {
                 if(msg.data.data >= 0) components.splice(msg.data.data,1);
                 break;
         }
-    }
-
-    function send(type,data) {
-        socket.send(JSON.stringify({
-            type,
-            data
-        }));
     }
 }
