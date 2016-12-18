@@ -101,7 +101,7 @@ function draw() {
     }
 
     // Draw component info
-    if(hover.components.length > 3) {
+    if(hover.components.length > 2) {
         ctx.strokeStyle = "#a22";
         ++hover.time;
 
@@ -110,22 +110,7 @@ function draw() {
         const w = (hover.components.slice(-1)[0].pos.x - hover.components[0].pos.x + hover.components[0].width) * zoom;
         const h = (hover.components[0].pos.y - hover.components.slice(-1)[0].pos.y + hover.components[0].height) * zoom;
 
-        ctx.beginPath();
-        ctx.moveTo(x,y);
-        ctx.lineTo(x + Math.min(w,hover.time * 32),y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(x + w,y);
-        ctx.lineTo(x + w,y + Math.min(h,Math.max(hover.time * 32 - w,0)));
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(x + w,y + h);
-        ctx.lineTo(x + w - Math.min(w,Math.max(hover.time * 32 - w - h, 0)),y + h);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(x,y + h);
-        ctx.lineTo(x,y + h - Math.min(h,Math.max(hover.time * 32 - w - h - w, 0)));
-        ctx.stroke();
+        ctx.strokeRect(x,y,w,h);
 
         let value = [];
         for(let i of hover.components) value.push(i.value);
@@ -517,6 +502,12 @@ c.onmousemove = function(e) {
 
     if(e.which == 1) {
         if(selecting && !selecting.components) {
+            if(e.ctrlKey) {
+                offset.x -= e.movementX / zoom;
+                offset.y += e.movementY / zoom;
+                return;
+            }
+
             selecting.animate.w = Math.round((e.x / zoom + offset.x) - selecting.x);
             selecting.animate.h = Math.round(-(e.y / zoom - offset.y) -  selecting.y);
         }
@@ -882,7 +873,7 @@ c.onmousewheel = function(e) {
     e.preventDefault();
     zoom_animation = Math.min(
         Math.max(
-            zoom_animation - zoom / 8 * Math.sign(e.deltaY),
+            zoom_animation - zoom / 8 * (e.deltaY > 0 ? 1 : -2),
             2),
         300
     );

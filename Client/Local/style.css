@@ -69,6 +69,11 @@ canvas {
     src: url(../Fonts/Ubuntu-Regular.ttf);
 }
 
+@font-face {
+    font-family: "Monospaced";
+    src: url(../Fonts/Monospace.ttf);
+}
+
 /* Console */
 
 /*#console #input {*/

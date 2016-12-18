@@ -259,7 +259,7 @@ class Input {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Monospace";
+            ctx.font = zoom / 1.5 + "px Monospaced";
             ctx.fillText(
                 this.value,
                 (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,
@@ -267,9 +267,9 @@ class Input {
             );
         }
 
-        if(zoom > 20) {
+        if(zoom > 30) {
             // Draw the name of the component in the upper left side of the component
-            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.font = zoom / 5 + "px Monospaced";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.name,
@@ -280,7 +280,7 @@ class Input {
 
         if(this.hasOwnProperty("delay") && zoom > 20) {
             // If this input component works on a delay, draw the delay in the bottom left side of the component
-            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.font = zoom / 5 + "px Monospaced";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.delay + "ms",
@@ -480,10 +480,10 @@ class Output {
             );
         }
 
-        if(zoom > 20) {
+        if(zoom > 30) {
             // Draw the name of the component in the upper left side of the component
             ctx.fillStyle = "#111";
-            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.font = zoom / 5 + "px Monospaced";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.name,
@@ -529,6 +529,16 @@ class Output {
             );
 
             this.blinking += .1;
+        }
+    }
+}
+
+class Debug extends Output {
+    constructor(pos,height,width,name) {
+        super(pos,height,width,name);
+        this.update = function() {
+            this.value = +!!this.func(this.input.map(n => n.wire.value));
+            notifications.push(this.name + ": " + this.value);
         }
     }
 }
@@ -943,9 +953,9 @@ class Gate {
             );
         }
 
-        if(zoom > 20) {
+        if(zoom > 30) {
             // Draw the name of the component in the upper left side of the component
-            ctx.font = zoom / 5 + "px Inconsolata";
+            ctx.font = zoom / 5 + "px Monospaced";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.name,
@@ -956,7 +966,7 @@ class Gate {
 
         if(this.hasOwnProperty("delay") && zoom > 20) {
             // If this component works on a delay, draw the delay in the bottom left side of the component
-            ctx.font = zoom / 5 + "px Ubuntu";
+            ctx.font = zoom / 5 + "px Monospaced";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.delay + "ms",

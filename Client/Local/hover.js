@@ -26,7 +26,7 @@ setInterval(function() {
             x += component.width;
 
             const adjacent = find(x,y);
-            if(!adjacent || !adjacent.hasOwnProperty("value")) break;
+            if(!adjacent || !adjacent.hasOwnProperty("value") || adjacent.constructor == Wire) break;
             else hComponents.push(adjacent);
         }
 
@@ -35,17 +35,17 @@ setInterval(function() {
             x -= component.width;
 
             const adjacent = find(x,y);
-            if(!adjacent || !adjacent.hasOwnProperty("value")) break;
+            if(!adjacent || !adjacent.hasOwnProperty("value") || adjacent.constructor == Wire) break;
             else hComponents.unshift(adjacent);
         }
 
-        vComponents = [component];
+        let vComponents = [component];
         x = component.pos.x; y = component.pos.y;
         while(true) {
             y -= component.height;
 
             const adjacent = find(x,y);
-            if(!adjacent || !adjacent.hasOwnProperty("value")) break;
+            if(!adjacent || !adjacent.hasOwnProperty("value") || adjacent.constructor == Wire) break;
             else vComponents.push(adjacent);
         }
 
@@ -54,11 +54,10 @@ setInterval(function() {
             y += component.height;
 
             const adjacent = find(x,y);
-            if(!adjacent || !adjacent.hasOwnProperty("value")) break;
+            if(!adjacent || !adjacent.hasOwnProperty("value") || adjacent.constructor == Wire) break;
             else vComponents.unshift(adjacent);
         }
 
-        console.log(vComponents);
         hover.components = hComponents.length > vComponents.length ? hComponents : vComponents;
     } else {
         if(hoverBalloon.style.display == "block") {
