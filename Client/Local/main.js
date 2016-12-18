@@ -101,34 +101,39 @@ function draw() {
     }
 
     // Draw component info
-    if(hover.length > 3) {
+    if(hover.components.length > 3) {
         ctx.strokeStyle = "#a22";
-        ctx.strokeRect(
-            (hover[0].pos.x - offset.x) * zoom - zoom / 2,
-            (-hover[0].pos.y + offset.y) * zoom - zoom / 2,
-            (hover.length * hover[0].width) * zoom,
-            (hover[0].height) * zoom
-        );
+        ++hover.time;
+
+        const x = (hover.components[0].pos.x - offset.x) * zoom - zoom / 2;
+        const y = (-hover.components[0].pos.y + offset.y) * zoom - zoom / 2;
+        const w = (hover.components.slice(-1)[0].pos.x - hover.components[0].pos.x + hover.components[0].width) * zoom;
+        const h = (hover.components[0].pos.y - hover.components.slice(-1)[0].pos.y + hover.components[0].height) * zoom;
+
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.lineTo(x + Math.min(w,hover.time * 32),y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + w,y);
+        ctx.lineTo(x + w,y + Math.min(h,Math.max(hover.time * 32 - w,0)));
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + w,y + h);
+        ctx.lineTo(x + w - Math.min(w,Math.max(hover.time * 32 - w - h, 0)),y + h);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x,y + h);
+        ctx.lineTo(x,y + h - Math.min(h,Math.max(hover.time * 32 - w - h - w, 0)));
+        ctx.stroke();
 
         let value = [];
-        for(let i of hover) value.push(i.value);
+        for(let i of hover.components) value.push(i.value);
         value = parseInt(value.join(""),2);
 
-        const hoverBalloon = document.getElementById("hoverBalloon");
-        hoverBalloon.style.display = "block";
-        hoverBalloon.innerHTML =
-            `<span style="font-size: 30px; color: #888">${value}</span> <br>` +
-            `0b${value.toString(2)} <br>` +
-            `0x${value.toString(16).toUpperCase()} <br>` +
-            `0${value.toString(8)} <br>`;
-        hoverBalloon.style.top = (-mouse.grid.y + offset.y - 1) * zoom - hoverBalloon.clientHeight - 20;
-        hoverBalloon.style.left = (hover[0].pos.x - offset.x - .5) * zoom + ((hover.length * hover[0].width / 2) * zoom) - hoverBalloon.clientWidth / 2;
-        //hoverBalloon.style.width = (hover.length * hover[0].width) * zoom;
-        setTimeout(() => hoverBalloon.style.opacity = 1);
+        document.getElementById("hoverBalloon").show(value);
     } else if(document.getElementById("hoverBalloon").style.display == "block") {
-        const hoverBalloon = document.getElementById("hoverBalloon");
-        hoverBalloon.style.opacity = 0;
-        setTimeout(() => hoverBalloon.style.display = "none",200);
+        document.getElementById("hoverBalloon").hide();
     }
 
     // Draw selections
@@ -883,5 +888,3 @@ c.onmousewheel = function(e) {
     );
     return false;
 }
-
-
