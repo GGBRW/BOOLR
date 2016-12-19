@@ -169,7 +169,7 @@ if(popup.login) {
         const username = document.querySelector("#login #username").value;
         const password = document.querySelector("#login #password").value;
 
-        send("login", { username, password });
+        socket.send(JSON.stringify({type: "login", data: { username, password }}));
     }
 }
 

@@ -1,5 +1,8 @@
 "use strict";
 
+// File System module
+const fs = require("fs");
+
 // Setup websocket server @ port 3000
 const WebSocketServer = require("ws").Server,
       wss = new WebSocketServer({ port: 3000 });
@@ -8,7 +11,12 @@ const WebSocketServer = require("ws").Server,
 let users = {};
 
 // All the components are stored in the following array:
-const components = [];
+let components = [];
+
+fs.readFile("pws.dat","utf8",(err,data) => {
+    if(err) return console.log(err);
+    components = JSON.parse(data);
+});
 
 wss.on('connection', function(ws) {
     // Something tries to connect to this server
@@ -17,17 +25,24 @@ wss.on('connection', function(ws) {
     const userAgent = ws.upgradeReq.headers["user-agent"];
 
     if(!users[userAgent]) {
-        // If the user hasn't connected once before, send a identify request
+        // If the user hasn't connected once before, send a login request
         ws.send(JSON.stringify({
             type: "loginRequest"
         }));
     }
+
+    // Send the map to the user
+    ws.send(JSON.stringify({
+        type: "map",
+        data: JSON.stringify(components)
+    }));
 
     // Add the message handler to the user
     ws.on('message', onmessage);
 });
 
 function broadcast(type,data,except) {
+    if(!except) except = [];
     wss.clients.forEach(
         client => except.indexOf(client) == -1 && client.send(JSON.stringify({ type, data }))
     );
@@ -49,6 +64,7 @@ function onmessage(msg) {
     if(!users[userAgent]) {
         // If the sender hasn't connected once before, the server will only accept a identifying message
         if(msg.type == "login") {
+            // Save the user
             users[userAgent] = msg.data.username;
         } else {
             this.send(JSON.stringify({

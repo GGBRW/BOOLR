@@ -24,7 +24,7 @@ function actionMsg(action) {
     let msg = "";
 
     if(action.user) {
-        msg = action.user + "";
+        msg = action.user + " ";
     }
 
     switch(action.type) {
@@ -37,8 +37,12 @@ function actionMsg(action) {
         case "edit":
             msg += "edited property " + action.data.property + " of " + action.data.component.name + " to " + action.data.value;
             break;
+        case "move":
+            msg += "moved component " + action.data.component.name + " to " +  action.data.new.x + "," + action.data.new.y;
+            break;
     }
 
+    msg[0] && (msg = msg[0].toUpperCase() + msg.slice(1));
     toolbar.message(msg,action);
 
     if(action.undoable) {
@@ -49,7 +53,9 @@ function actionMsg(action) {
     }
 }
 
-function undo() {
-    let action = undoStack.splice(-1);
-
+function undo(action = undoStack.splice(-1)) {
+    switch(action.type) {
+        case "add":
+            break;
+    }
 }

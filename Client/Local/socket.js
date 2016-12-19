@@ -22,6 +22,8 @@ function connectToSocket(url) {
     socket.onmessage = function(e) {
         const msg = JSON.parse(e.data);
 
+        console.log(msg);
+
         switch(msg.type) {
             case "loginRequest":
                 popup.login.show();
@@ -32,12 +34,11 @@ function connectToSocket(url) {
             case "notification":
                 notifications.push(msg.data);
                 break;
-            case "add":
-                parse(msg.data.data);
+            case "map":
+                parse(msg.data);
                 break;
-            case "remove":
-                console.log(msg.data.data);
-                if(msg.data.data >= 0) components.splice(msg.data.data,1);
+            case "action":
+                new Action(msg.data.type,msg.data.data,false,msg.data.user);
                 break;
         }
     }

@@ -289,46 +289,46 @@ class Input {
             );
         }
 
-        if(zoom > 20) {
-            // Draw the labels of the connections of the component
-            for(let i = 0; i < this.output.length; ++i) {
-                if(!this.output[i].label) continue;
-
-                const output = this.output[i];
-                ctx.beginPath();
-                ctx.arc(
-                    (output.wire.pos[0].x - offset.x) * zoom,
-                    (-output.wire.pos[0].y + offset.y) * zoom,
-                    zoom / 8,
-                    0, Math.PI * 2
-                );
-                ctx.fillStyle = "#111";
-                ctx.fill();
-
-                // const dx = Math.sign(output.wire.pos[1].x - output.wire.pos[0].x);
-                // const dy = Math.sign(output.wire.pos[1].y - output.wire.pos[0].y);
-                //
-                // const startAngle = dx ? Math.PI / 2 + Math.max(Math.PI * dx,0) : Math.max(Math.PI * dy,0);
-                // ctx.beginPath();
-                // for(let i = 0; i < 3; ++i) {
-                //     const angle = startAngle + i * (Math.PI * 2 / 3);
-                //     const x = (output.wire.pos[0].x - offset.x) * zoom;
-                //     const y = (-output.wire.pos[0].y + offset.y) * zoom;
-                //     ctx.lineTo(x - Math.sin(angle) * (zoom / 5), y + Math.cos(angle) * (zoom / 5));
-                // }
-                // ctx.fillStyle = "#111";
-                // ctx.fill();
-
-
-                ctx.font = zoom / 6 + "px Roboto Condensed";
-                ctx.fillStyle = "#ddd";
-                ctx.fillText(
-                    output.label,
-                    (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
-                    (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
-                );
-            }
-        }
+        // if(zoom > 20) {
+        //     // Draw the labels of the connections of the component
+        //     for(let i = 0; i < this.output.length; ++i) {
+        //         if(!this.output[i].label) continue;
+        //
+        //         const output = this.output[i];
+        //         ctx.beginPath();
+        //         ctx.arc(
+        //             (output.wire.pos[0].x - offset.x) * zoom,
+        //             (-output.wire.pos[0].y + offset.y) * zoom,
+        //             zoom / 8,
+        //             0, Math.PI * 2
+        //         );
+        //         ctx.fillStyle = "#111";
+        //         ctx.fill();
+        //
+        //         // const dx = Math.sign(output.wire.pos[1].x - output.wire.pos[0].x);
+        //         // const dy = Math.sign(output.wire.pos[1].y - output.wire.pos[0].y);
+        //         //
+        //         // const startAngle = dx ? Math.PI / 2 + Math.max(Math.PI * dx,0) : Math.max(Math.PI * dy,0);
+        //         // ctx.beginPath();
+        //         // for(let i = 0; i < 3; ++i) {
+        //         //     const angle = startAngle + i * (Math.PI * 2 / 3);
+        //         //     const x = (output.wire.pos[0].x - offset.x) * zoom;
+        //         //     const y = (-output.wire.pos[0].y + offset.y) * zoom;
+        //         //     ctx.lineTo(x - Math.sin(angle) * (zoom / 5), y + Math.cos(angle) * (zoom / 5));
+        //         // }
+        //         // ctx.fillStyle = "#111";
+        //         // ctx.fill();
+        //
+        //
+        //         ctx.font = zoom / 6 + "px Roboto Condensed";
+        //         ctx.fillStyle = "#ddd";
+        //         ctx.fillText(
+        //             output.label,
+        //             (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
+        //             (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
+        //         );
+        //     }
+        // }
 
         // Blink
         if(this.blinking && zoom > 8) {
@@ -492,31 +492,31 @@ class Output {
             );
         }
 
-        if(zoom > 20) {
-            // Draw the labels of the connections of the component
-            for(let i = 0; i < this.input.length; ++i) {
-                if(!this.input[i].label) continue;
-
-                const input = this.input[i];
-                ctx.beginPath();
-                ctx.arc(
-                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
-                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
-                    zoom / 8,
-                    0, Math.PI * 2
-                );
-                ctx.fillStyle = "#111";
-                ctx.fill();
-
-                ctx.font = zoom / 6 + "px Roboto Condensed";
-                ctx.fillStyle = "#ddd";
-                ctx.fillText(
-                    input.label,
-                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
-                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
-                );
-            }
-        }
+        // if(zoom > 20) {
+        //     // Draw the labels of the connections of the component
+        //     for(let i = 0; i < this.input.length; ++i) {
+        //         if(!this.input[i].label) continue;
+        //
+        //         const input = this.input[i];
+        //         ctx.beginPath();
+        //         ctx.arc(
+        //             (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+        //             (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
+        //             zoom / 8,
+        //             0, Math.PI * 2
+        //         );
+        //         ctx.fillStyle = "#111";
+        //         ctx.fill();
+        //
+        //         ctx.font = zoom / 6 + "px Roboto Condensed";
+        //         ctx.fillStyle = "#ddd";
+        //         ctx.fillText(
+        //             input.label,
+        //             (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+        //             (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+        //         );
+        //     }
+        // }
 
         // Blink
         if(this.blinking && zoom > 8) {
@@ -975,54 +975,54 @@ class Gate {
             );
         }
 
-        if(zoom > 20) {
-            // Draw the labels of the connections of the component
-            for(let i = 0; i < this.input.length; ++i) {
-                if(!this.input[i].label) continue;
-
-                const input = this.input[i];
-                ctx.beginPath();
-                ctx.arc(
-                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
-                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
-                    zoom / 8,
-                    0, Math.PI * 2
-                );
-                ctx.fillStyle = "#111";
-                ctx.fill();
-
-                ctx.font = zoom / 6 + "px Roboto Condensed";
-                ctx.fillStyle = "#ddd";
-                ctx.fillText(
-                    input.label,
-                    (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
-                    (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
-                );
-            }
-
-            for(let i = 0; i < this.output.length; ++i) {
-                if(!this.output[i].label) continue;
-
-                const output = this.output[i];
-                ctx.beginPath();
-                ctx.arc(
-                    (output.wire.pos[0].x - offset.x) * zoom,
-                    (-output.wire.pos[0].y + offset.y) * zoom,
-                    zoom / 8,
-                    0, Math.PI * 2
-                );
-                ctx.fillStyle = "#111";
-                ctx.fill();
-
-                ctx.font = zoom / 6 + "px Roboto Condensed";
-                ctx.fillStyle = "#ddd";
-                ctx.fillText(
-                    output.label,
-                    (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
-                    (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
-                );
-            }
-        }
+        // if(zoom > 20) {
+        //     // Draw the labels of the connections of the component
+        //     for(let i = 0; i < this.input.length; ++i) {
+        //         if(!this.input[i].label) continue;
+        //
+        //         const input = this.input[i];
+        //         ctx.beginPath();
+        //         ctx.arc(
+        //             (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
+        //             (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
+        //             zoom / 8,
+        //             0, Math.PI * 2
+        //         );
+        //         ctx.fillStyle = "#111";
+        //         ctx.fill();
+        //
+        //         ctx.font = zoom / 6 + "px Roboto Condensed";
+        //         ctx.fillStyle = "#ddd";
+        //         ctx.fillText(
+        //             input.label,
+        //             (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
+        //             (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
+        //         );
+        //     }
+        //
+        //     for(let i = 0; i < this.output.length; ++i) {
+        //         if(!this.output[i].label) continue;
+        //
+        //         const output = this.output[i];
+        //         ctx.beginPath();
+        //         ctx.arc(
+        //             (output.wire.pos[0].x - offset.x) * zoom,
+        //             (-output.wire.pos[0].y + offset.y) * zoom,
+        //             zoom / 8,
+        //             0, Math.PI * 2
+        //         );
+        //         ctx.fillStyle = "#111";
+        //         ctx.fill();
+        //
+        //         ctx.font = zoom / 6 + "px Roboto Condensed";
+        //         ctx.fillStyle = "#ddd";
+        //         ctx.fillText(
+        //             output.label,
+        //             (output.wire.pos[0].x - offset.x) * zoom - ctx.measureText(output.label).width / 2,
+        //             (-output.wire.pos[0].y + offset.y) * zoom + zoom / 18
+        //         );
+        //     }
+        // }
 
         // Blink
         if(this.blinking && zoom > 8) {

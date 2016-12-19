@@ -54,6 +54,14 @@ function updateDebugInfo() {
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(tickrate));
         debugInfo.addLine("Updates", update_queue.length);
+        if(socket) {
+            debugInfo.innerHTML += "<br>";
+            debugInfo.addLine("Socket", !!socket);
+            debugInfo.addLine("port", socket.url.match(/\d+/g).slice(-1)[0]);
+            debugInfo.addLine("readyState", socket.readyState);
+        } else {
+            debugInfo.addLine("Socket", false);
+        }
         debugInfo.innerHTML += "<br><span style='font-family: \"Roboto Condensed\"; float: left'>Hold F3 to hide this</span>";
     } else {
         debugInfo.style.display = "none";
