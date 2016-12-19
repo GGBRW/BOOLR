@@ -199,3 +199,110 @@ input:checked + .slider:before {
     -ms-transform: translateX(18px);
     transform: translateX(18px);
 }
+
+#openproject {
+    width: 500px;
+    margin-left: -250px;
+}
+
+#openproject #local, #openproject #server {
+    margin: 2px auto;
+    background: rgba(0,0,0,.1);
+    width: 500px;
+    height: 250px;
+}
+
+#openproject #local_btn, #openproject #server_btn {
+    background: rgba(0,0,0,.05);
+    border: none;
+    padding: 10px;
+    margin: -2px;
+    width: 100px;
+    font-family: Ubuntu;
+    font-size: 18px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+}
+
+#openproject button.selected {
+    background: rgba(0,0,0,.1) !important;
+}
+
+#openproject #local #upload_file {
+    position: absolute;
+    left: 50%;
+    width: 380px;
+    height: 200px;
+    margin: 20px auto 0 -190px;
+    border: 3px dashed rgba(0,0,0,.5);
+    outline-offset: -10px;
+}
+
+#openproject #local #upload_file .material-icons {
+    font-size: 70px;
+    color: rgba(0,0,0,.5);
+    position: relative;
+    top: 40px;
+}
+
+#openproject #local #upload_file p {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 0;
+    position: relative;
+    top: 50px;
+}
+
+#openproject #local #upload_file b:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#openproject #server input {
+    font-family: "Inconsolata", Consolas;
+    font-size: 18px;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(255,255,255,.8);
+}
+
+#openproject #server button {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(0,0,0,.2);
+}
+
+#openproject #server ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+#openproject #server li {
+    padding: 10px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    text-align: left;
+}
+
+#openproject #server li:nth-child(odd) {
+    background: rgba(0,0,0,.1);
+}
+
+#openproject #server li button {
+    float: right;
+    font-size: 16px;
+    padding: 5px;
+    margin: -5px;
+    background: #888;
+}

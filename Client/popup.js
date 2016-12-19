@@ -7,6 +7,7 @@ let popup = {
     settings: document.getElementById("settings"),
     info: document.getElementById("info"),
     login: document.getElementById("login"),
+    openproject: document.getElementById("openproject"),
     color_picker: document.getElementById("color_picker"),
     connections: document.getElementById("connections")
 }
@@ -170,6 +171,30 @@ if(popup.login) {
         const password = document.querySelector("#login #password").value;
 
         socket.send(JSON.stringify({type: "login", data: { username, password }}));
+    }
+}
+
+// Open project
+if(popup.openproject) {
+    popup.openproject.show = function() {
+        this.style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("overlay").style.opacity = 1;
+            this.style.transform = "scale(1)";
+            this.style.opacity = 1;
+        }, 1);
+    }
+    popup.openproject.hide = function() {
+        this.style.transform = "scale(.9)";
+        this.style.opacity = 0;
+        document.getElementById("overlay").style.opacity = 0;
+        setTimeout(() => {
+            this.style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("overlay").style.zIndex = 100;
+        },200);
+        c.focus();
     }
 }
 

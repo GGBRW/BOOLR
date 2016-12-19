@@ -132,6 +132,58 @@ class Component {
     <button class="ok">Close</button>
 </div>
 
+<div class="popup" id="openproject">
+    <h1>Open project</h1>
+
+    Upload a project save file or connect to a server:
+    <br><br>
+
+    <button id="local_btn" class="selected">Local</button>
+    <button id="server_btn">Server</button>
+    <div id="local">
+        <div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <i class="material-icons">file_upload</i>
+            <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
+        </div>
+    </div>
+    <script>
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            readFile(e.dataTransfer);
+        }
+    </script>
+
+    <div id="server" style="display: none;">
+        <input id="url" placeholder="Enter server url">
+        <button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>
+        <ul>
+            <li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
+            <li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
+        </ul>
+    </div>
+
+    <script>
+        document.querySelector("#openproject #local_btn").onclick = function() {
+            this.className = "selected";
+            document.querySelector("#openproject #server_btn").className = "";
+            document.querySelector("#openproject #local").style.display = "block";
+            document.querySelector("#openproject #server").style.display = "none";
+        }
+
+        document.querySelector("#openproject #server_btn").onclick = function() {
+            this.className = "selected";
+            document.querySelector("#openproject #local_btn").className = "";
+            document.querySelector("#openproject #server").style.display = "block";
+            document.querySelector("#openproject #local").style.display = "none";
+        }
+    </script>
+    <button class="ok">Close</button>
+</div>
+
 <div class="popup" id="login">
     <h1>Login</h1>
     <input id="username" placeholder="Username">
@@ -183,25 +235,23 @@ class Component {
 
 <script>
     document.getElementById("open_file").onchange = function(e) {
-        const input = e.target;
+        readFile(e.target);
 
+    }
+
+    function readFile(input) {
         const reader = new FileReader;
         reader.onload = function() {
             if(reader.result[0] == "{") {
-                popup.confirm.show(
-                        "Do you want to convert this file?",
-                        "This is an old-formatted save file. Do you want to convert this file? This may take a while.",
-                        () => {
-                            components = [];
-                            parse_old(reader.result);
-                        }
-                );
+                components = [];
+                parse_old(reader.result);
             } else {
                 components = [];
                 parse(reader.result);
             }
         }
         reader.readAsText(input.files[0]);
+        popup.openproject.hide();
     }
 </script>
 
