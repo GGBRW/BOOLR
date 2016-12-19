@@ -472,7 +472,7 @@ class Output {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Monospace";
+            ctx.font = zoom / 1.5 + "px Monospaced";
             ctx.fillText(
                 this.value,
                 (this.pos.x - offset.x) * zoom + (this.width - 1.37) / 2 * zoom,

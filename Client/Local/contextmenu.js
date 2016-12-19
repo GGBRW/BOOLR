@@ -170,7 +170,7 @@ context_options["remove all"].onclick = () => {
     clipbord = old_clipbord;
 
     for(let i of selecting.components) {
-        Array.isArray(i.pos) ? remove(i) : remove(i);
+        if(components.includes(i)) remove(i);
     }
 };
 

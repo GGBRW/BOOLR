@@ -20,9 +20,10 @@ c.onkeydown = function(e) {
             scroll(-offset.x,-offset.y);
             break;
         case 46: // Delete
+            console.log(selecting);
             if(selecting) {
                 for(let i of selecting.components) {
-                    Array.isArray(i.pos) ? remove(i) : remove(i)
+                    if(components.includes(i)) remove(i);
                 }
 
                 selecting = null;
