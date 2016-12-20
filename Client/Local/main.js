@@ -621,14 +621,14 @@ c.onmousemove = function(e) {
                     toolbar.message(`Component ${component.name} has no free input ports`, "warning");
                 } else {
                     // Remove the wire parts under the two components
-                    const dx1 = wire.pos[1].x - wire.pos[0].x;
-                    const dy1 = wire.pos[1].y - wire.pos[0].y;
-                    const dx2 = wire.pos.slice(-2)[0].x - wire.pos.slice(-1)[0].x;
-                    const dy2 = wire.pos.slice(-2)[0].y - wire.pos.slice(-1)[0].y;
-                    wire.pos[0].x += dx1 / 2;
-                    wire.pos[0].y += dy1 / 2;
-                    wire.pos.slice(-1)[0].x += dx2 / 2;
-                    wire.pos.slice(-1)[0].y += dy2 / 2;
+                    // const dx1 = wire.pos[1].x - wire.pos[0].x;
+                    // const dy1 = wire.pos[1].y - wire.pos[0].y;
+                    // const dx2 = wire.pos.slice(-2)[0].x - wire.pos.slice(-1)[0].x;
+                    // const dy2 = wire.pos.slice(-2)[0].y - wire.pos.slice(-1)[0].y;
+                    // wire.pos[0].x += dx1 / 2;
+                    // wire.pos[0].y += dy1 / 2;
+                    // wire.pos.slice(-1)[0].x += dx2 / 2;
+                    // wire.pos.slice(-1)[0].y += dy2 / 2;
 
                     connecting.wire.to = component;
                     connect(connecting.wire.from,component,connecting.wire);

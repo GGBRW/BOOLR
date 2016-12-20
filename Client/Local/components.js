@@ -626,9 +626,19 @@ class LED extends Output {
 class Display extends Output {
     constructor(pos,height,width,name,lineWidth = .1) {
         super(pos,height = 5,width = 4,name);
+        this.height = height + 2;
+
         this.inputPorts = 10;
         this.value = 0;
         this.dp = 0;
+
+        this.sortInput = () => {
+            let result = [];
+            for(let i = 0; i < this.input.length; ++i) {
+                while(x )
+            }
+        }
+        this.func = input => parseInt(input.join(""));
 
         this.lineWidth = lineWidth;
         this.hOffset = this.width / 8;
@@ -637,7 +647,8 @@ class Display extends Output {
 
         this.draw = function() {
             const x = ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0;
-            const y = ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0;
+            const y = ((-this.pos.y + offset.y + 1) * zoom - zoom / 2 + .5) | 0;
+            const height = this.height - 2;
 
             ctx.fillStyle = "#111";
             ctx.strokeStyle = "#111";
@@ -645,19 +656,18 @@ class Display extends Output {
             ctx.fillRect(
                 x, y,
                 (zoom * this.width + .5) | 0,
-                (zoom * this.height + .5) | 0
+                (zoom * height + .5) | 0
             );
             ctx.strokeRect(
-                ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
-                ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,
+                x, y,
                 (zoom * this.width + .5) | 0,
-                (zoom * this.height + .5) | 0
+                (zoom * height + .5) | 0
             );
 
             // Draw display
             const hOffset = this.width / 8 * zoom;
-            const vOffset = this.width / 8 / 2 / (this.width - 1) * this.height * zoom;
-            const lineWidth = this.lineWidth * this.height * zoom;
+            const vOffset = this.width / 8 / 2 / (this.width - 1) * height * zoom;
+            const lineWidth = this.lineWidth * height * zoom;
             const margin = zoom / 20;
 
             ctx.shadowColor = this.colorOn;
@@ -686,7 +696,7 @@ class Display extends Output {
                 ctx.fillStyle = this.colorOff;
                 ctx.shadowBlur = 0;
             }
-            sy = y + (this.height / 2 * zoom - lineWidth / 2);
+            sy = y + (height / 2 * zoom - lineWidth / 2);
             ctx.beginPath();
             ctx.moveTo(sx,sy);
             ctx.lineTo(sx + sLength,sy);
@@ -703,7 +713,7 @@ class Display extends Output {
                 ctx.fillStyle = this.colorOff;
                 ctx.shadowBlur = 0;
             }
-            sy = y + (this.height * zoom - vOffset - lineWidth);
+            sy = y + (height * zoom - vOffset - lineWidth);
             ctx.beginPath();
             ctx.moveTo(sx,sy);
             ctx.lineTo(sx + sLength,sy);
@@ -722,7 +732,7 @@ class Display extends Output {
             }
             sx = x + hOffset;
             sy = y + vOffset + lineWidth + margin;
-            sLength = (this.height / 2) * zoom - lineWidth * 1.5 - vOffset - margin * 2;
+            sLength = (height / 2) * zoom - lineWidth * 1.5 - vOffset - margin * 2;
             ctx.beginPath();
             ctx.moveTo(sx,sy);
             ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
@@ -757,7 +767,7 @@ class Display extends Output {
                 ctx.shadowBlur = 0;
             }
             sx = x + hOffset;
-            sy = y + (this.height / 2) * zoom + lineWidth / 2 + margin;
+            sy = y + (height / 2) * zoom + lineWidth / 2 + margin;
             ctx.beginPath();
             ctx.moveTo(sx,sy);
             ctx.lineTo(sx + lineWidth / 2,sy - lineWidth / 2);
@@ -794,7 +804,7 @@ class Display extends Output {
             ctx.beginPath();
             ctx.arc(
                 x + (this.width - .5) * zoom,
-                y + (this.height - .5) * zoom,
+                y + (height - .5) * zoom,
                 zoom / 4,
                 0, Math.PI * 2
             );
@@ -802,30 +812,34 @@ class Display extends Output {
 
             ctx.shadowBlur = 0;
 
-            if(zoom > 20) {
-                // Draw the labels of the connections of the component
-                for(let i = 0; i < this.input.length; ++i) {
-                    if(!this.input[i].label) continue;
+            // Draw input pins
+            ctx.fillStyle = "#111";
+            for(let i = 0; i < 4; ++i) {
+                ctx.beginPath();
+                ctx.arc(
+                    x + (i + .5) * zoom, y - .5 * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
 
-                    const input = this.input[i];
-                    ctx.beginPath();
-                    ctx.arc(
-                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom,
-                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom,
-                        zoom / 8,
-                        0, Math.PI * 2
-                    );
-                    ctx.fillStyle = "#ddd";
-                    ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(x + (i + .5) * zoom, y - .5 * zoom);
+                ctx.lineTo(x + (i + .5) * zoom, y);
+                ctx.stroke();
 
-                    ctx.font = zoom / 6 + "px Roboto Condensed";
-                    ctx.fillStyle = "#111";
-                    ctx.fillText(
-                        input.label,
-                        (input.wire.pos.slice(-1)[0].x - offset.x) * zoom - ctx.measureText(input.label).width / 2,
-                        (-input.wire.pos.slice(-1)[0].y + offset.y) * zoom + zoom / 18
-                    );
-                }
+                ctx.beginPath();
+                ctx.arc(
+                    x + (i + .5) * zoom, y - (1.5 - this.height) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(x + (i + .5) * zoom, y - (1.5 - this.height) * zoom);
+                ctx.lineTo(x + (i + .5) * zoom, y + (this.height - 2) * zoom);
+                ctx.stroke();
             }
 
             // Blink

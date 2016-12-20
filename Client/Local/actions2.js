@@ -3,11 +3,11 @@ let redoStack = [];
 
 class Action {
     constructor(type,data,undoable,user) {
-        if(socket) {
-            socket.send(JSON.stringify({
-                type,data
-            }));
-        }
+        // if(socket) {
+        //     socket.send(JSON.stringify({
+        //         type,data
+        //     }));
+        // }
 
         if(undoable) {
             this.type = type;
