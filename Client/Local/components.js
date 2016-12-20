@@ -632,13 +632,23 @@ class Display extends Output {
         this.value = 0;
         this.dp = 0;
 
-        this.sortInput = () => {
+        this.sortInput = input => {
             let result = [];
-            for(let i = 0; i < this.input.length; ++i) {
-                while(x )
+            for(let i = 0; i < input.length; ++i) {
+                if(!input[i]) continue;
+                let index = input[i].wire.pos.slice(-1)[0].x - this.pos.x;
+                if(input[i].wire.pos.slice(-1)[0].y < this.pos.y) index += 4;
+                result[index] = input[i];
             }
+            return result;
         }
-        this.func = input => parseInt(input.join(""));
+        this.func = input => {
+            return parseInt(input.join(""));
+        }
+        this.update = function() {
+            this.input = this.sortInput(this.input);
+            this.value = +!!this.func(this.input.map(n => n.wire.value));
+        }
 
         this.lineWidth = lineWidth;
         this.hOffset = this.width / 8;
@@ -671,7 +681,7 @@ class Display extends Output {
             const margin = zoom / 20;
 
             ctx.shadowColor = this.colorOn;
-            if([0,2,3,5,6,7,8,9].includes(this.value)) {
+            if(this.input[0] && this.input[0].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -689,7 +699,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if([2,3,4,5,6,8,9].includes(this.value)) {
+            if(this.input[6] && this.input[6].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -706,7 +716,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if([0,2,3,5,6,8,9].includes(this.value)) {
+            if(this.input[3] && this.input[3].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -723,7 +733,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if([0,4,5,6,8,9].includes(this.value)) {
+            if(this.input[5] && this.input[5].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -742,7 +752,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if([0,1,2,3,4,7,8,9].includes(this.value)) {
+            if(this.input[1] && this.input[1].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -759,7 +769,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if([0,2,6,8].includes(this.value)) {
+            if(this.input[4] && this.input[4].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -777,7 +787,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if([0,1,3,4,5,6,7,8,9].includes(this.value)) {
+            if(this.input[2] && this.input[2].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -794,7 +804,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if(this.dp) {
+            if(this.input[7] && this.input[7].wire.value) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/actions2.js" afterPath="$PROJECT_DIR$/Client/Local/actions2.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/Local/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/Local/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/keys.js" afterPath="$PROJECT_DIR$/Client/Local/keys.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,24 +30,24 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-10">
-              <caret line="193" column="6" lean-forward="true" selection-start-line="193" selection-start-column="6" selection-end-line="193" selection-end-column="6" />
+            <state relative-caret-position="312">
+              <caret line="298" column="14" lean-forward="true" selection-start-line="298" selection-start-column="14" selection-end-line="298" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="637" column="16" lean-forward="false" selection-start-line="637" selection-start-column="16" selection-end-line="637" selection-end-column="16" />
+            <state relative-caret-position="144">
+              <caret line="637" column="39" lean-forward="false" selection-start-line="637" selection-start-column="39" selection-end-line="637" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="actions2.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="actions2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/actions2.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
@@ -83,8 +82,8 @@
       <file leaf-file-name="keys.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2712">
-              <caret line="115" column="18" lean-forward="false" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
+            <state relative-caret-position="-288">
+              <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -149,11 +148,14 @@
       <find>Monospace</find>
       <find>load</find>
       <find>load_project</find>
-      <find>Display</find>
       <find>this.height</find>
+      <find>Display</find>
+      <find>this.input</find>
+      <find>console.l</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
+      <replace>this.input &amp;&amp; this.input</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -206,13 +208,13 @@
         <option value="$PROJECT_DIR$/Client/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/debug.js" />
         <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
-        <option value="$PROJECT_DIR$/Client/Local/keys.js" />
         <option value="$PROJECT_DIR$/Client/popup.js" />
         <option value="$PROJECT_DIR$/Client/popup.css" />
         <option value="$PROJECT_DIR$/Client/Local/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/main.js" />
-        <option value="$PROJECT_DIR$/Client/Local/components.js" />
         <option value="$PROJECT_DIR$/Client/Local/actions2.js" />
+        <option value="$PROJECT_DIR$/Client/Local/keys.js" />
+        <option value="$PROJECT_DIR$/Client/Local/components.js" />
       </list>
     </option>
   </component>
@@ -666,14 +668,7 @@
       <workItem from="1482160032912" duration="5083000" />
       <workItem from="1482168328947" duration="629000" />
       <workItem from="1482183870168" duration="2138000" />
-      <workItem from="1482235564718" duration="3261000" />
-    </task>
-    <task id="LOCAL-00019" summary="Bug fixes">
-      <created>1474576490201</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1474576490201</updated>
+      <workItem from="1482235564718" duration="7638000" />
     </task>
     <task id="LOCAL-00020" summary="Insecten eruit gehaald">
       <created>1474670187173</created>
@@ -1011,12 +1006,19 @@
       <option name="project" value="LOCAL" />
       <updated>1482168997918</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="update 0.1.149">
+      <created>1482238842335</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1482238842343</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="661605000" />
+    <option name="totallyTimeSpent" value="665982000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1315,14 +1317,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2712">
-          <caret line="115" column="18" lean-forward="false" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/popup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4488">
@@ -1355,14 +1349,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10">
-          <caret line="193" column="6" lean-forward="true" selection-start-line="193" selection-start-column="6" selection-end-line="193" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="952">
@@ -1381,18 +1367,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="637" column="16" lean-forward="false" selection-start-line="637" selection-start-column="16" selection-end-line="637" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/actions2.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="6" column="25" lean-forward="true" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="298" column="14" lean-forward="true" selection-start-line="298" selection-start-column="14" selection-end-line="298" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-288">
+          <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="637" column="39" lean-forward="false" selection-start-line="637" selection-start-column="39" selection-end-line="637" selection-end-column="39" />
           <folding />
         </state>
       </provider>
