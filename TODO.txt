@@ -1,11 +1,9 @@
 [FIX] Actions
 [FIX] Draden bij draggen
 [ADD] Edit color bij selecties
-[ADD] 1/0 font
 [ADD] Resize
 [BUG] Name overflow
 [ADD] Gebied invouwen 
-[ADD] labels 
-[BUG] Clock paste
-[ADD] 7-segment display
-[ADD][OPTIONAL] Decimale output weergeven van outputs naast elkaar
+[ADD] labels
+[ADD] hints
+[ADD] chat

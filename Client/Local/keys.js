@@ -159,15 +159,11 @@ c.onkeydown = function(e) {
             }
             break;
         case 9: // Tab
-            if(componentInfo.style.display != "none") {
-                componentInfo.expanded = true;
-            } else {
-                var component = find(mouse.grid.x, mouse.grid.y);
-                if(component && component.constructor != Wire) {
-                    select(component.constructor);
-                }
-                keys[9] = true;
+            var component = find(mouse.grid.x, mouse.grid.y);
+            if(component && component.constructor != Wire) {
+                select(component.constructor);
             }
+            keys[9] = true;
             return false;
             break;
         case 114: // F3

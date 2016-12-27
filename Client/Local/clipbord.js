@@ -25,6 +25,8 @@ clipbord.copy = function(components,selection) {
             }
         }
     }
+
+    toolbar.message("Copied " + (selection ? "selection" : "component") + " to clipbord");
 }
 
 clipbord.paste = function(x,y) {

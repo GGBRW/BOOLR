@@ -305,15 +305,14 @@ c.onmousedown = function(e) {
                 }
             } else {
                 const component = find(mouse.grid.x,mouse.grid.y);
-                if(component.constructor != Wire) {
+                if(component && component.constructor != Wire) {
                     dragging = {
                         component,
                         pos: Object.assign([], component.pos)
                     }
+                    c.style.cursor = "move";
                 }
             }
-
-            c.style.cursor = "move";
         }
         else if(e.altKey) {
             e.preventDefault();
