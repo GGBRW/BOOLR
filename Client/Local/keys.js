@@ -20,17 +20,17 @@ c.onkeydown = function(e) {
             scroll(-offset.x,-offset.y);
             break;
         case 46: // Delete
-            if(selecting) {
-                for(let i of selecting.components) {
-                    if(components.includes(i)) remove(i);
-                }
-
-                selecting = null;
-                contextMenu.hide();
-            } else {
-                remove(
-                    find(mouse.grid.x,mouse.grid.y)
+            if(selecting && selecting.components) {
+                action(
+                    "removeSelection",
+                    [...selecting.components],
+                    true
                 );
+            } else {
+                // remove(
+                //     find(mouse.grid.x,mouse.grid.y)
+                // );
+                find() && action("remove",find(),true);
             }
             break;
         case 33: // Page Up
@@ -78,8 +78,8 @@ c.onkeydown = function(e) {
             if(e.ctrlKey) {
                 if(selecting) {
                     clipbord.copy(selecting.components, selecting);
-                } else {
-                    clipbord.copy([find(mouse.grid.x,mouse.grid.y)]);
+                } else if(find(mouse.grid.x,mouse.grid.y)) {
+                    clipbord.copy([find()]);
                 }
             }
             break;
@@ -89,14 +89,14 @@ c.onkeydown = function(e) {
                 popup.color_picker.show(
                     color => color
                     && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-                    && !edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
+                    && !edit(component,"color_off",n => color) && action("edit",[component,"color_on",n => lighter(color,50)],true)
                 );
             }
             else if(component && component.name) {
                 popup.prompt.show(
                     "Edit name",
                     "Enter a name for this component:",
-                    name => name && name.length < 18 && edit(component,"name",n => name)
+                    name => name && name.length < 18 && action("edit",[component,"name",n => name],true)
                 );
             }
             return false;
@@ -114,11 +114,19 @@ c.onkeydown = function(e) {
             return false;
             break;
         case 82: // R
-            var component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.height) {
-                const t = component.height;
-                component.height = component.width;
-                component.width = t;
+            if(e.ctrlKey && e.shiftKey) {
+                popup.confirm.show(
+                    'Clear localStorage',
+                    'Are you sure you want to clear all local stored data?',
+                    () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
+                );
+            } else {
+                var component = find(mouse.grid.x, mouse.grid.y);
+                if (component && component.height) {
+                    const t = component.height;
+                    component.height = component.width;
+                    component.width = t;
+                }
             }
             break;
         case 83: // S
@@ -138,9 +146,14 @@ c.onkeydown = function(e) {
                 );
             }
             break;
-        case 84:
-            Console.show();
-            Console.input.focus();
+        case 84: // T
+            if(e.shiftKey) {
+                Console.show();
+                Console.input.focus();
+            } else {
+                chat.show();
+                chat.focus();
+            }
             return false;
             break;
         case 86: // V
@@ -153,6 +166,9 @@ c.onkeydown = function(e) {
             // gotoWaypoint(waypoints.length - 1);
             break;
         case 90: // Z
+            selecting = null;
+            contextMenu.hide();
+
             if(e.ctrlKey) {
                 if(e.shiftKey) redo();
                 else undo();

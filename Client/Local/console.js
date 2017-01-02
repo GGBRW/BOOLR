@@ -3,11 +3,13 @@ Console.input = document.querySelector("#console #input");
 Console.messages = document.querySelector("#console #messages");
 
 Console.show = function() {
-    this.style.left = "0px";
+    this.style.display = "block";
+    this.style.left = 0;
 }
 
 Console.hide = function() {
-    this.style.left = "-500px";
+    this.style.display = "none";
+    Console.input.blur();
     c.focus();
 }
 

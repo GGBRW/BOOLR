@@ -3,7 +3,7 @@ let popup = {
     confirm: document.getElementById("confirm"),
     prompt: document.getElementById("prompt"),
     custom_component: document.getElementById("custom_component"),
-    component_list: document.getElementById("component_list"),
+    componentList: document.getElementById("component_list"),
     settings: document.getElementById("settings"),
     info: document.getElementById("info"),
     login: document.getElementById("login"),
@@ -91,8 +91,8 @@ if(popup.custom_component) {
 }
 
 // Component list
-if(popup.component_list) {
-    popup.component_list.show = function () {
+if(popup.componentList) {
+    popup.componentList.show = function () {
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
         setTimeout(() => {

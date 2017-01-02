@@ -226,6 +226,10 @@ window.onbeforeunload = function() {
 
     data.clipbord = stringify(clipbord);
     data.settings = settings;
+
+    let disabledTips = {};
+    for(let tip in tips) disabledTips[tip] = !!tips[tip].disabled;
+    data.tips = disabledTips;
     localStorage.pws = JSON.stringify(data);
 }
 
@@ -245,13 +249,7 @@ window.onerror = function(msg,url,line) {
 c.oncontextmenu = () => false;
 // c.onmouseenter = () => scroll_animation.animate = false;
 
-c.onmouseleave = function(e) {
-    if(connecting) {
-        connecting = null;
-    }
-
-    scroll_animation.animate = true;
-}
+c.onmouseleave = () => { scroll_animation.animate = true; connecting = null }
 
 let wheel_click = false;
 c.onmousedown = function(e) {
@@ -269,13 +267,13 @@ c.onmousedown = function(e) {
                 selecting.animate.w = mouse.grid.x - selecting.x;
                 selecting.animate.h = mouse.grid.y - selecting.y;
 
-                contextMenu.show({ x: (selecting.x + selecting.w - offset.x) * zoom, y: -(selecting.y + selecting.h - offset.y) * zoom })
-
                 selecting.components = find(
                     selecting.x,selecting.y,
                     selecting.animate.w,
                     selecting.animate.h
                 );
+
+                contextMenu.show({ x: (selecting.x + selecting.w - offset.x) * zoom, y: -(selecting.y + selecting.h - offset.y) * zoom });
 
                 for(let i of selecting.components) {
                     i.blink(1000);
@@ -326,37 +324,50 @@ c.onmousedown = function(e) {
                 selecting = null;
             }
             else {
-                const component = find(mouse.grid.x,mouse.grid.y);
+                let component = find(mouse.grid.x,mouse.grid.y);
                 if(component && (component.output || component.from)) {
-                    const wire = new Wire();
-
-                    if(component.from) {
-                        wire.from = component.from;
-
-                        let i = 0;
-                        while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
-                        && i < component.pos.length) {
-                            wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
-                            ++i;
-                        }
-                    } else if(component.output) {
-                        wire.from = component;
-                    }
-
-                    connecting = { wire };
-                    connecting.wire.pos.push({
-                        x: mouse.grid.x,
-                        y: mouse.grid.y
-                    });
+                    // const wire = new Wire();
+                    //
+                    // if(component.from) {
+                    //     wire.from = component.from;
+                    //
+                    //     let i = 0;
+                    //     while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
+                    //     && i < component.pos.length) {
+                    //         wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
+                    //         ++i;
+                    //     }
+                    // } else if(component.output) {
+                    //     wire.from = component;
+                    // }
+                    //
+                    // connecting = { wire };
+                    // connecting.wire.pos.push({
+                    //     x: mouse.grid.x,
+                    //     y: mouse.grid.y
+                    // });
                 } else if(component) {
                     if(component.onclick) {
-                        component.onclick(
-                            mouse.grid.x - component.pos.x,
-                            component.pos.y - mouse.grid.y
-                        );
+                        // component.onclick(
+                        //     mouse.grid.x - component.pos.x,
+                        //     component.pos.y - mouse.grid.y
+                        // );
+                        action("click",[component,mouse.grid.x - component.pos.x,component.pos.y - mouse.grid.y],true);
                     }
                 } else {
-                    add(new Selected());
+                    component = new Selected();
+                    //add(component);
+                    action("add",component,true);
+
+                    // if(component.output) {
+                    //     const wire = new Wire();
+                    //     wire.from = component;
+                    //     connecting = { wire };
+                    //     connecting.wire.pos.push({
+                    //         x: mouse.grid.x,
+                    //         y: mouse.grid.y
+                    //     });
+                    // }
                 }
             }
         }
@@ -554,7 +565,7 @@ c.onmousemove = function(e) {
         }
         else if(connecting) {
             // Scroll and return if the user is holding the ctrl key
-            if(e.ctrlKey) {
+            if(e.ctrlKey && connecting.wire.pos.length > 1) {
                 offset.x -= e.movementX / zoom;
                 offset.y += e.movementY / zoom;
                 return;
@@ -615,43 +626,20 @@ c.onmousemove = function(e) {
                     y: mouse.grid.y
                 }];
             } else if(component && component.constructor != Wire && component.input) {
-                // If there's a component under the user's mouse that has free input ports, connect with this component
-                if(component.input.length >= component.inputPorts) {
-                    toolbar.message(`Component ${component.name} has no free input ports`, "warning");
+                // connect(connecting.wire.from,component,connecting.wire);
+                action("connect",[connecting.wire.from,component,connecting.wire],true);
+
+                if(component.output) {
+                    // If the component under the user's mouse has output ports, we'll keep connecting
+                    const wire = new Wire();
+                    wire.from = component;
+                    connecting = { wire };
+                    connecting.wire.pos.push({
+                        x: mouse.grid.x,
+                        y: mouse.grid.y
+                    });
                 } else {
-                    // Remove the wire parts under the two components
-                    // const dx1 = wire.pos[1].x - wire.pos[0].x;
-                    // const dy1 = wire.pos[1].y - wire.pos[0].y;
-                    // const dx2 = wire.pos.slice(-2)[0].x - wire.pos.slice(-1)[0].x;
-                    // const dy2 = wire.pos.slice(-2)[0].y - wire.pos.slice(-1)[0].y;
-                    // wire.pos[0].x += dx1 / 2;
-                    // wire.pos[0].y += dy1 / 2;
-                    // wire.pos.slice(-1)[0].x += dx2 / 2;
-                    // wire.pos.slice(-1)[0].y += dy2 / 2;
-
-                    connecting.wire.to = component;
-                    connect(connecting.wire.from,component,connecting.wire);
-
-                    // Add the wire to the components
-                    add(connecting.wire);
-
-                    // Blink the two components and the wire
-                    connecting.wire.from.blink(1000);
-                    connecting.wire.blink(1000);
-                    connecting.wire.to.blink(1000);
-
-                    if(component.output) {
-                        // If the component under the user's mouse has output ports, we'll keep connecting
-                        const wire = new Wire();
-                        wire.from = component;
-                        connecting = { wire };
-                        connecting.wire.pos.push({
-                            x: mouse.grid.x,
-                            y: mouse.grid.y
-                        });
-                    } else {
-                        connecting = null;
-                    }
+                    connecting = null;
                 }
             } else if(component && component.output) {
                 const output = [...component.output];
@@ -661,7 +649,8 @@ c.onmousemove = function(e) {
                     "Replace input port?",
                     "Do you want to replace this input port?",
                     () => {
-                        remove(component);
+                        //remove(component);
+                        action("remove",component,true);
 
                         for(let i = 0; i < output.length; ++i) {
                             wire.pos[0].x += Math.sign(wire.pos[1].x - wire.pos[0].x) / 2;
@@ -685,6 +674,41 @@ c.onmousemove = function(e) {
             scroll_animation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
             scroll_animation.r = Math.atan2(e.movementX, e.movementY);
             return false;
+        }
+        else if(e.ctrlKey) {
+            e.preventDefault();
+            offset.x -= e.movementX / zoom;
+            offset.y += e.movementY / zoom;
+
+            scroll_animation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
+            scroll_animation.r = Math.atan2(e.movementX, e.movementY);
+            return false;
+        }
+        else {
+            const component = find(mouse.grid.x,mouse.grid.y);
+
+            if(component && (component.output || component.from)) {
+                const wire = new Wire();
+
+                if(component.from) {
+                    wire.from = component.from;
+
+                    let i = 0;
+                    while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
+                    && i < component.pos.length) {
+                        wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
+                        ++i;
+                    }
+                } else if(component.output) {
+                    wire.from = component;
+                }
+
+                connecting = { wire };
+                connecting.wire.pos.push({
+                    x: mouse.grid.x,
+                    y: mouse.grid.y
+                });
+            }
         }
     }
     else if(e.which == 2) {
@@ -711,16 +735,16 @@ c.onmouseup = function(e) {
         if(selecting && !dragging) {
             if(!selecting.animate.w && !selecting.animate.h) return;
 
-            if(!selecting.components) contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
-
             selecting.components = find(
                 selecting.x,selecting.y,
                 selecting.animate.w,
                 selecting.animate.h
             );
 
+            contextMenu.show({ x: (mouse.grid.x - offset.x) * zoom, y: -(mouse.grid.y - offset.y) * zoom });
+
             for(let i of selecting.components) {
-                i.blink(1000);
+                i.blink && i.blink(1000);
             }
         }
         else if(dragging) {
@@ -841,22 +865,29 @@ c.onmouseup = function(e) {
                             }
                         }
 
+                        console.log(dragging.component.pos.x,dragging.component.pos.y);
+                        action("move",[dragging.component,dragging.component.pos.x,dragging.component.pos.y],true);
+
                         dragging = null;
                         c.style.cursor = "crosshair";
-
-                        undoStack.push(new Action(
-                            "move",
-                            Object.assign({}, dragging)
-                        ));
                     }
                 })();
             }
-        } else if(connecting) {
-            const component = find(mouse.grid.x,mouse.grid.y);
-            if(component && component.onclick && connecting.wire.from == component) component.onclick();
+        }
+        else if(connecting) {
             connecting = null;
-        } else if(e.altKey) {
+        }
+        else if(e.altKey) {
             scroll_animation.animate = true;
+        }
+
+        const component = find(mouse.grid.x,mouse.grid.y);
+        if(component && component.onclick) {
+            action(
+                "click",
+                [component, mouse.grid.x - component.pos.x, component.pos.y - mouse.grid.y],
+                true
+            );
         }
     } else if(e.which == 2) {
         scroll_animation.animate = true;

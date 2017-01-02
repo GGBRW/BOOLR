@@ -13,9 +13,14 @@ let users = {};
 // All the components are stored in the following array:
 let components = [];
 
+// All the connections between the components are stored in the following array:
+let connections = [];
+
 fs.readFile("pws.dat","utf8",(err,data) => {
     if(err) return console.log(err);
-    components = JSON.parse(data);
+    if(data) {
+        components = JSON.parse(data);
+    }
 });
 
 wss.on('connection', function(ws) {
@@ -31,10 +36,20 @@ wss.on('connection', function(ws) {
         }));
     }
 
+    // Send user data to the user
+    ws.send(JSON.stringify({
+        type: "users",
+        data: JSON.stringify({
+            you: users[userAgent],
+            users
+        })
+    }));
+
+
     // Send the map to the user
     ws.send(JSON.stringify({
         type: "map",
-        data: JSON.stringify(components)
+        data: JSON.stringify([components,connections])
     }));
 
     // Add the message handler to the user
@@ -55,8 +70,6 @@ function onmessage(msg) {
     } catch(e) {
         return;
     }
-
-    console.log(msg);
 
     // Get the user agent of the sender
     const userAgent = this.upgradeReq.headers["user-agent"];
@@ -81,30 +94,33 @@ function onmessage(msg) {
                     msg: msg.data
                 });
                 break;
-            case "add":
-                components.push({
-                    constructor: msg.data.constructor,
-                    params: msg.data.params,
-                    connections: msg.data.connections
-                });
+            case "action":
+                const action = msg.data;
+                action.from = users[userAgent];
+
+                let data = action.socketData;
+                switch(action.type) {
+                    case "add":
+                        const parsed = JSON.parse(data);
+                        const constructor = parsed[0][0][0];
+                        components.push(parsed[0][0]);
+                        break;
+                    case "remove":
+                        const index = +data.substr(2);
+                        components.splice(index,1);
+                        break;
+                    case "connect":
+                        connections.push([+data[0].substr(2),+data[1].substr(2),-1]);
+                        components.unshift(JSON.parse(data[2])[0][0]);
+                        connections = connections.map(n => n.map(m => ++m));
+                        break;
+                }
 
                 broadcast(
-                    "add", {
-                    data: msg.data
-                    },
+                  "action",
+                    action,
                     [this]
                 );
-                break;
-            case "remove":
-                if(!isNaN(msg.data) && +msg.data >= 0) {
-                    components.splice(+msg.data,1);
-                    broadcast(
-                        "remove", {
-                            data: msg.data,
-                        },
-                        [this]
-                    )
-                }
                 break;
         }
     }

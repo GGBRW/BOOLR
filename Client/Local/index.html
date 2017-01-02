@@ -4,11 +4,15 @@
 <link rel="stylesheet" href="../popup.css">
 
 <title>PWS // SANDBOX MODE</title>
+
+<!-- Preload voor lettertypes -->
+<div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
+
 <!-- Het belangrijkste deel van de hele pagina. Dit is een HTML5-element die uitgestrekt is over de hele pagina waarmee met JavaScript op getekent kan worden. -->
 <!-- Ik heb hier het attribuut 'tabindex' met waarde '1' aangegeven als snelle oplossing om met JavaScript te checken of het canvas element 'focus' heeft. -->
 <canvas id="canvas" tabindex="1"></canvas>
 
-<!-- De console die verschijnt als je op de toets 't' drukt. -->
+<!-- De console die verschijnt als je op de toetsen shift + 't' drukt. -->
 <div id="console">
     <!-- Button om de console te verbergen -->
     <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
@@ -16,6 +20,11 @@
     <div id="input" contenteditable="true" spellcheck="false"></div>
     <div id="messages"></div>
 </div>
+
+<!-- De chat die verschijnt als je op de toets 't' drukt -->
+<input id="chat" spellcheck="false">
+
+</input>
 
 <ul id="notifications"></ul>
 
@@ -26,8 +35,8 @@
     <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
     <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
     <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
-    <div class="slot" tooltip="Custom component" onmousedown="popup.custom_component.show()">+</div>
-    <div class="slot" tooltip="Component list" onmousedown="popup.component_list.show()">...</div>
+    <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">+</div>
+    <div class="slot" tooltip="Component list" onmousedown="popup.componentList.show()">...</div>
 
     <div id="toast"></div>
 
@@ -87,8 +96,7 @@
 <div class="popup" id="whatsnew">
     <h1></h1>
     <ul>
-        <li><i class="material-icons">settings_brightness</i> 7-segment display</li>
-        <li><i class="material-icons">highlight</i> LEDs</li>
+        <li>Vraag maar aan Gees wat er allemaal nieuw is, tis best wel vet</li>
     </ul>
     <p style="color: darkred">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
     <br>
@@ -121,7 +129,13 @@ class Component {
         <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
         <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
         <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
-        <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
+        <li><button onclick="
+        popup.confirm.show(
+            'Clear localStorage',
+            'Are you sure you want to clear all local stored data?',
+            () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
+        );
+        ">Clear localStorage</button></li>
     </ul>
     <button class="ok">OK</button>
     <button class="cancel">Cancel</button>
@@ -216,10 +230,19 @@ class Component {
     <i class="material-icons">lightbulb_outline</i>
     Press the right mouse button to cancel dragging
 </div>
-<div class="tip" id="connecting">
+<div class="tip" id="connecting_ctrl">
+    <i class="material-icons">lightbulb_outline</i>
+    Move the mouse while holding the CTRL-key to scroll while connecting
+</div>
+<div class="tip" id="connecting_shift">
     <i class="material-icons">lightbulb_outline</i>
     Hold the shift key to draw the wire in a straight line
 </div>
+<div class="tip" id="waypoints">
+    <i class="material-icons">lightbulb_outline</i>
+    Press S to set a waypoint, press W to jump to a waypoint
+</div>
+
 
 <!-- Value of inputs/outputs -->
 <div id="hoverBalloon"></div>
@@ -247,7 +270,15 @@ class Component {
                 parse_old(reader.result);
             } else {
                 components = [];
-                parse(reader.result);
+                const parsed = parse(reader.result);
+
+                for(let i = 0, len = parsed.length; i < len; ++i) {
+                    if(parsed[i].constructor == Wire) {
+                        components.unshift(parsed[i]);
+                    } else {
+                        components.push(parsed[i]);
+                    }
+                }
             }
         }
         reader.readAsText(input.files[0]);
@@ -261,10 +292,11 @@ class Component {
 </script>
 <script src="main.js"></script>
 <script src="ticker.js"></script>
-<script src="actions.js"></script>
-<!--script src="actions2.js"></script-->
+<!--script src="actions.js"></script-->
+<script src="actions2.js"></script>
 <script src="clipbord.js"></script>
 <script src="keys.js"></script>
+<script src="chat.js"></script>
 <script src="console.js"></script>
 <script src="notifications.js"></script>
 <script src="toolbar.js"></script>
@@ -283,7 +315,7 @@ class Component {
 <script>
     "use strict";
 
-    const VERSION = "0.1.147";
+    const VERSION = "0.1.159";
     document.getElementById("version").innerHTML = "PWS v" + VERSION;
 
     let data;
@@ -293,13 +325,24 @@ class Component {
     if(data.version != VERSION) {
         popup.whatsnew.show()
     }
-    if(data.clipbord) parse(data.clipbord,true);
-    if(data.settings) settings = data.settings;
+    if(data.clipbord) {
+        parse(data.clipbord,true);
+    }
+    if(data.settings) {
+        settings = data.settings;
+    }
+    if(data.tips) {
+        for(let tip in data.tips) {
+            tips[tip].disabled = data.tips[tip];
+        }
+    }
 
     c.focus();
 
     updateDebugInfo();
     setInterval(updateDebugInfo, 500);
+
+    connectToSocket("ws://localhost:3000");
 
     draw();  // 'draw' loop starten
     //tick(); // 'tick' loop starten

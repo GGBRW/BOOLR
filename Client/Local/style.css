@@ -10,6 +10,9 @@ body {
 }
 
 canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
     cursor: crosshair;
     outline: none;
 }
@@ -124,21 +127,25 @@ canvas {
 /*}*/
 
 #console {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: -400px;
-    background: white;
+    background: #111;
     opacity: .95;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     width: 400px;
     height: 100%;
 }
 
+#console #input {
+    color: #ddd;
+}
+
 #console #close {
     position: absolute;
     top: 0;
     right: 0;
-    color: #ddd;
+    color: #444;
     padding: 10px;
     border: none;
     background: none;
@@ -146,8 +153,8 @@ canvas {
 }
 
 #console #messages .message {
-    background: #f5f5f5;
-    color: #111;
+    background: #333;
+    color: #ddd;
     padding: 10px;
     font-family: "Inconsolata";
     margin: 8px;
@@ -167,7 +174,7 @@ canvas {
     width: 80%;
     font-family: "Inconsolata";
     font-size: 18px;
-    color: #888;
+    color: #ddd;
     text-align: left;
     outline: none;
 }
@@ -199,7 +206,7 @@ canvas {
     font-family: Consolas;
     font-size: 22px;
     font-weight: 800;
-    color: #bbb;
+    color: #ddd;
 }
 
 #console #input {
@@ -219,22 +226,46 @@ canvas {
     font-family: Consolas;
     font-size: 22px;
     font-weight: 800;
-    color: #2080dd;
+    color: #143d70;
+}
+
+/* Chat */
+#chat {
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    width: 230px;
+    background: #111;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+    border: none;
+    padding: 16px;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #aaa;
+
+    transform: translateX(-230px);
+    transition: transform .2s;
 }
 
 /* Notifications */
 #notifications {
     position: absolute;
-    bottom: 0;
+    bottom: 80px;
     left: 0;
     list-style: none;
     padding: 0;
+    pointer-events: none;
+
+    transform: translateY(80px);
+    transition: transform .2s;
 }
 
 #notifications li {
     background: #ddd;
     font-family: "Ubuntu", Arial;
-    font-size: 16px;
+    font-size: 15px;
     color: #111;
     padding: 16px;
     margin-top: 10px;
@@ -256,7 +287,7 @@ canvas {
 /* Toolbar */
 
 #toolbar {
-    position: absolute;
+    position: fixed;
     left: 50%;
     bottom: 0;
     margin-left: -175px;
@@ -268,6 +299,7 @@ canvas {
     border-radius: 5px 5px 0 0;
     font-size: 0;
     opacity: 1;
+    transition: opacity .5s;
 }
 
 #toolbar .slot {
@@ -287,14 +319,14 @@ canvas {
 }
 
 #toolbar #toast {
-    position: absolute;
+    position: fixed;
     left: 50%;
     bottom: 60px;
     background: #ddd;
     box-shadow: 0 0 10px rgba(0,0,0,.25);
-    color: #000;
+    color: #333;
     padding: 10px 25px;
-    font-family: "Roboto Condensed";
+    font-family: "Ubuntu";
     font-size: 15px;
     text-align: center;
     opacity: 0;
@@ -306,7 +338,7 @@ canvas {
 
 #toolbartip {
     display: none;
-    position: absolute;
+    position: fixed;
     bottom: 85px;
     left: 0;
     max-width: 100px;
@@ -326,7 +358,7 @@ canvas {
 
 #toolbartip:after {
     content: '';
-    position: absolute;
+    position: fixed;
     border-style: solid;
     border-width: 15px 15px 0;
     border-color: #111 transparent;
@@ -385,7 +417,7 @@ canvas {
 /* Credits */
 
 #credits {
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     font-family: "Ubuntu", Arial;
@@ -417,7 +449,7 @@ canvas {
 
 #debugInfo {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     background: #ddd;
@@ -439,7 +471,7 @@ canvas {
 /* Component info */
 #componentInfo {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 100px;
     left: 100px;
     background: #ddd;
@@ -458,7 +490,7 @@ canvas {
 
 #componentInfo:after {
     content: '';
-    position: absolute;
+    position: fixed;
     border-style: solid;
     border-width: 15px 15px 0;
     border-color: #ddd transparent;
@@ -585,7 +617,7 @@ canvas {
 
 .tip {
     display: none;
-    position: absolute;
+    position: fixed;
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     border-radius: 5px;
@@ -600,7 +632,7 @@ canvas {
 /* Value balloon */
 #hoverBalloon {
     display: none;
-    position: absolute;
+    position: fixed;
     left: 0;
     min-width: 100px;
     background: #111;
@@ -619,7 +651,7 @@ canvas {
 
 #hoverBalloon:after {
     content: '';
-    position: absolute;
+    position: fixed;
     border-style: solid;
     border-width: 15px 15px 0;
     border-color: #111 transparent;

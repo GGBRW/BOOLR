@@ -1,6 +1,6 @@
 let components = [];
 
-function find(x,y,w,h) {
+function find(x = mouse.grid.x,y = mouse.grid.y,w,h) {
     if(!w && !h) {
         for(let i = components.length - 1; i >= 0; --i) {
             const component = components[i];
@@ -30,21 +30,31 @@ function find(x,y,w,h) {
 }
 
 function add(component,x = component.pos.x,y = component.pos.y) {
-    // FIXME: place free?
-    // for(let i = x; i < x + component.width; ++i) {
-    //     for(let j = y; j < y + component.height; ++j) {
-    //         if(find(i,j)) return;
-    //     }
-    // }
+    if(component.height && component.width) {
+        let fits = true;
+        for(let i = x; i < x + component.width; ++i) {
+            for(let j = y - component.height + 1; j <= y; ++j) {
+                if(find(i,j)) fits = false;
+            }
+        }
+        if(!fits) {
+            const t = component.height;
+            component.height = component.width;
+            component.width = t;
+            for(let i = x; i < x + component.width; ++i) {
+                for(let j = y - component.height + 1; j <= y; ++j) {
+                    if(find(i, j)) return;
+                }
+            }
+        }
+        if(find(x,y)) return;
+    }
 
-    if(find(x,y)) return;
-
-    component.constructor == Wire ? components.unshift(component) : components.push(component);
-
-    undoStack.push(new Action(
-        "add",
-        [component.constructor == Wire ? 0 : components.length - 1]
-    ));
+    if(component.constructor == Wire) {
+        components.unshift(component);
+    } else {
+        components.push(component);
+    }
 }
 
 function remove(component) {
@@ -59,6 +69,8 @@ function remove(component) {
         component.to && component.to.input.splice(
             component.to.input.findIndex(n => n.wire == component), 1
         ) && component.to.update();
+
+        component.value = 0;
     } else {
         // If the component to remove is not a wire, remove all connected wires and 'tell' all connected components that the connection is removed
         if(component.input) {
@@ -92,32 +104,22 @@ function remove(component) {
     let removed = [component];
     if(component.input) {
         for(let i = 0; i < component.input.length; ++i) removed.push(component.input[i].wire);
+        component.input = [];
     }
     if(component.output) {
         for(let i = 0; i < component.output.length; ++i) removed.push(component.output[i].wire);
+        component.output = [];
     }
-
-    undoStack.push(new Action(
-        "remove",
-        removed
-    ));
 
     // And finally, remove the actual component
     components.splice(components.indexOf(component),1);
+
+    return removed;
 }
 
 function edit(component,property,f) {
     const oldValue = component[property];
-
     component[property] = f(component[property]);
-
-    undoStack.push(new Action(
-        "edit", {
-            component,
-            property,
-            oldValue
-        }
-    ));
 }
 
 function clone(target) {
@@ -142,33 +144,64 @@ function clone(target) {
     return component;
 }
 
-function connect(from,to,wire,outputLabel,inputLabel) {
-    if(!outputLabel) {
-        if(from.outputLabels && from.outputLabels[from.output.length]) {
-            outputLabel = from.outputLabels[from.output.length];
-        } else {
-            outputLabel = String.fromCharCode(65 + from.output.length);
-        }
+function connect(from,to,wire,addWire = true) {
+    // Check if there are ports available
+    if(from.outputPorts && from.outputPorts <= from.output.length) {
+        toolbar.message(`Component ${from.name} has no free output ports`, "warning");
+        return false;
     }
-    if(!inputLabel) {
-        if(to.inputLabels && to.inputLabels[to.input.length]) {
-            inputLabel = to.inputLabels[to.input.length];
-        } else {
-            inputLabel = String.fromCharCode(65 + to.input.length);
-        }
+    if(to.inputPorts && to.inputPorts <= to.input.length) {
+        toolbar.message(`Component ${to.name} has no free input ports`, "warning");
+        return false;
     }
+
+    // Caculate output position
+    let outputSide = Math.atan2(wire.pos[1].x - wire.pos[0].x,wire.pos[1].y - wire.pos[0].y) / (Math.PI / 2);
+    if(outputSide < 0) outputSide = 4 + outputSide;
+
+    let outputPos;
+    if(outputSide % 2 == 0) {
+        outputPos = wire.pos[0].x - from.pos.x;
+        if(outputSide == 2) outputPos = (from.width - 1) - outputPos;
+    } else {
+        outputPos = from.pos.y - wire.pos[0].y;
+        if(outputSide == 3) outputPos = (from.height - 1) - outputPos;
+    }
+
+    // Caculate input position
+    let inputSide = Math.atan2(wire.pos.slice(-2)[0].x - wire.pos.slice(-2)[1].x,wire.pos.slice(-2)[0].y - wire.pos.slice(-2)[1].y) / (Math.PI / 2);
+    if(inputSide < 0) inputSide = 4 + inputSide;
+
+    let inputPos;
+    if(inputSide % 2 == 0) {
+        inputPos = wire.pos.slice(-2)[1].x - to.pos.x;
+        if(inputSide == 2) inputPos = (to.width - 1) - inputPos;
+    } else {
+        inputPos = to.pos.y - wire.pos.slice(-2)[1].y;
+        if(inputSide == 3) inputPos = (to.height - 1) - inputPos;
+    }
+
+    // Add wire to component list
+    if(addWire) {
+        components.unshift(wire);
+    }
+
+    // Blink the two components and the wire
+    from.blink && from.blink(1000);
+    wire.blink && wire.blink(1000);
+    to.blink && to.blink(1000);
 
     wire.from = from;
     wire.to = to;
 
     from.output.push({
         wire,
-        label: outputLabel
+        pos: { side: outputSide, pos: outputPos }
     });
 
     to.input.push({
         wire,
-        label: inputLabel
+        pos: { side: inputSide, pos: inputPos }
     });
 
     from.update();
@@ -918,16 +951,6 @@ class Gate {
         this.name = name;
     }
 
-    connect(component,wire) {
-        wire.outputLabel = String.fromCharCode(65 + this.output.length);
-        wire.inputLabel = String.fromCharCode(65 + component.input.length);
-
-        this.output.push(wire);
-        component.input.push(wire);
-
-        this.update();
-    }
-
     update() {
         const result = this.func(this.input.map(n => n.wire.value));
         for(let i = 0; i < this.output.length; ++i) {
@@ -969,7 +992,7 @@ class Gate {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Roboto Condensed";
+            ctx.font = zoom / 1.5 + "px Ubuntu";
             ctx.fillText(
                 this.icon,
                 (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
@@ -1099,7 +1122,6 @@ class Delay extends Gate {
     }
 }
 
-
 class NOT extends Gate {
     constructor(pos,height = 1,width = 1,name) {
         const func = input => input.map(n => +!n);
@@ -1135,6 +1157,67 @@ function lighter(hex, percent){
         ((0|(1<<8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
         ((0|(1<<8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
         ((0|(1<<8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
+}
+
+class Custom {
+    constructor(
+        selection = [],
+        pos = { x: mouse.grid.x, y: mouse.grid.y },
+        name = "Enter name"
+    ) {
+        this.pos = pos;
+        this.input = [];
+        this.output = [];
+
+        this.name = name;
+        this.components = selection;
+
+        this.inputPorts = [];
+        this.outputPorts = [];
+
+        for(let i = 0; i < this.components.length; ++i) {
+            const component = this.components[i];
+
+            if(component.output && !component.input) this.inputPorts.push(component);
+            if(!component.output && component.input) this.outputPorts.push(component);
+
+            if(components.indexOf(component) >= 0) {
+                components.splice(components.indexOf(component),1);
+            }
+        }
+
+        this.width = Math.max(this.input.length,this.output.length);
+        this.height = 2;
+    }
+
+    update() {
+
+    }
+
+    draw() {
+        // Omlijning van component tekenen
+        ctx.fillStyle = "#111";
+        ctx.fillRect(
+            ((this.pos.x - offset.x) * zoom - zoom / 2 - zoom / 32 + .5) | 0,
+            ((-this.pos.y + offset.y) * zoom - zoom / 2 - zoom / 32 + .5) | 0,
+            (zoom * this.width + .5) + zoom / 16 | 0,
+            (zoom * this.height + .5) + zoom / 16 | 0
+        );
+
+        if(zoom > 10) {
+            // Draw the icon of the component
+            if(zoom > 21) ctx.fillStyle = "#444";
+            else {
+                ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
+            }
+            ctx.font = zoom / 2.5 + "px Ubuntu";
+            ctx.fillText(
+                this.name,
+                (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.name).width / 2),
+                (-this.pos.y + offset.y) * zoom + (this.height - .8) / 2 * zoom
+            );
+        }
+    }
 }
 
 class Wire {
@@ -1191,7 +1274,7 @@ class Wire {
             );
         }
 
-        ctx.lineWidth = zoom / 10;
+        ctx.lineWidth = zoom / 8;
         ctx.strokeStyle = this.value ? this.color_on : this.color_off;
         ctx.stroke();
 
@@ -1252,7 +1335,7 @@ class Wire {
                 );
             }
 
-            ctx.lineWidth = zoom / 10;
+            ctx.lineWidth = zoom / 8;
             ctx.strokeStyle = "rgba(255,255,255, " + Math.abs(Math.sin(this.blinking)) * .75 + ")";
             ctx.stroke();
 

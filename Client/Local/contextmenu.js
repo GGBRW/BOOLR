@@ -11,6 +11,7 @@ contextMenu.show = function(pos) {
     this.innerHTML = "";
     if(selecting) {
         this.appendChild(context_options["copy"]);
+        if(selecting.components && selecting.components.length > 2) this.appendChild(context_options["componentize"]);
         this.appendChild(context_options["remove all"]);
     } else {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
@@ -71,7 +72,7 @@ context_options["edit_name"].onclick = () => {
         popup.prompt.show(
             "Edit name",
             "Enter a name for this component:",
-            name => name && name.length < 18 && edit(component,"name",n => name)
+            name => name && name.length < 18 && action("edit",[component,"name",n => name],true)
         );
     }
 }
@@ -85,7 +86,7 @@ context_options["edit_color"].onclick = () => {
         popup.color_picker.show(
             color => color
             && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-            && !edit(component,"color_off",n => color) && edit(component,"color_on",n => lighter(color,50))
+            && !edit(component,"color_off",n => color) && action("edit",[component,"color_on",n => lighter(color,50)],true)
         );
     }
 }
@@ -149,11 +150,13 @@ context_options["paste"].onclick = function() {
 context_options["remove"] = document.createElement("li");
 context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
 context_options["remove"].onclick = () => {
-    remove(
+    action(
+        "remove",
         find(
             Math.round(contextMenu.pos.x),
             Math.round(contextMenu.pos.y)
-        )
+        ),
+        true
     );
 }
 
@@ -161,17 +164,12 @@ context_options["remove"].onclick = () => {
 context_options["remove all"] = document.createElement("li");
 context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
 context_options["remove all"].onclick = () => {
-    const old_clipbord = Object.assign({}, clipbord);
-    clipbord.copy(selecting.components, selecting);
-    undoStack.push(new Action(
-        "remove_selection",
-        clipbord
-    ));
-    clipbord = old_clipbord;
-
-    for(let i of selecting.components) {
-        if(components.includes(i)) remove(i);
-    }
+    console.log(selecting);
+    action(
+        "removeSelection",
+        [...selecting.components],
+        true
+    );
 };
 
 // Input/Output
@@ -181,6 +179,19 @@ context_options["view connections"].onclick = () => {
     popup.connections.show(
         find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
     );
+};
+
+// Componentize
+context_options["componentize"] = document.createElement("li");
+context_options["componentize"].innerHTML = '<i class="material-icons">settings_input_component</i><span>Componentize</span>';
+context_options["componentize"].onclick = () => {
+    const component = new Custom(
+        selecting.components,
+        {   x: Math.round(selecting.x + selecting.w / 2),
+            y: Math.round(selecting.y + selecting.h / 2)
+    });
+
+    add(component);
 };
 
 // Set waypoint
