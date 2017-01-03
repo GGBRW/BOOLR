@@ -18,7 +18,7 @@ function action(type,data,undoable,user) {
         if(type == "add") {
             socketData = stringify({components: [socketData]});
         } else if(type == "addSelection") {
-            socketData[0] = stringify({components: [socketData[0]]});
+            socketData = stringify({components: socketData});
         } else if(type == "connect") {
             socketData[0] = "i#" + components.indexOf(socketData[0]);
             socketData[1] = "i#" + components.indexOf(socketData[1]);
@@ -28,6 +28,8 @@ function action(type,data,undoable,user) {
         } else {
             socketData = "i#" + components.indexOf(socketData);
         }
+
+        console.log(socketData);
 
         socket.send(JSON.stringify({
             type: "action",
@@ -45,6 +47,26 @@ function action(type,data,undoable,user) {
         case "add":
             add(data);
             if(undoable) undoData = data;
+            break;
+        case "addSelection":
+            for(let i = 0; i < data.length; ++i) {
+                if(data[i].constructor == Wire) {
+                    components.unshift(data[i]);
+                } else {
+                    components.push(data[i]);
+                }
+            }
+
+            if(undoable) {
+                undoData = [[...data]];
+                redoData = [[...data]];
+                if(selecting) {
+                    redoData.push(selecting.x);
+                    redoData.push(selecting.y);
+                    redoData.push(selecting.w);
+                    redoData.push(selecting.h);
+                }
+            }
             break;
         case "remove":
             if(undoable) undoData = remove(data);
@@ -163,6 +185,11 @@ function undo(action = undoStack.splice(-1)[0]) {
         case "add":
             remove(data);
             break;
+        case "addSelection":
+            for(let i = 0; i < data[0].length; ++i) {
+                remove(data[0][i]);
+            }
+            break;
         case "remove":
             for(let i = 0; i < data.length; ++i) {
                 if(data[i].constructor == Wire) {
@@ -223,6 +250,35 @@ function redo(action = redoStack.splice(-1)[0]) {
     switch(action.type) {
         case "add":
             add(data);
+            break;
+        case "addSelection":
+            for(let i = 0; i < data[0].length; ++i) {
+                if(data[0][i].constructor == Wire) {
+                    connect(data[0][i].from,data[0][i].to,data[0][i]);
+                } else add(data[0][i],false);
+            }
+
+            if(data.length > 1) {
+                selecting = {
+                    x: data[1],
+                    y: data[2],
+                    w: data[3],
+                    h: data[4],
+                    dashOffset: 0
+                };
+
+                selecting.animate = { w: selecting.w, h: selecting.h };
+
+                selecting.components = find(
+                    selecting.x, selecting.y,
+                    selecting.w, selecting.h
+                );
+
+                contextMenu.show({
+                    x: (selecting.x + selecting.w - offset.x) * zoom,
+                    y: -(selecting.y + selecting.h - offset.y) * zoom
+                });
+            }
             break;
         case "remove":
             action.undoData = remove(data);

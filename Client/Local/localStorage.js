@@ -18,7 +18,7 @@ function stringify(data) {
             delete params.from;
             delete params.to;
             delete params.blinking;
-            components[i].push(JSON.stringify(params));
+            components[i].push(params);
         }
         stringified.push(components);
 
@@ -49,7 +49,7 @@ function stringify(data) {
     if(data.selection) {
         const selection = Object.assign({},data.selection);
         delete selection.components;
-        stringified.push(JSON.stringify(selection));
+        stringified.push(selection);
     }
 
     return JSON.stringify(stringified);
@@ -59,12 +59,13 @@ function parse(data,clip) {
     data = JSON.parse(data);
     if(!data[0] && !data[1]) return;
 
+
     let parsed = [];
     for(let i = 0, len = data[0].length; i < len; ++i) {
         let component = eval(`new ${data[0][i][0]}`);
         Object.assign(
             component,
-            JSON.parse(data[0][i][1])
+            data[0][i][1]
         );
 
         parsed.push(component);
@@ -73,7 +74,7 @@ function parse(data,clip) {
     if(clip) {
         clipbord.components = parsed;
         clipbord.connections = data[1];
-        data[2] && (clipbord.selection = JSON.parse(data[2]));
+        data[2] && (clipbord.selection = data[2]);
     } else {
         const connections = data[1];
         for(let i = 0, len = connections.length; i < len; ++i) {
@@ -81,6 +82,7 @@ function parse(data,clip) {
                 parsed[connections[i][0]],
                 parsed[connections[i][1]],
                 parsed[connections[i][2]],
+                false,
                 false
             );
         }

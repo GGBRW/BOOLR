@@ -29,6 +29,8 @@ wss.on('connection', function(ws) {
     // Get the user agent of the thing that tries to connect
     const userAgent = ws.upgradeReq.headers["user-agent"];
 
+    console.log(userAgent + " connected");
+
     if(!users[userAgent]) {
         // If the user hasn't connected once before, send a login request
         ws.send(JSON.stringify({
@@ -47,9 +49,10 @@ wss.on('connection', function(ws) {
 
 
     // Send the map to the user
+    components[0] && console.log(JSON.stringify(components[0][1]));
     ws.send(JSON.stringify({
         type: "map",
-        data: JSON.stringify([components,connections])
+        data: JSON.stringify([components.map(n => [n[0],n[1]]),connections])
     }));
 
     // Add the message handler to the user
@@ -103,16 +106,26 @@ function onmessage(msg) {
                     case "add":
                         const parsed = JSON.parse(data);
                         const constructor = parsed[0][0][0];
-                        components.push(parsed[0][0]);
+                        components.push([parsed[0][0][0],parsed[0][0][1]]);
                         break;
                     case "remove":
                         const index = +data.substr(2);
                         components.splice(index,1);
+                        connections.map((n,i) => i > index && n.map(m => ++m));
+                        break;
+                    case "removeSelection":
+                        for(let i = 0; i < data.length; ++i) {
+                            const index = +data[i].substr(2);
+                            components.splice(index,1);
+                            connections.map((n,i) => i > index && n.map(m => ++m));
+                        }
                         break;
                     case "connect":
                         connections.push([+data[0].substr(2),+data[1].substr(2),-1]);
-                        components.unshift(JSON.parse(data[2])[0][0]);
                         connections = connections.map(n => n.map(m => ++m));
+
+                        const parsedWire = JSON.parse(data[2]);
+                        components.unshift([parsedWire[0][0][0],parsedWire[0][0][1]]);
                         break;
                 }
 

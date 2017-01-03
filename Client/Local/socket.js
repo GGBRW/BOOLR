@@ -57,6 +57,8 @@ function connectToSocket(url) {
                 let data = msg.data.socketData;
                 if(type == "add") {
                     data = parse(data)[0];
+                } else if(type == "addSelection") {
+                    data = parse(data);
                 } else if(type == "connect") {
                     data[0] = components[+data[0].substr(2)];
                     data[1] = components[+data[1].substr(2)];

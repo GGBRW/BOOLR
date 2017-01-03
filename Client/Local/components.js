@@ -29,12 +29,13 @@ function find(x = mouse.grid.x,y = mouse.grid.y,w,h) {
     }
 }
 
-function add(component,x = component.pos.x,y = component.pos.y) {
-    if(component.height && component.width) {
+function add(component,x = component.pos.x,y = component.pos.y,check = true) {
+    if(check && component.height && component.width) {
         let fits = true;
         for(let i = x; i < x + component.width; ++i) {
             for(let j = y - component.height + 1; j <= y; ++j) {
-                if(find(i,j)) fits = false;
+                const place = find(i,j);
+                if(place && place.constructor != Wire) fits = false;
             }
         }
         if(!fits) {
@@ -117,9 +118,9 @@ function remove(component) {
     return removed;
 }
 
-function edit(component,property,f) {
+function edit(component,property,value) {
     const oldValue = component[property];
-    component[property] = f(component[property]);
+    component[property] = value;
 }
 
 function clone(target) {
@@ -144,7 +145,7 @@ function clone(target) {
     return component;
 }
 
-function connect(from,to,wire,addWire = true) {
+function connect(from,to,wire,addWire = true,blink = true) {
     // Check if there are ports available
     if(from.outputPorts && from.outputPorts <= from.output.length) {
         toolbar.message(`Component ${from.name} has no free output ports`, "warning");
@@ -187,9 +188,11 @@ function connect(from,to,wire,addWire = true) {
     }
 
     // Blink the two components and the wire
-    from.blink && from.blink(1000);
-    wire.blink && wire.blink(1000);
-    to.blink && to.blink(1000);
+    if(blink) {
+        from.blink && from.blink(1000);
+        wire.blink && wire.blink(1000);
+        to.blink && to.blink(1000);
+    }
 
     wire.from = from;
     wire.to = to;
@@ -271,7 +274,9 @@ class Input {
         // Omlijning van component tekenen
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#111";
+
         ctx.lineWidth = zoom / 16;
+
         ctx.fillRect(
             ((this.pos.x - offset.x) * zoom - zoom / 2 + .5) | 0,
             ((-this.pos.y + offset.y) * zoom - zoom / 2 + .5) | 0,

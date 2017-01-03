@@ -86,7 +86,7 @@ context_options["edit_color"].onclick = () => {
         popup.color_picker.show(
             color => color
             && (color.match(/\#((\d|[a-f]){6}|(\d|[a-f]){3})/g) || [])[0] == color
-            && !edit(component,"color_off",n => color) && action("edit",[component,"color_on",n => lighter(color,50)],true)
+            && !edit(component,"color_off",color) && action("edit",[component,"color_on",lighter(color,50)],true)
         );
     }
 }
@@ -101,7 +101,7 @@ context_options["edit_delay"].onclick = () => {
             "Edit delay",
             "Enter the new delay in ms",
             delay => {
-                edit(component,"delay",n => +delay);
+                edit(component,"delay",+delay);
             }
         );
     }
@@ -164,7 +164,6 @@ context_options["remove"].onclick = () => {
 context_options["remove all"] = document.createElement("li");
 context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
 context_options["remove all"].onclick = () => {
-    console.log(selecting);
     action(
         "removeSelection",
         [...selecting.components],

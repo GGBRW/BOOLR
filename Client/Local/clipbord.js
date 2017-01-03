@@ -30,6 +30,7 @@ clipbord.copy = function(components,selection) {
 }
 
 clipbord.paste = function(x,y) {
+    let added = [];
     if(clipbord.selection) {
         const dx = x - clipbord.selection.x;
         const dy = y - clipbord.selection.y;
@@ -47,12 +48,12 @@ clipbord.paste = function(x,y) {
                     });
                 }
 
-                components.unshift(clipbord.components[i]);
+                added.unshift(clipbord.components[i]);
             }
             else {
                 clipbord.components[i].pos.x = Math.round(pos.x + dx);
                 clipbord.components[i].pos.y = Math.round(pos.y + dy);
-                components.push(clipbord.components[i]);
+                added.push(clipbord.components[i]);
             }
         }
 
@@ -64,7 +65,7 @@ clipbord.paste = function(x,y) {
             wire.from = from;
             wire.to = to;
 
-            connect(from,to,wire);
+            connect(from,to,wire,false);
         }
 
         if(clipbord.selection) {
@@ -77,6 +78,8 @@ clipbord.paste = function(x,y) {
                     x: (selecting.x + selecting.w - offset.x) * zoom,
                     y: (-(selecting.y + selecting.h) + offset.y) * zoom
                 });
+
+                action("addSelection",[...added],true);
             });
         }
     }
@@ -84,6 +87,6 @@ clipbord.paste = function(x,y) {
         const component = clone(clipbord.components[0]);
         component.pos.x = x;
         component.pos.y = y;
-        components.push(component);
+        added.push(component);
     }
 }
