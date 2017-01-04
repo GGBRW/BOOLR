@@ -1,6 +1,8 @@
 const notifications = document.getElementById("notifications");
 
 notifications.push = function(msg,type) {
+    notifications.style.maxHeight = c.height - 80 - userList.clientHeight - 40;
+
     let notification = document.createElement("li");
 
     if(type == "error") {

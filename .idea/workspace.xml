@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/chat.js" afterPath="$PROJECT_DIR$/Client/Local/chat.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/notifications.js" afterPath="$PROJECT_DIR$/Client/Local/notifications.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/socket.js" afterPath="$PROJECT_DIR$/Client/Local/socket.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,16 +41,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="5424">
               <caret line="226" column="30" lean-forward="false" selection-start-line="226" selection-start-column="30" selection-end-line="226" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="keys.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2160">
-              <caret line="90" column="51" lean-forward="false" selection-start-line="90" selection-start-column="51" selection-end-line="90" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -103,8 +91,8 @@
       <file leaf-file-name="notifications.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/notifications.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+            <state relative-caret-position="72">
+              <caret line="3" column="77" lean-forward="false" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -113,7 +101,7 @@
       <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
+            <state relative-caret-position="648">
               <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
               <folding />
             </state>
@@ -123,7 +111,7 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6216">
+            <state relative-caret-position="306">
               <caret line="259" column="0" lean-forward="true" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
               <folding />
             </state>
@@ -144,7 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>move</find>
       <find>Tab</find>
       <find>inputPor</find>
       <find>Action</find>
@@ -174,6 +161,7 @@
       <find>users</find>
       <find>userName</find>
       <find>notifi</find>
+      <find>not</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
@@ -236,8 +224,8 @@
         <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/style.css" />
         <option value="$PROJECT_DIR$/Client/Local/socket.js" />
-        <option value="$PROJECT_DIR$/Client/Local/notifications.js" />
         <option value="$PROJECT_DIR$/Client/Local/chat.js" />
+        <option value="$PROJECT_DIR$/Client/Local/notifications.js" />
       </list>
     </option>
   </component>
@@ -718,14 +706,7 @@
       <workItem from="1483275336321" duration="21363000" />
       <workItem from="1483355633437" duration="11451000" />
       <workItem from="1483541226417" duration="8876000" />
-      <workItem from="1483550648756" duration="166000" />
-    </task>
-    <task id="LOCAL-00027" summary="Heel veel verbeteringen">
-      <created>1474731683569</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1474731683569</updated>
+      <workItem from="1483550648756" duration="506000" />
     </task>
     <task id="LOCAL-00028" summary="Heel veel verbeteringen">
       <created>1474731837888</created>
@@ -1063,12 +1044,19 @@
       <option name="project" value="LOCAL" />
       <updated>1483549490807</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="update 0.1.159">
+      <created>1483550821925</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1483550821926</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="742301000" />
+    <option name="totallyTimeSpent" value="742641000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1275,13 +1263,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="649">
-          <caret line="259" column="1" lean-forward="true" selection-start-line="162" selection-start-column="0" selection-end-line="259" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
@@ -1424,14 +1405,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6216">
-          <caret line="259" column="0" lean-forward="true" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/socket.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="864">
@@ -1442,16 +1415,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
+        <state relative-caret-position="648">
           <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="287" column="20" lean-forward="false" selection-start-line="287" selection-start-column="17" selection-end-line="287" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="259" column="0" lean-forward="true" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/notifications.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        <state relative-caret-position="72">
+          <caret line="3" column="77" lean-forward="false" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
           <folding />
         </state>
       </provider>
