@@ -30,8 +30,17 @@ function connectToSocket(url) {
                 setTimeout(() => popup.login.show(),200);
                 break;
             case "users":
-                console.log(msg.data);
                 const userData = msg.data;
+
+                if(socket.users) {
+                    for (let i in userData) {
+                        if (userData[i] != socket.users[i]) {
+                            notifications.push(userData[i].username + " is" +
+                                (userData[i].online ? "online".fontcolor("#050") : "offline".fontcolor("#500")).bold());
+                        }
+                    }
+                }
+
                 socket.userName = userData.you;
                 socket.users = userData.accounts;
 

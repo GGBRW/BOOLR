@@ -115,13 +115,13 @@ function onmessage(msg) {
             case "chat":
                 broadcast(
                     "chat", {
-                    from: this.user.userName,
+                    from: this.user.username,
                     msg: msg.data
                 });
                 break;
             case "action":
                 const action = msg.data;
-                action.from = this.user.userName;
+                action.from = this.user.username;
 
                 let data = action.socketData;
                 switch(action.type) {
