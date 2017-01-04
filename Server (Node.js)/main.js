@@ -9,10 +9,10 @@ const WebSocketServer = require("ws").Server,
 
 // The list of all the users identified by their user agent
 let accounts = {
-    "GGBRW": { username: "GGBRW", password: "Moeten ze er maar geen centerparks b0uwen", online: false },
-    "Bakker Joop": { username: "Bakker Joop", password: "Spijkertje4", online: false },
-    "Toine": { username: "Toine", password: "Moeder is op zakenreis", online: false },
-    "test": { username: "test", password: "test", online: false }
+    "GGBRW": { username: "GGBRW", password: "Moeten ze er maar geen centerparks b0uwen", online: false, color: "#005" },
+    "Bakker Joop": { username: "Bakker Joop", password: "Spijkertje4", online: false, color: "#500" },
+    "Toine": { username: "Toine", password: "Moeder is op zakenreis", online: false, color: "#050" },
+    "test": { username: "test", password: "test", online: false, color: "#305" }
 }
 
 // All the components are stored in the following array:

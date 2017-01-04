@@ -48,7 +48,9 @@ function connectToSocket(url) {
                 userList.show();
                 break;
             case "chat":
-                notifications.push(`[${msg.data.from == socket.userName ? "You" : msg.data.from}] ` + `${msg.data.msg}`.fontcolor("#444"));
+                notifications.push(
+                    `[${msg.data.from == socket.userName ? "You" : msg.data.from}] `.fontcolor(socket.users[msg.data.from].color).bold() +
+                    `${msg.data.msg}`.fontcolor("#444"));
                 break;
             case "notification":
                 notifications.push(msg.data);
