@@ -1,4 +1,6 @@
 const chat = document.getElementById("chat");
+chat.hidden = true;
+
 chat.show = function() {
     chat.hidden = false;
 

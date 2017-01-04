@@ -15,6 +15,8 @@ let accounts = {
     "test": { username: "test", password: "test", online: false, color: "#305" }
 }
 
+let spectators = {};
+
 // All the components are stored in the following array:
 let components = [];
 
@@ -34,8 +36,6 @@ wss.on('connection', function(ws) {
     // Get the user agent of the thing that tries to connect
     const userAgent = ws.upgradeReq.headers["user-agent"];
 
-    console.log(userAgent + " connected");
-
     if(!ws.user) {
         // If the user hasn't connected once before, send a login request
         ws.send(JSON.stringify({
@@ -47,17 +47,22 @@ wss.on('connection', function(ws) {
     ws.on('message', onmessage);
 
     ws.on('close', function() {
-        if(!this.user) return false;
+        if(this.user) {
 
-        this.user.online = false;
+            this.user.online = false;
 
-        // Send user data to the user
-        broadcast(
-            "users",
-            { you: this.user, accounts }
-        );
+            // Send user data to the user
+            broadcast(
+                "users",
+                {you: this.user, accounts}
+            );
 
-        console.log(this.user.username + " disconnected");
+        } else if(spectators[userAgent]) {
+            broadcast(
+                "notification",
+                "A spectator left the server"
+            )
+        }
     });
 });
 
@@ -83,6 +88,7 @@ function onmessage(msg) {
         // If the sender hasn't connected once before, the server will only accept a identifying message
         if(msg.type == "login") {
             if(msg.data.username == "spectator") {
+                spectators[userAgent] = {};
                 broadcast("notification", "A spectator joined the server");
                 return;
             }
@@ -99,7 +105,6 @@ function onmessage(msg) {
                 );
 
                 // Send the map to the user
-                components[0] && console.log(JSON.stringify(components[0][1]));
                 this.send(JSON.stringify({
                     type: "map",
                     data: JSON.stringify([components.map(n => [n[0],n[1]]),connections])
