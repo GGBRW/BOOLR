@@ -11,8 +11,15 @@ notifications.push = function(msg,type) {
     notifications.appendChild(notification);
     setTimeout(() => notification.style.left = "0px");
 
-    setTimeout(() => {
-        notification.style.opacity = 0;
-        setTimeout(() => notification.style.display = "none",1000);
-    }, 5000);
+    notification.hide = function() {
+        this.style.opacity = 0;
+        setTimeout(() => this.style.display = "none",200);
+    }
+
+    const length = notifications.children.length;
+    for(let i = 0; i < length - 4; ++i) {
+        if(notifications.children[i]) {
+            setTimeout(() => notifications.children[i].hide(), 3000);
+        }
+    }
 }
