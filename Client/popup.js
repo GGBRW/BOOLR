@@ -210,6 +210,8 @@ if(popup.login) {
     popup.login.cancel = function() {
         notifications.push("Disconnected from " + socket.url);
         socket = null;
+
+        document.title = "PWS | Sandbox Mode";
     }
 }
 
