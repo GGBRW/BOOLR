@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/chat.js" afterPath="$PROJECT_DIR$/Client/Local/chat.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/socket.js" afterPath="$PROJECT_DIR$/Client/Local/socket.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/userList.js" afterPath="$PROJECT_DIR$/Client/Local/userList.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server (Node.js)/main.js" afterPath="$PROJECT_DIR$/Server (Node.js)/main.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
@@ -49,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userList.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="userList.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/Local/userList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+            <state relative-caret-position="336">
+              <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -62,8 +63,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="60" column="16" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
+            <state relative-caret-position="836">
+              <caret line="60" column="8" lean-forward="false" selection-start-line="60" selection-start-column="8" selection-end-line="64" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -72,8 +73,8 @@
       <file leaf-file-name="socket.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/socket.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="53" column="30" lean-forward="false" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="30" />
+            <state relative-caret-position="360">
+              <caret line="33" column="38" lean-forward="true" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -109,7 +110,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chat.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="456">
@@ -228,16 +229,16 @@
         <option value="$PROJECT_DIR$/Client/Local/clipbord.js" />
         <option value="$PROJECT_DIR$/Client/Local/localStorage.js" />
         <option value="$PROJECT_DIR$/Client/Local/actions2.js" />
-        <option value="$PROJECT_DIR$/Client/Local/userList.js" />
-        <option value="$PROJECT_DIR$/Client/Local/socket.js" />
         <option value="$PROJECT_DIR$/Client/Local/notifications.js" />
         <option value="$PROJECT_DIR$/Client/Local/console.js" />
         <option value="$PROJECT_DIR$/Client/Local/components.js" />
         <option value="$PROJECT_DIR$/Client/Local/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/style.css" />
         <option value="$PROJECT_DIR$/Client/popup.js" />
-        <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/chat.js" />
+        <option value="$PROJECT_DIR$/Client/Local/socket.js" />
+        <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
+        <option value="$PROJECT_DIR$/Client/Local/userList.js" />
       </list>
     </option>
   </component>
@@ -716,14 +717,7 @@
       <workItem from="1483275336321" duration="21363000" />
       <workItem from="1483355633437" duration="11451000" />
       <workItem from="1483541226417" duration="8876000" />
-      <workItem from="1483550648756" duration="3435000" />
-    </task>
-    <task id="LOCAL-00031" summary="Heel veel verbeteringen">
-      <created>1474737210938</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1474737210938</updated>
+      <workItem from="1483550648756" duration="4071000" />
     </task>
     <task id="LOCAL-00032" summary="Heel veel verbeteringen">
       <created>1474737861761</created>
@@ -1061,12 +1055,19 @@
       <option name="project" value="LOCAL" />
       <updated>1483554852479</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="update 0.1.159">
+      <created>1483555372654</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1483555372654</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="745570000" />
+    <option name="totallyTimeSpent" value="746206000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1405,14 +1406,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/userList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="387">
@@ -1439,6 +1432,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Client/popup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="747">
@@ -1449,24 +1450,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/socket.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="53" column="30" lean-forward="false" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="30" />
+        <state relative-caret-position="360">
+          <caret line="33" column="38" lean-forward="true" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="60" column="16" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
+        <state relative-caret-position="836">
+          <caret line="60" column="8" lean-forward="false" selection-start-line="60" selection-start-column="8" selection-end-line="64" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
+    <entry file="file://$PROJECT_DIR$/Client/Local/userList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+        <state relative-caret-position="336">
+          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding />
         </state>
       </provider>

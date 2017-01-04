@@ -48,21 +48,21 @@ wss.on('connection', function(ws) {
 
     ws.on('close', function() {
         if(this.user) {
-
             this.user.online = false;
-
-            // Send user data to the user
-            broadcast(
-                "users",
-                {you: this.user, accounts}
-            );
-
         } else if(spectators[userAgent]) {
             broadcast(
                 "notification",
                 "A spectator left the server"
-            )
+            );
+
+            delete spectators[userAgent];
         }
+
+        // Send user data to the user
+        broadcast(
+            "users",
+            { you: this.user, accounts, spectators: Object.keys(spectators).length }
+        );
     });
 });
 
@@ -90,6 +90,12 @@ function onmessage(msg) {
             if(msg.data.username == "spectator") {
                 spectators[userAgent] = {};
                 broadcast("notification", "A spectator joined the server");
+
+                // Send user data to the user
+                broadcast(
+                    "users",
+                    { you: this.user, accounts, spectators: Object.keys(spectators).length }
+                );
                 return;
             }
 
@@ -101,7 +107,7 @@ function onmessage(msg) {
                 // Send user data to the user
                 broadcast(
                     "users",
-                    { you: this.user, accounts }
+                    { you: this.user, accounts, spectators: spectators.length }
                 );
 
                 // Send the map to the user

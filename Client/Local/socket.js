@@ -31,6 +31,7 @@ function connectToSocket(url) {
                 break;
             case "users":
                 const userData = msg.data;
+                console.log(msg.data);
 
                 if(socket.users) {
                     for(let i in userData.accounts) {
@@ -43,6 +44,7 @@ function connectToSocket(url) {
 
                 socket.userName = userData.you;
                 socket.users = userData.accounts;
+                socket.spectators = userData.spectators;
 
                 userList.show();
                 break;
