@@ -201,6 +201,10 @@ if(popup.login) {
 
         socket.send(JSON.stringify({type: "login", data: { username, password }}));
     }
+    popup.login.cancel = function() {
+        notifications.push("Disconnected from " + socket.url);
+        socket = null;
+    }
 }
 
 // Open project
@@ -309,6 +313,8 @@ for(let i = 0; i < nodes.length; ++i) {
 nodes = document.querySelectorAll(".popup .cancel");
 for(let i = 0; i < nodes.length; ++i) {
     nodes[i].onclick = function() {
+        if(this.parentNode.cancel) this.parentNode.cancel();
+
         this.parentNode.style.transform = "scale(.9)";
         this.parentNode.style.opacity = 0;
         document.getElementById("overlay").style.opacity = 0;
