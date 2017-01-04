@@ -12,14 +12,21 @@ notifications.push = function(msg,type) {
     setTimeout(() => notification.style.left = "0px");
 
     notification.hide = function() {
-        this.style.opacity = 0;
-        setTimeout(() => this.style.display = "none",200);
+        this.hidden = true;
+        if(chat.hidden) {
+            this.style.opacity = 0;
+            setTimeout(() => {
+                if(chat.hidden) this.style.display = "none";
+            }, 200);
+        }
     }
+
+    setTimeout(() => notification.hide(),5000);
 
     const length = notifications.children.length;
     for(let i = 0; i < length - 4; ++i) {
         if(notifications.children[i]) {
-            setTimeout(() => notifications.children[i].hide(), 3000);
+            setTimeout(() => notifications.children[i].hide(), 1000);
         }
     }
 }

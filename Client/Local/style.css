@@ -258,6 +258,9 @@ canvas {
     padding: 0;
     pointer-events: none;
 
+    max-height: 100%;
+    overflow-y: auto;
+
     transform: translateY(80px);
     transition: transform .2s;
 }

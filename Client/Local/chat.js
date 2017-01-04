@@ -1,12 +1,35 @@
 const chat = document.getElementById("chat");
 chat.show = function() {
+    chat.hidden = false;
+
     this.style.transform = "translateY(0px)";
     notifications.style.transform = "translateY(0px)";
+    notifications.style.pointerEvents = "auto";
+
+    for(let i = 0; i < notifications.children.length; ++i) {
+        notifications.children[i].style.display = "block";
+        notifications.children[i].style.opacity = 1;
+    }
+    notifications.scrollTop = notifications.scrollHeight - notifications.clientHeight;
+}
+
+chat.onblur = function() {
+    //this.hide();
 }
 
 chat.hide = function() {
+    chat.hidden = true;
+
     this.style.transform = "translateX(-230px)";
     notifications.style.transform = "translateY(80px)";
+    notifications.style.pointerEvents = "none";
+
+    for(let i = 0; i < notifications.children.length; ++i) {
+        if(notifications.children[i].hidden) {
+            notifications.children[i].style.display = "none";
+            notifications.children[i].style.opacity = 0;
+        }
+    }
 }
 
 chat.onkeydown = function(e) {
@@ -17,6 +40,8 @@ chat.onkeydown = function(e) {
             }));
             this.value = "";
             setTimeout(() => this.focus());
+            e.preventDefault();
+            return false;
         }
     } else if(e.which == 27) {
         this.hide();
