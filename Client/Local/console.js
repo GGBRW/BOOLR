@@ -5,7 +5,7 @@ Console.messages = document.querySelector("#console #messages");
 Console.show = function() {
     this.style.display = "block";
     this.style.left = 0;
-    Console.style.top = userList.clientHeight;
+    Console.style.top = userList.clientHeight + 20;
 }
 
 Console.hide = function() {
@@ -82,12 +82,21 @@ Console.input.onkeydown = function(e) {
                     Console.messages.innerHTML += "<div class='output'>Connected '" + args[0] + "' with '" + args[1] + "'</div>";
                 }
                 break;
+            case "list":
+                let list = "";
+                for(let i in socket.users) {
+                    list += `${i}<br>`;
+                }
+                Console.messages.innerHTML +=
+                    "<div class='output'>" + list + "</div>";
+                break;
             default:
                 Console.error("Command not found: \"" + command + "\"");
                 break;
         }
-
         setTimeout(() => Console.input.focus());
         return false;
+    } else if(e.which == 27) {
+        Console.hide();
     }
 }

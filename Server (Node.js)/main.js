@@ -82,6 +82,11 @@ function onmessage(msg) {
     if(!this.user) {
         // If the sender hasn't connected once before, the server will only accept a identifying message
         if(msg.type == "login") {
+            if(msg.data.username == "spectator") {
+                broadcast("notification", "A spectator joined the server");
+                return;
+            }
+
             const account = accounts[msg.data.username];
             if(account && account.password == msg.data.password) {
                 this.user = account;

@@ -1191,7 +1191,7 @@ class Custom {
             }
         }
 
-        this.width = Math.max(this.input.length,this.output.length);
+        this.width = Math.max(this.inputPorts.length,this.outputPorts.length);
         this.height = 2;
     }
 

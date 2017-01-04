@@ -165,6 +165,35 @@ if(popup.login) {
             this.style.transform = "scale(1)";
             this.style.opacity = 1;
         }, 1);
+
+        const spectateBtn = document.getElementById("spectate");
+        spectateBtn.onclick = function() {
+            c.onmousedown = c.onmousemove = c.onmouseup = c.onkeydown = null;
+            c.onmousemove = function(e) {
+                if(e.which == 2) {
+                    offset.x -= e.movementX / zoom;
+                    offset.y += e.movementY / zoom;
+
+                    scroll_animation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
+                    scroll_animation.r = Math.atan2(e.movementX,e.movementY);
+                }
+            }
+
+            toolbar.style.display = "none";
+            document.getElementById("spectateIndicator").style.display = "block";
+
+            this.parentNode.style.transform = "scale(.9)";
+            this.parentNode.style.opacity = 0;
+            document.getElementById("overlay").style.opacity = 0;
+            setTimeout(() => {
+                this.parentNode.style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+                document.getElementById("overlay").style.zIndex = 100;
+            },200);
+            c.focus();
+
+            socket.send(JSON.stringify({type: "login", data: { username: "spectator" }}));
+        }
     }
     popup.login.submit = function() {
         const username = document.querySelector("#login #username").value;
