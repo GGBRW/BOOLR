@@ -256,7 +256,7 @@ body > h1 {
     font-size: 16px;
     padding: 5px;
     margin: -5px;
-    background: #888;
+    background: rgba(0,0,0,.2);
 }
 
 

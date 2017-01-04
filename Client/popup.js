@@ -157,7 +157,7 @@ if(popup.info) {
 
 // Login
 if(popup.login) {
-    popup.login.show = function() {
+    popup.login.show = function(wrong) {
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
         setTimeout(() => {
@@ -165,6 +165,12 @@ if(popup.login) {
             this.style.transform = "scale(1)";
             this.style.opacity = 1;
         }, 1);
+
+        if(wrong) {
+            document.getElementById("wrong").style.display = "block";
+        } else {
+            document.getElementById("wrong").style.display = "none";
+        }
 
         const spectateBtn = document.getElementById("spectate");
         spectateBtn.onclick = function() {

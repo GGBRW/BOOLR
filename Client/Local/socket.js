@@ -27,11 +27,10 @@ function connectToSocket(url) {
 
         switch(msg.type) {
             case "loginRequest":
-                setTimeout(() => popup.login.show(),200);
+                setTimeout(() => popup.login.show(msg.data),200);
                 break;
             case "users":
                 const userData = msg.data;
-                console.log(msg.data);
 
                 if(socket.users) {
                     for(let i in userData.accounts) {

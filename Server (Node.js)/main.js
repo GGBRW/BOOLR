@@ -117,7 +117,8 @@ function onmessage(msg) {
                 }));
             } else {
                 this.send(JSON.stringify({
-                    type: "loginRequest"
+                    type: "loginRequest",
+                    data: "wrong"
                 }));
             }
         } else {
