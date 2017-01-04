@@ -25,7 +25,7 @@ chat.hide = function() {
     notifications.style.pointerEvents = "none";
 
     for(let i = 0; i < notifications.children.length; ++i) {
-        if(notifications.children[i].hidden) {
+        if(!notifications.children[i].display) {
             notifications.children[i].style.display = "none";
             notifications.children[i].style.opacity = 0;
         }

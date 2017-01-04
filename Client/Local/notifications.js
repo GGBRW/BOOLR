@@ -9,14 +9,19 @@ notifications.push = function(msg,type) {
     }
     notification.innerHTML += msg;
     notifications.appendChild(notification);
+
+    if(!chat.hidden) {
+        notifications.scrollTop = notifications.scrollHeight - notifications.clientHeight;
+    }
+
     setTimeout(() => notification.style.left = "0px");
 
     notification.hide = function() {
-        this.hidden = true;
+        this.display = false;
         if(chat.hidden) {
             this.style.opacity = 0;
             setTimeout(() => {
-                if(chat.hidden) this.style.display = "none";
+                this.style.display = "none";
             }, 200);
         }
     }

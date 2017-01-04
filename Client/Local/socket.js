@@ -34,7 +34,6 @@ function connectToSocket(url) {
 
                 if(socket.users) {
                     for(let i in userData.accounts) {
-                        console.log(i);
                         if(userData.accounts[i].online != socket.users[i].online) {
                             notifications.push(i + " is " +
                                 (userData.accounts[i].online ? "online".fontcolor("#050") : "offline".fontcolor("#500")).bold());
