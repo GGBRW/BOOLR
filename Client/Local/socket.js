@@ -27,12 +27,15 @@ function connectToSocket(url) {
 
         switch(msg.type) {
             case "loginRequest":
-                popup.login.show();
+                setTimeout(() => popup.login.show(),200);
                 break;
             case "users":
-                const userData = JSON.parse(msg.data);
+                console.log(msg.data);
+                const userData = msg.data;
                 socket.userName = userData.you;
-                socket.users = userData.users;
+                socket.users = userData.accounts;
+
+                userList.show();
                 break;
             case "chat":
                 notifications.push(`[${msg.data.from == socket.userName ? "You" : msg.data.from}] ` + `${msg.data.msg}`.fontcolor("#444"));

@@ -65,6 +65,9 @@
 <!-- Debug info -->
 <div id="debugInfo"></div>
 
+<!-- User list -->
+<div id="userList"></div>
+
 <!-- Component info -->
 <div id="componentInfo"></div>
 
@@ -303,6 +306,7 @@ class Component {
 <script src="components.js"></script>
 <script src="misc.js"></script>
 <script src="debug.js"></script>
+<script src="userList.js"></script>
 <script src="contextmenu.js"></script>
 <script src="hover.js"></script>
 <script src="componentInfo.js"></script>
@@ -339,7 +343,7 @@ class Component {
 
     c.focus();
 
-    //connectToSocket("ws://localhost:3000");
+    connectToSocket("ws://localhost:3000");
 
     updateDebugInfo();
     setInterval(updateDebugInfo, 500);

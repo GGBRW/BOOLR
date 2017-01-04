@@ -8,7 +8,12 @@ const WebSocketServer = require("ws").Server,
       wss = new WebSocketServer({ port: 3000 });
 
 // The list of all the users identified by their user agent
-let users = {};
+let accounts = {
+    "GGBRW": { username: "GGBRW", password: "Moeten ze er maar geen centerparks b0uwen", online: false },
+    "Bakker Joop": { username: "Bakker Joop", password: "Spijkertje4", online: false },
+    "Toine": { username: "Toine", password: "Moeder is op zakenreis", online: false },
+    "test": { username: "test", password: "test", online: false }
+}
 
 // All the components are stored in the following array:
 let components = [];
@@ -31,32 +36,29 @@ wss.on('connection', function(ws) {
 
     console.log(userAgent + " connected");
 
-    if(!users[userAgent]) {
+    if(!ws.user) {
         // If the user hasn't connected once before, send a login request
         ws.send(JSON.stringify({
             type: "loginRequest"
         }));
     }
 
-    // Send user data to the user
-    ws.send(JSON.stringify({
-        type: "users",
-        data: JSON.stringify({
-            you: users[userAgent],
-            users
-        })
-    }));
-
-
-    // Send the map to the user
-    components[0] && console.log(JSON.stringify(components[0][1]));
-    ws.send(JSON.stringify({
-        type: "map",
-        data: JSON.stringify([components.map(n => [n[0],n[1]]),connections])
-    }));
-
     // Add the message handler to the user
     ws.on('message', onmessage);
+
+    ws.on('close', function() {
+        if(!this.user) return false;
+
+        this.user.online = false;
+
+        // Send user data to the user
+        broadcast(
+            "users",
+            { you: this.user, accounts }
+        );
+
+        console.log(this.user.username + " disconnected");
+    });
 });
 
 function broadcast(type,data,except) {
@@ -77,11 +79,31 @@ function onmessage(msg) {
     // Get the user agent of the sender
     const userAgent = this.upgradeReq.headers["user-agent"];
 
-    if(!users[userAgent]) {
+    if(!this.user) {
         // If the sender hasn't connected once before, the server will only accept a identifying message
         if(msg.type == "login") {
-            // Save the user
-            users[userAgent] = msg.data.username;
+            const account = accounts[msg.data.username];
+            if(account && account.password == msg.data.password) {
+                this.user = account;
+                this.user.online = true;
+
+                // Send user data to the user
+                broadcast(
+                    "users",
+                    { you: this.user, accounts }
+                );
+
+                // Send the map to the user
+                components[0] && console.log(JSON.stringify(components[0][1]));
+                this.send(JSON.stringify({
+                    type: "map",
+                    data: JSON.stringify([components.map(n => [n[0],n[1]]),connections])
+                }));
+            } else {
+                this.send(JSON.stringify({
+                    type: "loginRequest"
+                }));
+            }
         } else {
             this.send(JSON.stringify({
                 type: "loginRequest"
@@ -93,13 +115,13 @@ function onmessage(msg) {
             case "chat":
                 broadcast(
                     "chat", {
-                    from: users[userAgent],
+                    from: this.user.userName,
                     msg: msg.data
                 });
                 break;
             case "action":
                 const action = msg.data;
-                action.from = users[userAgent];
+                action.from = this.user.userName;
 
                 let data = action.socketData;
                 switch(action.type) {
