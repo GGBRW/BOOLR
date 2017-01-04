@@ -33,10 +33,11 @@ function connectToSocket(url) {
                 const userData = msg.data;
 
                 if(socket.users) {
-                    for (let i in userData) {
-                        if (userData[i] != socket.users[i]) {
-                            notifications.push(userData[i].username + " is" +
-                                (userData[i].online ? "online".fontcolor("#050") : "offline".fontcolor("#500")).bold());
+                    for(let i in userData.accounts) {
+                        console.log(i);
+                        if(userData.accounts[i].online != socket.users[i].online) {
+                            notifications.push(i + " is " +
+                                (userData.accounts[i].online ? "online".fontcolor("#050") : "offline".fontcolor("#500")).bold());
                         }
                     }
                 }
