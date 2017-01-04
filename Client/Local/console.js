@@ -5,6 +5,7 @@ Console.messages = document.querySelector("#console #messages");
 Console.show = function() {
     this.style.display = "block";
     this.style.left = 0;
+    Console.style.top = userList.clientHeight;
 }
 
 Console.hide = function() {
