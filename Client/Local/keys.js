@@ -78,7 +78,7 @@ c.onkeydown = function(e) {
             if(e.ctrlKey) {
                 if(selecting) {
                     clipbord.copy(selecting.components, selecting);
-                } else if(find(mouse.grid.x,mouse.grid.y)) {
+                } else if(find()) {
                     clipbord.copy([find()]);
                 }
             }

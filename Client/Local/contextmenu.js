@@ -133,7 +133,7 @@ context_options["copy"].onclick = () => {
 
     if(selecting) {
         clipbord.copy(selecting.components, selecting);
-    } else {
+    } else if(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))) {
         clipbord.copy([find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]);
     }
 }

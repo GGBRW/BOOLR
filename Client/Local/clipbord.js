@@ -32,8 +32,8 @@ clipbord.copy = function(components,selection) {
 clipbord.paste = function(x,y) {
     let added = [];
     if(clipbord.selection) {
-        const dx = x - clipbord.selection.x;
-        const dy = y - clipbord.selection.y;
+        const dx = Math.round(x - clipbord.selection.x);
+        const dy = Math.round(y - clipbord.selection.y);
 
         for(let i = clipbord.components.length - 1; i >= 0; --i) {
             const pos = clipbord.components[i].pos;
@@ -43,8 +43,8 @@ clipbord.paste = function(x,y) {
             if(Array.isArray(pos)) {
                 for(let j = 0, len2 = pos.length; j < len2; ++j) {
                     clipbord.components[i].pos.push({
-                        x: Math.round((pos[j].x + dx) * 2) / 2,
-                        y: Math.round((pos[j].y + dy) * 2) / 2
+                        x: Math.round(pos[j].x + dx),
+                        y: Math.round(pos[j].y + dy)
                     });
                 }
 
