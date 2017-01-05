@@ -63,9 +63,10 @@ function parse(data,clip) {
     let parsed = [];
     for(let i = 0, len = data[0].length; i < len; ++i) {
         let component = eval(`new ${data[0][i][0]}`);
+        let properties = typeof data[0][i][1] == "string" ? JSON.parse(data[0][i][1]) : data[0][i][1];
         Object.assign(
             component,
-            data[0][i][1]
+            properties
         );
 
         parsed.push(component);

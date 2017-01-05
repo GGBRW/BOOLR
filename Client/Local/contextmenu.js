@@ -17,9 +17,9 @@ contextMenu.show = function(pos) {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
             if(component.constructor == Wire) {
-                this.appendChild(context_options["edit_color"]);
+                this.appendChild(context_options["edit color"]);
             } else {
-                component.hasOwnProperty("name") && this.appendChild(context_options["edit_name"]);
+                component.hasOwnProperty("name") && this.appendChild(context_options["edit name"]);
                 component.hasOwnProperty("delay") && this.appendChild(context_options["edit_delay"]);
                 this.appendChild(context_options["rotate"]);
                 this.appendChild(context_options["copy"]);
@@ -64,9 +64,9 @@ contextMenu.hide = function() {
 const context_options = {};
 
 // Edit name
-context_options["edit_name"] = document.createElement("li");
-context_options["edit_name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name [E]</span>';
-context_options["edit_name"].onclick = () => {
+context_options["edit name"] = document.createElement("li");
+context_options["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name [E]</span>';
+context_options["edit name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("name")) {
         popup.prompt.show(
@@ -78,9 +78,9 @@ context_options["edit_name"].onclick = () => {
 }
 
 // Edit wire color
-context_options["edit_color"] = document.createElement("li");
-context_options["edit_color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color [E]</span>';
-context_options["edit_color"].onclick = () => {
+context_options["edit color"] = document.createElement("li");
+context_options["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color [E]</span>';
+context_options["edit color"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.color_off) {
         popup.color_picker.show(
