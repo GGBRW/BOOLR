@@ -77,6 +77,7 @@ function connectToSocket(url) {
 
                 let data = msg.data.socketData;
                 if(type == "add") {
+                    console.log(data);
                     data = parse(data)[0];
                 } else if(type == "addSelection") {
                     data = parse(data);

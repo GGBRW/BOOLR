@@ -145,7 +145,13 @@ function onmessage(msg) {
                     case "add":
                         const parsed = JSON.parse(data);
                         const constructor = parsed[0][0][0];
-                        components.push([parsed[0][0][0],parsed[0][0][1]]);
+                        const properties = parsed[0][0][1];
+                        properties.placedBy = this.user.username;
+                        components.push([constructor,properties]);
+
+                        action.socketData = JSON.parse(action.socketData);
+                        action.socketData[0][0][1].placedBy = this.user.username;
+                        action.socketData = JSON.stringify(action.socketData);
                         break;
                     case "remove":
                         const index = +data.substr(2);

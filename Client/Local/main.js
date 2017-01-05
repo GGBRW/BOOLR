@@ -100,25 +100,9 @@ function draw() {
         }
     }
 
-    // Draw component info
-    if(hover.components.length > 2) {
-        ctx.strokeStyle = "#a22";
-        ++hover.time;
-
-        const x = (hover.components[0].pos.x - offset.x) * zoom - zoom / 2;
-        const y = (-hover.components[0].pos.y + offset.y) * zoom - zoom / 2;
-        const w = (hover.components.slice(-1)[0].pos.x - hover.components[0].pos.x + hover.components[0].width) * zoom;
-        const h = (hover.components[0].pos.y - hover.components.slice(-1)[0].pos.y + hover.components[0].height) * zoom;
-
-        ctx.strokeRect(x,y,w,h);
-
-        let value = [];
-        for(let i of hover.components) value.push(i.value);
-        value = parseInt(value.join(""),2);
-
-        document.getElementById("hoverBalloon").show(value);
-    } else if(document.getElementById("hoverBalloon").style.display == "block") {
-        document.getElementById("hoverBalloon").hide();
+    if(hoverBalloon.display) {
+        hoverBalloon.style.top = mouse.screen.y - hoverBalloon.clientHeight - 60;
+        hoverBalloon.style.left = mouse.screen.x - hoverBalloon.clientWidth / 2;
     }
 
     // Draw selections

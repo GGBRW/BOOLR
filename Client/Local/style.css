@@ -660,15 +660,19 @@ canvas {
     background: #111;
     font-family: "Ubuntu";
     font-size: 14px;
-    color: #555;
-    padding: 10px;
+    color: #888;
+    padding: 8px;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     border-radius: 5px;
     text-align: center;
+    line-height: 16px;
+    pointer-events: none;
+    overflow: hidden;
 
     opacity: 0;
     transform: translateY(20px);
-    transition: transform .2s, opacity .2s;
+    height: 0;
+    transition: transform .2s, opacity .2s, height .3s;
 }
 
 #hoverBalloon:after {
@@ -683,6 +687,13 @@ canvas {
     bottom: -15px;
     left: 50%;
     margin-left: -15px;
+}
+
+#hoverBalloon h1 {
+    color: #aaa;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 5px;
 }
 
 #spectateIndicator {
