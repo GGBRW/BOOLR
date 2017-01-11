@@ -100,9 +100,15 @@ function draw() {
         }
     }
 
+    // Draw hover balloon
     if(hoverBalloon.display) {
-        hoverBalloon.style.top = mouse.screen.y - hoverBalloon.clientHeight - 60;
-        hoverBalloon.style.left = mouse.screen.x - hoverBalloon.clientWidth / 2;
+        if(Array.isArray(mouse.hover.pos)) {
+            hoverBalloon.style.top = mouse.screen.y - hoverBalloon.clientHeight - 35;
+            hoverBalloon.style.left = mouse.screen.x - hoverBalloon.clientWidth / 2;
+        } else {
+            hoverBalloon.style.top = (offset.y - mouse.hover.pos.y - .5) * zoom - hoverBalloon.clientHeight - 35;
+            hoverBalloon.style.left = (mouse.hover.pos.x - offset.x + mouse.hover.width / 2 - .5) * zoom - hoverBalloon.clientWidth / 2;
+        }
     }
 
     // Draw selections

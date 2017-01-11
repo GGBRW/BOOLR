@@ -606,7 +606,7 @@ class LED extends Output {
             ctx.fillStyle = this.value ? this.color_on : this.color_off;
             if(this.value) {
                 ctx.shadowColor = this.color_on;
-                ctx.shadowBlur = zoom / 2;
+                ctx.shadowBlur = zoom * 2;
             }
 
             ctx.beginPath();
@@ -1168,7 +1168,7 @@ class Custom {
     constructor(
         selection = [],
         pos = { x: mouse.grid.x, y: mouse.grid.y },
-        name = "Enter name"
+        name = "adder"
     ) {
         this.pos = pos;
         this.input = [];
@@ -1191,7 +1191,7 @@ class Custom {
             }
         }
 
-        this.width = Math.max(this.inputPorts.length,this.outputPorts.length);
+        this.width = Math.max(this.inputPorts.length,this.outputPorts.length,2);
         this.height = 2;
     }
 
@@ -1215,7 +1215,7 @@ class Custom {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 2.5 + "px Ubuntu";
+            ctx.font = zoom / 2.5 + "px Monospaced";
             ctx.fillText(
                 this.name,
                 (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.name).width / 2),

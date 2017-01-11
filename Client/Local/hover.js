@@ -8,17 +8,17 @@ setInterval(function() {
     } else {
         hoverBalloon.hide();
     }
-}, 250);
+}, 100);
 
 const hoverBalloon = document.getElementById("hoverBalloon");
 hoverBalloon.show = function(component) {
     this.display = true;
-    this.style.display = "block";
 
     if(component.constructor == Wire) {
         this.children[0].innerHTML = "<h1>Wire</h1>";
         this.children[0].innerHTML += "From: " + component.from.name + "<br>";
         this.children[0].innerHTML += "To: " + component.to.name + "<br>";
+        this.children[0].innerHTML += "Value: " + component.value + "<br>";
     } else {
         this.children[0].innerHTML = "<h1>" + component.name + "</h1>";
         this.children[0].innerHTML += component.pos.x + "," + component.pos.y + "<br>";
@@ -26,12 +26,11 @@ hoverBalloon.show = function(component) {
         if(component.hasOwnProperty("value")) this.children[0].innerHTML += "Value: " + component.value + "<br>";
     }
 
-    this.style.top = mouse.screen.y - this.clientHeight - 50;
-    this.style.left = mouse.screen.x - this.clientWidth / 2;
+    this.style.height = this.children[0].clientHeight + 5;
     setTimeout(() => {
         this.style.opacity = .95;
-            this.style.height = this.children[0].clientHeight + 5;
     });
+    this.style.display = "block";
 }
 
 hoverBalloon.hide = function() {

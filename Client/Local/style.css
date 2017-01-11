@@ -656,7 +656,6 @@ canvas {
     display: none;
     position: fixed;
     left: 0;
-    min-width: 100px;
     background: #111;
     font-family: "Ubuntu";
     font-size: 14px;
@@ -672,7 +671,7 @@ canvas {
     opacity: 0;
     transform: translateY(20px);
     height: 0;
-    transition: transform .2s, opacity .2s, height .3s;
+    transition: opacity .2s, height .3s;
 }
 
 #hoverBalloon:after {
