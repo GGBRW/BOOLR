@@ -433,7 +433,7 @@ class Clock extends Input {
 }
 
 class D2B extends Input {
-    constructor(pos,height = 3,width,name,bits = 8) {
+    constructor(pos,height = 2,width,name,bits = 8) {
         super(pos,height,width,name);
         this.width = bits;
         this.func_in = function() {
@@ -915,13 +915,12 @@ class Display extends Output {
 }
 
 class B2D extends Output {
-    constructor(pos,height,width,name,bits = 8) {
+    constructor(pos,height = 2,width,name,bits = 8) {
         super(pos,height,width,name,bits);
         this.func = input => {
             parseInt(input.join(""),2);
         }
         this.width = bits;
-        this.height = 3;
         this.inputLabels = [];
         for(let i = 0; i < bits; ++i) {
             this.inputLabels.push(Math.pow(2,i));
@@ -1156,15 +1155,35 @@ class XOR extends Gate {
 }
 
 class Merger extends Gate {
-    constructor(pos,height = 2,width = 2,name) {
+    constructor(pos,height = 8,width = 2,name) {
         super(pos,height,width,"<",name,2);
+        this.inputPorts = null;
+        this.outputPorts = 1;
+
+        this.value = "0".repeat(this.height);
     }
 
     update() {
-        const value = parseInt(this.input.map(n => n.wire.value).join(""),2);
+        if(!this.output[0]) return;
+        const value = ("0".repeat(7) + this.input.map(n => n.wire.value).join("").toString()).slice(-8);
+        if(value !== this.output[0].wire.value) {
+            this.output[0].wire.value = value;
+            setTimeout(this.output[0].wire.to.update.bind(this.output[0].wire.to), +settings.update_delay);
+        }
+    }
+}
+
+class Splitter extends Gate {
+    constructor(pos,height = 8,width = 2,name) {
+        super(pos,height,width,">",name,2);
+    }
+
+    update() {
+        if(!this.input[0]) return;
+        const values = this.input[0].wire.value;
         for(let i = 0; i < this.output.length; ++i) {
-            if(value != this.output[i].wire.value) {
-                this.output[i].wire.value = value;
+            if((+values[i] || 0) !== this.output[i].wire.value) {
+                this.output[i].wire.value = +values[i] || 0;
                 setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
             }
         }
@@ -1249,8 +1268,6 @@ class Wire {
         this.value = 0;
 
         this.pos = [];
-        this.startPos;
-        this.endPos;
         this.color_off = color;
         this.color_on = lighter(color,50);
     }
@@ -1265,14 +1282,6 @@ class Wire {
         if(pos.length < 1) return;
 
         ctx.beginPath();
-
-        if(this.startPos) {
-            ctx.moveTo(
-                ((this.startPos.x - offset.x) * zoom + .5) | 0,
-                ((-this.startPos.y + offset.y) * zoom + .5) | 0
-            );
-        }
-
         ctx.lineTo(
             ((pos[0].x - offset.x) * zoom + .5) | 0,
             ((-pos[0].y + offset.y) * zoom + .5) | 0
@@ -1288,15 +1297,14 @@ class Wire {
             );
         }
 
-        if(this.endPos) {
-            ctx.lineTo(
-                ((this.endPos.x - offset.x) * zoom + .5) | 0,
-                ((-this.endPos.y + offset.y) * zoom + .5) | 0
-            );
+        if(typeof this.value != "number") {
+            ctx.lineWidth = zoom / 5;
+            ctx.strokeStyle = parseInt(this.value,2) > 0 ? this.color_on : this.color_off;
         }
-
-        ctx.lineWidth = zoom / 8;
-        ctx.strokeStyle = this.value ? this.color_on : this.color_off;
+        else {
+            ctx.lineWidth = zoom / 8;
+            ctx.strokeStyle = this.value ? this.color_on : this.color_off;
+        }
         ctx.stroke();
 
         if(zoom > 20) {

@@ -237,9 +237,10 @@ window.onerror = function(msg,url,line) {
 }
 
 c.oncontextmenu = () => false;
-// c.onmouseenter = () => scroll_animation.animate = false;
 
-c.onmouseleave = () => { scroll_animation.animate = true; connecting = null }
+c.onmouseleave = () => { scroll_animation.animate = true; connecting = null };
+
+c.onmouseenter = e => { e.which > 0 && (scroll_animation.animate = false) };
 
 let wheel_click = false;
 c.onmousedown = function(e) {
