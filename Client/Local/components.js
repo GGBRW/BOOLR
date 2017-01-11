@@ -1155,6 +1155,22 @@ class XOR extends Gate {
     }
 }
 
+class Merger extends Gate {
+    constructor(pos,height = 2,width = 2,name) {
+        super(pos,height,width,"<",name,2);
+    }
+
+    update() {
+        const value = parseInt(this.input.map(n => n.wire.value).join(""),2);
+        for(let i = 0; i < this.output.length; ++i) {
+            if(value != this.output[i].wire.value) {
+                this.output[i].wire.value = value;
+                setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
+            }
+        }
+    }
+}
+
 function lighter(hex, percent){
     if(hex.length == 4) hex = "#" + hex.slice(1).replace(/(.)/g, '$1$1');
     const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
