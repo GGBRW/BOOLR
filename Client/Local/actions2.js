@@ -167,7 +167,7 @@ function actionMsg(action) {
     }
 
     msg[0] && (msg = msg[0].toUpperCase() + msg.slice(1));
-    toolbar.message(msg,action);
+    toolbar.message(msg,"action");
 
     if(action.undoable) {
         const undoBtn = document.createElement("button");

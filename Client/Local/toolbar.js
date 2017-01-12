@@ -15,7 +15,7 @@ toolbar.message = function(msg,type) {
     if(type == "warning") {
         toast.innerHTML = "<span class='material-icons' style='opacity: .5'>warning</span>" + toast.innerHTML;
     } else if(type == "action") {
-        toast.innerHTML += "<button onclick='undo()'><span class='material-icons'>undo</span>Undo</button>";
+        toast.innerHTML += "<button onclick='undo()' style='font-family: Ubuntu'><span class='material-icons'>undo</span>Undo</button>";
     }
 
     toast.style.marginLeft = -toast.clientWidth / 2 + "px";

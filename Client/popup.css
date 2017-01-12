@@ -23,7 +23,7 @@
     text-align: center;
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.2);
-    font-family: "Roboto Condensed";
+    font-family: "Ubuntu";
     padding: 10px;
     border-radius: 5px;
 
@@ -58,7 +58,7 @@
 }
 
 .popup ul {
-    font-family: "Roboto Condensed";
+    font-family: "Ubuntu";
     font-size: 16px;
     text-align: left;
 }

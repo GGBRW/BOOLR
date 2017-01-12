@@ -158,7 +158,7 @@ canvas {
     background: #333;
     color: #ddd;
     padding: 10px;
-    font-family: "Inconsolata";
+    font-family: "Monospaced";
     margin: 8px;
 }
 
@@ -166,7 +166,7 @@ canvas {
     background: rgba(255,0,0,.1);
     color: red;
     padding: 10px;
-    font-family: "Inconsolata";
+    font-family: "Monospaced";
     margin: 8px;
 }
 
@@ -174,8 +174,8 @@ canvas {
     padding-top: 8px;
     margin-left: 30px;
     width: 80%;
-    font-family: "Inconsolata";
-    font-size: 18px;
+    font-family: "Monospaced";
+    font-size: 15px;
     color: #ddd;
     text-align: left;
     outline: none;
@@ -186,7 +186,7 @@ canvas {
     position: absolute;
     left: 10px;
     font-family: Consolas;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
     color: #bbb;
 }
@@ -195,10 +195,11 @@ canvas {
     padding-top: 8px;
     margin-left: 30px;
     width: 80%;
-    font-family: "Inconsolata";
-    font-size: 18px;
+    font-family: "Monospaced";
+    font-size: 15px;
     text-align: left;
     outline: none;
+    color: #666;
 }
 
 #console #messages .output:before {
@@ -206,7 +207,7 @@ canvas {
     position: absolute;
     left: 10px;
     font-family: Consolas;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
     color: #ddd;
 }
@@ -215,8 +216,8 @@ canvas {
     padding: 20px;
     margin-left: 15px;
     width: 80%;
-    font-family: "Inconsolata";
-    font-size: 20px;
+    font-family: "Monospaced";
+    font-size: 15px;
     text-align: left;
     outline: none;
 }
@@ -226,7 +227,7 @@ canvas {
     position: absolute;
     left: 10px;
     font-family: Consolas;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
     color: #143d70;
 }
@@ -299,7 +300,7 @@ canvas {
     width: 350px;
     height: 50px;
     background: #111;
-    color: #888;
+    color: #444;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
     border-radius: 5px 5px 0 0;
     font-size: 0;
@@ -312,6 +313,7 @@ canvas {
     width: 50px;
     font-family: "Ubuntu";
     font-size: 16px;
+    font-weight: 600;
     text-align: center;
     padding-top: 18px;
     margin: 0;
@@ -321,6 +323,7 @@ canvas {
 }
 #toolbar .slot:hover {
     background: #222;
+    color: #888;
 }
 
 #toolbar #toast {
