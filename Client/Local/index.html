@@ -1,366 +1,371 @@
-<meta charset="utf-8">
+<html>
+    <head>
+        <meta charset="utf-8">
 
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="../popup.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="../popup.css">
 
-<title>PWS | Sandbox mode</title>
+        <title>PWS | Sandbox mode</title>
+    </head>
+    <body>
+        <!-- Preload voor lettertypes -->
+        <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
-<!-- Preload voor lettertypes -->
-<div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
+        <!-- Het belangrijkste deel van de hele pagina. Dit is een HTML5-element die uitgestrekt is over de hele pagina waarmee met JavaScript op getekent kan worden. -->
+        <!-- Ik heb hier het attribuut 'tabindex' met waarde '1' aangegeven als snelle oplossing om met JavaScript te checken of het canvas element 'focus' heeft. -->
+        <canvas id="canvas" tabindex="1"></canvas>
 
-<!-- Het belangrijkste deel van de hele pagina. Dit is een HTML5-element die uitgestrekt is over de hele pagina waarmee met JavaScript op getekent kan worden. -->
-<!-- Ik heb hier het attribuut 'tabindex' met waarde '1' aangegeven als snelle oplossing om met JavaScript te checken of het canvas element 'focus' heeft. -->
-<canvas id="canvas" tabindex="1"></canvas>
+        <!-- De console die verschijnt als je op de toetsen shift + 't' drukt. -->
+        <div id="console">
+            <!-- Button om de console te verbergen -->
+            <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
 
-<!-- De console die verschijnt als je op de toetsen shift + 't' drukt. -->
-<div id="console">
-    <!-- Button om de console te verbergen -->
-    <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
-
-    <div id="input" contenteditable="true" spellcheck="false"></div>
-    <div id="messages"></div>
-</div>
-
-<!-- De chat die verschijnt als je op de toets 't' drukt -->
-<input id="chat" spellcheck="false">
-
-</input>
-
-<ul id="notifications"></ul>
-
-<!-- Component toolbar -->
-<div id="toolbar">
-    <div class="slot" tooltip="Input and output ports">I/O</div>
-    <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
-    <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
-    <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
-    <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
-    <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">+</div>
-    <div class="slot" tooltip="Component list" onmousedown="popup.componentList.show()">...</div>
-
-    <div id="toast"></div>
-
-    <ul id="list" tabindex="1" style="display: none">
-        <li onclick="select(Input)">Input</li>
-        <li onclick="select(Output)">Output</li>
-        <li onclick="select(Constant)">Constant</li>
-        <li onclick="select(Delay)">Delay</li>
-        <li onclick="select(Clock)">Clock</li>
-        <li onclick="select(LED)">LED</li>
-        <li onclick="select(Display)">Display</li>
-        <li onclick="select(Debug)">Debug</li>
-        <li onclick="select(Merger)">Merger</li>
-        <li onclick="select(Splitter)">Splitter</li>
-        <li onclick="select(D2B)">D2B Converter</li>
-        <li onclick="select(B2D)">B2D Converter</li>
-    </ul>
-</div>
-<div id="toolbartip">Input & Output</div>
-
-<!-- Credits -->
-<div id="credits">
-    <span id="version" onclick="popup.whatsnew.show()">PWS v0.1.58</span>
-    <button onclick="popup.settings.show()" class="material-icons">settings</button>
-    <button onclick="popup.info.show()" class="material-icons">help</button>
-</div>
-
-<!-- Debug info -->
-<div id="debugInfo"></div>
-
-<!-- User list -->
-<div id="userList"></div>
-
-<!-- Component info -->
-<div id="componentInfo"></div>
-
-<!-- Context menu -->
-<ul id="contextMenu" tabindex="1" oncontextmenu="return false" style="display: none;"></ul>
-
-<!-- Loading screen -->
-<div id="loading">Loading...</div>
-
-<!-- Overlay -->
-<div id="overlay"></div>
-
-<!-- Pop-ups -->
-<div class="popup" id="confirm">
-    <h1></h1>
-    <p></p>
-    <button class="ok">OK</button>
-    <button class="cancel">Cancel</button>
-</div>
-
-<div class="popup" id="prompt">
-    <h1>Prompt</h1>
-    <p>Text</p>
-    <input spellcheck="false">
-    <button class="ok">OK</button>
-    <button class="cancel">Cancel</button>
-</div>
-
-<div class="popup" id="whatsnew">
-    <h1></h1>
-    <ul>
-        <li><i class="material-icons">call_merge</i> Mergers</li>
-        <li><i class="material-icons">call_split</i> Splitters</li>
-        <li><i class="material-icons">bug_report</i> Fixed pasting bug</li>
-        <li><i class="material-icons">star</i> Improved B2D and D2B gates</li>
-        <li><i class="material-icons">bug_report</i> Several small bug fixes</li>
-    </ul>
-    <p style="color: darkred; font-size: 12px">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
-    <br>
-    <button class="ok">Close</button>
-</div>
-
-<div class="popup" id="custom_component">
-    <h1>Create custom component</h1>
-    <textarea spellcheck="false">
-class Component {
-    constructor() {
-
-    }
-}
-    </textarea>
-    <br>
-    <button class="ok" disabled="true">OK</button>
-    <button class="cancel">Cancel</button>
-</div>
-
-<div class="popup" id="component_list">
-    <h1>Component list</h1>
-    <p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>
-    <button class="ok">Close</button>
-</div>
-
-<div class="popup" id="settings">
-    <h1>Settings</h1>
-    <ul>
-        <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
-        <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
-        <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
-        <li><button onclick="
-        popup.confirm.show(
-            'Clear localStorage',
-            'Are you sure you want to clear all local stored data?',
-            () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
-        );
-        ">Clear localStorage</button></li>
-    </ul>
-    <button class="ok">OK</button>
-    <button class="cancel">Cancel</button>
-</div>
-
-<div class="popup" id="info">
-    <h1>Info</h1>
-    <button class="ok">Close</button>
-</div>
-
-<div class="popup" id="openproject">
-    <h1>Open project</h1>
-
-    Upload a project save file or connect to a server:
-    <br><br>
-
-    <button id="local_btn" class="selected">Local</button>
-    <button id="server_btn">Server</button>
-    <div id="local">
-        <div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <i class="material-icons">file_upload</i>
-            <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
+            <div id="input" contenteditable="true" spellcheck="false"></div>
+            <div id="messages"></div>
         </div>
-    </div>
-    <script>
-        function allowDrop(e) {
-            e.preventDefault();
-        }
 
-        function drop(e) {
-            e.preventDefault();
-            readFile(e.dataTransfer);
-        }
-    </script>
+        <!-- De chat die verschijnt als je op de toets 't' drukt -->
+        <input id="chat" spellcheck="false">
 
-    <div id="server" style="display: none;">
-        <input id="url" placeholder="Enter server url">
-        <button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>
-        <ul>
-            <li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-            <li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-        </ul>
-    </div>
+        </input>
 
-    <script>
-        document.querySelector("#openproject #local_btn").onclick = function() {
-            this.className = "selected";
-            document.querySelector("#openproject #server_btn").className = "";
-            document.querySelector("#openproject #local").style.display = "block";
-            document.querySelector("#openproject #server").style.display = "none";
-        }
+        <ul id="notifications"></ul>
 
-        document.querySelector("#openproject #server_btn").onclick = function() {
-            this.className = "selected";
-            document.querySelector("#openproject #local_btn").className = "";
-            document.querySelector("#openproject #server").style.display = "block";
-            document.querySelector("#openproject #local").style.display = "none";
-        }
-    </script>
-    <button class="ok">Close</button>
-</div>
+        <!-- Component toolbar -->
+        <div id="toolbar">
+            <div class="slot" tooltip="Input and output ports">I/O</div>
+            <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
+            <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
+            <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
+            <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
+            <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">+</div>
+            <div class="slot" tooltip="Component list" onmousedown="popup.componentList.show()">...</div>
 
-<div class="popup" id="login">
-    <h1>Login</h1>
-    <p id="wrong" style="display: none; color: #500; font-family: 'Ubuntu'; font-weight: 600">Wrong username/password</p>
-    <input id="username" placeholder="Username">
-    <br><br>
-    <input id="password" placeholder="Password" type="password">
-    <button class="ok">Login</button>
-    <button id="spectate">Spectate mode</button>
-    <button class="cancel">Cancel</button>
-</div>
+            <div id="toast"></div>
 
-<div class="popup" id="color_picker">
-    <h1>Color picker</h1>
-    <input type="color">
-    <br>
-    <button class="ok">OK</button>
-    <button class="cancel">Cancel</button>
-</div>
+            <ul id="list" tabindex="1" style="display: none">
+                <li onclick="select(Input)">Input</li>
+                <li onclick="select(Output)">Output</li>
+                <li onclick="select(Button)">Button</li>
+                <li onclick="select(Constant)">Constant</li>
+                <li onclick="select(Delay)">Delay</li>
+                <li onclick="select(Clock)">Clock</li>
+                <li onclick="select(LED)">LED</li>
+                <li onclick="select(Display)">Display</li>
+                <li onclick="select(Debug)">Debug</li>
+                <li onclick="select(Merger)">Merger</li>
+                <li onclick="select(Splitter)">Splitter</li>
+                <li onclick="select(D2B)">D2B Converter</li>
+                <li onclick="select(B2D)">B2D Converter</li>
+            </ul>
+        </div>
+        <div id="toolbartip">Input & Output</div>
 
-<div class="popup" id="connections">
-    <h1>Connections</h1>
-    <div></div>
-    <button class="ok">Close</button>
-</div>
+        <!-- Credits -->
+        <div id="credits">
+            <span id="version" onclick="popup.whatsnew.show()">PWS v0.1.58</span>
+            <button onclick="popup.settings.show()" class="material-icons">settings</button>
+            <button onclick="popup.info.show()" class="material-icons">help</button>
+        </div>
 
-<!-- Waypoints menu -->
-<ul id="waypointsMenu"></ul>
+        <!-- Debug info -->
+        <div id="debugInfo"></div>
 
+        <!-- User list -->
+        <div id="userList"></div>
 
-<!-- Tips -->
-<div class="tip" id="dragging">
-    <i class="material-icons">lightbulb_outline</i>
-    Press the right mouse button to cancel dragging
-</div>
-<div class="tip" id="connecting_ctrl">
-    <i class="material-icons">lightbulb_outline</i>
-    Move the mouse while holding the CTRL-key to scroll while connecting
-</div>
-<div class="tip" id="connecting_shift">
-    <i class="material-icons">lightbulb_outline</i>
-    Hold the shift key to draw the wire in a straight line
-</div>
-<div class="tip" id="waypoints">
-    <i class="material-icons">lightbulb_outline</i>
-    Press S to set a waypoint, press W to jump to a waypoint
-</div>
+        <!-- Component info -->
+        <div id="componentInfo"></div>
 
+        <!-- Context menu -->
+        <ul id="contextMenu" tabindex="1" oncontextmenu="return false" style="display: none;"></ul>
 
-<!-- Hover balloon -->
-<div id="hoverBalloon">
-    <div id="content" style="white-space: nowrap"></div>
-</div>
+        <!-- Loading screen -->
+        <div id="loading">Loading...</div>
 
-<!-- Spectate indicator -->
-<div id="spectateIndicator">Spectate mode</div>
+        <!-- Overlay -->
+        <div id="overlay"></div>
 
-<!-- Open files -->
-<input id="open_file" type="file" accept=".dat" style="display: none">
+        <!-- Pop-ups -->
+        <div class="popup" id="confirm">
+            <h1></h1>
+            <p></p>
+            <button class="ok">OK</button>
+            <button class="cancel">Cancel</button>
+        </div>
 
-<!-- Chrome -->
-<div id="usechrome">
-    <a href="https://www.google.nl/chrome/browser/desktop/"><img src="http://logok.org/wp-content/uploads/2014/12/Chrome-logo-2015.png"></a>
-    <h1>Please use Chrome to run this application</h1>
-</div>
+        <div class="popup" id="prompt">
+            <h1>Prompt</h1>
+            <p>Text</p>
+            <input spellcheck="false">
+            <button class="ok">OK</button>
+            <button class="cancel">Cancel</button>
+        </div>
 
-<script>
-    document.getElementById("open_file").onchange = function(e) {
-        readFile(e.target);
+        <div class="popup" id="whatsnew">
+            <h1></h1>
+            <ul>
+                <li><i class="material-icons">call_merge</i> Mergers</li>
+                <li><i class="material-icons">call_split</i> Splitters</li>
+                <li><i class="material-icons">bug_report</i> Fixed pasting bug</li>
+                <li><i class="material-icons">star</i> Improved B2D and D2B gates</li>
+                <li><i class="material-icons">bug_report</i> Several small bug fixes</li>
+            </ul>
+            <p style="color: darkred; font-size: 12px">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
+            <br>
+            <button class="ok">Close</button>
+        </div>
 
-    }
+        <div class="popup" id="custom_component">
+            <h1>Create custom component</h1>
+            <textarea spellcheck="false">
+        class Component {
+            constructor() {
 
-    function readFile(input) {
-        const reader = new FileReader;
-        reader.onload = function() {
-            if(reader.result[0] == "{") {
-                components = [];
-                parse_old(reader.result);
-            } else {
-                components = [];
-                const parsed = parse(reader.result);
-
-                for(let i = 0, len = parsed.length; i < len; ++i) {
-                    if(parsed[i].constructor == Wire) {
-                        components.unshift(parsed[i]);
-                    } else {
-                        components.push(parsed[i]);
-                    }
-                }
             }
         }
-        reader.readAsText(input.files[0]);
-        popup.openproject.hide();
-    }
-</script>
+            </textarea>
+            <br>
+            <button class="ok" disabled="true">OK</button>
+            <button class="cancel">Cancel</button>
+        </div>
 
-<!-- Scrippies -->
-<script>
-    if(!window.chrome) { document.getElementById("usechrome").style.display = "block"; window.stop(); }
-</script>
-<script src="main.js"></script>
-<script src="ticker.js"></script>
-<!--script src="actions.js"></script-->
-<script src="actions2.js"></script>
-<script src="clipbord.js"></script>
-<script src="keys.js"></script>
-<script src="chat.js"></script>
-<script src="console.js"></script>
-<script src="notifications.js"></script>
-<script src="toolbar.js"></script>
-<script src="components.js"></script>
-<script src="misc.js"></script>
-<script src="debug.js"></script>
-<script src="userList.js"></script>
-<script src="contextmenu.js"></script>
-<script src="hover.js"></script>
-<script src="componentInfo.js"></script>
-<script src="tips.js"></script>
-<script src="../popup.js"></script>
-<script src="stringifier.js"></script>
-<script src="localStorage.js"></script>
-<script src="waypoints.js"></script>
-<script src="socket.js"></script>
-<script>
-    "use strict";
+        <div class="popup" id="component_list">
+            <h1>Component list</h1>
+            <p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>
+            <button class="ok">Close</button>
+        </div>
 
-    const VERSION = "0.185";
-    document.getElementById("version").innerHTML = "PWS v" + VERSION;
+        <div class="popup" id="settings">
+            <h1>Settings</h1>
+            <ul>
+                <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
+                <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
+                <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
+                <li><button onclick="
+                popup.confirm.show(
+                    'Clear localStorage',
+                    'Are you sure you want to clear all local stored data?',
+                    () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
+                );
+                ">Clear localStorage</button></li>
+            </ul>
+            <button class="ok">OK</button>
+            <button class="cancel">Cancel</button>
+        </div>
 
-    let data;
-    if(localStorage.pws) data = JSON.parse(localStorage.pws);
-    else data = {};
+        <div class="popup" id="info">
+            <h1>Info</h1>
+            <button class="ok">Close</button>
+        </div>
 
-    if(data.version != VERSION) {
-        popup.whatsnew.show()
-    }
-    if(data.clipbord) {
-        parse(data.clipbord,true);
-    }
-    if(data.settings) {
-        settings = data.settings;
-    }
-    if(data.tips) {
-        for(let tip in data.tips) {
-            tips[tip].disabled = data.tips[tip];
-        }
-    }
+        <div class="popup" id="openproject">
+            <h1>Open project</h1>
 
-    c.focus();
+            Upload a project save file or connect to a server:
+            <br><br>
 
-    //connectToSocket("ws://192.168.0.33:3000");
+            <button id="local_btn" class="selected">Local</button>
+            <button id="server_btn">Server</button>
+            <div id="local">
+                <div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <i class="material-icons">file_upload</i>
+                    <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
+                </div>
+            </div>
+            <script>
+                function allowDrop(e) {
+                    e.preventDefault();
+                }
 
-    updateDebugInfo();
-    setInterval(updateDebugInfo, 500);
+                function drop(e) {
+                    e.preventDefault();
+                    readFile(e.dataTransfer);
+                }
+            </script>
 
-    draw();  // 'draw' loop starten
-    //tick(); // 'tick' loop starten
-</script>
+            <div id="server" style="display: none;">
+                <input id="url" placeholder="Enter server url">
+                <button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>
+                <ul>
+                    <li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
+                    <li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
+                </ul>
+            </div>
+
+            <script>
+                document.querySelector("#openproject #local_btn").onclick = function() {
+                    this.className = "selected";
+                    document.querySelector("#openproject #server_btn").className = "";
+                    document.querySelector("#openproject #local").style.display = "block";
+                    document.querySelector("#openproject #server").style.display = "none";
+                }
+
+                document.querySelector("#openproject #server_btn").onclick = function() {
+                    this.className = "selected";
+                    document.querySelector("#openproject #local_btn").className = "";
+                    document.querySelector("#openproject #server").style.display = "block";
+                    document.querySelector("#openproject #local").style.display = "none";
+                }
+            </script>
+            <button class="ok">Close</button>
+        </div>
+
+        <div class="popup" id="login">
+            <h1>Login</h1>
+            <p id="wrong" style="display: none; color: #500; font-family: 'Ubuntu'; font-weight: 600">Wrong username/password</p>
+            <input id="username" placeholder="Username">
+            <br><br>
+            <input id="password" placeholder="Password" type="password">
+            <button class="ok">Login</button>
+            <button id="spectate">Spectate mode</button>
+            <button class="cancel">Cancel</button>
+        </div>
+
+        <div class="popup" id="color_picker">
+            <h1>Color picker</h1>
+            <input type="color">
+            <br>
+            <button class="ok">OK</button>
+            <button class="cancel">Cancel</button>
+        </div>
+
+        <div class="popup" id="connections">
+            <h1>Connections</h1>
+            <div></div>
+            <button class="ok">Close</button>
+        </div>
+
+        <!-- Waypoints menu -->
+        <ul id="waypointsMenu"></ul>
+
+
+        <!-- Tips -->
+        <div class="tip" id="dragging">
+            <i class="material-icons">lightbulb_outline</i>
+            Press the right mouse button to cancel dragging
+        </div>
+        <div class="tip" id="connecting_ctrl">
+            <i class="material-icons">lightbulb_outline</i>
+            Move the mouse while holding the CTRL-key to scroll while connecting
+        </div>
+        <div class="tip" id="connecting_shift">
+            <i class="material-icons">lightbulb_outline</i>
+            Hold the shift key to draw the wire in a straight line
+        </div>
+        <div class="tip" id="waypoints">
+            <i class="material-icons">lightbulb_outline</i>
+            Press S to set a waypoint, press W to jump to a waypoint
+        </div>
+
+
+        <!-- Hover balloon -->
+        <div id="hoverBalloon"></div>
+
+        <!-- Spectate indicator -->
+        <div id="spectateIndicator">Spectate mode</div>
+
+        <!-- Open files -->
+        <input id="open_file" type="file" accept=".dat" style="display: none">
+
+        <!-- Chrome -->
+        <div id="usechrome">
+            <h1>Please use Chrome to run this application</h1>
+        </div>
+
+        <script>
+            document.getElementById("open_file").onchange = function(e) {
+                readFile(e.target);
+
+            }
+
+            function readFile(input) {
+                const reader = new FileReader;
+                reader.onload = function() {
+                    if(reader.result[0] == "{") {
+                        components = [];
+                        parse_old(reader.result);
+                    } else {
+                        components = [];
+                        const parsed = parse(reader.result);
+
+                        for(let i = 0, len = parsed.length; i < len; ++i) {
+                            if(parsed[i].constructor == Wire) {
+                                components.unshift(parsed[i]);
+                            } else {
+                                components.push(parsed[i]);
+                            }
+                        }
+                    }
+                }
+                reader.readAsText(input.files[0]);
+                popup.openproject.hide();
+            }
+        </script>
+
+        <!-- Scrippies -->
+        <script>
+            if(!window.chrome) {
+                document.getElementById("usechrome").style.display = "block";
+            }
+        </script>
+        <script src="main.js"></script>
+        <script src="ticker.js"></script>
+        <!--script src="actions.js"></script-->
+        <script src="actions2.js"></script>
+        <script src="clipbord.js"></script>
+        <script src="keys.js"></script>
+        <script src="chat.js"></script>
+        <script src="console.js"></script>
+        <script src="notifications.js"></script>
+        <script src="toolbar.js"></script>
+        <script src="components.js"></script>
+        <script src="misc.js"></script>
+        <script src="debug.js"></script>
+        <script src="userList.js"></script>
+        <script src="contextmenu.js"></script>
+        <script src="hover.js"></script>
+        <script src="componentInfo.js"></script>
+        <script src="tips.js"></script>
+        <script src="../popup.js"></script>
+        <script src="stringifier.js"></script>
+        <script src="localStorage.js"></script>
+        <script src="waypoints.js"></script>
+        <script src="socket.js"></script>
+        <script>
+            "use strict";
+
+            const VERSION = "0.185";
+            document.getElementById("version").innerHTML = "PWS v" + VERSION;
+
+            let data;
+            if(localStorage.pws) data = JSON.parse(localStorage.pws);
+            else data = {};
+
+            if(data.version != VERSION) {
+                popup.whatsnew.show()
+            }
+            if(data.clipbord) {
+                parse(data.clipbord,true);
+            }
+            if(data.settings) {
+                settings = data.settings;
+            }
+            if(data.tips) {
+                for(let tip in data.tips) {
+                    tips[tip].disabled = data.tips[tip];
+                }
+            }
+
+            c.focus();
+
+            //connectToSocket("ws://192.168.0.33:3000");
+
+            updateDebugInfo();
+            setInterval(updateDebugInfo, 500);
+
+            draw();  // 'draw' loop starten
+            //tick(); // 'tick' loop starten
+        </script>
+    </body>
+</html>

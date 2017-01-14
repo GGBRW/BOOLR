@@ -87,6 +87,6 @@ clipbord.paste = function(x,y) {
         const component = clone(clipbord.components[0]);
         component.pos.x = x;
         component.pos.y = y;
-        added.push(component);
+        action("add",component,true);
     }
 }

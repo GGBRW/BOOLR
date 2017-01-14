@@ -43,6 +43,8 @@ let framerate = 60, lastFrame = new Date;
 function draw() {
     // Scherm leegmaken
     ctx.clearRect(0, 0, c.width, c.height);
+    // ctx.fillStyle = "#eee";
+    // ctx.fillRect(0,0,c.width,c.height);
 
     // Roosterpunten tekenen
     if(zoom > 24) {
@@ -316,6 +318,9 @@ c.onmousedown = function(e) {
             }
             else {
                 let component = find(mouse.grid.x,mouse.grid.y);
+
+                component && component.onmousedown && component.onmousedown();
+
                 if(component && (component.output || component.from)) {
                     // const wire = new Wire();
                     //
@@ -873,6 +878,8 @@ c.onmouseup = function(e) {
         }
 
         const component = find(mouse.grid.x,mouse.grid.y);
+        component && component.onmouseup && component.onmouseup();
+
         if(component && component.onclick) {
             action(
                 "click",

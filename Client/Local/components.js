@@ -383,6 +383,22 @@ class Input {
     }
 }
 
+class Button extends Input {
+    constructor(pos,height,width,name,value = 0) {
+        super(pos,height,width,name);
+        this.onclick = undefined;
+
+        this.onmousedown = function() {
+            this.value = 1;
+            setTimeout(this.update.bind(this));
+        }
+        this.onmouseup = function() {
+            this.value = 0;
+            setTimeout(this.update.bind(this));
+        }
+    }
+}
+
 class Constant extends Input {
     constructor(pos,height,width,name,value = 0) {
         super(pos,height,width,name);
@@ -584,8 +600,8 @@ class Debug extends Output {
 class LED extends Output {
     constructor(pos,height,width,name) {
         super(pos,height = 1,width = 1,name);
-        this.color_off = "#411";
-        this.color_on = "#a22";
+        this.color_off = "#200";
+        this.color_on = "#f00";
         this.draw = function() {
             ctx.fillStyle = "#111";
             ctx.strokeStyle = "#111";
@@ -606,16 +622,17 @@ class LED extends Output {
             ctx.fillStyle = this.value ? this.color_on : this.color_off;
             if(this.value) {
                 ctx.shadowColor = this.color_on;
-                ctx.shadowBlur = zoom * 2;
+                ctx.shadowBlur = zoom / 3;
             }
 
             ctx.beginPath();
             ctx.arc(
                 ((this.pos.x + this.width / 2 - offset.x) * zoom - zoom / 2 + .5) | 0,
                 ((-this.pos.y + this.height / 2 + offset.y) * zoom - zoom / 2 + .5) | 0,
-                zoom / 4,
+                zoom / 3.5,
                 0, Math.PI * 2
             );
+            ctx.fill();
             ctx.fill();
             ctx.shadowBlur = 0;
 
@@ -668,24 +685,23 @@ class Display extends Output {
 
         this.inputPorts = 10;
         this.value = 0;
-        this.dp = 0;
 
-        this.sortInput = input => {
-            let result = [];
-            for(let i = 0; i < input.length; ++i) {
-                if(!input[i]) continue;
-                let index = input[i].wire.pos.slice(-1)[0].x - this.pos.x;
-                if(input[i].wire.pos.slice(-1)[0].y < this.pos.y) index += 4;
-                result[index] = input[i];
-            }
-            return result;
-        }
-        this.func = input => {
-            return parseInt(input.join(""));
-        }
+        this.segments = [0,0,0,0,0,0,0];
+        this.dp = 0;
         this.update = function() {
-            this.input = this.sortInput(this.input);
-            this.value = +!!this.func(this.input.map(n => n.wire.value));
+            this.segments = [0,0,0,0,0,0,0];
+            this.dp = 0;
+            for(let i = 0; i < this.input.length; ++i) {
+                if(!this.input[i].wire.value) continue;
+
+                const pos = this.input[i].pos;
+                if(pos.side == 1 || pos.side == 3) continue;
+
+                let segment = pos.side > 1 ? 4 : 0;
+                segment += pos.pos;
+                if(segment == 7) this.dp = 1;
+                else this.segments[segment] = 1;
+            }
         }
 
         this.lineWidth = lineWidth;
@@ -719,7 +735,7 @@ class Display extends Output {
             const margin = zoom / 20;
 
             ctx.shadowColor = this.colorOn;
-            if(this.input[0] && this.input[0].wire.value) {
+            if(this.segments[0]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -737,7 +753,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if(this.input[6] && this.input[6].wire.value) {
+            if(this.segments[6]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -754,7 +770,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if(this.input[3] && this.input[3].wire.value) {
+            if(this.segments[3]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -771,7 +787,7 @@ class Display extends Output {
             ctx.lineTo(sx - lineWidth / 2,sy + lineWidth / 2);
             ctx.fill();
 
-            if(this.input[5] && this.input[5].wire.value) {
+            if(this.segments[5]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -790,7 +806,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if(this.input[1] && this.input[1].wire.value) {
+            if(this.segments[1]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -807,7 +823,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if(this.input[4] && this.input[4].wire.value) {
+            if(this.segments[4]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -825,7 +841,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if(this.input[2] && this.input[2].wire.value) {
+            if(this.segments[2]) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -842,7 +858,7 @@ class Display extends Output {
             ctx.lineTo(sx,sy + sLength);
             ctx.fill();
 
-            if(this.input[7] && this.input[7].wire.value) {
+            if(this.dp) {
                 ctx.fillStyle = this.colorOn;
                 ctx.shadowBlur = zoom / 2;
             } else {
@@ -862,6 +878,7 @@ class Display extends Output {
 
             // Draw input pins
             ctx.fillStyle = "#111";
+            ctx.lineWidth = zoom / 10;
             for(let i = 0; i < 4; ++i) {
                 ctx.beginPath();
                 ctx.arc(
@@ -1156,18 +1173,26 @@ class XOR extends Gate {
 
 class Merger extends Gate {
     constructor(pos,height = 8,width = 2,name) {
-        super(pos,height,width,"<",name,2);
+        super(pos,height,width,">",name,2);
         this.inputPorts = null;
         this.outputPorts = 1;
-
-        this.value = "0".repeat(this.height);
     }
 
     update() {
         if(!this.output[0]) return;
-        const value = ("0".repeat(7) + this.input.map(n => n.wire.value).join("").toString()).slice(-8);
-        if(value !== this.output[0].wire.value) {
-            this.output[0].wire.value = value;
+
+        this.value = "0".repeat(this.height);
+        for(let i = 0; i < this.input.length; ++i) {
+            let pos = this.input[i].pos.pos;
+            if(isNaN(pos) || (!isNaN(pos) && pos > this.value.length - 1)) continue;
+            if(this.input[i].pos.side > 1) pos = (this.value.length - 1) - pos;
+
+            const value = +!!this.input[i].wire.value;
+            this.value = this.value.substr(0,pos) + value + this.value.substr(pos + 1);
+        }
+
+        if(this.value !== this.output[0].wire.value) {
+            this.output[0].wire.value = this.value;
             setTimeout(this.output[0].wire.to.update.bind(this.output[0].wire.to), +settings.update_delay);
         }
     }
@@ -1175,15 +1200,19 @@ class Merger extends Gate {
 
 class Splitter extends Gate {
     constructor(pos,height = 8,width = 2,name) {
-        super(pos,height,width,">",name,2);
+        super(pos,height,width,"<",name,2);
     }
 
     update() {
         if(!this.input[0]) return;
-        const values = this.input[0].wire.value;
+
+        const value = this.input[0].wire.value;
         for(let i = 0; i < this.output.length; ++i) {
-            if((+values[i] || 0) !== this.output[i].wire.value) {
-                this.output[i].wire.value = +values[i] || 0;
+            let pos = this.output[i].pos.pos;
+            if(this.output[i].pos.side > 1) pos = (value.length - 1) - pos;
+
+            if((+value[pos] || 0) !== this.output[i].wire.value) {
+                this.output[i].wire.value = +value[pos] || 0;
                 setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
             }
         }

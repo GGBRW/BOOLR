@@ -24,11 +24,11 @@ canvas {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0,0,0,.1);
+    background: rgba(255,255,255,.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,.5);
+    background: rgba(255,255,255,.3);
     border-radius: 5px;
 }
 
@@ -286,7 +286,7 @@ canvas {
 }
 
 #notifications li.error {
-    background: #a33;
+    background: #822;
     color: #ddd;
 }
 
@@ -320,10 +320,12 @@ canvas {
     display: inline-block;
     cursor: pointer;
     border-radius: 5px;
+
+    transition: color .2s;
 }
 #toolbar .slot:hover {
     background: #222;
-    color: #888;
+    color: #aaa;
 }
 
 #toolbar #toast {
@@ -360,7 +362,7 @@ canvas {
     text-align: center;
 
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
     transition: transform .2s, opacity .2s;
 }
 
@@ -411,6 +413,17 @@ canvas {
     box-shadow: 0 0 20px rgba(0,0,0,.5);
     border-radius: 5px;
     outline: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#toolbar #list::-webkit-scrollbar-track {
+    background: rgba(255,255,255,.1);
+}
+
+#toolbar #list::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.3);
+    border-radius: 5px;
 }
 
 #toolbar #list li {
@@ -672,9 +685,8 @@ canvas {
     overflow: hidden;
 
     opacity: 0;
-    transform: translateY(20px);
-    height: 0;
-    transition: opacity .2s, height .3s;
+    transform: translateY(30px);
+    transition: opacity .2s, transform .2s;
 }
 
 #hoverBalloon:after {
@@ -731,17 +743,17 @@ canvas {
     left: 0;
     height: 100%;
     width: 100%;
-    background: rgba(16,16,16,.98);
+    background: rgba(221,221,221,.7);
     padding-top: 5%;
     text-align: center;
     z-index: 2000;
 }
 
 #usechrome h1 {
-    font-family: "Roboto Condensed", Arial, Ubuntu;
+    font-family: "Ubuntu", Ubuntu, Arial;
     font-size: 50px;
-    color: rgba(255,255,255,.25);
-    margin-top: 0;
+    color: #444;
+    margin-top: 20%;
 }
 
 #usechrome img {

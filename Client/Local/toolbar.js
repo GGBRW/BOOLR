@@ -31,19 +31,21 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
         const toolbartip = document.getElementById("toolbartip");
 
         if(toolbartip.style.display == "block") {
-            toolbartip.innerHTML = this.getAttribute("tooltip");
+            toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";
             toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
         } else {
             setTimeout(() => {
                 if(this.hover) {
                     toolbartip.style.display = "block";
-                    toolbartip.innerHTML = this.getAttribute("tooltip");
+                    toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";;
                     setTimeout(() => {
                         toolbartip.style.opacity = 1;
+                        toolbartip.style.transform = "translateY(20px)";
                     }, 1);
                     toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
+                    setTimeout(() => toolbartip.style.transition = "transform .2s, opacity .2s, left .2s", 100);
                 }
-            }, 500);
+            }, 200);
         }
     }
 
@@ -59,9 +61,11 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
 
             if(removeTooltip) {
                 toolbartip.style.opacity = 0;
+                toolbartip.style.transform = "translateY(30px)";
+                toolbartip.style.transition = "transform .2s, opacity .2s";
                 setTimeout(() => toolbartip.style.display = "none", 200);
             }
-        }, 500);
+        }, 200);
     }
 }
 toolbar.onmousedown = function() {
