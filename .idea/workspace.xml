@@ -1,18 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Client/Local/actions.js" line="237" />
+    <bookmark url="file://$PROJECT_DIR$/Client/project/actions.js" line="237" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Client/project/audio.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/actions.js" afterPath="$PROJECT_DIR$/Client/project/actions.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/actions2.js" afterPath="$PROJECT_DIR$/Client/project/actions2.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/chat.js" afterPath="$PROJECT_DIR$/Client/project/chat.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/clipbord.js" afterPath="$PROJECT_DIR$/Client/project/clipbord.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/componentInfo.js" afterPath="$PROJECT_DIR$/Client/project/componentInfo.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/project/components.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/console.js" afterPath="$PROJECT_DIR$/Client/project/console.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/contextmenu.js" afterPath="$PROJECT_DIR$/Client/project/contextmenu.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/debug.js" afterPath="$PROJECT_DIR$/Client/project/debug.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/hover.js" afterPath="$PROJECT_DIR$/Client/project/hover.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/index.html" afterPath="$PROJECT_DIR$/Client/project/index.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/keys.js" afterPath="$PROJECT_DIR$/Client/project/keys.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/localStorage.js" afterPath="$PROJECT_DIR$/Client/project/localStorage.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/project/main.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/misc.js" afterPath="$PROJECT_DIR$/Client/project/misc.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/notifications.js" afterPath="$PROJECT_DIR$/Client/project/notifications.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/socket.js" afterPath="$PROJECT_DIR$/Client/project/socket.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/stringifier.js" afterPath="$PROJECT_DIR$/Client/project/stringifier.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/style.css" afterPath="$PROJECT_DIR$/Client/project/style.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/ticker.js" afterPath="$PROJECT_DIR$/Client/project/ticker.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/tips.js" afterPath="$PROJECT_DIR$/Client/project/tips.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/toolbar.js" afterPath="$PROJECT_DIR$/Client/project/toolbar.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/userList.js" afterPath="$PROJECT_DIR$/Client/project/userList.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Client/Local/waypoints.js" afterPath="$PROJECT_DIR$/Client/project/waypoints.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (C)/CMakeLists.txt" afterPath="$PROJECT_DIR$/server (C)/CMakeLists.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (C)/main.c" afterPath="$PROJECT_DIR$/server (C)/main.c" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/client.html" afterPath="$PROJECT_DIR$/server (Node.js)/client.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/components.js" afterPath="$PROJECT_DIR$/server (Node.js)/components.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/main.js" afterPath="$PROJECT_DIR$/server (Node.js)/main.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/options/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/.npmignore" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/options/Makefile" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/Makefile" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/options/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/options/lib/options.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/lib/options.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/options/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/package.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.npmignore" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/.travis.yml" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.travis.yml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/LICENSE" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/LICENSE" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/index.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/index.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/package.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ultron/test.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/test.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.npmignore" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/.travis.yml" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.travis.yml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/Makefile" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/Makefile" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/SECURITY.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/SECURITY.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/index.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/index.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/BufferPool.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferPool.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/BufferUtil.fallback.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.fallback.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/BufferUtil.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/ErrorCodes.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/ErrorCodes.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Extensions.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Extensions.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/PerMessageDeflate.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/PerMessageDeflate.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Receiver.hixie.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.hixie.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Receiver.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Sender.hixie.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.hixie.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Sender.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Validation.fallback.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.fallback.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/Validation.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/WebSocket.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocket.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/lib/WebSocketServer.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocketServer.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/node_modules/ws/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/package.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Server (Node.js)/pws.dat" afterPath="$PROJECT_DIR$/server (Node.js)/pws.dat" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/clipbord.js" afterPath="$PROJECT_DIR$/Client/Local/clipbord.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/components.js" afterPath="$PROJECT_DIR$/Client/Local/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/hover.js" afterPath="$PROJECT_DIR$/Client/Local/hover.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/index.html" afterPath="$PROJECT_DIR$/Client/Local/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/main.js" afterPath="$PROJECT_DIR$/Client/Local/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/style.css" afterPath="$PROJECT_DIR$/Client/Local/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Local/toolbar.js" afterPath="$PROJECT_DIR$/Client/Local/toolbar.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Fonts/Inconsolata/OFL.txt" afterPath="$PROJECT_DIR$/Client/Fonts/Inconsolata/OFL.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Fonts/Roboto/LICENSE.txt" afterPath="$PROJECT_DIR$/Client/Fonts/Roboto/LICENSE.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/Fonts/Roboto_Condensed/LICENSE.txt" afterPath="$PROJECT_DIR$/Client/Fonts/Roboto_Condensed/LICENSE.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/convert.html" afterPath="$PROJECT_DIR$/Client/convert.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/index.html" afterPath="$PROJECT_DIR$/Client/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/style.css" afterPath="$PROJECT_DIR$/Client/style.css" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,80 +95,103 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/project/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="309" column="13" lean-forward="true" selection-start-line="309" selection-start-column="13" selection-end-line="309" selection-end-column="13" />
+            <state relative-caret-position="129">
+              <caret line="65" column="24" lean-forward="true" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
               <folding>
-                <element signature="n#style#0;n#p#0;n#div#12;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#div#13;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#1;n#div#13;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="e#5422#5428#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
+        <entry file="file://$PROJECT_DIR$/Client/project/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17880">
-              <caret line="745" column="35" lean-forward="false" selection-start-line="745" selection-start-column="35" selection-end-line="745" selection-end-column="35" />
+            <state relative-caret-position="537">
+              <caret line="410" column="15" lean-forward="false" selection-start-line="410" selection-start-column="15" selection-end-line="410" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/project/chat.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="toolbar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/toolbar.js">
+        <entry file="file://$PROJECT_DIR$/Client/project/toolbar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1608">
-              <caret line="67" column="12" lean-forward="false" selection-start-line="67" selection-start-column="12" selection-end-line="67" selection-end-column="12" />
+            <state relative-caret-position="424">
+              <caret line="25" column="1" lean-forward="false" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
               <folding>
-                <marker date="1484336832271" expanded="true" signature="584:595" ph="..." />
-                <marker date="1484336832271" expanded="true" signature="726:745" ph="..." />
-                <marker date="1484336832271" expanded="true" signature="1370:1398" ph="..." />
-                <marker date="1484336832271" expanded="true" signature="1783:1811" ph="..." />
+                <marker date="1484435939383" expanded="true" signature="584:595" ph="..." />
+                <marker date="1484435939383" expanded="true" signature="726:745" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Client/project/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="256">
+              <caret line="883" column="19" lean-forward="true" selection-start-line="883" selection-start-column="19" selection-end-line="883" selection-end-column="19" />
               <folding>
-                <marker date="1484337411733" expanded="true" signature="7186:7197" ph="..." />
+                <marker date="1484438521152" expanded="true" signature="7186:7197" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
+        <entry file="file://$PROJECT_DIR$/Client/project/components.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16368">
-              <caret line="682" column="42" lean-forward="false" selection-start-line="682" selection-start-column="42" selection-end-line="682" selection-end-column="42" />
+            <state relative-caret-position="1464">
+              <caret line="1383" column="0" lean-forward="true" selection-start-line="1383" selection-start-column="0" selection-end-line="1383" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4224">
+              <caret line="176" column="0" lean-forward="false" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="hover.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/hover.js">
+        <entry file="file://$PROJECT_DIR$/Client/project/hover.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-              <folding />
+            <state relative-caret-position="424">
+              <caret line="99" column="1" lean-forward="false" selection-start-line="99" selection-start-column="1" selection-end-line="99" selection-end-column="1" />
+              <folding>
+                <marker date="1484436980145" expanded="true" signature="2034:2062" ph="..." />
+                <marker date="1484436980145" expanded="true" signature="2447:2475" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
+        <entry file="file://$PROJECT_DIR$/Client/project/clipbord.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2112">
-              <caret line="88" column="28" lean-forward="true" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
+              <caret line="88" column="28" lean-forward="false" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -125,36 +211,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hoverb</find>
-      <find>balloo</find>
-      <find>hoverBa`</find>
-      <find>conte</find>
-      <find>contex</find>
-      <find>hoverBall</find>
-      <find>hoverBa</find>
-      <find>hoverB</find>
-      <find>led</find>
-      <find>Gate</find>
-      <find>B2d</find>
-      <find>merg</find>
-      <find>window.</find>
-      <find>selecting.compo</find>
-      <find>find</find>
       <find>Merg</find>
-      <find>whats</find>
       <find>toolb</find>
       <find>console</find>
       <find>toa</find>
       <find>merger</find>
-      <find>LED</find>
       <find>notif</find>
       <find>error</find>
       <find>Displ</find>
       <find>hoverBal</find>
       <find>hover</find>
-      <find>tool</find>
       <find>use chr</find>
       <find>chrome</find>
+      <find>measure</find>
+      <find>Debu</find>
+      <find>GAte</find>
+      <find>Output</find>
+      <find>LED</find>
+      <find>Local</find>
+      <find>whats</find>
+      <find>credit</find>
+      <find>tool</find>
+      <find>toolbarti</find>
+      <find>toolbart</find>
+      <find>cre</find>
+      <find>hoverBa</find>
+      <find>credi</find>
+      <find>radiu</find>
+      <find>cred</find>
+      <find>chat</find>
+      <find>list</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
@@ -169,12 +255,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Client/Sandbox/components.js" />
-        <option value="$PROJECT_DIR$/Client/Sandbox/toolbar.js" />
-        <option value="$PROJECT_DIR$/Client/Sandbox/index.html" />
-        <option value="$PROJECT_DIR$/Client/Sandbox/style.css" />
-        <option value="$PROJECT_DIR$/Client/Sandbox/main.js" />
-        <option value="$PROJECT_DIR$/Client/Local/components2.js" />
         <option value="$PROJECT_DIR$/Client/openfile.html" />
         <option value="$PROJECT_DIR$/Client/Local/misc.js" />
         <option value="$PROJECT_DIR$/Client/_style.css" />
@@ -212,14 +292,20 @@
         <option value="$PROJECT_DIR$/Client/Local/keys.js" />
         <option value="$PROJECT_DIR$/Client/popup.css" />
         <option value="$PROJECT_DIR$/Client/Local/actions2.js" />
-        <option value="$PROJECT_DIR$/Client/index.html" />
         <option value="$PROJECT_DIR$/Client/Local/clipbord.js" />
-        <option value="$PROJECT_DIR$/Client/Local/components.js" />
         <option value="$PROJECT_DIR$/Client/Local/hover.js" />
         <option value="$PROJECT_DIR$/Client/Local/toolbar.js" />
         <option value="$PROJECT_DIR$/Client/Local/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/style.css" />
+        <option value="$PROJECT_DIR$/Client/Local/audio.js" />
         <option value="$PROJECT_DIR$/Client/Local/index.html" />
+        <option value="$PROJECT_DIR$/Client/Local/components.js" />
+        <option value="$PROJECT_DIR$/Client/index.html" />
+        <option value="$PROJECT_DIR$/Client/project/toolbar.js" />
+        <option value="$PROJECT_DIR$/Client/project/hover.js" />
+        <option value="$PROJECT_DIR$/Client/project/index.html" />
+        <option value="$PROJECT_DIR$/Client/project/style.css" />
+        <option value="$PROJECT_DIR$/Client/project/main.js" />
       </list>
     </option>
   </component>
@@ -240,7 +326,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/Server (Node.js)/node_modules" />
+    <handled-path value="$PROJECT_DIR$/server (Node.js)/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1981" />
@@ -266,6 +352,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -288,7 +375,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Server (Node.js)" />
+              <option name="myItemId" value="server (Node.js)" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -320,13 +407,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Local" />
+              <option name="myItemId" value="project" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -340,19 +426,19 @@
     <property name="JavaScriptPreferStrict" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="settings.editor.splitter.proportion" value="0.23212537" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/primes.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JavaScript/Web Worker" />
     <property name="nodejs_interpreter_path" value="C:\Program Files\nodejs\node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="SearchEverywhereHistoryKey" value="pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/popup.css&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/Local/keys.js" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\brouw\Desktop\Profielwerkstuk\Client\Fonts" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\brouw\Desktop\PWS" />
       <recent name="C:\Users\brouw\Desktop\Profielwerkstuk\Client\Sandbox" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\brouw\Desktop\Profielwerkstuk\Client\Fonts" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.main.js">
@@ -362,14 +448,14 @@
     <configuration default="false" name="LOGIC.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="LOGIC.js" working-dir="$PROJECT_DIR$">
       <method />
     </configuration>
-    <configuration default="false" name="main.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="/usr/bin/node" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/Server (Node.js)">
+    <configuration default="false" name="main.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="/usr/bin/node" path-to-js-file="$PROJECT_DIR$/server (Node.js)/main.js" working-dir="$PROJECT_DIR$/server (Node.js)">
       <profiling v8-profiler-path="" />
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
         <profiling v8-profiler-path="" />
       </EXTENSION>
       <method />
     </configuration>
-    <configuration default="false" name="components.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="/usr/bin/node" path-to-js-file="components.js" working-dir="$PROJECT_DIR$/Server (Node.js)">
+    <configuration default="false" name="components.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="/usr/bin/node" path-to-js-file="$PROJECT_DIR$/server (Node.js)/components.js" working-dir="$PROJECT_DIR$/server (Node.js)">
       <profiling v8-profiler-path="" />
       <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
         <option name="envVars">
@@ -714,6 +800,8 @@
       <workItem from="1484261029751" duration="2532000" />
       <workItem from="1484326262360" duration="4288000" />
       <workItem from="1484422114512" duration="119000" />
+      <workItem from="1484425992911" duration="7741000" />
+      <workItem from="1484435713097" duration="2953000" />
     </task>
     <task id="LOCAL-00039" summary="Update 0.1.77!">
       <created>1474838907844</created>
@@ -1063,7 +1151,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="787345000" />
+    <option name="totallyTimeSpent" value="798039000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1081,21 +1169,21 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13501883" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32735425" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32870865" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3258595" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1166,13 +1254,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/webstorm.jar!/resources/html5-schema/html5/applications.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="340" column="16" lean-forward="false" selection-start-line="340" selection-start-column="16" selection-end-line="340" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/Local/popup.js" />
     <entry file="file://$PROJECT_DIR$/Client/Local/popup.css" />
     <entry file="file://$PROJECT_DIR$/Client/run.bat" />
@@ -1180,7 +1261,7 @@
     <entry file="file://$PROJECT_DIR$/Client/_style.css" />
     <entry file="file://$PROJECT_DIR$/Client/Local/stringifier2.js" />
     <entry file="file://$PROJECT_DIR$/Server (Node.js)/msghandler.js" />
-    <entry file="file://$PROJECT_DIR$/Client/Local/ticker.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/ticker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
@@ -1216,14 +1297,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/stringifier.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/stringifier.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
           <caret line="69" column="19" lean-forward="false" selection-start-line="69" selection-start-column="18" selection-end-line="69" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server (Node.js)/client.html">
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/client.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1231,7 +1312,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../PWS2/Client/components.js" />
-    <entry file="file://$PROJECT_DIR$/Client/Local/waypoints.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/waypoints.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="7" column="55" lean-forward="false" selection-start-line="7" selection-start-column="55" selection-end-line="7" selection-end-column="55" />
@@ -1239,7 +1320,7 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Desktop/primes.js" />
-    <entry file="file://$PROJECT_DIR$/Client/Local/actions.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/actions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="9" column="23" lean-forward="false" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
@@ -1247,14 +1328,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server (Node.js)/components.js">
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/components.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
           <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/tips.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/tips.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="447">
           <caret line="50" column="29" lean-forward="true" selection-start-line="50" selection-start-column="29" selection-end-line="50" selection-end-column="29" />
@@ -1268,14 +1349,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server (Node.js)/pws.dat">
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/pws.dat">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/debug.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/debug.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
           <caret line="13" column="41" lean-forward="false" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
@@ -1283,18 +1364,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/componentInfo.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/componentInfo.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
           <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1305,7 +1378,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/userList.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/userList.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="14" column="1" lean-forward="false" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
@@ -1333,7 +1406,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/contextmenu.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/contextmenu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2184">
           <caret line="91" column="1" lean-forward="false" selection-start-line="91" selection-start-column="1" selection-end-line="91" selection-end-column="1" />
@@ -1341,21 +1414,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/localStorage.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/localStorage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1632">
           <caret line="68" column="14" lean-forward="false" selection-start-line="68" selection-start-column="14" selection-end-line="68" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/socket.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/socket.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2376">
           <caret line="99" column="1" lean-forward="false" selection-start-line="99" selection-start-column="1" selection-end-line="99" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/misc.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/misc.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-801">
           <caret line="0" column="9" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="9" />
@@ -1369,10 +1442,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/console.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/console.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2088">
           <caret line="87" column="33" lean-forward="false" selection-start-line="87" selection-start-column="33" selection-end-line="87" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/keys.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4704">
+          <caret line="196" column="4" lean-forward="true" selection-start-line="196" selection-start-column="4" selection-end-line="196" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/actions2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4056">
+          <caret line="169" column="32" lean-forward="false" selection-start-line="169" selection-start-column="32" selection-end-line="169" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="150" column="0" lean-forward="false" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/notifications.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/clipbord.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2112">
+          <caret line="88" column="28" lean-forward="false" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/audio.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4224">
+          <caret line="176" column="0" lean-forward="false" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1464">
+          <caret line="1383" column="0" lean-forward="true" selection-start-line="1383" selection-start-column="0" selection-end-line="1383" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/toolbar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="25" column="1" lean-forward="false" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+          <folding>
+            <marker date="1484435939383" expanded="true" signature="584:595" ph="..." />
+            <marker date="1484435939383" expanded="true" signature="726:745" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/hover.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="99" column="1" lean-forward="false" selection-start-line="99" selection-start-column="1" selection-end-line="99" selection-end-column="1" />
+          <folding>
+            <marker date="1484436980145" expanded="true" signature="2034:2062" ph="..." />
+            <marker date="1484436980145" expanded="true" signature="2447:2475" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/project/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1385,109 +1551,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/keys.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4704">
-          <caret line="196" column="4" lean-forward="true" selection-start-line="196" selection-start-column="4" selection-end-line="196" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
+        <state relative-caret-position="129">
+          <caret line="65" column="24" lean-forward="true" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
           <folding>
-            <element signature="n#style#0;n#span#0;n#span#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#p#0;n#div#13;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#1;n#div#13;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#5422#5428#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/actions2.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4056">
-          <caret line="169" column="32" lean-forward="false" selection-start-line="169" selection-start-column="32" selection-end-line="169" selection-end-column="32" />
+        <state relative-caret-position="537">
+          <caret line="410" column="15" lean-forward="false" selection-start-line="410" selection-start-column="15" selection-end-line="410" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server (Node.js)/main.js">
+    <entry file="file://$PROJECT_DIR$/Client/project/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="150" column="0" lean-forward="false" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/notifications.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="309" column="13" lean-forward="true" selection-start-line="309" selection-start-column="13" selection-end-line="309" selection-end-column="13" />
+        <state relative-caret-position="256">
+          <caret line="883" column="19" lean-forward="true" selection-start-line="883" selection-start-column="19" selection-end-line="883" selection-end-column="19" />
           <folding>
-            <element signature="n#style#0;n#p#0;n#div#12;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1484438521152" expanded="true" signature="7186:7197" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17880">
-          <caret line="745" column="35" lean-forward="false" selection-start-line="745" selection-start-column="35" selection-end-line="745" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/toolbar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1608">
-          <caret line="67" column="12" lean-forward="false" selection-start-line="67" selection-start-column="12" selection-end-line="67" selection-end-column="12" />
-          <folding>
-            <marker date="1484336832271" expanded="true" signature="584:595" ph="..." />
-            <marker date="1484336832271" expanded="true" signature="726:745" ph="..." />
-            <marker date="1484336832271" expanded="true" signature="1370:1398" ph="..." />
-            <marker date="1484336832271" expanded="true" signature="1783:1811" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1484337411733" expanded="true" signature="7186:7197" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16368">
-          <caret line="682" column="42" lean-forward="false" selection-start-line="682" selection-start-column="42" selection-end-line="682" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/hover.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Local/clipbord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2112">
-          <caret line="88" column="28" lean-forward="true" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>

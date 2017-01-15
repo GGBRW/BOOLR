@@ -169,14 +169,14 @@
         }
 
         function openProject(data) {
-            const project = window.open("./Local/index.html");
+            const project = window.open("./project/index.html");
             if(data) {
                 project.a = data;
             }
         }
 
         function openServerProject(url) {
-            const project = window.open("./Local/index.html");
+            const project = window.open("./project/index.html");
             project.onload = () => {
                 project.url = url;
                 project.connectToSocket(url);
