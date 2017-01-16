@@ -8,23 +8,19 @@
         <title>PWS | Sandbox mode</title>
     </head>
     <body>
-        <!-- Preload voor lettertypes -->
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
-        <!-- Het belangrijkste deel van de hele pagina. Dit is een HTML5-element die uitgestrekt is over de hele pagina waarmee met JavaScript op getekent kan worden. -->
-        <!-- Ik heb hier het attribuut 'tabindex' met waarde '1' aangegeven als snelle oplossing om met JavaScript te checken of het canvas element 'focus' heeft. -->
         <canvas id="canvas" tabindex="1"></canvas>
 
-        <!-- De console die verschijnt als je op de toetsen shift + 't' drukt. -->
+        <!-- Console -->
         <div id="console">
-            <!-- Button om de console te verbergen -->
             <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
 
             <div id="input" contenteditable="true" spellcheck="false"></div>
             <div id="messages"></div>
         </div>
 
-        <!-- De chat die verschijnt als je op de toets 't' drukt -->
+        <!-- Chat -->
         <input id="chat" spellcheck="false">
 
         </input>
@@ -48,6 +44,7 @@
                 <li onclick="select(Output)">Output</li>
                 <li onclick="select(Button)">Button</li>
                 <li onclick="select(Constant)">Constant</li>
+                <li onclick="select(Key)">Key</li>
                 <li onclick="select(Delay)">Delay</li>
                 <li onclick="select(Clock)">Clock</li>
                 <li onclick="select(LED)">LED</li>
@@ -66,8 +63,8 @@
         <!-- Credits -->
         <div id="credits">
             <button id="version" onclick="popup.whatsnew.show()" tooltip="Version">PWS v0.1.58</button>
-            <button onclick="popup.settings.show()" tooltip="Save project" class="material-icons">save</button>
-            <button onclick="popup.openproject.show()" tooltip="Open project" class="material-icons">open_in_browser</button>
+            <button onclick="popup.settings.show()" tooltip="Save project <br>(Ctrl+S)" class="material-icons">save</button>
+            <button onclick="popup.openproject.show()" tooltip="Open project <br>(Ctrl+O)" class="material-icons">open_in_browser</button>
             <button onclick="popup.settings.show()" tooltip="Settings" class="material-icons">settings</button>
             <button onclick="popup.info.show()" tooltip="Help" class="material-icons">help</button>
         </div>

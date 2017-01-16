@@ -248,6 +248,7 @@ class Input {
     }
 
     update(value = this.value) {
+        this.value = +!!value;
         const result = this.func_out(this.value);
         for(let i = 0; i < this.output.length; ++i) {
             const value = i < result.length ? result[i] : result[result.length - 1];
@@ -304,7 +305,7 @@ class Input {
                 ctx.font = zoom / 1.5 + "px Material-icons";
                 ctx.fillText(
                     this.icon,
-                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.value).width / 2),
+                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
                     (-this.pos.y + offset.y) * zoom + (this.height - .3) / 2 * zoom
                 );
             } else {
@@ -435,7 +436,7 @@ class Constant extends Input {
 class Clock extends Input {
     constructor(pos,height,width,name) {
         super(pos,height,width,name);
-        this.icon = "alarm";
+        this.icon = "access_time";
         this.onclick = undefined;
 
         function updateInterval() {
@@ -459,6 +460,23 @@ class Clock extends Input {
                 updateInterval.call(this);
             }
         }, 100);
+    }
+}
+
+class Key extends Input {
+    constructor(pos,height,width,name) {
+        super(pos,height,width,name);
+        this.onclick = null;
+        this.icon = "keyboard";
+
+        popup.prompt.show(
+            "Choose a numeric key",
+            "Choose a numeric key to bind to this input port",
+            n =>  {
+                if(isNaN(n = +n) || !(n >= 0 && n <= 9)) { remove(this); return }
+                inputKeys[n + 96].push(this);
+            }
+        );
     }
 }
 
@@ -547,7 +565,7 @@ class Output {
                 ctx.font = zoom / 1.5 + "px Material-icons";
                 ctx.fillText(
                     this.icon,
-                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.value).width / 2),
+                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
                     (-this.pos.y + offset.y) * zoom + (this.height - .3) / 2 * zoom
                 );
             } else {
@@ -1028,7 +1046,7 @@ class Gate {
             if(value != this.output[i].wire.value) {
                 this.output[i].wire.value = result[i] ? result[i] : result[result.length - 1];
 
-                if(Math.random() < .01) {
+                if(Math.random() < .004) {
                     setTimeout(this.output[i].wire.to.update.bind(this.output[i].wire.to), +settings.update_delay);
                 } else {
                     this.output[i].wire.to.update();
@@ -1066,12 +1084,24 @@ class Gate {
             else {
                 ctx.fillStyle = `rgba(16,16,16,${ (zoom - 10) / 10 })`;
             }
-            ctx.font = zoom / 1.5 + "px Ubuntu";
-            ctx.fillText(
-                this.icon,
-                (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
-                (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
-            );
+
+            if(this.icon && this.icon.length > 3) {
+                if(this.value) ctx.fillStyle = "#aaa";
+                else ctx.fillStyle = "#000";
+                ctx.font = zoom / 1.5 + "px Material-icons";
+                ctx.fillText(
+                    this.icon,
+                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
+                    (-this.pos.y + offset.y) * zoom + (this.height - .3) / 2 * zoom
+                );
+            } else {
+                ctx.font = zoom / 1.5 + "px Monospace";
+                ctx.fillText(
+                    this.icon,
+                    (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
+                    (-this.pos.y + offset.y) * zoom + (this.height - .5) / 2 * zoom
+                );
+            }
         }
 
         if(zoom > 30) {
@@ -1164,6 +1194,7 @@ class Delay extends Gate {
     constructor(pos,height = 1, width = 2,name,delay) {
         super(pos,height,width,"~",name,1);
 
+        this.icon = "timer";
         this.update = function() {
             if(this.input.length && this.input[0].wire.value) {
                 for(let i = 0; i < this.output.length; ++i) {
@@ -1227,6 +1258,7 @@ class XOR extends Gate {
 class Merger extends Gate {
     constructor(pos,height = 8,width = 2,name) {
         super(pos,height,width,">",name,2);
+        this.icon = "call_merge";
         this.inputPorts = null;
         this.outputPorts = 1;
     }
@@ -1254,6 +1286,7 @@ class Merger extends Gate {
 class Splitter extends Gate {
     constructor(pos,height = 8,width = 2,name) {
         super(pos,height,width,"<",name,2);
+        this.icon = "call_split";
     }
 
     update() {
@@ -1285,10 +1318,10 @@ class Custom {
     constructor(
         selection = [],
         pos = { x: mouse.grid.x, y: mouse.grid.y },
-        name = "adder"
+        name = "f(x)"
     ) {
         this.pos = pos;
-        this.input = [];
+        this.input = {};
         this.output = [];
 
         this.name = name;

@@ -10,7 +10,7 @@ let offset = {
     x: 0,
     y: 0
 };
-let zoom = 50;
+let zoom = 100;
 
 let scroll_animation = { v: 0, r: 0, animate: false };
 let zoom_animation = zoom;
@@ -286,6 +286,7 @@ c.onmousedown = function(e) {
             }
         }
         else if(e.ctrlKey) {
+            scroll_animation.animate = false;
             if(selecting) {
                 dragging = {
                     selection: true,
@@ -874,6 +875,9 @@ c.onmouseup = function(e) {
             connecting = null;
         }
         else if(e.altKey) {
+            scroll_animation.animate = true;
+        }
+        else if(e.ctrlKey) {
             scroll_animation.animate = true;
         }
 

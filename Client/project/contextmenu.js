@@ -27,17 +27,17 @@ contextMenu.show = function(pos) {
             }
 
             this.appendChild(context_options["set waypoint"]);
-            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${component.name}</span>`;
+            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${component.name} (S)</span>`;
 
             this.appendChild(context_options["remove"]);
         } else {
             this.appendChild(context_options["paste"]);
 
             this.appendChild(context_options["set waypoint"]);
-            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${Math.round(contextMenu.pos.x)},${Math.round(contextMenu.pos.y)}</span>`;
+            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${Math.round(contextMenu.pos.x)},${Math.round(contextMenu.pos.y)} (S)</span>`;
 
             this.appendChild(context_options["goto waypoint"]);
-            context_options["goto waypoint"].innerHTML = '<i class="material-icons">redo</i><span>Jump to waypoint</span>';
+            context_options["goto waypoint"].innerHTML = '<i class="material-icons">redo</i><span>Jump to waypoint (W)</span>';
             if(waypoints.length == 0) context_options["goto waypoint"].className = "disabled";
             else {
                 context_options["goto waypoint"].className = "";
@@ -65,7 +65,7 @@ const context_options = {};
 
 // Edit name
 context_options["edit name"] = document.createElement("li");
-context_options["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name [E]</span>';
+context_options["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name (E)</span>';
 context_options["edit name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("name")) {
@@ -79,7 +79,7 @@ context_options["edit name"].onclick = () => {
 
 // Edit wire color
 context_options["edit color"] = document.createElement("li");
-context_options["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color [E]</span>';
+context_options["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color (E)</span>';
 context_options["edit color"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.color_off) {
@@ -109,7 +109,7 @@ context_options["edit_delay"].onclick = () => {
 
 // Rotate
 context_options["rotate"] = document.createElement("li");
-context_options["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate [R]</span>';
+context_options["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate (R)</span>';
 context_options["rotate"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     const t = component.height;
@@ -117,16 +117,17 @@ context_options["rotate"].onclick = () => {
     component.width = t;
 }
 
-// Clone
-context_options["clone"] = document.createElement("li");
-context_options["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone [CTRL+D+Drag]</span>';
-context_options["clone"].onclick = () => {
-    find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
-}
+//
+// // Clone
+// context_options["clone"] = document.createElement("li");
+// context_options["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone (CTRL+D+Drag)</span>';
+// context_options["clone"].onclick = () => {
+//     find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
+// }
 
 // Copy
 context_options["copy"] = document.createElement("li");
-context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord [CTRL+C]</span>';
+context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord (Ctrl+C)</span>';
 context_options["copy"].onclick = () => {
     // clipbord = Object.assign({},selecting);
     // clipbord.components = stringify(selecting.components);
@@ -140,7 +141,7 @@ context_options["copy"].onclick = () => {
 
 // Paste
 context_options["paste"] = document.createElement("li");
-context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste [CTRL+V]</span>';
+context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste (Ctrl+V)</span>';
 context_options["paste"].onclick = function() {
     //parse(clipbord.components,-(clipbord.x - contextMenu.pos.x),-(clipbord.y - contextMenu.pos.y),true);
     clipbord.paste(contextMenu.pos.x,contextMenu.pos.y);
@@ -148,7 +149,7 @@ context_options["paste"].onclick = function() {
 
 // Delete
 context_options["remove"] = document.createElement("li");
-context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
+context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
 context_options["remove"].onclick = () => {
     action(
         "remove",
@@ -162,7 +163,7 @@ context_options["remove"].onclick = () => {
 
 // Delete All
 context_options["remove all"] = document.createElement("li");
-context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove [Del]</span>';
+context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
 context_options["remove all"].onclick = () => {
     action(
         "removeSelection",
@@ -195,7 +196,7 @@ context_options["componentize"].onclick = () => {
 
 // Set waypoint
 context_options["set waypoint"] = document.createElement("li");
-context_options["set waypoint"].innerHTML = '<i class="material-icons">my_location</i><span>Set waypoint</span>';
+context_options["set waypoint"].innerHTML = '<i class="material-icons">my_location</i><span>Set waypoint (S)</span>';
 context_options["set waypoint"].onclick = () => {
     setWaypoint(
         Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y),

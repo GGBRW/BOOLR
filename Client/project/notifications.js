@@ -1,3 +1,10 @@
+// if(window.Notification) {
+//     if(Notification.permission != "granted") {
+//         Notification.requestPermission();
+//     }
+// }
+
+
 const notifications = document.getElementById("notifications");
 
 notifications.push = function(msg,type) {

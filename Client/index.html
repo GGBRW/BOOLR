@@ -10,6 +10,8 @@
     <!-- Ubuntu lettertype ophalen van Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+
     <!-- Aangeven welke charset gebruikt wordt, namelijk UTF-8 --> 
     <meta charset="UTF-8">
     <!-- Titel van de pagina -->
@@ -30,8 +32,8 @@
     </div>
 
     <div id="container">
-        <button id="sandbox_btn" onclick="openProject()">SANDBOX MODE</button>
-        <button id="load_project_btn">LOAD PROJECT</button>
+        <button id="sandbox_btn" onclick="openProject()">CREATE NEW BOARD</button>
+        <button id="load_project_btn">OPEN BOARD</button>
         <button id="settings_btn" onclick="">SETTINGS</button>
         <button id="info_btn" onclick="">INFO</button>
     </div>
@@ -184,6 +186,18 @@
         }
     </script>
 
+    <div id="copyright">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</div>
+
     <script src="popup.js"></script>
+
+    <script>
+        let offset = { x: 0, y: 0 };
+        let dir = Math.random() * Math.PI * 2;
+        setInterval(() => {
+            offset.x += Math.sin(dir);
+            offset.y += Math.cos(dir);
+            document.body.style.backgroundPosition = offset.x + "px " + offset.y + "px";
+        }, 50);
+    </script>
 </body>
 </html>

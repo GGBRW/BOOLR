@@ -1,7 +1,9 @@
 let keys = {};
 
+// Canvas key bindings
 c.onkeydown = function(e) {
-    //console.log(e.which);
+    console.log(e.which);
+
     if(!keys[e.which]) keys[e.which] = new Date;
     switch(e.which) {
         case 37: // Arrow left
@@ -101,6 +103,11 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
+        case 73:
+            if(e.ctrlKey && e.shiftKey) {
+                popup.info.show();
+            }
+            break;
         case 79: // O
             // if(components.length) {
             //     popup.confirm.show(
@@ -130,11 +137,14 @@ c.onkeydown = function(e) {
             }
             break;
         case 83: // S
-            if(e.ctrlKey) {
+            console.log(e);
+            if(e.ctrlKey && e.shiftKey) {
+                popup.settings.show();
+            } else if(e.ctrlKey) {
                 popup.prompt.show(
                     "Export",
                     "Enter export file name:",
-                    name => name ? download(name,stringify({components})) : download(undefined,stringify({components}))
+                    name => name ? download(name, stringify({components})) : download(undefined, stringify({components}))
                 );
             } else {
                 waypointsMenu.hide();
@@ -201,4 +211,23 @@ c.onkeyup = function(e) { keys[e.which] = false }
 
 c.onblur = function() {
     for(let i in keys) keys[i] = false;
+}
+
+// Window key bindings
+let inputKeys = {};
+for(let i = 96; i <= 105; ++i) inputKeys[i] = [];
+window.onkeydown = function(e) {
+    if(e.which >= 96 && e.which <= 105) {
+        for(let i = 0; i < inputKeys[e.which].length; ++i) {
+            inputKeys[e.which][i].update(1);
+        }
+    }
+}
+
+window.onkeyup = function(e) {
+    if(e.which >= 96 && e.which <= 105) {
+        for(let i = 0; i < inputKeys[e.which].length; ++i) {
+            inputKeys[e.which][i].update(0);
+        }
+    }
 }

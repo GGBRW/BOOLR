@@ -36,6 +36,14 @@
 body {
     margin: 0;
     background: url("wallpaper.png");
+    background-size: 100px;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+
     text-align: center;
     overflow: hidden;
 
@@ -46,7 +54,7 @@ body {
 }
 
 body > h1 {
-    font-family: "Ubuntu";
+    font-family: sans-serif;
     font-size: 90px;
     font-weight: 800;
     background: transparent;
@@ -69,8 +77,8 @@ body > h1 {
     border: none;
     box-shadow: 0 8px 0 0 #822;
     outline: none;
-    font-family: "Roboto Condensed";
-    font-size: 30px;
+    font-family: "Ubuntu";
+    font-size: 25px;
 
     display: block;
     height: 80px;
@@ -155,7 +163,7 @@ body > h1 {
 }
 
 .over h1 {
-    font-family: "Roboto Condensed";
+    font-family: "Overpass";
     font-size: 30px;
     font-weight: 400;
 }
@@ -311,4 +319,13 @@ body > h1 {
     font-family: "Ubuntu";
     font-weight: 600;
     margin: 0;
+}
+
+#copyright {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #666;
+    font-family: "Overpass";
 }
