@@ -798,13 +798,10 @@ c.onmouseup = function(e) {
                             }
                         }
 
+                        action("moveSelection",[selecting.components,dragging.pos.x,dragging.pos.y,selecting.x,selecting.y],true);
+
                         dragging = null;
                         c.style.cursor = "crosshair";
-
-                        undoStack.push(new Action(
-                            "move_selection",
-                            Object.assign({ selection: Object.assign({},selecting) }, dragging)
-                        ));
                     }
                 })();
             } else {
@@ -862,7 +859,6 @@ c.onmouseup = function(e) {
                             }
                         }
 
-                        console.log(dragging.component.pos.x,dragging.component.pos.y);
                         action("move",[dragging.component,dragging.component.pos.x,dragging.component.pos.y],true);
 
                         dragging = null;

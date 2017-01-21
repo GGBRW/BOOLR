@@ -126,6 +126,11 @@ function action(type,data,undoable,user) {
                 undoData = [data[0],dragging.pos.x,dragging.pos.y];
             }
             break;
+        case "moveSelection":
+            if(undoable) {
+                undoData = [selecting.components,selecting.x,selecting.y,dragging.pos.x,dragging.pos.y];
+            }
+            break;
         case "click":
             undoable = false;
             data[0].onclick(data[1],data[2]);

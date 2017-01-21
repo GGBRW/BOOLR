@@ -1321,7 +1321,7 @@ class Custom {
         name = "f(x)"
     ) {
         this.pos = pos;
-        this.input = {};
+        this.input = [];
         this.output = [];
 
         this.name = name;
