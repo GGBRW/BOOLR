@@ -8,6 +8,7 @@ const WebSocketServer = require("ws").Server,
       wss = new WebSocketServer({ port: 3000 });
 
 // The list of all the users identified by their user agent
+// OMG this is so safe
 let accounts = {
     "GGBRW": { username: "GGBRW", password: "Moeten ze er maar geen centerparks b0uwen", online: false, color: "#005" },
     "Bakker Joop": { username: "Bakker Joop", password: "Spijkertje4", online: false, color: "#500" },

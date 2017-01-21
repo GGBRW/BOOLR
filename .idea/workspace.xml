@@ -2,45 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/pws.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/Fonts/Inconsolata-Regular.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/Fonts/MaterialIcons-Regular.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/Fonts/Monospace.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/Fonts/Ubuntu-Regular.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/convert.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/d2bf.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/popup.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/popup.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/actions.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/actions2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/audio.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/chat.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/clipbord.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/componentInfo.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/components.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/console.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/contextmenu.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/debug.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/hover.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/keys.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/localStorage.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/misc.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/notifications.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/socket.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/stringifier.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/ticker.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/tips.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/toolbar.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/userList.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/project/waypoints.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/pws.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/wallpaper.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/main.js" afterPath="$PROJECT_DIR$/server (Node.js)/main.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,11 +22,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="854">
+            <state relative-caret-position="1934">
               <caret line="165" column="43" lean-forward="false" selection-start-line="165" selection-start-column="43" selection-end-line="165" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -158,7 +130,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Client/Local/stringifier2.js" />
         <option value="$PROJECT_DIR$/Client/Local/componentInfo.js" />
         <option value="$PROJECT_DIR$/Client/converter.html" />
         <option value="$PROJECT_DIR$/Client/Local/stringifier.js" />
@@ -209,6 +180,7 @@
         <option value="$PROJECT_DIR$/client/css/style.css" />
         <option value="$PROJECT_DIR$/client/css/pws.css" />
         <option value="$PROJECT_DIR$/client/index.html" />
+        <option value="$PROJECT_DIR$/server (Node.js)/main.js" />
       </list>
     </option>
   </component>
@@ -719,7 +691,7 @@
       <workItem from="1484647372748" duration="264000" />
       <workItem from="1484676446586" duration="2399000" />
       <workItem from="1484765498994" duration="71000" />
-      <workItem from="1485010626535" duration="274000" />
+      <workItem from="1485010626535" duration="526000" />
     </task>
     <task id="LOCAL-00039" summary="Update 0.1.77!">
       <created>1474838907844</created>
@@ -1069,7 +1041,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="811173000" />
+    <option name="totallyTimeSpent" value="811425000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1250,13 +1222,6 @@
     <entry file="file://$PROJECT_DIR$/Client/project/misc.js" />
     <entry file="file://$PROJECT_DIR$/Client/popup.css" />
     <entry file="file://$PROJECT_DIR$/Client/project/console.js" />
-    <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="150" column="0" lean-forward="false" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/project/audio.js" />
     <entry file="file://$PROJECT_DIR$/Client/popup.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/contextmenu.js" />
@@ -1299,8 +1264,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="854">
+        <state relative-caret-position="1934">
           <caret line="165" column="43" lean-forward="false" selection-start-line="165" selection-start-column="43" selection-end-line="165" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
           <folding />
         </state>
       </provider>
