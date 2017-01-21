@@ -36,7 +36,7 @@ canvas {
 
 @font-face {
     font-family: "Material-icons";
-    src: url(../Fonts/MaterialIcons-Regular.ttf);
+    src: url(../fonts/MaterialIcons-Regular.ttf);
 }
 .material-icons {
     font-family: "Material-icons";
@@ -48,33 +48,33 @@ canvas {
 
 @font-face {
     font-family: "Roboto";
-    src: url(../Fonts/Roboto-Regular.ttf);
+    src: url(../fonts/Roboto-Regular.ttf);
 }
 
 @font-face {
     font-family: "Roboto";
-    src: url(../Fonts/Roboto-Bold.ttf);
+    src: url(../fonts/Roboto-Bold.ttf);
     font-weight: 600;
 }
 
 @font-face {
     font-family: "Roboto Condensed";
-    src: url(../Fonts/RobotoCondensed-Regular.ttf);
+    src: url(../fonts/RobotoCondensed-Regular.ttf);
 }
 
 @font-face {
     font-family: "Inconsolata";
-    src: url(../Fonts/Inconsolata-Regular.ttf);
+    src: url(../fonts/Inconsolata-Regular.ttf);
 }
 
 @font-face {
     font-family: "Ubuntu";
-    src: url(../Fonts/Ubuntu-Regular.ttf);
+    src: url(../fonts/Ubuntu-Regular.ttf);
 }
 
 @font-face {
     font-family: "Monospaced";
-    src: url(../Fonts/Monospace.ttf);
+    src: url(../fonts/Monospace.ttf);
 }
 
 /* Console */

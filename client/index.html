@@ -2,9 +2,9 @@
 <html>
 <head>
     <!-- Algemene CSS stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <!-- Stylesheet voor alle pop-ups -->
-    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="css/popup.css">
     <!-- Stylesheet van Google, bevat alle mooie Material icons die ook gebruikt worden in Android -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Ubuntu lettertype ophalen van Google Fonts -->
@@ -171,14 +171,14 @@
         }
 
         function openProject(data) {
-            const project = window.open("./project/index.html");
+            const project = window.open("pws.html");
             if(data) {
                 project.a = data;
             }
         }
 
         function openServerProject(url) {
-            const project = window.open("./project/index.html");
+            const project = window.open("pws.html");
             project.onload = () => {
                 project.url = url;
                 project.connectToSocket(url);
@@ -188,7 +188,7 @@
 
     <div id="copyright">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</div>
 
-    <script src="popup.js"></script>
+    <script src="js/popup.js"></script>
 
     <script>
         let offset = { x: 0, y: 0 };

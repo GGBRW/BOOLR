@@ -1,22 +1,22 @@
 @font-face {
     font-family: "Roboto";
-    src: url(./Fonts/Roboto-Regular.ttf);
+    src: url(../fonts/Roboto-Regular.ttf);
 }
 
 @font-face {
     font-family: "Roboto";
-    src: url(./Fonts/Roboto-Bold.ttf);
+    src: url(../fonts/Roboto-Bold.ttf);
     font-weight: 600;
 }
 
 @font-face {
     font-family: "Roboto Condensed";
-    src: url(./Fonts/RobotoCondensed-Regular.ttf);
+    src: url(../fonts/RobotoCondensed-Regular.ttf);
 }
 
 @font-face {
     font-family: "Inconsolata";
-    src: url(./Fonts/Inconsolata-Regular.ttf);
+    src: url(../fonts/Inconsolata-Regular.ttf);
 }
 
 ::-webkit-scrollbar {
@@ -35,7 +35,7 @@
 
 body {
     margin: 0;
-    background: url("wallpaper.png");
+    background: url("../img/wallpaper.png");
     background-size: 100px;
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
