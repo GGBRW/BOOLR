@@ -1,5 +1,10 @@
 [FIX] Actions
 [FIX] Draden bij draggen
 [ADD] Edit color bij selecties
-[FIX] Replace input port
-[ADD] Seperate wire & component arrays
+[ADD] Resize
+[BUG] Name overflow
+[ADD] Gebied invouwen 
+[ADD] labels
+[ADD] hints
+[ADD] chat
+[FIX] Replace input port Ctrl z
