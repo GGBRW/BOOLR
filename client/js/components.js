@@ -203,6 +203,7 @@ function connect(from,to,wire,addWire = true,blink = true) {
     });
 
     to.input.push({
+
         wire,
         pos: { side: inputSide, pos: inputPos }
     });

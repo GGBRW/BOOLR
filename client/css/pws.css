@@ -47,22 +47,6 @@ canvas {
 /* Fonts */
 
 @font-face {
-    font-family: "Roboto";
-    src: url(../fonts/Roboto-Regular.ttf);
-}
-
-@font-face {
-    font-family: "Roboto";
-    src: url(../fonts/Roboto-Bold.ttf);
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: "Roboto Condensed";
-    src: url(../fonts/RobotoCondensed-Regular.ttf);
-}
-
-@font-face {
     font-family: "Inconsolata";
     src: url(../fonts/Inconsolata-Regular.ttf);
 }

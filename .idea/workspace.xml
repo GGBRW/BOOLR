@@ -2,93 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/fonts/Inconsolata-Regular.ttf" afterPath="$PROJECT_DIR$/client/fonts/Inconsolata-Regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/fonts/MaterialIcons-Regular.ttf" afterPath="$PROJECT_DIR$/client/fonts/MaterialIcons-Regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/fonts/Monospace.ttf" afterPath="$PROJECT_DIR$/client/fonts/Monospace.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/fonts/Ubuntu-Regular.ttf" afterPath="$PROJECT_DIR$/client/fonts/Ubuntu-Regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/img/wallpaper.png" afterPath="$PROJECT_DIR$/client/img/wallpaper.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/pws.dat" afterPath="$PROJECT_DIR$/server (Node.js)/pws.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Profielwerkstuk.iml" afterPath="$PROJECT_DIR$/.idea/Profielwerkstuk.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLinters/jslint.xml" afterPath="$PROJECT_DIR$/.idea/jsLinters/jslint.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/js/components2.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/binaryfloat.js" afterPath="$PROJECT_DIR$/binaryfloat.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/css/popup.css" afterPath="$PROJECT_DIR$/client/css/popup.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/css/pws.css" afterPath="$PROJECT_DIR$/client/css/pws.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/css/style.css" afterPath="$PROJECT_DIR$/client/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/actions.js" afterPath="$PROJECT_DIR$/client/js/actions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/actions2.js" afterPath="$PROJECT_DIR$/client/js/actions2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/audio.js" afterPath="$PROJECT_DIR$/client/js/audio.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/chat.js" afterPath="$PROJECT_DIR$/client/js/chat.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/clipbord.js" afterPath="$PROJECT_DIR$/client/js/clipbord.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/componentInfo.js" afterPath="$PROJECT_DIR$/client/js/componentInfo.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/components.js" afterPath="$PROJECT_DIR$/client/js/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/console.js" afterPath="$PROJECT_DIR$/client/js/console.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/contextmenu.js" afterPath="$PROJECT_DIR$/client/js/contextmenu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/debug.js" afterPath="$PROJECT_DIR$/client/js/debug.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/hover.js" afterPath="$PROJECT_DIR$/client/js/hover.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/keys.js" afterPath="$PROJECT_DIR$/client/js/keys.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/localStorage.js" afterPath="$PROJECT_DIR$/client/js/localStorage.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/main.js" afterPath="$PROJECT_DIR$/client/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/misc.js" afterPath="$PROJECT_DIR$/client/js/misc.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/notifications.js" afterPath="$PROJECT_DIR$/client/js/notifications.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/popup.js" afterPath="$PROJECT_DIR$/client/js/popup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/socket.js" afterPath="$PROJECT_DIR$/client/js/socket.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/stringifier.js" afterPath="$PROJECT_DIR$/client/js/stringifier.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/ticker.js" afterPath="$PROJECT_DIR$/client/js/ticker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/tips.js" afterPath="$PROJECT_DIR$/client/js/tips.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/toolbar.js" afterPath="$PROJECT_DIR$/client/js/toolbar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/userList.js" afterPath="$PROJECT_DIR$/client/js/userList.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/waypoints.js" afterPath="$PROJECT_DIR$/client/js/waypoints.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/pws.html" afterPath="$PROJECT_DIR$/client/pws.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.bat" afterPath="$PROJECT_DIR$/run.bat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (C)/CMakeLists.txt" afterPath="$PROJECT_DIR$/server (C)/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (C)/main.c" afterPath="$PROJECT_DIR$/server (C)/main.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/components.js" afterPath="$PROJECT_DIR$/server (Node.js)/components.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/main.js" afterPath="$PROJECT_DIR$/server (Node.js)/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/options/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/.npmignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/options/Makefile" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/Makefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/options/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/options/lib/options.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/lib/options.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/options/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/options/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.npmignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.travis.yml" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/LICENSE" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/LICENSE" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/index.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/test.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ultron/test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.npmignore" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.npmignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.travis.yml" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/Makefile" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/Makefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/README.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/SECURITY.md" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/SECURITY.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/index.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferPool.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferPool.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.fallback.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.fallback.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/BufferUtil.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/ErrorCodes.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/ErrorCodes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Extensions.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Extensions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/PerMessageDeflate.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/PerMessageDeflate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.hixie.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.hixie.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.hixie.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.hixie.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Sender.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.fallback.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.fallback.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Validation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocket.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocket.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocketServer.js" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/WebSocketServer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/package.json" afterPath="$PROJECT_DIR$/server (Node.js)/node_modules/ws/package.json" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -107,75 +26,103 @@
     <favorites_list name="Profielwerkstuk" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/pws.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="839">
-              <caret line="340" column="34" lean-forward="false" selection-start-line="340" selection-start-column="34" selection-end-line="340" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pws.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/css/pws.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15192">
-              <caret line="633" column="12" lean-forward="false" selection-start-line="633" selection-start-column="12" selection-end-line="633" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/js/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="931" column="0" lean-forward="true" selection-start-line="931" selection-start-column="0" selection-end-line="931" selection-end-column="0" />
-              <folding>
-                <marker date="1485873390753" expanded="true" signature="7938:7949" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toolbar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/toolbar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1080">
-              <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
-              <folding>
-                <marker date="1485605617187" expanded="true" signature="584:595" ph="..." />
-                <marker date="1485605617187" expanded="true" signature="726:745" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/components.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" column="48" lean-forward="false" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="contextmenu.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1176">
-              <caret line="49" column="50" lean-forward="false" selection-start-line="49" selection-start-column="50" selection-end-line="49" selection-end-column="50" />
-              <folding>
-                <marker date="1485605913427" expanded="true" signature="2280:2303" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5786458">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="pws.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/client/pws.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="384">
+                  <caret line="314" column="53" lean-forward="false" selection-start-line="314" selection-start-column="53" selection-end-line="314" selection-end-column="53" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="pws.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/css/pws.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="456">
+                  <caret line="46" column="11" lean-forward="false" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="11" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/js/main.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="578">
+                  <caret line="46" column="6" lean-forward="false" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
+                  <folding>
+                    <marker date="1485890716692" expanded="true" signature="7936:7947" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="toolbar.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/js/toolbar.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1080">
+                  <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+                  <folding>
+                    <marker date="1485605617187" expanded="true" signature="584:595" ph="..." />
+                    <marker date="1485605617187" expanded="true" signature="726:745" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="components.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/js/components.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="192">
+                  <caret line="35" column="51" lean-forward="false" selection-start-line="35" selection-start-column="51" selection-end-line="35" selection-end-column="51" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/js/components2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="448">
+                  <caret line="101" column="0" lean-forward="true" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="contextmenu.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1176">
+                  <caret line="49" column="50" lean-forward="false" selection-start-line="49" selection-start-column="50" selection-end-line="49" selection-end-column="50" />
+                  <folding>
+                    <marker date="1485605913427" expanded="true" signature="2280:2303" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="components.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/client/js/components.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="384">
+                  <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -234,7 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Client/Local/waypoints.js" />
         <option value="$PROJECT_DIR$/Client/d2bf.js" />
         <option value="$USER_HOME$/Desktop/primes.js" />
         <option value="$PROJECT_DIR$/Client/Local/websocket.js" />
@@ -279,12 +225,13 @@
         <option value="$PROJECT_DIR$/client/index.html" />
         <option value="$PROJECT_DIR$/server (Node.js)/main.js" />
         <option value="$PROJECT_DIR$/TODO.txt" />
-        <option value="$PROJECT_DIR$/client/js/components.js" />
         <option value="$PROJECT_DIR$/client/js/toolbar.js" />
         <option value="$PROJECT_DIR$/client/js/contextmenu.js" />
+        <option value="$PROJECT_DIR$/client/js/components.js" />
         <option value="$PROJECT_DIR$/client/css/pws.css" />
-        <option value="$PROJECT_DIR$/client/pws.html" />
         <option value="$PROJECT_DIR$/client/js/main.js" />
+        <option value="$PROJECT_DIR$/client/js/components2.js" />
+        <option value="$PROJECT_DIR$/client/pws.html" />
       </list>
     </option>
   </component>
@@ -308,10 +255,9 @@
     <handled-path value="$PROJECT_DIR$/server (Node.js)/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1981" />
-    <option name="y" value="24" />
-    <option name="width" value="1859" />
-    <option name="height" value="1056" />
+    <option name="x" value="1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -838,21 +784,7 @@
       <workItem from="1485361935222" duration="69000" />
       <workItem from="1485602691626" duration="37000" />
       <workItem from="1485603354612" duration="6020000" />
-      <workItem from="1485873355121" duration="162000" />
-    </task>
-    <task id="LOCAL-00039" summary="Update 0.1.77!">
-      <created>1474838907844</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1474838907844</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Update 0.1.77!">
-      <created>1474839235543</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1474839235543</updated>
+      <workItem from="1485873355121" duration="11414000" />
     </task>
     <task id="LOCAL-00041" summary="Update 0.1.77!">
       <created>1474905747758</created>
@@ -1183,12 +1115,26 @@
       <option name="project" value="LOCAL" />
       <updated>1483625130640</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="update 0.1.196">
+      <created>1485873538858</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1485873538862</updated>
+    </task>
+    <task id="LOCAL-00089" summary="update 0.1.196">
+      <created>1485873582498</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1485873582499</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="818152000" />
+    <option name="totallyTimeSpent" value="829404000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1200,28 +1146,48 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1981" y="24" width="1859" height="1056" extended-state="6" />
+    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16514255" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15989584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32818532" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3258595" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3258595" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15989584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32818532" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -1262,7 +1228,8 @@
     <MESSAGE value="update 0.1.143" />
     <MESSAGE value="update 0.1.149" />
     <MESSAGE value="update 0.1.159" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.159" />
+    <MESSAGE value="update 0.1.196" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.196" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1271,13 +1238,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20574">
-          <caret line="762" column="6" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/converter.html" />
     <entry file="file://$PROJECT_DIR$/Client/convert.html" />
     <entry file="file://$PROJECT_DIR$/Client/project/stringifier.js" />
@@ -1375,14 +1335,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" column="48" lean-forward="false" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1176">
@@ -1390,14 +1342,6 @@
           <folding>
             <marker date="1485605913427" expanded="true" signature="2280:2303" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/css/pws.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15192">
-          <caret line="633" column="12" lean-forward="false" selection-start-line="633" selection-start-column="12" selection-end-line="633" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1419,21 +1363,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/pws.html">
+    <entry file="file://$PROJECT_DIR$/client/css/pws.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="839">
-          <caret line="340" column="34" lean-forward="false" selection-start-line="340" selection-start-column="34" selection-end-line="340" selection-end-column="34" />
+        <state relative-caret-position="456">
+          <caret line="46" column="11" lean-forward="false" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="35" column="51" lean-forward="false" selection-start-line="35" selection-start-column="51" selection-end-line="35" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="931" column="0" lean-forward="true" selection-start-line="931" selection-start-column="0" selection-end-line="931" selection-end-column="0" />
+        <state relative-caret-position="578">
+          <caret line="46" column="6" lean-forward="false" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
           <folding>
-            <marker date="1485873390753" expanded="true" signature="7938:7949" ph="..." />
+            <marker date="1485890716692" expanded="true" signature="7936:7947" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="101" column="0" lean-forward="true" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/pws.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="314" column="53" lean-forward="false" selection-start-line="314" selection-start-column="53" selection-end-line="314" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>

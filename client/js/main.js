@@ -43,8 +43,8 @@ let framerate = 60, lastFrame = new Date;
 function draw() {
     // Scherm leegmaken
     ctx.clearRect(0, 0, c.width, c.height);
-    // ctx.fillStyle = "#eee";
-    // ctx.fillRect(0,0,c.width,c.height);
+    //ctx.fillStyle = "#eee";
+    //ctx.fillRect(0,0,c.width,c.height);
 
     // Roosterpunten tekenen
     if(zoom > 24) {
