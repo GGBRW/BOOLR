@@ -415,7 +415,12 @@ canvas {
     border-radius: 5px;
     outline: none;
     max-height: 300px;
+    width: 125px;
     overflow-y: auto;
+
+    opacity: 0;
+    transform: scale(.5) translateX(-63px) translateY(150px);
+    transition: opacity .2s, transform .2s;
 }
 
 #toolbar #list::-webkit-scrollbar-track {
@@ -611,7 +616,7 @@ canvas {
 /* Context menu */
 #contextMenu {
     position: fixed;
-    background: #ddd;
+    background: #111;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -626,9 +631,9 @@ canvas {
 #contextMenu li {
     font-family: "Ubuntu";
     font-size: 13px;
-    color: #111;
-    border-bottom: 1px solid #bbb;
-    padding: 7px;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    padding: 8px;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -642,13 +647,13 @@ canvas {
 }
 
 #contextMenu .material-icons {
-    color: #333;
+    color: #555;
     margin-right: 10px;
     vertical-align: -5px;
 }
 
 #contextMenu li:hover {
-    background: rgba(0,0,0,.1);
+    background: rgba(255,255,255,.1);
 }
 
 /* Waypoints menu */

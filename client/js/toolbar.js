@@ -25,15 +25,33 @@ toolbar.message = function(msg,type) {
     },3000);
 }
 
+// Input/Output list
+const list = document.getElementById("list");
+list.show = function() {
+    list.style.display = "block";
+    setTimeout(() => {
+        list.style.opacity = 1;
+        list.style.transform = "scale(1)";
+    });
+}
+list.hide = function() {
+    list.style.opacity = 0;
+    list.style.transform = "scale(.5) translateX(-63px) translateY(150px)";
+    setTimeout(() => list.style.display = "none",200);
+}
+
 document.getElementsByClassName("slot")[0].onmousedown = function() {
     document.getElementById("toolbartip").style.display = "none";
-    document.getElementById("list").style.display = document.getElementById("list").style.display == "block" ? "none" : "block";
+    if(list.style.display == "none") list.show();
+    else list.hide();
 }
 document.getElementsByClassName("slot")[0].onmouseup = function() {
     document.getElementsByClassName("slot")[0].focus();
 }
 
-document.getElementById("list").onblur = function() { this.style.display = "none" };
+document.getElementById("list").onblur = function() {
+    list.hide();
+}
 
 const listItems = document.getElementById("list").children;
 for(let i = 0; i < listItems.length; ++i) {

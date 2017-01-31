@@ -225,6 +225,39 @@ window.onbeforeunload = function() {
     localStorage.pws = JSON.stringify(data);
 }
 
+window.onfocus = function() {
+    let data;
+    if(localStorage.pws) data = JSON.parse(localStorage.pws);
+    else data = {};
+
+    if(data.clipbord) {
+        parse(data.clipbord,true);
+    }
+    if(data.settings) {
+        settings = data.settings;
+    }
+    if(data.tips) {
+        for(let tip in data.tips) {
+            tips[tip].disabled = data.tips[tip];
+        }
+    }
+
+    c.focus();
+}
+
+window.onblur = function() {
+    let data = {};
+    if(localStorage.pws) data = JSON.parse(localStorage.pws);
+
+    data.clipbord = stringify(clipbord);
+    data.settings = settings;
+
+    let disabledTips = {};
+    for(let tip in tips) disabledTips[tip] = !!tips[tip].disabled;
+    data.tips = disabledTips;
+    localStorage.pws = JSON.stringify(data);
+}
+
 window.onresize = () => {
     c.height = window.innerHeight;
     c.width = window.innerWidth;
@@ -314,7 +347,7 @@ c.onmousedown = function(e) {
         else {
             if(document.getElementById("list").style.display != "none" || selecting) {
                 contextMenu.hide();
-                document.getElementById("list").style.display = "none";
+                document.getElementById("list").hide();
                 selecting = null;
             }
             else {
@@ -907,7 +940,7 @@ c.onmousewheel = function(e) {
 
     zoom_animation = Math.min(
         Math.max(
-            zoom_animation - zoom / 8 * (e.deltaY > 0 ? 1 : -2),
+            zoom_animation - zoom / 8 * (e.deltaY > 0 ? .5 : -1),
             2),
         300
     );

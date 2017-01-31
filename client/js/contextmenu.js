@@ -10,44 +10,44 @@ contextMenu.show = function(pos) {
 
     this.innerHTML = "";
     if(selecting) {
-        this.appendChild(context_options["copy"]);
-        if(selecting.components && selecting.components.length > 2) this.appendChild(context_options["componentize"]);
-        this.appendChild(context_options["remove all"]);
+        this.appendChild(contextOptions["copy"]);
+        if(selecting.components && selecting.components.length > 2) this.appendChild(contextOptions["componentize"]);
+        this.appendChild(contextOptions["remove all"]);
     } else {
         const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
             if(component.constructor == Wire) {
-                this.appendChild(context_options["edit color"]);
+                this.appendChild(contextOptions["edit color"]);
             } else {
-                component.hasOwnProperty("name") && this.appendChild(context_options["edit name"]);
-                component.hasOwnProperty("delay") && this.appendChild(context_options["edit_delay"]);
-                this.appendChild(context_options["rotate"]);
-                this.appendChild(context_options["copy"]);
-                this.appendChild(context_options["view connections"]);
+                component.hasOwnProperty("name") && this.appendChild(contextOptions["edit name"]);
+                component.hasOwnProperty("delay") && this.appendChild(contextOptions["edit delay"]);
+                this.appendChild(contextOptions["rotate"]);
+                this.appendChild(contextOptions["copy"]);
+                this.appendChild(contextOptions["view connections"]);
             }
 
-            this.appendChild(context_options["set waypoint"]);
-            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${component.name} (S)</span>`;
+            this.appendChild(contextOptions["set waypoint"]);
+            contextOptions["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${component.name} (S)</span>`;
 
-            this.appendChild(context_options["remove"]);
+            this.appendChild(contextOptions["remove"]);
         } else {
-            this.appendChild(context_options["paste"]);
+            this.appendChild(contextOptions["paste"]);
 
-            this.appendChild(context_options["set waypoint"]);
-            context_options["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${Math.round(contextMenu.pos.x)},${Math.round(contextMenu.pos.y)} (S)</span>`;
+            this.appendChild(contextOptions["set waypoint"]);
+            contextOptions["set waypoint"].innerHTML = `<i class="material-icons">my_location</i><span>Set waypoint @${Math.round(contextMenu.pos.x)},${Math.round(contextMenu.pos.y)} (S)</span>`;
 
-            this.appendChild(context_options["goto waypoint"]);
-            context_options["goto waypoint"].innerHTML = '<i class="material-icons">redo</i><span>Jump to waypoint (W)</span>';
-            if(waypoints.length == 0) context_options["goto waypoint"].className = "disabled";
+            this.appendChild(contextOptions["goto waypoint"]);
+            contextOptions["goto waypoint"].innerHTML = '<i class="material-icons">redo</i><span>Jump to waypoint (W)</span>';
+            if(waypoints.length == 0) contextOptions["goto waypoint"].className = "disabled";
             else {
-                context_options["goto waypoint"].className = "";
-                context_options["goto waypoint"].innerHTML += '<i class="material-icons" style="float: right; margin: 0">navigate_next</i>';
+                contextOptions["goto waypoint"].className = "";
+                contextOptions["goto waypoint"].innerHTML += '<i class="material-icons" style="float: right; margin: 0">navigate_next</i>';
             }
         }
     }
 
     this.style.display = "block";
-    setTimeout(() => contextMenu.style.opacity = .95, 1);
+    setTimeout(() => contextMenu.style.opacity = 1, 1);
 
     if(pos.x > c.width - this.clientWidth) this.pos.x = (c.width - this.clientWidth) / zoom + offset.x;
     if(pos.y > c.height - this.clientHeight) this.pos.y = -(c.height - this.clientHeight) / zoom + offset.y;
@@ -61,12 +61,12 @@ contextMenu.hide = function() {
 }
 
 /* Menu options */
-const context_options = {};
+const contextOptions = {};
 
 // Edit name
-context_options["edit name"] = document.createElement("li");
-context_options["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name (E)</span>';
-context_options["edit name"].onclick = () => {
+contextOptions["edit name"] = document.createElement("li");
+contextOptions["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name (E)</span>';
+contextOptions["edit name"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("name")) {
         popup.prompt.show(
@@ -78,9 +78,9 @@ context_options["edit name"].onclick = () => {
 }
 
 // Edit wire color
-context_options["edit color"] = document.createElement("li");
-context_options["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color (E)</span>';
-context_options["edit color"].onclick = () => {
+contextOptions["edit color"] = document.createElement("li");
+contextOptions["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color (E)</span>';
+contextOptions["edit color"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.color_off) {
         popup.color_picker.show(
@@ -92,9 +92,9 @@ context_options["edit color"].onclick = () => {
 }
 
 // Edit delay
-context_options["edit_delay"] = document.createElement("li");
-context_options["edit_delay"].innerHTML = '<i class="material-icons">timer</i><span>Edit delay</span>';
-context_options["edit_delay"].onclick = () => {
+contextOptions["edit delay"] = document.createElement("li");
+contextOptions["edit delay"].innerHTML = '<i class="material-icons">timer</i><span>Edit delay</span>';
+contextOptions["edit delay"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("delay")) {
         popup.prompt.show(
@@ -108,9 +108,9 @@ context_options["edit_delay"].onclick = () => {
 }
 
 // Rotate
-context_options["rotate"] = document.createElement("li");
-context_options["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate (R)</span>';
-context_options["rotate"].onclick = () => {
+contextOptions["rotate"] = document.createElement("li");
+contextOptions["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate (R)</span>';
+contextOptions["rotate"].onclick = () => {
     const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     const t = component.height;
     component.height = component.width;
@@ -119,16 +119,16 @@ context_options["rotate"].onclick = () => {
 
 //
 // // Clone
-// context_options["clone"] = document.createElement("li");
-// context_options["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone (CTRL+D+Drag)</span>';
-// context_options["clone"].onclick = () => {
+// contextOptions["clone"] = document.createElement("li");
+// contextOptions["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone (CTRL+D+Drag)</span>';
+// contextOptions["clone"].onclick = () => {
 //     find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
 // }
 
 // Copy
-context_options["copy"] = document.createElement("li");
-context_options["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord (Ctrl+C)</span>';
-context_options["copy"].onclick = () => {
+contextOptions["copy"] = document.createElement("li");
+contextOptions["copy"].innerHTML = '<i class="material-icons">content_copy</i><span>Copy to clipbord (Ctrl+C)</span>';
+contextOptions["copy"].onclick = () => {
     // clipbord = Object.assign({},selecting);
     // clipbord.components = stringify(selecting.components);
 
@@ -140,17 +140,17 @@ context_options["copy"].onclick = () => {
 }
 
 // Paste
-context_options["paste"] = document.createElement("li");
-context_options["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste (Ctrl+V)</span>';
-context_options["paste"].onclick = function() {
+contextOptions["paste"] = document.createElement("li");
+contextOptions["paste"].innerHTML = '<i class="material-icons">content_paste</i><span>Paste (Ctrl+V)</span>';
+contextOptions["paste"].onclick = function() {
     //parse(clipbord.components,-(clipbord.x - contextMenu.pos.x),-(clipbord.y - contextMenu.pos.y),true);
     clipbord.paste(contextMenu.pos.x,contextMenu.pos.y);
 }
 
 // Delete
-context_options["remove"] = document.createElement("li");
-context_options["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
-context_options["remove"].onclick = () => {
+contextOptions["remove"] = document.createElement("li");
+contextOptions["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
+contextOptions["remove"].onclick = () => {
     action(
         "remove",
         find(
@@ -162,9 +162,9 @@ context_options["remove"].onclick = () => {
 }
 
 // Delete All
-context_options["remove all"] = document.createElement("li");
-context_options["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
-context_options["remove all"].onclick = () => {
+contextOptions["remove all"] = document.createElement("li");
+contextOptions["remove all"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
+contextOptions["remove all"].onclick = () => {
     action(
         "removeSelection",
         [...selecting.components],
@@ -173,18 +173,18 @@ context_options["remove all"].onclick = () => {
 };
 
 // Input/Output
-context_options["view connections"] = document.createElement("li");
-context_options["view connections"].innerHTML = '<i class="material-icons">compare_arrows</i><span>View connections</span>';
-context_options["view connections"].onclick = () => {
+contextOptions["view connections"] = document.createElement("li");
+contextOptions["view connections"].innerHTML = '<i class="material-icons">compare_arrows</i><span>View connections</span>';
+contextOptions["view connections"].onclick = () => {
     popup.connections.show(
         find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
     );
 };
 
 // Componentize
-context_options["componentize"] = document.createElement("li");
-context_options["componentize"].innerHTML = '<i class="material-icons">settings_input_component</i><span>Componentize</span>';
-context_options["componentize"].onclick = () => {
+contextOptions["componentize"] = document.createElement("li");
+contextOptions["componentize"].innerHTML = '<i class="material-icons">settings_input_component</i><span>Componentize</span>';
+contextOptions["componentize"].onclick = () => {
     const component = new Custom(
         selecting.components,
         {   x: Math.round(selecting.x + selecting.w / 2),
@@ -195,9 +195,9 @@ context_options["componentize"].onclick = () => {
 };
 
 // Set waypoint
-context_options["set waypoint"] = document.createElement("li");
-context_options["set waypoint"].innerHTML = '<i class="material-icons">my_location</i><span>Set waypoint (S)</span>';
-context_options["set waypoint"].onclick = () => {
+contextOptions["set waypoint"] = document.createElement("li");
+contextOptions["set waypoint"].innerHTML = '<i class="material-icons">my_location</i><span>Set waypoint (S)</span>';
+contextOptions["set waypoint"].onclick = () => {
     setWaypoint(
         Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y),
         find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).name
@@ -205,18 +205,18 @@ context_options["set waypoint"].onclick = () => {
 };
 
 // Go to waypoint
-context_options["goto waypoint"] = document.createElement("li");
+contextOptions["goto waypoint"] = document.createElement("li");
 
-context_options["goto waypoint"].onmouseenter = () => {
+contextOptions["goto waypoint"].onmouseenter = () => {
     waypointsMenu.show({
         x: contextMenu.pos.x + contextMenu.clientWidth / zoom,
-        y: -context_options["goto waypoint"].getBoundingClientRect().top / zoom + offset.y
+        y: -contextOptions["goto waypoint"].getBoundingClientRect().top / zoom + offset.y
     });
 
-    for(let i in context_options) {
-        i != "goto waypoint" && (context_options[i].onmouseover = function() {
+    for(let i in contextOptions) {
+        i != "goto waypoint" && (contextOptions[i].onmouseover = function() {
             waypointsMenu.hide();
-            for(let i in context_options) i != "goto waypoint" && (context_options[i].onmouseover = undefined);
+            for(let i in contextOptions) i != "goto waypoint" && (contextOptions[i].onmouseover = undefined);
         });
     }
 }
@@ -231,15 +231,15 @@ contextMenu.onkeydown = function(e) {
             this.hide();
             break;
         case 46: // Delete
-            if(selecting) context_options["remove all"].onclick();
-            else context_options["remove"].onclick();
+            if(selecting) contextOptions["remove all"].onclick();
+            else contextOptions["remove"].onclick();
 
             this.style.display = "none";
             selecting = null;
             c.focus();
             break;
         case 67: // C
-            if(e.ctrlKey) context_options["copy"].onclick();
+            if(e.ctrlKey) contextOptions["copy"].onclick();
             break;
     }
 }

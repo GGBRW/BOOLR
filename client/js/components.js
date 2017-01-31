@@ -1095,7 +1095,7 @@ class Gate {
                     (-this.pos.y + offset.y) * zoom + (this.height - .3) / 2 * zoom
                 );
             } else {
-                ctx.font = zoom / 1.5 + "px Monospace";
+                ctx.font = zoom / 1.5 + "px Ubuntu";
                 ctx.fillText(
                     this.icon,
                     (this.pos.x - offset.x) * zoom + ((this.width - 1) / 2 * zoom - ctx.measureText(this.icon).width / 2),
