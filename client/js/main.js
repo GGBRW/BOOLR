@@ -930,6 +930,7 @@ c.onmouseup = function(e) {
     }
 }
 
+// Zooming
 c.onmousewheel = function(e) {
     e.preventDefault();
 
