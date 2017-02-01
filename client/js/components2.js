@@ -10,8 +10,32 @@ function add(
     component.push(component);
 }
 
-function createInputPin(name,pos) {
-    console.log(this);
+/*
+Finds and returns component by position
+If no component is found, it returns undefined
+@param {number} x,
+@param {number} y
+@return {object} component
+ */
+function findByPos(x = mouse.grid.x, y = mouse.grid.y) {
+    for(let i = 0; i < components.length; ++i) {
+        const component = components[i];
+        if(x >= component.pos.x && x < component.pos.x + component.width &&
+           y <= component.pos.y && y > component.pos.y - component.height)
+            return component;
+    }
+}
+
+/*
+Finds and return component by name
+If no component is found, it returns undefined
+@param {string} name
+@return {object} component
+*/
+function findByName(name) {
+    for(let i = 0; i < components.length; ++i) {
+        if(name == components[i].name) return components[i];
+    }
 }
 
 class Component {
@@ -104,6 +128,10 @@ class Component {
         }
     }
 
+    update() {
+
+    }
+
     addInputPort(name,pos) {
         if(!name) {
             name = String.fromCharCode(65 + this.input.length);
@@ -111,8 +139,7 @@ class Component {
 
         this.input.push({
             name,
-            pos,
-            wire
+            pos
         });
     }
 
@@ -145,8 +172,27 @@ class Output extends Component {
     }
 }
 
+class NOT extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "char", text: "!" });
+        this.addInputPort("A",{ side: 3, pos: 0 });
+        this.addOutputPort("A",{ side: 1, pos: 0 });
+        this.function = input => [!input[0]];
+    }
+}
+
+class AND extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2,{ type: "char", text: "&" });
+        this.addInputPort("A",{ side: 3, pos: 0 });
+        this.addInputPort("B",{ side: 3, pos: 1 });
+        this.addOutputPort("B",{ side: 1, pos: 1 });
+    }
+}
+
 class Wire {
     constructor(pos,from,to,color) {
+        this.pos = [];
         this.from = from;
         this.to = to;
 
@@ -155,9 +201,9 @@ class Wire {
         if(color.length == 4) color = "#" + color.slice(1).replace(/(.)/g, '$1$1');
         const r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
         this.colorOff = '#' +
-            ((0|(1<<8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
-            ((0|(1<<8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
-            ((0|(1<<8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
+            ((0|(1<<8) + r + (256 - r) * .5).toString(16)).substr(1) +
+            ((0|(1<<8) + g + (256 - g) * .5).toString(16)).substr(1) +
+            ((0|(1<<8) + b + (256 - b) * .5).toString(16)).substr(1);
     }
 
     draw() {
@@ -171,3 +217,16 @@ components.push(new Component("component", { x: 8, y: -3 },2,2,{ type: "char", t
 components.push(new Input("component", { x: 5, y: -3 }));
 components.push(new Input("component", { x: 5, y: -5 }));
 components.push(new Output("component", { x: 11, y: -3 }));
+
+
+
+
+
+
+
+
+
+
+
+
+

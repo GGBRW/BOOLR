@@ -8,3 +8,4 @@
 [ADD] hints
 [ADD] chat
 [FIX] Replace input port Ctrl z
+[FIX] Numerieke toetsen
