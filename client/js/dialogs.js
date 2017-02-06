@@ -113,7 +113,7 @@ dialog.editName = function(component) {
     dialog.container.innerHTML += `<p>Enter a new name for component <i>${component.name}</i></p>`;
     const input = document.createElement("input");
     dialog.container.appendChild(input);
-    setTimeout(() => input.focus());
+    setTimeout(() => input.focus(),10);
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {

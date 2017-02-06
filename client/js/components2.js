@@ -54,11 +54,17 @@ Connects two components
 @param {boolean} [option to add wire to the wires array]
  */
 function connect(from,to,wire) {
-    from.connection = wire;
-    to.connection = wire;
-    wire.from = from;
-    wire.to = to;
-    from.component.update();
+    if(from) {
+        from.connection = wire;
+        wire.from = from;
+    }
+    if(to) {
+        to.connection = wire;
+        wire.to = to;
+    }
+    wire.from && wire.from.component.update();
+    from && from.component.onconnect && from.component.onconnect();
+    to && to.component.onconnect && to.component.onconnect();
 }
 
 /*
@@ -72,6 +78,9 @@ function disconnect(wire) {
     delete from.connection;
     delete to.connection;
     to.component.update();
+
+    from.component.ondisconnect && from.component.ondisconnect();
+    to.component.ondisconnect && to.component.ondisconnect();
 
     const index = wires.indexOf(wire);
     if(index > -1) wires.splice(index,1);
@@ -342,7 +351,27 @@ function componentize(
  @param {array} wires,
  */
 function merge(x = mouse.grid.x, y = mouse.grid.y) {
+    const wires = findAllWiresByPos(x,y);
+    if(wires.length < 2) return false;
+    const intersection = new WireIntersection({x,y});
+    intersection.colorOn = wires[0].colorOn;
+    intersection.colorOff = wires[0].colorOff;
 
+    for(let i = 0; i < wires.length; ++i) {
+        const [wire1,wire2] = wires[i].split(x,y);
+
+        if(wire1) {
+            const portTo = intersection.addInputPort();
+            connect(undefined,portTo,wire1);
+        }
+        if(wire2) {
+            const portFrom = intersection.addOutputPort();
+            connect(portFrom,undefined,wire2);
+        }
+    }
+
+    components.push(intersection);
+    return true;
 }
 
 /*
@@ -386,6 +415,8 @@ class Component {
         const values = this.output.map(a => a.value);
         // Update output ports
         this.function();
+
+        const components = [];
         for(let i = 0; i < this.output.length; ++i) {
             const port = this.output[i];
             // If the port is empty, skip to the next port
@@ -396,7 +427,13 @@ class Component {
 
                 const to = port.connection.to;
                 to.value = port.value;
-                to.component.update();
+                if(components.indexOf(to.component) == -1) {
+                    components.push(to.component);
+                }
+            }
+
+            for(let i = 0; i < components.length; ++i) {
+                components[i].update();
             }
         }
     }
@@ -565,6 +602,7 @@ class Component {
         Object.assign(port,properties);
 
         this.input.push(port);
+        return port;
     }
 
     addOutputPort(name,pos,properties = {}) {
@@ -583,6 +621,7 @@ class Component {
         Object.assign(port,properties);
 
         this.output.push(port);
+        return port;
     }
 
     rotate() {
@@ -1051,18 +1090,39 @@ class WireIntersection {
         if(this.value != value) {
             this.value = value;
 
+            for(let i = 0; i < this.input.length; ++i) {
+                const port = this.input[i];
+                if(!port.connection) continue;
+                port.connection.value = value;
+            }
+
             const components = [];
             for(let i = 0; i < this.output.length; ++i) {
                 const port = this.output[i];
                 port.value = value;
-                if(components.indexOf(port.component) == -1) {
-                    components.push(port.component);
+
+                if(!port.connection) continue;
+                port.connection.value = value;
+
+                const to = port.connection.to;
+                to.value = value;
+                if(components.indexOf(to.component) == -1) {
+                    components.push(to.component);
                 }
             }
 
             for(let i = 0; i < components.length; ++i) {
                 components[i].update();
             }
+        }
+    }
+
+    ondisconnect() {
+        this.input = this.input.filter(a => a.connection);
+        this.output = this.output.filter(a => a.connection);
+
+        if(this.input.length == 1 && this.output.length == 1) {
+            this.input[0].connection.merge(this.output[0].connection);
         }
     }
 
@@ -1084,7 +1144,7 @@ class WireIntersection {
             0,
             Math.PI * 2
         );
-        ctx.fillStyle = "#111";
+        ctx.fillStyle = this.value ? this.colorOn : this.colorOff;
         ctx.fill();
     }
 
@@ -1104,24 +1164,23 @@ class WireIntersection {
         Object.assign(port,properties);
 
         this.input.push(port);
+        return port;
     }
 
-    addOutputPort(name,pos,properties = {}) {
-        if(!name) {
-            name = String.fromCharCode(65 + this.output.length);
-        }
+    addOutputPort(properties = {}) {
+        const name = String.fromCharCode(65 + this.output.length);
 
         const port = {
             type: "output",
             component: this,
             name,
-            pos,
             value: 0
         }
 
         Object.assign(port,properties);
 
         this.output.push(port);
+        return port;
     }
 }
 
@@ -1146,6 +1205,53 @@ class Wire {
             ((0|(1<<8) + r + (256 - r) * .5).toString(16)).substr(1) +
             ((0|(1<<8) + g + (256 - g) * .5).toString(16)).substr(1) +
             ((0|(1<<8) + b + (256 - b) * .5).toString(16)).substr(1);
+    }
+
+    split(x,y) {
+        const posIndex = this.pos.findIndex(pos => pos.x == x && pos.y == y);
+        if(posIndex < 0) return;
+
+        let wire1;
+        if(posIndex > 0) {
+            wire1 = new Wire(this.pos.slice(0,posIndex + 1));
+            wire1.from = this.from;
+            this.from.connection = wire1;
+        }
+
+        let wire2;
+        if(posIndex < this.pos.length - 1) {
+            wire2 = new Wire(this.pos.slice(posIndex));
+            wire2.to = this.to;
+            this.to.connection = wire2;
+        }
+
+        // Remove wire from wires list
+        const index = wires.indexOf(this);
+        if(index > -1) wires.splice(index,1);
+
+        // Add the new wires to wires list
+        if(wire1) wires.push(wire1);
+        if(wire2) wires.push(wire2);
+
+        return [wire1,wire2];
+    }
+
+    merge(wire) {
+        if(this.to.component != wire.from.component) return;
+
+        this.pos = this.pos.concat(wire.pos);
+
+        let index = components.indexOf(this.to.component);
+        if(index > -1) {
+            components.splice(index,1);
+        }
+
+        this.to = wire.to;
+
+        index = wires.indexOf(wire);
+        if(index > -1) {
+            wires.splice(index,1);
+        }
     }
 
     draw() {

@@ -156,7 +156,7 @@ function action(type,data,undoable,user) {
         });
     }
 
-    actionMsg({type,data,undoable,user});
+    //actionMsg({type,data,undoable,user});
 }
 
 function actionMsg(action) {

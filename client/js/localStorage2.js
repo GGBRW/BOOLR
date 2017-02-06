@@ -179,6 +179,7 @@ function parse(data) {
 
         const component = new constructors[constructor]();
         Object.assign(component,data);
+        component.pos = Object.assign({},data.pos);
 
         if(constructor == "Custom") {
             const parsed = parse(component.componentData);
@@ -191,6 +192,7 @@ function parse(data) {
         const rotation = component.rotation;
         for(let i = 0; i < rotation; ++i) component.rotate();
         component.pos = data.pos;
+        component.rotation = rotation;
 
         components[i] = component;
     }

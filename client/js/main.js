@@ -359,12 +359,19 @@ c.onmousedown = function(e) {
                         const wire = new Wire();
                         wire.from = port;
 
-                        connecting = {wire};
+                        connecting = { wire };
                         connecting.wire.pos.push({
                             x: mouse.grid.x,
                             y: mouse.grid.y
                         });
                     }
+                } else if(found = findWireByPos()) {
+                    const wire = new Wire();
+                    connecting = { wire };
+                    connecting.wire.pos.push({
+                        x: mouse.grid.x,
+                        y: mouse.grid.y
+                    });
                 } else {
                     const component = new Selected();
                     action("add",component,true);
@@ -707,6 +714,10 @@ c.onmousemove = function(e) {
                     ],
                     true
                 );
+
+                if(!connecting.wire.from) {
+                    merge(connecting.wire.pos[0].x,connecting.wire.pos[0].y);
+                }
                 connecting = null;
             }
 
@@ -973,6 +984,13 @@ c.onmouseup = function(e) {
             }
         }
         else if(connecting) {
+            const pos = connecting.wire.pos.slice(-1)[0];
+            const wire = findWireByPos(pos.x,pos.y);
+
+            if(wire) {
+                wires.push(connecting.wire);
+                merge(pos.x,pos.y);
+            }
             connecting = null;
         }
         else if(e.altKey) {
