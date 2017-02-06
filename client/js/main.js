@@ -316,13 +316,18 @@ c.onmousedown = function(e) {
                     }
                 }
             } else {
-                const component = findComponentByPos();
-                if(component) {
+                let found;
+                if(found = findComponentByPos()) {
                     dragging = {
-                        component,
-                        pos: Object.assign({}, component.pos)
+                        component: found,
+                        pos: Object.assign({}, found.pos)
                     }
                     c.style.cursor = "move";
+                } else if(found = findPortByPos()) {
+                    dragging = {
+                        port: found,
+                        pos: Object.assign({}, found.pos)
+                    }
                 }
             }
         }
@@ -625,26 +630,108 @@ c.onmousemove = function(e) {
                     }
                 }
             } else {
-                const component = dragging.component;
-                // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
-                component.pos.x += e.movementX / zoom;
-                component.pos.y -= e.movementY / zoom;
+                if(dragging.component) {
+                    const component = dragging.component;
+                    // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
+                    component.pos.x += e.movementX / zoom;
+                    component.pos.y -= e.movementY / zoom;
 
-                // Then, all the wires to and from the component need to be fixed...
-                for(let i = 0; i < component.input.length; ++i) {
-                    const wire = component.input[i].connection;
-                    if(wire) {
-                        wire.pos.slice(-1)[0].x += e.movementX / zoom;
-                        wire.pos.slice(-1)[0].y -= e.movementY / zoom;
+                    // Then, all the wires to and from the component need to be fixed...
+                    for(let i = 0; i < component.input.length; ++i) {
+                        const wire = component.input[i].connection;
+                        if(wire) {
+                            wire.pos.slice(-1)[0].x += e.movementX / zoom;
+                            wire.pos.slice(-1)[0].y -= e.movementY / zoom;
+                        }
                     }
-                }
 
-                for(let i = 0; i < component.output.length; ++i) {
-                    const wire = component.output[i].connection;
-                    if(wire) {
-                        wire.pos[0].x += e.movementX / zoom;
-                        wire.pos[0].y -= e.movementY / zoom;
+                    for(let i = 0; i < component.output.length; ++i) {
+                        const wire = component.output[i].connection;
+                        if(wire) {
+                            wire.pos[0].x += e.movementX / zoom;
+                            wire.pos[0].y -= e.movementY / zoom;
+                        }
                     }
+                } else if(dragging.port) {
+                    const port = dragging.port;
+                    const pos = port.pos;
+                    const component = port.component;
+
+                    const x = mouse.screen.x / zoom + offset.x;
+                    const y = -mouse.screen.y / zoom + offset.y;
+
+                    const dx = x - port.component.pos.x;
+                    const dy = port.component.pos.y - y;
+
+                    if(dy < -.5 && dx > -.5 && dx < component.width - .5) {
+                        pos.side = 0;
+                        pos.pos = dx;
+                    } else if(dx > component.width - .5 && dy > -.5 && dy < component.height - .5) {
+                        pos.side = 1;
+                        pos.pos = dy;
+                    } else if(dy > component.height - .5 && dx > -.5 && dx < component.width - .5) {
+                        pos.side = 2;
+                        pos.pos = component.width - 1 - dx;
+                    } else if(dx < -.5 && dy > -.5 && dy < component.height - .5) {
+                        pos.side = 3;
+                        pos.pos = component.height - 1 - dy;
+                    }
+
+                    // const port = dragging.port;
+                    // const pos = port.pos;
+                    //
+                    // pos.pos += Math.round(Math.sin(Math.PI / 2 * pos.side)) * e.movementY / zoom;
+                    // pos.pos += Math.round(Math.cos(Math.PI / 2 * pos.side)) * e.movementX / zoom;
+                    //
+                    // if(pos.pos < -.5) {
+                    //     pos.side = (4 + --pos.side) % 4;
+                    //     if(pos.side % 2 == 0) {
+                    //         pos.pos = port.component.width - 1;
+                    //     } else {
+                    //         pos.pos = port.component.height - 1;
+                    //     }
+                    // } else if(pos.side % 2 == 0 && pos.pos > port.component.width - .5) {
+                    //     pos.side = ++pos.side % 4;
+                    //     if(pos.side % 2 == 0) {
+                    //         pos.pos = -.5;
+                    //     } else {
+                    //         pos.pos = -.5;
+                    //     }
+                    // } else if(pos.side % 2 == 1 && pos.pos > port.component.height - .5) {
+                    //     pos.side = ++pos.side % 4;
+                    //     ++pos.side;
+                    //     if(pos.side % 2 == 0) {
+                    //         pos.pos = -.5;
+                    //     } else {
+                    //         pos.pos = -.5;
+                    //     }
+                    // }
+                    //
+                    // if(port.connection) {
+                    //     let x = port.component.pos.x;
+                    //     let y = port.component.pos.y;
+                    //     const angle = Math.PI / 2 * pos.side;
+                    //     if(Math.sin(angle) == 1) x += (port.component.width - 1);
+                    //     if(Math.cos(angle) == -1) y += (port.component.height - 1);
+                    //     console.log(x,y);
+                    //     x += Math.sin(angle) / 2;
+                    //     y += Math.cos(angle) / 2;
+                    //     if(pos.side == 2) x += (port.component.width - 1);
+                    //     if(pos.side == 3) y += (port.component.height - 1);
+                    //     x += Math.sin(angle + Math.PI / 2) * pos.pos;
+                    //     y += Math.cos(angle + Math.PI / 2) * pos.pos;
+                    //     x += Math.sin(angle) / 2;
+                    //     y += Math.cos(angle) / 2;
+                    //
+                    //     const wire = port.connection;
+                    //     if(port.type == "output") {
+                    //         wire.pos[0].x = x;
+                    //         wire.pos[0].y = y;
+                    //     } else if(port.type == "input") {
+                    //         wire.pos.slice(-1)[0].x = x;
+                    //         wire.pos.slice(-1)[0].y = y;
+                    //     }
+                    // }
                 }
             }
         }
@@ -921,66 +1008,91 @@ c.onmouseup = function(e) {
                     }
                 })();
             } else {
-                /*
-                 The x and y coordinate of the component need to be integers. While dragging, they are floats. So I created a little animation for the x
-                 and y coordinates of the component becoming integers.
-                  */
-                const component = dragging.component;
-                (function animate() {
-                    let dx = Math.round(component.pos.x) - component.pos.x;
-                    let dy = Math.round(component.pos.y) - component.pos.y;
+                if(dragging.component) {
+                    /*
+                     The x and y coordinate of the component need to be integers. While dragging, they are floats. So I created a little animation for the x
+                     and y coordinates of the component becoming integers.
+                     */
+                    const component = dragging.component;
+                    (function animate() {
+                        let dx = Math.round(component.pos.x) - component.pos.x;
+                        let dy = Math.round(component.pos.y) - component.pos.y;
 
-                    component.pos.x += dx / 2.5;
-                    component.pos.y += dy / 2.5;
-
-                    for(let i = 0; i < component.input.length; ++i) {
-                        const wire = component.input[i].connection;
-                        if(wire) {
-                            wire.pos.slice(-1)[0].x += dx / 2.5;
-                            wire.pos.slice(-1)[0].y += dy / 2.5;
-                        }
-                    }
-
-                    for(let i = 0; i < component.output.length; ++i) {
-                        const wire = component.output[i].connection;
-                        if(wire) {
-                            wire.pos[0].x += dx / 2.5;
-                            wire.pos[0].y += dy / 2.5;
-                        }
-                    }
-
-                    if(Math.abs(Math.round(component.pos.x) - component.pos.x) * zoom > 1 ||
-                       Math.abs(Math.round(component.pos.y) - component.pos.y) * zoom > 1) {
-                        dx -= dx / 2.5;
-                        dy -= dy / 2.5;
-                        requestAnimationFrame(animate);
-                    } else {
-                        // Stop animation
-                        component.pos.x = Math.round(component.pos.x);
-                        component.pos.y = Math.round(component.pos.y);
+                        component.pos.x += dx / 2.5;
+                        component.pos.y += dy / 2.5;
 
                         for(let i = 0; i < component.input.length; ++i) {
                             const wire = component.input[i].connection;
                             if(wire) {
-                                wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
-                                wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                wire.pos.slice(-1)[0].x += dx / 2.5;
+                                wire.pos.slice(-1)[0].y += dy / 2.5;
                             }
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
                             const wire = component.output[i].connection;
                             if(wire) {
-                                wire.pos[0].x = Math.round(wire.pos[0].x);
-                                wire.pos[0].y = Math.round(wire.pos[0].y);
+                                wire.pos[0].x += dx / 2.5;
+                                wire.pos[0].y += dy / 2.5;
                             }
                         }
 
-                        action("move",[dragging.component,dragging.component.pos.x,dragging.component.pos.y],true);
+                        if(Math.abs(Math.round(component.pos.x) - component.pos.x) * zoom > 1 ||
+                            Math.abs(Math.round(component.pos.y) - component.pos.y) * zoom > 1) {
+                            dx -= dx / 2.5;
+                            dy -= dy / 2.5;
+                            requestAnimationFrame(animate);
+                        } else {
+                            // Stop animation
+                            component.pos.x = Math.round(component.pos.x);
+                            component.pos.y = Math.round(component.pos.y);
 
-                        dragging = null;
-                        c.style.cursor = "crosshair";
+                            for(let i = 0; i < component.input.length; ++i) {
+                                const wire = component.input[i].connection;
+                                if(wire) {
+                                    wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                    wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                }
+                            }
+
+                            for(let i = 0; i < component.output.length; ++i) {
+                                const wire = component.output[i].connection;
+                                if(wire) {
+                                    wire.pos[0].x = Math.round(wire.pos[0].x);
+                                    wire.pos[0].y = Math.round(wire.pos[0].y);
+                                }
+                            }
+
+                            action("move", [dragging.component, dragging.component.pos.x, dragging.component.pos.y], true);
+
+                            dragging = null;
+                            c.style.cursor = "crosshair";
+                        }
+                    })();
+                } else if(dragging.port) {
+                    const port = dragging.port;
+                    port.pos.pos = Math.round(port.pos.pos);
+
+                    for(let i = 0; i < port.component.input.length; ++i) {
+                        const port2 = port.component.input[i];
+                        if(port2 == port) continue;
+                        if(port2.pos.side == port.pos.side && port2.pos.pos == port.pos.pos) {
+                            port.pos.side = dragging.pos.side;
+                            port.pos.pos = dragging.pos.pos;
+                        }
                     }
-                })();
+
+                    for(let i = 0; i < port.component.output.length; ++i) {
+                        const port2 = port.component.output[i];
+                        if(port2 == port) continue;
+                        if(port2.pos.side == port.pos.side && port2.pos.pos == port.pos.pos) {
+                            port.pos.side = dragging.pos.side;
+                            port.pos.pos = dragging.pos.pos;
+                        }
+                    }
+
+                    dragging = null;
+                }
             }
         }
         else if(connecting) {

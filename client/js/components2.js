@@ -940,6 +940,23 @@ class Custom extends Component {
         }
     }
 
+    open() {
+        const componentsTmp = components;
+        const wiresTmp = wires;
+
+        components = this.components;
+        wires = this.wires;
+
+        setTimeout(() => {
+            this.components = components;
+            this.wires = wires;
+            this.create();
+
+            components = componentsTmp;
+            wires = wiresTmp;
+        }, 1000);
+    }
+
     draw() {
         const x = (this.pos.x - offset.x) * zoom;
         const y = -(this.pos.y - offset.y) * zoom;

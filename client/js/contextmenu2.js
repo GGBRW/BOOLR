@@ -157,6 +157,20 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
+    "Open",
+    "open_in_new",
+    "Shift+O",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        component.open();
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return component && component.constructor == Custom && !selecting;
+    }
+);
+
+createContextMenuOption(
     "Save component",
     "file_download",
     "Shift+R",

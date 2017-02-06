@@ -97,11 +97,27 @@ function stringify(components = [], wires = [], selection) {
         data.name = component.name;
         data.pos = component.pos;
 
-        data.width = component.rotation % 2 == 0 ? component.width : component.height;
-        data.height = component.rotation % 2 == 0 ? component.height : component.width;
+        data.width = component.width;
+        data.height = component.height;
 
         data.rotation = component.rotation;
         data.properties = component.properties;
+
+        data.input = [];
+        for(let i = 0; i < component.input.length; ++i) {
+            data.input[i] = {
+                name: component.name,
+                pos: Object.assign({},component.input[i].pos)
+            }
+        }
+
+        data.output = [];
+        for(let i = 0; i < component.output.length; ++i) {
+            data.output[i] = {
+                name: component.name,
+                pos: Object.assign({},component.output[i].pos)
+            }
+        }
 
         if(constructor == "Custom") {
             data.componentData = stringify(component.components,component.wires);
@@ -113,10 +129,10 @@ function stringify(components = [], wires = [], selection) {
     for(let i = 0; i < wires.length; ++i) {
         const wire = wires[i];
 
-        const fromIndex = components.indexOf(wire.from.component);
-        const fromPortIndex = wire.from.component && wire.from.component.output.indexOf(wire.from);
-        const toIndex = components.indexOf(wire.to.component);
-        const toPortIndex = wire.to.component && wire.to.component.input.indexOf(wire.to);
+        const fromIndex = components.indexOf(wire.from && wire.from.component);
+        const fromPortIndex = wire.from && wire.from.component && wire.from.component.output.indexOf(wire.from);
+        const toIndex = components.indexOf(wire.to && wire.to.component);
+        const toPortIndex = wire.to && wire.to.component && wire.to.component.input.indexOf(wire.to);
 
         stringified[1].push([
             fromIndex,
@@ -178,21 +194,31 @@ function parse(data) {
         }
 
         const component = new constructors[constructor]();
+
+        const input = data.input;
+        for(let i = 0; i < component.input.length; ++i) {
+            component.input[i].name = input[i].name;
+            component.input[i].pos = input[i].pos;
+        }
+        delete data.input;
+        const output = data.output;
+        for(let i = 0; i < component.output.length; ++i) {
+            component.output[i].name = output[i].name;
+            component.output[i].pos = output[i].pos;
+        }
+        delete data.output;
+
         Object.assign(component,data);
         component.pos = Object.assign({},data.pos);
 
         if(constructor == "Custom") {
-            const parsed = parse(component.componentData);
+            const parsed = parse(data.componentData);
             component.components = parsed.components;
             component.wires = parsed.wires;
+            console.log(component.components,component.wires,data.componentData);
             delete component.componentData;
             component.create();
         }
-
-        const rotation = component.rotation;
-        for(let i = 0; i < rotation; ++i) component.rotate();
-        component.pos = data.pos;
-        component.rotation = rotation;
 
         components[i] = component;
     }
