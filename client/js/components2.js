@@ -443,10 +443,10 @@ class Component {
         const y = -(this.pos.y - offset.y) * zoom;
 
         if(!(
-            x + zoom * this.width - zoom / 2 >= 0 &&
-            x - zoom / 2 <= c.width &&
-            y + zoom * this.height - zoom / 2 >= 0 &&
-            y - zoom / 2 <= c.height
+            x + this.width * zoom + zoom / 2 >= 0 &&
+            x - zoom * 1.5 <= c.width &&
+            y + this.height * zoom + zoom / 2 >= 0 &&
+            y - zoom * 1.5 <= c.height
         )) return;
 
         // Draw the frame of the component
