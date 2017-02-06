@@ -1087,6 +1087,42 @@ class WireIntersection {
         ctx.fillStyle = "#111";
         ctx.fill();
     }
+
+    addInputPort(name,pos,properties = {}) {
+        if(!name) {
+            name = String.fromCharCode(65 + this.input.length);
+        }
+
+        const port = {
+            type: "input",
+            component: this,
+            name,
+            pos,
+            value: 0
+        }
+
+        Object.assign(port,properties);
+
+        this.input.push(port);
+    }
+
+    addOutputPort(name,pos,properties = {}) {
+        if(!name) {
+            name = String.fromCharCode(65 + this.output.length);
+        }
+
+        const port = {
+            type: "output",
+            component: this,
+            name,
+            pos,
+            value: 0
+        }
+
+        Object.assign(port,properties);
+
+        this.output.push(port);
+    }
 }
 
 class Wire {
