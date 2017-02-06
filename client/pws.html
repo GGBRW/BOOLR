@@ -2,10 +2,12 @@
     <head>
         <meta charset="utf-8">
 
+        <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/pws.css">
         <link rel="stylesheet" href="css/popup.css">
+        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
 
-        <title>PWS | Sandbox mode</title>
+        <title>BOOLR | New Project</title>
     </head>
     <body>
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
@@ -35,7 +37,7 @@
             <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
             <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
             <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">+</div>
-            <div class="slot" tooltip="Component list" onmousedown="popup.componentList.show()">...</div>
+            <div class="slot" tooltip="Component list" onmousedown="dialog.savedCustomComponents()">...</div>
 
             <div id="toast"></div>
 
@@ -62,8 +64,8 @@
 
         <!-- Credits -->
         <div id="credits">
-            <button id="version" onclick="popup.whatsnew.show()" tooltip="Version">PWS v0.1.58</button>
-            <button onclick="popup.settings.show()" tooltip="Save project <br>(Ctrl+S)" class="material-icons">save</button>
+            <button id="version" onclick="dialog.update()" tooltip="Version">PWS v0.1.58</button>
+            <button onclick="dialog.save()" tooltip="Save project <br>(Ctrl+S)" class="material-icons">save</button>
             <button onclick="popup.openproject.show()" tooltip="Open project <br>(Ctrl+O)" class="material-icons">open_in_browser</button>
             <button onclick="popup.settings.show()" tooltip="Settings" class="material-icons">settings</button>
             <button onclick="popup.info.show()" tooltip="Help" class="material-icons">help</button>
@@ -107,27 +109,14 @@
         <div class="popup" id="whatsnew">
             <h1></h1>
             <ul>
-                <li><i class="material-icons">call_merge</i> Mergers</li>
-                <li><i class="material-icons">call_split</i> Splitters</li>
-                <li><i class="material-icons">bug_report</i> Fixed pasting bug</li>
-                <li><i class="material-icons">star</i> Improved B2D and D2B gates</li>
-                <li><i class="material-icons">bug_report</i> Several small bug fixes</li>
+                <li><i class="material-icons">memory</i> Componentizing selections</li>
             </ul>
-            <p style="color: darkred; font-size: 12px">Let op! Als je dit programma via GitHub gedownload hebt, werkt het nog niet om via het hoofdmenu projecten vanaf bestanden te openen. Je kunt wel een bestand openen via 'Sandbox mode' > Ctrl + O</p>
             <p style="color: #666; font-size: 14px">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</p>
             <button class="ok">Close</button>
         </div>
 
         <div class="popup" id="custom_component">
-            <h1>Create custom component</h1>
-            <textarea spellcheck="false">
-        class Component {
-            constructor() {
-
-            }
-        }
-            </textarea>
-            <br>
+            <h1></h1>
             <button class="ok" disabled="true">OK</button>
             <button class="cancel">Cancel</button>
         </div>
@@ -145,8 +134,7 @@
                 <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
                 <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
                 <li><button onclick="
-                popup.confirm.show(
-                    'Clear localStorage',
+                dialog.confirm(
                     'Are you sure you want to clear all local stored data?',
                     () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
                 );
@@ -238,6 +226,15 @@
             <button class="ok">Close</button>
         </div>
 
+        <!-- Dialog -->
+        <div id="over"></div>
+        <div id="dialog" tabindex="0">
+            <h1></h1>
+            <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
+            <div class="container"></div>
+            <div class="options"></div>
+        </div>
+
         <!-- Waypoints menu -->
         <ul id="waypointsMenu"></ul>
 
@@ -268,7 +265,7 @@
         <div id="spectateIndicator">Spectate mode</div>
 
         <!-- Open files -->
-        <input id="open_file" type="file" accept=".dat" style="display: none">
+        <input id="open_file" type="file" accept=".board" style="display: none">
 
         <!-- Chrome -->
         <div id="usechrome">
@@ -277,31 +274,7 @@
 
         <script>
             document.getElementById("open_file").onchange = function(e) {
-                readFile(e.target);
-
-            }
-
-            function readFile(input) {
-                const reader = new FileReader;
-                reader.onload = function() {
-                    if(reader.result[0] == "{") {
-                        components = [];
-                        parse_old(reader.result);
-                    } else {
-                        components = [];
-                        const parsed = parse(reader.result);
-
-                        for(let i = 0, len = parsed.length; i < len; ++i) {
-                            if(parsed[i].constructor == Wire) {
-                                components.unshift(parsed[i]);
-                            } else {
-                                components.push(parsed[i]);
-                            }
-                        }
-                    }
-                }
-                reader.readAsText(input.files[0]);
-                popup.openproject.hide();
+                openBoard(e.target);
             }
         </script>
 
@@ -311,8 +284,9 @@
                 document.getElementById("usechrome").style.display = "block";
             }
         </script>
+        <script src="js/components2.js"></script>
+        <script src="js/localStorage2.js"></script>
         <script src="js/main.js"></script>
-        <!--script src="js/components2.js"></script-->
         <script src="js/ticker.js"></script>
         <!--script src="js/actions.js"></script-->
         <script src="js/actions2.js"></script>
@@ -322,44 +296,66 @@
         <script src="js/console.js"></script>
         <script src="js/notifications.js"></script>
         <script src="js/toolbar.js"></script>
-        <script src="js/components.js"></script>
+        <!--<script src="js/components.js"></script>-->
         <script src="js/misc.js"></script>
         <script src="js/debug.js"></script>
         <script src="js/audio.js"></script>
         <script src="js/userList.js"></script>
-        <script src="js/contextmenu.js"></script>
+        <!--<script src="js/contextmenu.js"></script>-->
+        <script src="js/contextmenu2.js"></script>
         <script src="js/hover.js"></script>
         <script src="js/componentInfo.js"></script>
         <script src="js/tips.js"></script>
         <script src="js/popup.js"></script>
+        <script src="js/dialogs.js"></script>
         <script src="js/stringifier.js"></script>
-        <script src="js/localStorage.js"></script>
+        <!--<script src="js/localStorage.js"></script>-->
         <script src="js/waypoints.js"></script>
         <script src="js/socket.js"></script>
         <script>
             "use strict";
 
-            const VERSION = "0.196";
-            document.getElementById("version").innerHTML = "PWS v" + VERSION;
+            const VERSION = "0.202";
+            document.getElementById("version").innerHTML = "BOOLR v" + VERSION;
 
-            let data;
-            if(localStorage.pws) data = JSON.parse(localStorage.pws);
-            else data = {};
+//            let data;
+//            if(localStorage.pws) data = JSON.parse(localStorage.pws);
+//            else data = {};
+//
+//            if(data.version != VERSION) {
+//                popup.whatsnew.show()
+//            }
+//            if(data.clipbord) {
+//                parse(data.clipbord,true);
+//            }
+//            if(data.settings) {
+//                settings = data.settings;
+//            }
+//            if(data.tips) {
+//                for(let tip in data.tips) {
+//                    tips[tip].disabled = data.tips[tip];
+//                }
+//            }
 
-            if(data.version != VERSION) {
-                popup.whatsnew.show()
-            }
-            if(data.clipbord) {
-                parse(data.clipbord,true);
-            }
-            if(data.settings) {
-                settings = data.settings;
-            }
-            if(data.tips) {
-                for(let tip in data.tips) {
-                    tips[tip].disabled = data.tips[tip];
+            getLocalStorage(localStorage.pwsData);
+
+
+            // Listen for message from main menu window
+            function receiveMessage(e) {
+                const data = e.data;
+                try {
+                    const parsed = parse(data);
+                    components = parsed.components || [];
+                    wires = parsed.wires || [];
+                    console.log(components,wires);
+                } catch(e) {
+
                 }
+
+                // Let the main menu window know we have received the message
+                window.opener.postMessage(null,"*");
             }
+            window.addEventListener("message", receiveMessage, false);
 
             c.focus();
 

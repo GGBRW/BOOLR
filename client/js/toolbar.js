@@ -32,7 +32,7 @@ list.show = function() {
     setTimeout(() => {
         list.style.opacity = 1;
         list.style.transform = "scale(1)";
-    });
+    },1);
 }
 list.hide = function() {
     list.style.opacity = 0;

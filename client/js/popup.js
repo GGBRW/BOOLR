@@ -2,7 +2,7 @@ let popup = {
     whatsnew: document.getElementById("whatsnew"),
     confirm: document.getElementById("confirm"),
     prompt: document.getElementById("prompt"),
-    custom_component: document.getElementById("custom_component"),
+    customComponent: document.getElementById("custom_component"),
     componentList: document.getElementById("component_list"),
     settings: document.getElementById("settings"),
     info: document.getElementById("info"),
@@ -78,8 +78,8 @@ if(popup.prompt) {
 }
 
 // Custom component
-if(popup.custom_component) {
-    popup.custom_component.show = function () {
+if(popup.customComponent) {
+    popup.customComponent.show = function(components,wires) {
         this.style.display = "block";
         document.getElementById("overlay").style.display = "block";
         setTimeout(() => {

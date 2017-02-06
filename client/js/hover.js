@@ -2,7 +2,7 @@
 
 let hoverTime = 0;
 setInterval(function() {
-    const component = find();
+    const component = findComponentByPos();
 
     if(mouse.hover && mouse.hover == component) {
         ++hoverTime;
@@ -35,7 +35,7 @@ hoverBalloon.show = function(component) {
 
     this.style.display = "block";
     setTimeout(() => {
-        this.style.opacity = .95;
+        this.style.opacity = 1;
         this.style.transform = "translateY(20px)";
     },10);
 }
@@ -61,18 +61,14 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
             toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";
             toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
         } else {
+            toolbartip.style.display = "block";
+            toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";;
             setTimeout(() => {
-                if(this.hover) {
-                    toolbartip.style.display = "block";
-                    toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";;
-                    setTimeout(() => {
-                        toolbartip.style.opacity = 1;
-                        toolbartip.style.transform = "translateY(20px)";
-                    }, 1);
-                    toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
-                    setTimeout(() => toolbartip.style.transition = "transform .2s, opacity .2s, left .2s", 100);
-                }
-            }, 200);
+                toolbartip.style.opacity = 1;
+                toolbartip.style.transform = "translateY(20px)";
+            }, 1);
+            toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
+            setTimeout(() => toolbartip.style.transition = "transform .2s, opacity .2s, left .2s", 100);
         }
     }
 
@@ -81,6 +77,8 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
         const toolbartip = document.getElementById("toolbartip");
 
         setTimeout(() => {
+            if(this.hover) return;
+
             let removeTooltip = true;
             for(let j = 0; j < document.getElementsByClassName("slot").length; ++j) {
                 if(document.getElementsByClassName("slot")[j].hover) removeTooltip = false;
@@ -92,7 +90,7 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
                 toolbartip.style.transition = "transform .2s, opacity .2s";
                 setTimeout(() => toolbartip.style.display = "none", 200);
             }
-        }, 200);
+        },200);
     }
 }
 toolbar.onmousedown = function() {

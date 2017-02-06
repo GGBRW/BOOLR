@@ -1,24 +1,20 @@
 <!doctype html>
 <html>
 <head>
-    <!-- Algemene CSS stylesheet -->
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     <link rel="stylesheet" href="css/style.css">
-    <!-- Stylesheet voor alle pop-ups -->
     <link rel="stylesheet" href="css/popup.css">
-    <!-- Stylesheet van Google, bevat alle mooie Material icons die ook gebruikt worden in Android -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Ubuntu lettertype ophalen van Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Passion+One:400,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
 
-    <!-- Aangeven welke charset gebruikt wordt, namelijk UTF-8 --> 
     <meta charset="UTF-8">
-    <!-- Titel van de pagina -->
-    <title>PWS</title>
+    <title>BOOLR</title>
 </head>
 <body>
-<h1 id="title"><span><span style="color: #822">PWS</span> | Digitale Logica</h1>
+<h1 id="title">B<span style="font-family: 'Ubuntu Mono'">00</span>LR</h1>
 
     <!-- Overlay -->
     <div id="overlay"></div>
@@ -47,7 +43,7 @@
         <div id="local">
             <div id="upload_file">
                 <i class="material-icons">file_upload</i>
-                <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
+                <p><b onclick="document.getElementById('open_file').click()">Choose a .board file</b> or drag and drop it here</p>
             </div>
         </div>
         <div id="server" style="display: none;">
@@ -155,7 +151,7 @@
         }
     </script>
 
-    <input id="open_file" type="file" accept=".dat" style="display: none">
+    <input id="open_file" type="file" accept=".board" style="display: none">
 
     <script>
         document.getElementById("open_file").onchange = function(e) {
@@ -164,25 +160,33 @@
             const reader = new FileReader;
             reader.onload = function() {
                 const data = reader.result;
-
                 openProject(data);
             }
             reader.readAsText(input.files[0]);
         }
 
+        // TODO: moet netter!
+
         function openProject(data) {
-            const project = window.open("pws.html");
-            if(data) {
-                project.a = data;
-            }
+            const project = open("pws.html");
+
+            let received = false;
+            (function send() {
+                project.postMessage(data,"*");
+                !received && setTimeout(send,10);
+            })();
+            window.addEventListener("message", () => { received = true }, false);
         }
 
         function openServerProject(url) {
             const project = window.open("pws.html");
-            project.onload = () => {
-                project.url = url;
-                project.connectToSocket(url);
-            }
+
+            let received = false;
+            (function send() {
+                project.postMessage(url,"*");
+                !received && setTimeout(send,10);
+            })();
+            window.addEventListener("message", () => { received = true }, false);
         }
     </script>
 

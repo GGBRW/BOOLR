@@ -14,7 +14,7 @@ contextMenu.show = function(pos) {
         if(selecting.components && selecting.components.length > 2) this.appendChild(contextOptions["componentize"]);
         this.appendChild(contextOptions["remove all"]);
     } else {
-        const component = find(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
+        const component = findComponentByPos(Math.round(pos.x / zoom + offset.x),Math.round(-pos.y / zoom + offset.y));
         if(component) {
             if(component.constructor == Wire) {
                 this.appendChild(contextOptions["edit color"]);
@@ -67,7 +67,7 @@ const contextOptions = {};
 contextOptions["edit name"] = document.createElement("li");
 contextOptions["edit name"].innerHTML = '<i class="material-icons">mode_edit</i><span>Edit name (E)</span>';
 contextOptions["edit name"].onclick = () => {
-    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    const component = findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("name")) {
         popup.prompt.show(
             "Edit name",
@@ -81,7 +81,7 @@ contextOptions["edit name"].onclick = () => {
 contextOptions["edit color"] = document.createElement("li");
 contextOptions["edit color"].innerHTML = '<i class="material-icons">color_lens</i><span>Edit color (E)</span>';
 contextOptions["edit color"].onclick = () => {
-    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    const component = findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.color_off) {
         popup.color_picker.show(
             color => color
@@ -95,7 +95,7 @@ contextOptions["edit color"].onclick = () => {
 contextOptions["edit delay"] = document.createElement("li");
 contextOptions["edit delay"].innerHTML = '<i class="material-icons">timer</i><span>Edit delay</span>';
 contextOptions["edit delay"].onclick = () => {
-    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    const component = findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     if(component && component.hasOwnProperty("delay")) {
         popup.prompt.show(
             "Edit delay",
@@ -111,7 +111,7 @@ contextOptions["edit delay"].onclick = () => {
 contextOptions["rotate"] = document.createElement("li");
 contextOptions["rotate"].innerHTML = '<i class="material-icons">rotate_left</i><span>Rotate (R)</span>';
 contextOptions["rotate"].onclick = () => {
-    const component = find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
+    const component = findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y));
     const t = component.height;
     component.height = component.width;
     component.width = t;
@@ -122,7 +122,7 @@ contextOptions["rotate"].onclick = () => {
 // contextOptions["clone"] = document.createElement("li");
 // contextOptions["clone"].innerHTML = '<i class="material-icons">content_copy</i><span>Clone (CTRL+D+Drag)</span>';
 // contextOptions["clone"].onclick = () => {
-//     find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
+//     findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && clone(findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)));
 // }
 
 // Copy
@@ -134,8 +134,8 @@ contextOptions["copy"].onclick = () => {
 
     if(selecting) {
         clipbord.copy(selecting.components, selecting);
-    } else if(find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))) {
-        clipbord.copy([find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]);
+    } else if(findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))) {
+        clipbord.copy([findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))]);
     }
 }
 
@@ -147,18 +147,43 @@ contextOptions["paste"].onclick = function() {
     clipbord.paste(contextMenu.pos.x,contextMenu.pos.y);
 }
 
+// Remove component
+contextOptions["remove component"] = document.createElement("li");
+contextOptions["remove component"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
+contextOptions["remove component"].onclick = () => {
+    if(findComponentByPos()) {
+        action(
+            "remove",
+            findComponentByPos(),
+            true
+        );
+    }
+}
+
+// Remove wire
+contextOptions["remove wire"] = document.createElement("li");
+contextOptions["remove wire"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
+contextOptions["remove wire"].onclick = () => {
+    if(findWireByPos()) {
+        action(
+            "disconnect",
+            findWireByPos(),
+            true
+        );
+    }
+}
+
 // Delete
-contextOptions["remove"] = document.createElement("li");
-contextOptions["remove"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
-contextOptions["remove"].onclick = () => {
-    action(
-        "remove",
-        find(
-            Math.round(contextMenu.pos.x),
-            Math.round(contextMenu.pos.y)
-        ),
-        true
-    );
+contextOptions["remove component"] = document.createElement("li");
+contextOptions["remove component"].innerHTML = '<i class="material-icons">delete</i><span>Remove (Del)</span>';
+contextOptions["remove component"].onclick = () => {
+    if(findComponentByPos()) {
+        action(
+            "remove",
+            findComponentByPos(),
+            true
+        );
+    }
 }
 
 // Delete All
@@ -177,7 +202,7 @@ contextOptions["view connections"] = document.createElement("li");
 contextOptions["view connections"].innerHTML = '<i class="material-icons">compare_arrows</i><span>View connections</span>';
 contextOptions["view connections"].onclick = () => {
     popup.connections.show(
-        find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
+        findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y))
     );
 };
 
@@ -200,7 +225,7 @@ contextOptions["set waypoint"].innerHTML = '<i class="material-icons">my_locatio
 contextOptions["set waypoint"].onclick = () => {
     setWaypoint(
         Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y),
-        find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && find(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).name
+        findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)) && findComponentByPos(Math.round(contextMenu.pos.x),Math.round(contextMenu.pos.y)).name
     );
 };
 

@@ -45,16 +45,17 @@ function action(type,data,undoable,user) {
     // Execute action
     switch(type) {
         case "add":
-            add(data);
+            const result = add(data);
+            if(!result) return;
             if(undoable) undoData = data;
             break;
         case "addSelection":
-            for(let i = 0; i < data.length; ++i) {
-                if(data[i].constructor == Wire) {
-                    components.unshift(data[i]);
-                } else {
-                    components.push(data[i]);
-                }
+            for(let i = 0; i < data[0].length; ++i) {
+                components.push(data[0][i]);
+            }
+
+            for(let i = 0; i < data[1].length; ++i) {
+                wires.push(data[1][i]);
             }
 
             if(undoable) {
@@ -102,8 +103,15 @@ function action(type,data,undoable,user) {
             break;
         case "connect":
             connect(data[0],data[1],data[2]);
+            wires.push(data[2]);
             if(undoable) {
-                undoData = data[2];
+
+            }
+            break;
+        case "disconnect":
+            disconnect(data);
+            if(undoable) {
+
             }
             break;
         case "edit":
@@ -131,9 +139,13 @@ function action(type,data,undoable,user) {
                 undoData = [selecting.components,selecting.x,selecting.y,dragging.pos.x,dragging.pos.y];
             }
             break;
-        case "click":
+        case "mousedown":
             undoable = false;
-            data[0].onclick(data[1],data[2]);
+            data[0].onmousedown(data[1],data[2]);
+            break;
+        case "mouseup":
+            undoable = false;
+            data[0].onmouseup(data[1],data[2]);
             break;
     }
 
@@ -160,6 +172,9 @@ function actionMsg(action) {
             break;
         case "remove":
             msg += "removed " + action.data.name;
+            break;
+        case "connect":
+            msg += "added a connection between " + action.data[0].name + " and " + action.data[0].name;
             break;
         case "edit":
             msg += "edited property " + action.data[1] + " of " + action.data[0].name + " to " + action.data[0][action.data[1]];
@@ -289,7 +304,7 @@ function redo(action = redoStack.splice(-1)[0]) {
             action.undoData = remove(data);
             break;
         case "connect":
-            connect(data[0],data[1],data[2]);
+            connect(data[0],data[1],data[2],data[3],data[4]);
             break;
         case "edit":
             edit(...data);

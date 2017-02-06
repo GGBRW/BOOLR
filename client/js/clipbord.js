@@ -1,90 +1,127 @@
 let clipbord = {};
 clipbord.components = [];
 clipbord.connections = [];
+clipbord.wires = [];
 
-clipbord.copy = function(components,selection) {
+clipbord.copy = function(components = [], wires = [], selection) {
     clipbord.components = components;
-    if(selection) clipbord.selection = Object.assign({},selecting);
-    else clipbord.selection = null;
+    clipbord.wires = wires;
+    if(selection) {
+        clipbord.selection = Object.assign({},selection);
+    } else delete clipbord.selection;
+
+    // // Connections
+    // clipbord.connections = [];
+    // if(components.length > 1) {
+    //     for(let i = 0, len = components.length; i < len; ++i) {
+    //         if(components.includes(components[i].from) &&
+    //            components.includes(components[i].to)) {
+    //             clipbord.connections.push([
+    //                 components.indexOf(components[i].from),
+    //                 components.indexOf(components[i].to),
+    //                 components.indexOf(components[i])
+    //             ]);
+    //         } else if(components[i].constructor == Wire) {
+    //             components.splice(i,1);
+    //             --i;
+    //             --len;
+    //         }
+    //     }
+    // }
 
     // Connections
     clipbord.connections = [];
-    if(components.length > 1) {
-        for(let i = 0, len = components.length; i < len; ++i) {
-            if(components.includes(components[i].from) &&
-               components.includes(components[i].to)) {
-                clipbord.connections.push([
-                    components.indexOf(components[i].from),
-                    components.indexOf(components[i].to),
-                    components.indexOf(components[i])
-                ]);
-            } else if(components[i].constructor == Wire) {
-                components.splice(i,1);
-                --i;
-                --len;
-            }
+    for(let i = 0; i < wires.length; ++i) {
+        const wire = wires[i];
+        const fromIndex = components.indexOf(wire.from.component);
+        const toIndex = components.indexOf(wire.to.component);
+        if(fromIndex > -1 && toIndex > -1) {
+            clipbord.connections.push([
+                fromIndex,
+                toIndex,
+                wire.from.component.output.indexOf(wire.from),
+                wire.to.component.input.indexOf(wire.to),
+                wires.indexOf(wire)
+            ]);
+        } else {
+            wires.splice(wires.indexOf(wire),1);
         }
     }
-
-    toolbar.message("Copied " + (selection ? "selection" : "component") + " to clipbord");
 }
 
 clipbord.paste = function(x,y) {
+    if(this.components.length == 0 && this.wires.length == 0) {
+        return;
+    }
+
+    let components = [...this.components];
+    let wires = [...this.wires];
+    const connections = this.connections;
+
     let added = [];
     if(clipbord.selection) {
-        const dx = Math.round(x - clipbord.selection.x);
-        const dy = Math.round(y - clipbord.selection.y);
+        const dx = Math.round(x - this.selection.x) || 0;
+        const dy = Math.round(y - this.selection.y) || 0;
 
-        for(let i = clipbord.components.length - 1; i >= 0; --i) {
-            const pos = clipbord.components[i].pos;
+        // for(let i = clipbord.components.length - 1; i >= 0; --i) {
+        //     const pos = clipbord.components[i].pos;
+        //
+        //     clipbord.components[i] = clone(clipbord.components[i]);
+        //
+        //     if(Array.isArray(pos)) {
+        //         for(let j = 0, len2 = pos.length; j < len2; ++j) {
+        //             clipbord.components[i].pos.push({
+        //                 x: Math.round(pos[j].x + dx),
+        //                 y: Math.round(pos[j].y + dy)
+        //             });
+        //         }
+        //
+        //         added.unshift(clipbord.components[i]);
+        //     }
+        //     else {
+        //         clipbord.components[i].pos.x = Math.round(pos.x + dx);
+        //         clipbord.components[i].pos.y = Math.round(pos.y + dy);
+        //         added.push(clipbord.components[i]);
+        //     }
+        // }
 
-            clipbord.components[i] = clone(clipbord.components[i]);
+        components = components.map(component => cloneComponent(component,dx,dy));
+        wires = wires.map(wire => cloneWire(wire,dx,dy));
 
-            if(Array.isArray(pos)) {
-                for(let j = 0, len2 = pos.length; j < len2; ++j) {
-                    clipbord.components[i].pos.push({
-                        x: Math.round(pos[j].x + dx),
-                        y: Math.round(pos[j].y + dy)
-                    });
-                }
+        for(let i = 0; i < connections.length; ++i) {
+            const from = components[connections[i][0]];
+            const to = components[connections[i][1]];
+            const wire = wires[connections[i][4]];
 
-                added.unshift(clipbord.components[i]);
-            }
-            else {
-                clipbord.components[i].pos.x = Math.round(pos.x + dx);
-                clipbord.components[i].pos.y = Math.round(pos.y + dy);
-                added.push(clipbord.components[i]);
-            }
+            const fromPort = from.output[connections[i][2]];
+            const toPort = to.input[connections[i][3]];
+
+            wire.from = fromPort;
+            wire.to = toPort;
+
+            connect(fromPort,toPort,wire);
         }
 
-        for(let i = 0; i < clipbord.connections.length; ++i) {
-            const from = clipbord.components[clipbord.connections[i][0]];
-            const to = clipbord.components[clipbord.connections[i][1]];
-            const wire = clipbord.components[clipbord.connections[i][2]];
-
-            wire.from = from;
-            wire.to = to;
-
-            connect(from,to,wire,false);
-        }
-
-        if(clipbord.selection) {
+        if(this.selection) {
             setTimeout(() => {
-                selecting = clipbord.selection;
+                selecting = Object.assign({}, this.selection);
                 selecting.x = Math.round(x);
                 selecting.y = Math.round(y);
 
-                contextMenu.show({
-                    x: (selecting.x + selecting.w - offset.x) * zoom,
-                    y: (-(selecting.y + selecting.h) + offset.y) * zoom
-                });
+                selecting.components = components;
+                selecting.wires = wires;
 
-                action("addSelection",[...added],true);
+                contextMenu.show(
+                    (selecting.x + selecting.w - offset.x) * zoom,
+                    (-(selecting.y + selecting.h) + offset.y) * zoom
+                );
+
+                action("addSelection",[components,wires],true);
             });
         }
     }
     else {
-        const component = clone(clipbord.components[0]);
+        const component = cloneComponent(components[0]);
         component.pos.x = x;
         component.pos.y = y;
         action("add",component,true);

@@ -2,8 +2,6 @@ let keys = {};
 
 // Canvas key bindings
 c.onkeydown = function(e) {
-    console.log(e.which);
-
     if(!keys[e.which]) keys[e.which] = new Date;
     switch(e.which) {
         case 37: // Arrow left
@@ -29,10 +27,20 @@ c.onkeydown = function(e) {
                     true
                 );
             } else {
-                // remove(
-                //     find(mouse.grid.x,mouse.grid.y)
-                // );
-                find() && action("remove",find(),true);
+                let found;
+                if(found = findComponentByPos()) {
+                    action(
+                        "remove",
+                        findComponentByPos(),
+                        true
+                    );
+                } else if(found = findWireByPos()) {
+                    action(
+                        "disconnect",
+                        findWireByPos(),
+                        true
+                    );
+                }
             }
             break;
         case 33: // Page Up
@@ -79,14 +87,14 @@ c.onkeydown = function(e) {
         case 67: // C
             if(e.ctrlKey) {
                 if(selecting) {
-                    clipbord.copy(selecting.components, selecting);
-                } else if(find()) {
-                    clipbord.copy([find()]);
+                    clipbord.copy(selecting.components,selecting.wires,selecting);
+                } else if(findComponentByPos()) {
+                    clipbord.copy([findComponentByPos()]);
                 }
             }
             break;
         case 69: // E:
-            var component = find(mouse.grid.x,mouse.grid.y);
+            var component = findComponentByPos();
             if(component && component.constructor == Wire) {
                 popup.color_picker.show(
                     color => color
@@ -125,31 +133,22 @@ c.onkeydown = function(e) {
                 popup.confirm.show(
                     'Clear localStorage',
                     'Are you sure you want to clear all local stored data?',
-                    () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
+                    () => { localStorage.pwsData = ''; window.onbeforeunload = undefined; location.reload() }
                 );
             } else {
-                var component = find(mouse.grid.x, mouse.grid.y);
-                if (component && component.height) {
-                    const t = component.height;
-                    component.height = component.width;
-                    component.width = t;
-                }
+                var component = findComponentByPos();
+                component && component.rotate && component.rotate();
             }
             break;
         case 83: // S
-            console.log(e);
             if(e.ctrlKey && e.shiftKey) {
                 popup.settings.show();
             } else if(e.ctrlKey) {
-                popup.prompt.show(
-                    "Export",
-                    "Enter export file name:",
-                    name => name ? download(name, stringify({components})) : download(undefined, stringify({components}))
-                );
-            } else {
+                dialog.save();
+            } else if(e.shiftKey) {
                 waypointsMenu.hide();
 
-                const component = find(mouse.grid.x,mouse.grid.y);
+                const component = findComponentByPos();
                 setWaypoint(
                     mouse.grid.x,mouse.grid.y,
                     component && component.name
@@ -172,7 +171,9 @@ c.onkeydown = function(e) {
             }
             break;
         case 87: // W
-            waypointsMenu.show(Object.assign({},mouse.grid));
+            if(e.shiftKey) {
+                waypointsMenu.show();
+            }
             // gotoWaypoint(waypoints.length - 1);
             break;
         case 90: // Z
@@ -185,7 +186,7 @@ c.onkeydown = function(e) {
             }
             break;
         case 9: // Tab
-            var component = find(mouse.grid.x, mouse.grid.y);
+            var component = findComponentByPos(mouse.grid.x, mouse.grid.y);
             if(component && component.constructor != Wire) {
                 select(component.constructor);
             }

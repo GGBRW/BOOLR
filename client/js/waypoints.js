@@ -15,18 +15,21 @@ function gotoWaypoint(index) {
 }
 
 const waypointsMenu = document.getElementById("waypointsMenu");
-waypointsMenu.pos = {};
 
-waypointsMenu.show = function(pos) {
+waypointsMenu.show = function(
+    x = mouse.screen.x / zoom + offset.x,
+    y = -mouse.screen.y / zoom + offset.y
+) {
     if(waypoints.length == 0) {
         toolbar.message("You have no waypoints set. Press <i>s</i> to add a waypoint")
         return;
     }
     else if(waypoints.length == 1 && contextMenu.style.display == "none") { gotoWaypoint(0); return }
 
-    this.pos = pos;
+    this.x = x;
+    this.y = y;
 
-    this.innerHTML = "<span style='font-family: Roboto; color: #ddd'>Jump to...</span>";
+    this.innerHTML = "Jump to...";
     for(let i = 0; i < waypoints.length; ++i) {
         const li = document.createElement("li");
         li.onclick = () => {

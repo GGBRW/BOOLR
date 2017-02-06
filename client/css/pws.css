@@ -61,6 +61,11 @@ canvas {
     src: url(../fonts/Monospace.ttf);
 }
 
+@font-face {
+    font-family: "Fancy";
+    src: url(../fonts/LobsterTwo-Regular.ttf);
+}
+
 /* Console */
 
 /*#console #input {*/
@@ -317,8 +322,9 @@ canvas {
     left: 50%;
     bottom: 60px;
     background: #ddd;
-    box-shadow: 0 0 10px rgba(0,0,0,.25);
-    color: #333;
+    -box-shadow: 0 0 10px rgba(0,0,0,.25);
+    border-radius: 50px;
+    color: #111;
     padding: 10px 25px;
     font-family: "Ubuntu";
     font-size: 15px;
@@ -327,7 +333,6 @@ canvas {
     transition: opacity .5s;
     white-space: nowrap;
     pointer-events: none;
-    border-radius: 1000px;
 }
 
 #toolbartip {
@@ -339,11 +344,12 @@ canvas {
     background: #111;
     font-family: "Ubuntu";
     font-size: 15px;
-    color: #888;
+    color: #ddd;
     padding: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     border-radius: 5px;
     text-align: center;
+    pointer-events: none;
 
     opacity: 0;
     transform: translateY(30px);
@@ -483,6 +489,7 @@ canvas {
     border-radius: 5px;
     text-align: center;
     white-space: nowrap;
+    pointer-events: none;
 
     opacity: 0;
     transform: translateY(30px);
@@ -614,7 +621,7 @@ canvas {
 
 #contextMenu li {
     font-family: "Ubuntu";
-    font-size: 13px;
+    font-size: 15px;
     color: #fff;
     border-bottom: 1px solid #333;
     padding: 8px;
@@ -623,21 +630,159 @@ canvas {
 }
 
 #contextMenu li.disabled {
+    pointer-events: none;
     opacity: .5;
+}
+
+#contextMenu li .material-icons {
+    color: #555;
+    margin-right: 10px;
+    vertical-align: -5px;
+    white-space: nowrap;
+}
+
+#contextMenu li .key {
+    white-space: nowrap;
+    color: #888;
+    padding-left: 10px;
+    float: right;
+    line-height: 28px;
 }
 
 #contextMenu li:last-child {
     border: none;
 }
 
-#contextMenu .material-icons {
-    color: #555;
-    margin-right: 10px;
-    vertical-align: -5px;
-}
-
 #contextMenu li:hover {
     background: rgba(255,255,255,.1);
+}
+
+/* Dialog menu */
+#over {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #888;
+    opacity: 0;
+    transition: opacity .5s;
+}
+
+#dialog {
+    display: none;
+    position: fixed;
+    top: 16%;
+    left: 50%;
+    height: auto;
+    width: 400px;
+    margin-left: -200px;
+    padding-bottom: 100px;
+    background: #111;
+    border-radius: 5px;
+    text-align: center;
+    font-family: Ubuntu;
+    color: #ddd;
+    font-size: 15px;
+    z-index: 1000;
+    outline: none;
+
+    top: 100%;
+    opacity: 0;
+    transition: opacity .2s, transform .2s, top .2s, height 1s;
+}
+
+#dialog h1 {
+    font-family: Ubuntu;
+    font-size: 30px;
+    font-weight: 400;
+    margin: 0;
+    padding: 20px 0;
+}
+
+#dialog .close {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background: transparent;
+    color: #888;
+    border: none;
+    opacity: .5;
+    outline: none;
+
+    transform: rotateZ(0deg) scale(1);
+    transition: opacity .2s, transform .2s;
+}
+
+#dialog .close:hover {
+    font-weight: 800;
+    transform: rotateZ(90deg) scale(1.2);
+    opacity: .7;
+}
+
+#dialog .close:active {
+    transform: rotateZ(90deg) scale(.5);
+}
+
+#dialog .container {
+    padding: 0 20px;
+}
+
+#dialog input {
+    font-family: Monospaced;
+    font-size: 15px;
+    background: rgba(255,255,255,0);
+    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
+    border: none;
+    outline: none;
+    margin: 8px;
+    padding: 2px;
+    color: #ddd;
+}
+
+#dialog ul {
+    margin-left: 10%;
+}
+
+#dialog li {
+    text-align: left;
+    padding: 5px;
+}
+
+#dialog .options {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px 0;
+}
+
+#dialog .options button {
+    position: relative;
+    top: 0;
+    background: rgba(255,255,255,.2);
+    box-shadow: 0 3px 0 0 rgba(255,255,255,.1);
+    border: none;
+    font-family: Ubuntu;
+    font-size: 15px;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    min-width: 100px;
+    outline: none;
+    cursor: pointer;
+
+    transition: top .1s, box-shadow .1s, background .1s;
+}
+
+#dialog .options button:hover {
+    background: rgba(255,255,255,.3);
+    box-shadow: 0 3px 0 0 rgba(255,255,255,.2);
+}
+
+#dialog .options button:active {
+    box-shadow: 0 0 0 0 #111;
+    top: 3px;
 }
 
 /* Waypoints menu */
@@ -654,15 +799,15 @@ canvas {
     max-height: 300px;
     overflow: auto;
     border-radius: 5px;
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #ddd;
 
     opacity: 0;
     transition: opacity .2s;
 }
 
 #waypointsMenu li {
-    font-family: "Ubuntu";
-    font-size: 14px;
-    color: #888;
     border-bottom: 1px solid #333;
     padding: 14px;
     cursor: pointer;
@@ -676,10 +821,11 @@ canvas {
 
 #waypointsMenu li .remove {
     float: right;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     margin-left: 10px;
     transition: color .2s;
+    color: #888;
 }
 
 #waypointsMenu li .remove:hover {

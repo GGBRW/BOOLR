@@ -50,7 +50,6 @@ function updateDebugInfo() {
         i = 0;
         components.map(n => n.constructor == Wire && ++i);
         debugInfo.addLine("Wires", i);
-        debugInfo.addLine("Visible elements", visible_components);
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(tickrate));
         debugInfo.addLine("Updates", update_queue.length);
@@ -62,7 +61,7 @@ function updateDebugInfo() {
         } else {
             debugInfo.addLine("Socket", false);
         }
-        debugInfo.innerHTML += "<br><span style='font-family: \"Roboto Condensed\"; float: left'>Hold F3 to hide this</span>";
+        debugInfo.innerHTML += "<br><span style='float: left'>Hold F3 to hide this</span>";
     } else {
         debugInfo.style.display = "none";
     }
