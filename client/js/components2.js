@@ -1144,7 +1144,7 @@ class WireIntersection {
             0,
             Math.PI * 2
         );
-        ctx.fillStyle = this.value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.colorOn;
         ctx.fill();
     }
 

@@ -157,7 +157,7 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
-    "Save custom component",
+    "Save component",
     "file_download",
     "Shift+R",
     function() {
