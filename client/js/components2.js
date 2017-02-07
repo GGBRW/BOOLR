@@ -37,11 +37,9 @@ function remove(component) {
 
     for(let i = 0; i < component.output.length; ++i) {
         // Remove connections
-        for(let j = 0; j < component.output[i].connection.length; ++j) {
-            const wire = component.output[i].connection[j];
-            const index = wires.indexOf(wire);
-            if(index > -1) wires.splice(index,1);
-        }
+        const wire = component.output[i].connection;
+        const index = wires.indexOf(wire);
+        if(index > -1) wires.splice(index,1);
     }
 
     const index = components.indexOf(component);
@@ -57,7 +55,7 @@ Connects two components
  */
 function connect(from,to,wire) {
     if(from) {
-        from.connection.push(wire);
+        from.connection = wire;
         wire.from = from;
     }
     if(to) {
@@ -77,7 +75,7 @@ Disconnects two components
 function disconnect(wire) {
     const from = wire.from;
     const to = wire.to;
-    from.connection = [];
+    delete from.connection;
     delete to.connection;
     to.component.update();
 
@@ -283,7 +281,7 @@ function cloneComponent(component, dx = 0, dy = 0) {
     for(let i = 0; i < component.output.length; ++i) {
         clone.output.push(Object.assign({},component.output[i]));
         clone.output[i].component = clone;
-        clone.output[i].connection = [];
+        delete clone.output[i].connection;
     }
     return clone;
 }
@@ -425,15 +423,12 @@ class Component {
             if(!port.connection) continue;
             // If this output port's value has changed, update all the connected components
             if(port.value != values[i]) {
-                for(let i = 0; i < port.connection.length; ++i) {
-                    const wire = port.connection[i];
-                    wire.value = port.value;
+                port.connection.value = port.value;
 
-                    const to = wire.to;
-                    to.value = port.value;
-                    if(components.indexOf(to.component) == -1) {
-                        components.push(to.component);
-                    }
+                const to = port.connection.to;
+                to.value = port.value;
+                if(components.indexOf(to.component) == -1) {
+                    components.push(to.component);
                 }
             }
 
@@ -620,8 +615,7 @@ class Component {
             component: this,
             name,
             pos,
-            value: 0,
-            connection: []
+            value: 0
         }
 
         Object.assign(port,properties);
@@ -639,7 +633,7 @@ class Component {
         }
 
         for(let i = 0; i < this.output.length; ++i) {
-            if(this.output[i].connection.length > 0) {
+            if(this.output[i].connection) {
                 return;
             }
         }

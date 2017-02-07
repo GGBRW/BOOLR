@@ -541,12 +541,10 @@ c.onmousedown = function(e) {
                     }
 
                     for(let i = 0; i < component.output.length; ++i) {
-                        for(let j = 0; j < component.output[i].connection.length; ++j) {
-                            const wire = component.output[i].connection[j];
-                            if(wire) {
-                                wire.pos[0].x += dx / 2.5;
-                                wire.pos[0].y += dy / 2.5;
-                            }
+                        const wire = component.output[i].connection;
+                        if(wire) {
+                            wire.pos[0].x += dx / 2.5;
+                            wire.pos[0].y += dy / 2.5;
                         }
                     }
 
@@ -569,12 +567,10 @@ c.onmousedown = function(e) {
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
-                            for(let j = 0; j < component.output[i].connection.length; ++j) {
-                                const wire = component.output[i].connection[j];
-                                if(wire) {
-                                    wire.pos[0].x = Math.round(wire.pos[0].x);
-                                    wire.pos[0].y = Math.round(wire.pos[0].y)
-                                }
+                            const wire = component.output[i].connection;
+                            if(wire) {
+                                wire.pos[0].x = Math.round(wire.pos[0].x);
+                                wire.pos[0].y = Math.round(wire.pos[0].y)
                             }
                         }
 
@@ -650,12 +646,10 @@ c.onmousemove = function(e) {
                     }
 
                     for(let i = 0; i < component.output.length; ++i) {
-                        for(let j = 0; j < component.output[i].connection.length; ++j) {
-                            const wire = component.output[i].connection[j];
-                            if(wire) {
-                                wire.pos[0].x += e.movementX / zoom;
-                                wire.pos[0].y -= e.movementY / zoom;
-                            }
+                        const wire = component.output[i].connection;
+                        if(wire) {
+                            wire.pos[0].x += e.movementX / zoom;
+                            wire.pos[0].y -= e.movementY / zoom;
                         }
                     }
                 } else if(dragging.port) {
@@ -1036,12 +1030,10 @@ c.onmouseup = function(e) {
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
-                            for(let j = 0; j < component.output[i].connection.length; ++j) {
-                                const wire = component.output[i].connection[j];
-                                if(wire) {
-                                    wire.pos[0].x += dx / 2.5;
-                                    wire.pos[0].y += dy / 2.5;
-                                }
+                            const wire = component.output[i].connection;
+                            if(wire) {
+                                wire.pos[0].x += dx / 2.5;
+                                wire.pos[0].y += dy / 2.5;
                             }
                         }
 
@@ -1064,12 +1056,10 @@ c.onmouseup = function(e) {
                             }
 
                             for(let i = 0; i < component.output.length; ++i) {
-                                for(let j = 0; j < component.output[i].connection.length; ++j) {
-                                    const wire = component.output[i].connection[j];
-                                    if(wire) {
-                                        wire.pos[0].x = Math.round(wire.pos[0].x);
-                                        wire.pos[0].y = Math.round(wire.pos[0].y);
-                                    }
+                                const wire = component.output[i].connection;
+                                if(wire) {
+                                    wire.pos[0].x = Math.round(wire.pos[0].x);
+                                    wire.pos[0].y = Math.round(wire.pos[0].y);
                                 }
                             }
 
