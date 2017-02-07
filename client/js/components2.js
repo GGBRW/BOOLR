@@ -31,16 +31,20 @@ function remove(component) {
     for(let i = 0; i < component.input.length; ++i) {
         // Remove connections
         const wire = component.input[i].connection;
-        const index = wires.indexOf(wire);
-        if(index > -1) wires.splice(index,1);
+        if(wire) {
+            disconnect(wire);
+        }
     }
 
     for(let i = 0; i < component.output.length; ++i) {
         // Remove connections
         const wire = component.output[i].connection;
-        const index = wires.indexOf(wire);
-        if(index > -1) wires.splice(index,1);
+        if(wire) {
+            disconnect(wire);
+        }
     }
+
+    delete component.delay;
 
     const index = components.indexOf(component);
     index > -1 && components.splice(index,1);
@@ -77,6 +81,7 @@ function disconnect(wire) {
     const to = wire.to;
     delete from.connection;
     delete to.connection;
+    to.value = 0;
     to.component.update();
 
     from.component.ondisconnect && from.component.ondisconnect();
@@ -416,8 +421,6 @@ class Component {
     }
 
     update() {
-        // Save the values of the output ports before updating them
-        const values = this.output.map(a => a.value);
         // Update output ports
         this.function();
 
@@ -427,7 +430,7 @@ class Component {
             // If the port is empty, skip to the next port
             if(!port.connection) continue;
             // If this output port's value has changed, update all the connected components
-            if(port.value != values[i]) {
+            if(port.value != port.connection.value) {
                 port.connection.value = port.value;
 
                 const to = port.connection.to;
@@ -801,7 +804,7 @@ class Clock extends Component {
         function tick() {
             this.value = 1 - this.value;
             this.update();
-            setTimeout(
+            this.delay && setTimeout(
                 tick.bind(this),
                 this.delay
             );
