@@ -1,5 +1,3 @@
-echo "updating..."
-cd %HOMEDRIVE%%HOMEPATH%\Desktop\PWS
+@echo off
 git pull
-echo "starting program..."
-start Client\index.html
+start chrome file:///C:/Users/Jaap/Documents/School/Informatica/PWS/client/pws.html
