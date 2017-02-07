@@ -77,7 +77,7 @@ Disconnects two components
 function disconnect(wire) {
     const from = wire.from;
     const to = wire.to;
-    delete from.connection;
+    from.connection = [];
     delete to.connection;
     to.component.update();
 
