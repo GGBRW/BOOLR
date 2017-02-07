@@ -1055,7 +1055,7 @@ class Custom extends Component {
                 ctx.fillStyle = "#111";
                 ctx.font = zoom / 5 + "px Monospaced";
                 ctx.fillText(
-                    this.name,
+                    name,
                     ox - ctx.measureText(name).width / 2,
                     oy - zoom / 3
                 );
@@ -1111,7 +1111,7 @@ class Custom extends Component {
                 ctx.fillStyle = "#111";
                 ctx.font = zoom / 5 + "px Monospaced";
                 ctx.fillText(
-                    this.name,
+                    name,
                     ox - ctx.measureText(name).width / 2,
                     oy - zoom / 3
                 );
