@@ -1,2 +1,2 @@
-# PWS
-Profielwerkstuk
+# BOOLR
+A digital logic simulator
