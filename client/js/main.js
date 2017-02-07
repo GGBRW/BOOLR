@@ -1099,7 +1099,7 @@ c.onmouseup = function(e) {
             const pos = connecting.wire.pos.slice(-1)[0];
             const wire = findWireByPos(pos.x,pos.y);
 
-            if(wire && connecting.wire.pos.length > 1) {
+            if(wire) {
                 wires.push(connecting.wire);
                 merge(pos.x,pos.y);
             }
