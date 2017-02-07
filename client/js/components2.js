@@ -141,7 +141,10 @@ function findAllWiresByPos(x = mouse.grid.x, y = mouse.grid.y) {
     for(let i = 0; i < wires.length; ++i) {
         const pos = wires[i].pos;
         for(let j = 0; j < pos.length; ++j) {
-            if(x == pos[j].x && y == pos[j].y) found.push(wires[i]);
+            if(x == pos[j].x && y == pos[j].y) {
+                found.push(wires[i]);
+                break;
+            }
         }
     }
     return found;
@@ -356,6 +359,8 @@ function merge(x = mouse.grid.x, y = mouse.grid.y) {
     const intersection = new WireIntersection({x,y});
     intersection.colorOn = wires[0].colorOn;
     intersection.colorOff = wires[0].colorOff;
+
+    console.log(wires);
 
     for(let i = 0; i < wires.length; ++i) {
         const [wire1,wire2] = wires[i].split(x,y);
@@ -907,7 +912,7 @@ class Custom extends Component {
         const output = this.components.filter(a => a.constructor == Output);
 
         this.height = Math.max(input.length,output.length,1);
-        this.width = Math.round(this.height * 1.25);
+        this.width = 3;
 
         for(let i = 0; i < input.length; ++i) {
             this.addInputPort(
@@ -1031,16 +1036,30 @@ class Custom extends Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
+            ox += Math.sin(angle) / 2 * zoom;
+            oy -= Math.cos(angle) / 2 * zoom;
+
             ctx.beginPath();
             ctx.arc(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom,
+                ox,
+                oy,
                 zoom / 8,
                 0,
                 Math.PI * 2
             );
             ctx.fillStyle = "#111";
             ctx.fill();
+
+            const name = this.input[i].name;
+            if(name) {
+                ctx.fillStyle = "#111";
+                ctx.font = zoom / 5 + "px Monospaced";
+                ctx.fillText(
+                    this.name,
+                    ox - ctx.measureText(name).width / 2,
+                    oy - zoom / 3
+                );
+            }
         }
 
         // Draw output pins
@@ -1073,16 +1092,30 @@ class Custom extends Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
+            ox += Math.sin(angle) / 2 * zoom;
+            oy -= Math.cos(angle) / 2 * zoom;
+
             ctx.beginPath();
             ctx.arc(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom,
+                ox,
+                oy,
                 zoom / 8,
                 0,
                 Math.PI * 2
             );
             ctx.fillStyle = "#111";
             ctx.fill();
+
+            const name = this.output[i].name;
+            if(name) {
+                ctx.fillStyle = "#111";
+                ctx.font = zoom / 5 + "px Monospaced";
+                ctx.fillText(
+                    this.name,
+                    ox - ctx.measureText(name).width / 2,
+                    oy - zoom / 3
+                );
+            }
         }
     }
 }
@@ -1098,8 +1131,7 @@ class WireIntersection {
         this.value = 0;
     }
 
-    update() {
-        let value = 0;
+    update(value = 0) {
         for(let i = 0; i < this.input.length; ++i) {
             if(this.input[i].value == 1) value = 1;
         }
@@ -1140,6 +1172,10 @@ class WireIntersection {
 
         if(this.input.length == 1 && this.output.length == 1) {
             this.input[0].connection.merge(this.output[0].connection);
+        }
+
+        if(this.input.length == 0 || this.output.length == 0) {
+            remove(this);
         }
     }
 
@@ -1229,14 +1265,14 @@ class Wire {
         if(posIndex < 0) return;
 
         let wire1;
-        if(posIndex > 0) {
+        if(this.from || posIndex > 0) {
             wire1 = new Wire(this.pos.slice(0,posIndex + 1));
             wire1.from = this.from;
             this.from.connection = wire1;
         }
 
         let wire2;
-        if(posIndex < this.pos.length - 1) {
+        if(this.to || posIndex < this.pos.length - 1) {
             wire2 = new Wire(this.pos.slice(posIndex));
             wire2.to = this.to;
             this.to.connection = wire2;

@@ -357,6 +357,13 @@ c.onmousedown = function(e) {
                             true
                         );
                     }
+                } else if(found = findWireByPos()) {
+                    const wire = new Wire();
+                    connecting = { wire };
+                    connecting.wire.pos.push({
+                        x: mouse.grid.x,
+                        y: mouse.grid.y
+                    });
                 } else if(found = findPortByPos()) {
                     const port = found;
 
@@ -370,13 +377,6 @@ c.onmousedown = function(e) {
                             y: mouse.grid.y
                         });
                     }
-                } else if(found = findWireByPos()) {
-                    const wire = new Wire();
-                    connecting = { wire };
-                    connecting.wire.pos.push({
-                        x: mouse.grid.x,
-                        y: mouse.grid.y
-                    });
                 } else {
                     const component = new Selected();
                     action("add",component,true);
@@ -795,15 +795,15 @@ c.onmousemove = function(e) {
                 action(
                     "connect",
                     [
-                        connecting.wire.from,
+                        wire.from,
                         port,
-                        connecting.wire
+                        wire
                     ],
                     true
                 );
 
-                if(!connecting.wire.from) {
-                    merge(connecting.wire.pos[0].x,connecting.wire.pos[0].y);
+                if(!wire.from) {
+                    merge(wire.pos[0].x,wire.pos[0].y);
                 }
                 connecting = null;
             }
@@ -1099,7 +1099,7 @@ c.onmouseup = function(e) {
             const pos = connecting.wire.pos.slice(-1)[0];
             const wire = findWireByPos(pos.x,pos.y);
 
-            if(wire) {
+            if(wire && connecting.wire.pos.length > 1) {
                 wires.push(connecting.wire);
                 merge(pos.x,pos.y);
             }

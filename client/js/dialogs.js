@@ -173,6 +173,8 @@ dialog.editCustom = function(component) {
     dialog.container.appendChild(description);
     description.value = component.properties.description;
 
+    dialog.container.appendChild(document.createElement("br"));
+
     dialog.container.appendChild(
         document.createTextNode("Width: ")
     );
@@ -180,18 +182,22 @@ dialog.editCustom = function(component) {
     dialog.container.appendChild(width);
     width.value = component.width;
 
+    dialog.container.appendChild(document.createElement("br"));
+
     dialog.container.appendChild(
         document.createTextNode("Height: ")
     );
     const height = document.createElement("input");
     dialog.container.appendChild(height);
-    height.value = component.width;
+    height.value = component.height;
 
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {
         if(name.value.length > 0 && name.value.length < 20) component.name = name.value;
         if(description.value.length > 0) component.properties.description = description.value;
+        if(+width.value > 2) component.width = +width.value;
+        if(+height.value > 2) component.height = +height.value;
     });
 }
 
