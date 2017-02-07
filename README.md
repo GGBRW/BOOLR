@@ -1,3 +1,3 @@
 # BOOLR
-![Alt text](http://client/icon.png)
+![Alt text](client/icon.png)
 A digital logic simulator
