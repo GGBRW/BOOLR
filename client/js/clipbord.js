@@ -99,6 +99,8 @@ clipbord.paste = function(x,y) {
             wire.from = fromPort;
             wire.to = toPort;
 
+            console.log(wire.from);
+
             connect(fromPort,toPort,wire);
         }
 

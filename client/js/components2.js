@@ -55,7 +55,7 @@ Connects two components
  */
 function connect(from,to,wire) {
     if(from) {
-        from.connection = wire;
+        from.connection.push(wire);
         wire.from = from;
     }
     if(to) {
@@ -281,7 +281,7 @@ function cloneComponent(component, dx = 0, dy = 0) {
     for(let i = 0; i < component.output.length; ++i) {
         clone.output.push(Object.assign({},component.output[i]));
         clone.output[i].component = clone;
-        delete clone.output[i].connection;
+        clone.output[i].connection = [];
     }
     return clone;
 }
@@ -423,12 +423,15 @@ class Component {
             if(!port.connection) continue;
             // If this output port's value has changed, update all the connected components
             if(port.value != values[i]) {
-                port.connection.value = port.value;
+                for(let i = 0; i < port.connection.length; ++i) {
+                    const wire = port.connection[i];
+                    wire.value = port.value;
 
-                const to = port.connection.to;
-                to.value = port.value;
-                if(components.indexOf(to.component) == -1) {
-                    components.push(to.component);
+                    const to = wire.to;
+                    to.value = port.value;
+                    if(components.indexOf(to.component) == -1) {
+                        components.push(to.component);
+                    }
                 }
             }
 
@@ -615,7 +618,8 @@ class Component {
             component: this,
             name,
             pos,
-            value: 0
+            value: 0,
+            connection: []
         }
 
         Object.assign(port,properties);

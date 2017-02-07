@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/clipbord.js" afterPath="$PROJECT_DIR$/client/js/clipbord.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/components2.js" afterPath="$PROJECT_DIR$/client/js/components2.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
@@ -26,8 +27,8 @@
       <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/js/components2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="449" column="18" lean-forward="true" selection-start-line="449" selection-start-column="18" selection-end-line="449" selection-end-column="18" />
+            <state relative-caret-position="296">
+              <caret line="274" column="37" lean-forward="true" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -36,10 +37,10 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="53" column="13" lean-forward="true" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+            <state relative-caret-position="126">
+              <caret line="358" column="21" lean-forward="true" selection-start-line="358" selection-start-column="21" selection-end-line="358" selection-end-column="21" />
               <folding>
-                <marker date="1486399671934" expanded="true" signature="7612:7623" ph="..." />
+                <marker date="1486470434698" expanded="true" signature="7612:7623" ph="..." />
               </folding>
             </state>
           </provider>
@@ -48,7 +49,7 @@
       <file leaf-file-name="contextmenu.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2040">
+            <state relative-caret-position="21">
               <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="89" selection-end-column="10" />
               <folding />
             </state>
@@ -58,8 +59,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+            <state relative-caret-position="357">
+              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -70,7 +71,7 @@
       <file leaf-file-name="keys.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/keys.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2616">
+            <state relative-caret-position="21">
               <caret line="109" column="18" lean-forward="false" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
               <folding />
             </state>
@@ -80,19 +81,9 @@
       <file leaf-file-name="dialogs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/dialogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="184" column="1" lean-forward="true" selection-start-line="184" selection-start-column="1" selection-end-line="184" selection-end-column="1" />
-              <folding>
-                <marker date="1486369985721" expanded="true" signature="1917:1932" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="2008:2041" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="2509:2524" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="2648:2661" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="2730:2765" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="3155:3170" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="3470:3485" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="4301:4316" ph="..." />
-                <marker date="1486369985721" expanded="true" signature="7359:7374" ph="..." />
-              </folding>
+            <state relative-caret-position="3864">
+              <caret line="184" column="1" lean-forward="false" selection-start-line="184" selection-start-column="1" selection-end-line="184" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,8 +91,8 @@
       <file leaf-file-name="contextmenu2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="164" column="19" lean-forward="false" selection-start-line="164" selection-start-column="19" selection-end-line="164" selection-end-column="19" />
+            <state relative-caret-position="3444">
+              <caret line="179" column="6" lean-forward="false" selection-start-line="179" selection-start-column="6" selection-end-line="179" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -110,8 +101,8 @@
       <file leaf-file-name="localStorage2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+            <state relative-caret-position="114">
+              <caret line="195" column="58" lean-forward="true" selection-start-line="195" selection-start-column="58" selection-end-line="195" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -120,33 +111,9 @@
       <file leaf-file-name="actions2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/actions2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3936">
+            <state relative-caret-position="3465">
               <caret line="165" column="21" lean-forward="false" selection-start-line="165" selection-start-column="21" selection-end-line="165" selection-end-column="21" />
-              <folding>
-                <marker date="1486369985721" expanded="true" signature="82:4632" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="4661:5800" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="4702:4742" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="4768:5458" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="5579:5798" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="5850:7687" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="5935:7656" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6083:6134" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6226:6390" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6276:6357" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6494:6673" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6547:6637" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6707:7358" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="6737:6918" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="7183:7342" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="7561:7631" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="7822:9257" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="7967:8152" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="8020:8110" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="8186:8837" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="8216:8397" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="8662:8821" ph="{...}" />
-                <marker date="1486369985721" expanded="true" signature="9162:9232" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -154,8 +121,8 @@
       <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1312">
-              <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+            <state relative-caret-position="1176">
+              <caret line="101" column="35" lean-forward="false" selection-start-line="101" selection-start-column="35" selection-end-line="101" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -175,19 +142,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.dat</find>
-      <find>whats</find>
-      <find>console.l</find>
-      <find>.close</find>
-      <find>hoverBal</find>
-      <find>pop</find>
       <find>confirm</find>
       <find>popup</find>
       <find>dial</find>
       <find>componenti</find>
       <find>shift</find>
       <find>toolba</find>
-      <find>cloneCom</find>
       <find>components[i]</find>
       <find>dragging = null</find>
       <find>dialog</find>
@@ -205,6 +165,13 @@
       <find>merge</find>
       <find>save</find>
       <find>clone</find>
+      <find>addOut</find>
+      <find>connect</find>
+      <find>connection</find>
+      <find>addIn</find>
+      <find>Component</find>
+      <find>connect</find>
+      <find>cloneCom</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
@@ -266,7 +233,6 @@
         <option value="$PROJECT_DIR$/client/pws.html" />
         <option value="$PROJECT_DIR$/client/css/style.css" />
         <option value="$PROJECT_DIR$/client/css/pws.css" />
-        <option value="$PROJECT_DIR$/client/js/clipbord.js" />
         <option value="$PROJECT_DIR$/client/js/tips.js" />
         <option value="$PROJECT_DIR$/client/js/actions2.js" />
         <option value="$PROJECT_DIR$/client/js/keys.js" />
@@ -275,6 +241,7 @@
         <option value="$PROJECT_DIR$/client/js/localStorage2.js" />
         <option value="$PROJECT_DIR$/client/js/contextmenu2.js" />
         <option value="$PROJECT_DIR$/client/js/main.js" />
+        <option value="$PROJECT_DIR$/client/js/clipbord.js" />
         <option value="$PROJECT_DIR$/client/js/components2.js" />
       </list>
     </option>
@@ -304,9 +271,10 @@
     <handled-path value="$PROJECT_DIR$/server (Node.js)/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1920" />
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="x" value="63" />
+    <option name="y" value="24" />
+    <option name="width" value="1303" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -340,7 +308,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="C:\Program Files\nodejs\node" />
     <property name="js.eslint.eslintPackage" value="" />
-    <property name="SearchEverywhereHistoryKey" value="com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;too&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;pws.cs&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/popup.css" />
+    <property name="SearchEverywhereHistoryKey" value="clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;too&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;pws.cs&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/Client/popup.css" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
@@ -438,7 +406,7 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
-      <command value="run" />
+      <command value="run-script" />
       <scripts />
       <node-interpreter value="project" />
       <envs />
@@ -749,6 +717,7 @@
       <workItem from="1486302464913" duration="32669000" />
       <workItem from="1486343145467" duration="6971000" />
       <workItem from="1486370488186" duration="9401000" />
+      <workItem from="1486469605588" duration="1147000" />
     </task>
     <task id="LOCAL-00043" summary="update 0.1.79">
       <created>1475186812006</created>
@@ -1098,7 +1067,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="967653000" />
+    <option name="totallyTimeSpent" value="968800000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1110,7 +1079,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="63" y="24" width="1303" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.159375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1276,7 +1245,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="760">
           <caret line="63" column="49" lean-forward="false" selection-start-line="63" selection-start-column="49" selection-end-line="63" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1305,7 +1273,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
           <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1339,7 +1306,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="3" column="1" lean-forward="false" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1347,7 +1313,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="615" column="19" lean-forward="false" selection-start-line="615" selection-start-column="19" selection-end-line="615" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1363,7 +1328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2">
           <caret line="43" column="36" lean-forward="true" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1375,120 +1339,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/keys.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2616">
-          <caret line="109" column="18" lean-forward="false" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/js/actions2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3936">
+        <state relative-caret-position="3465">
           <caret line="165" column="21" lean-forward="false" selection-start-line="165" selection-start-column="21" selection-end-line="165" selection-end-column="21" />
-          <folding>
-            <marker date="1486369985721" expanded="true" signature="82:4632" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="4661:5800" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="4702:4742" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="4768:5458" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="5579:5798" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="5850:7687" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="5935:7656" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6083:6134" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6226:6390" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6276:6357" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6494:6673" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6547:6637" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6707:7358" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="6737:6918" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="7183:7342" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="7561:7631" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="7822:9257" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="7967:8152" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="8020:8110" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="8186:8837" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="8216:8397" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="8662:8821" ph="{...}" />
-            <marker date="1486369985721" expanded="true" signature="9162:9232" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/js/dialogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="184" column="1" lean-forward="true" selection-start-line="184" selection-start-column="1" selection-end-line="184" selection-end-column="1" />
-          <folding>
-            <marker date="1486369985721" expanded="true" signature="1917:1932" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="2008:2041" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="2509:2524" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="2648:2661" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="2730:2765" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="3155:3170" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="3470:3485" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="4301:4316" ph="..." />
-            <marker date="1486369985721" expanded="true" signature="7359:7374" ph="..." />
-          </folding>
+        <state relative-caret-position="3864">
+          <caret line="184" column="1" lean-forward="false" selection-start-line="184" selection-start-column="1" selection-end-line="184" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        <state relative-caret-position="357">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#span#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3444">
+          <caret line="179" column="6" lean-forward="false" selection-start-line="179" selection-start-column="6" selection-end-line="179" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2040">
+        <state relative-caret-position="21">
           <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="89" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js">
+    <entry file="file://$PROJECT_DIR$/client/js/keys.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1312">
-          <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="164" column="19" lean-forward="false" selection-start-line="164" selection-start-column="19" selection-end-line="164" selection-end-column="19" />
+        <state relative-caret-position="21">
+          <caret line="109" column="18" lean-forward="false" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="53" column="13" lean-forward="true" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+        <state relative-caret-position="126">
+          <caret line="358" column="21" lean-forward="true" selection-start-line="358" selection-start-column="21" selection-end-line="358" selection-end-column="21" />
           <folding>
-            <marker date="1486399671934" expanded="true" signature="7612:7623" ph="..." />
+            <marker date="1486470434698" expanded="true" signature="7612:7623" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="195" column="58" lean-forward="true" selection-start-line="195" selection-start-column="58" selection-end-line="195" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1176">
+          <caret line="101" column="35" lean-forward="false" selection-start-line="101" selection-start-column="35" selection-end-line="101" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/js/components2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="449" column="18" lean-forward="true" selection-start-line="449" selection-start-column="18" selection-end-line="449" selection-end-column="18" />
+        <state relative-caret-position="296">
+          <caret line="274" column="37" lean-forward="true" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
           <folding />
         </state>
       </provider>
