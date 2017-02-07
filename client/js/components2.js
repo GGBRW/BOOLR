@@ -543,11 +543,13 @@ class Component {
             ctx.arc(
                 ox + Math.sin(angle) / 2 * zoom,
                 oy - Math.cos(angle) / 2 * zoom,
-                zoom / 8,
+                zoom / 8 - zoom / 16,
                 0,
                 Math.PI * 2
             );
-            ctx.fillStyle = "#111";
+            ctx.lineWidth = zoom / 8;
+            ctx.fillStyle = "#fff";
+            ctx.stroke();
             ctx.fill();
         }
 
@@ -1046,11 +1048,13 @@ class Custom extends Component {
             ctx.arc(
                 ox,
                 oy,
-                zoom / 8,
+                zoom / 8 - zoom / 16,
                 0,
                 Math.PI * 2
             );
-            ctx.fillStyle = "#111";
+            ctx.lineWidth = zoom / 8;
+            ctx.fillStyle = "#fff";
+            ctx.stroke();
             ctx.fill();
 
             const name = this.input[i].name;

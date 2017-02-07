@@ -632,6 +632,7 @@ c.onmousemove = function(e) {
             } else {
                 if(dragging.component) {
                     const component = dragging.component;
+
                     // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
                     component.pos.x += e.movementX / zoom;
                     component.pos.y -= e.movementY / zoom;
