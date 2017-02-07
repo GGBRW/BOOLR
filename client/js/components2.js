@@ -37,9 +37,11 @@ function remove(component) {
 
     for(let i = 0; i < component.output.length; ++i) {
         // Remove connections
-        const wire = component.output[i].connection;
-        const index = wires.indexOf(wire);
-        if(index > -1) wires.splice(index,1);
+        for(let j = 0; j < component.output[i].connection.length; ++j) {
+            const wire = component.output[i].connection[j];
+            const index = wires.indexOf(wire);
+            if(index > -1) wires.splice(index,1);
+        }
     }
 
     const index = components.indexOf(component);
@@ -637,7 +639,7 @@ class Component {
         }
 
         for(let i = 0; i < this.output.length; ++i) {
-            if(this.output[i].connection) {
+            if(this.output[i].connection.length > 0) {
                 return;
             }
         }

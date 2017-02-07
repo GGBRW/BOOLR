@@ -173,6 +173,21 @@ dialog.editCustom = function(component) {
     dialog.container.appendChild(description);
     description.value = component.properties.description;
 
+    dialog.container.appendChild(
+        document.createTextNode("Width: ")
+    );
+    const width = document.createElement("input");
+    dialog.container.appendChild(width);
+    width.value = component.width;
+
+    dialog.container.appendChild(
+        document.createTextNode("Height: ")
+    );
+    const height = document.createElement("input");
+    dialog.container.appendChild(height);
+    height.value = component.width;
+
+
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {
         if(name.value.length > 0 && name.value.length < 20) component.name = name.value;
