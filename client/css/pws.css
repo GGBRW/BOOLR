@@ -1,6 +1,7 @@
 /* todo: backup fonts */
 
 body {
+    background: #111;
     margin: 0;
     overflow: hidden;
     -webkit-user-select: none;
@@ -447,10 +448,15 @@ canvas {
 
     background: #111;
     color: #ddd;
-    padding: 5px;
+    padding: 5px 5px 5px 30px;
     border-radius: 5px;
 
     transition: background .2s;
+}
+#credits #version .material-icons {
+    position: absolute;
+    left: 5px;
+    bottom: 1px;
 }
 
 #credits #version:hover {
@@ -741,6 +747,20 @@ canvas {
     color: #ddd;
 }
 
+#dialog .container button {
+    background: rgba(255,255,255,.2);
+    border: none;
+    font-family: Ubuntu;
+    font-size: 15px;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    min-width: 100px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+
 #dialog ul {
     margin-left: 10%;
 }
@@ -783,6 +803,63 @@ canvas {
 #dialog .options button:active {
     box-shadow: 0 0 0 0 #111;
     top: 3px;
+}
+
+/* Settings */
+
+#settings ul {
+    list-style: none;
+    margin: 0;
+}
+
+#settings li {
+    padding: 8px;
+}
+
+#settings .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    float: right;
+    margin-right: 16px;
+}
+
+#settings .switch input {display:none;}
+
+#settings .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #555;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+#settings .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 4px;
+    bottom: 4px;
+    background: #000;
+    opacity: .5;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+#settings input:checked + .slider {
+    background: #ddd;
+}
+
+#settings input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
 }
 
 /* Waypoints menu */
@@ -903,6 +980,68 @@ canvas {
     font-family: "Ubuntu";
     font-size: 16px;
     display: none;
+}
+
+#customComponentToolbar {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: -50px;
+    margin-left: -175px;
+    width: 350px;
+    height: 50px;
+    background: #111;
+    color: #444;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 0 0 5px 5px;
+    text-align: center;
+
+    transition: top .2s;
+}
+
+#customComponentToolbar .close {
+    position: absolute;
+    left: 0;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    color: #ddd;
+    line-height: 30px;
+    margin: 10px 0;
+    outline: none;
+    cursor: pointer;
+
+    transform: rotateZ(0deg) scale(1);
+    transition: opacity .2s, transform .2s;
+}
+#customComponentToolbar .close:hover {
+    transform: rotateZ(90deg) scale(1.2);
+    opacity: .7;
+}
+
+#customComponentToolbar .close:active {
+    transform: rotateZ(90deg) scale(.9);
+}
+
+#customComponentToolbar .menu {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    color: #ddd;
+    line-height: 30px;
+    margin: 10px 0;
+    outline: none;
+    cursor: pointer;
+}
+
+#customComponentToolbar #name {
+    position: relative;
+    top: 15px;
+    font-family: "Ubuntu", Arial;
+    font-size: 18px;
+    color: #ddd;
 }
 
 /* Loading screen */

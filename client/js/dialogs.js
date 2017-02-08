@@ -63,7 +63,7 @@ dialog.welcome = function(component) {
     dialog.show();
     dialog.name.innerHTML = "Welcome";
 
-    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>memory<i>";
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 120px'>memory<i>";
     dialog.container.innerHTML += "<p>Welcome to <span style='font-size: 20px; font-weight: 600'>BOOLR</span> !</p>";
     dialog.container.innerHTML += "<p>If you are new to this application, you can take a tour to see how this application works</p>";
     dialog.addOption("Take a tour", () => dialog.warning("This function is not yet available"));
@@ -83,8 +83,49 @@ dialog.update = function(component) {
         "<li>Create custom components</li>" +
         "<li>Components have input and output pins now</li>" +
         "<li>Merge wires</li>" +
+        "<li>Visualize components updates</li>" +
         "</ul>";
     dialog.addOption("Close");
+}
+
+dialog.settings = function(component) {
+    dialog.show();
+    dialog.name.innerHTML = "Settings";
+
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>settings<i>";
+
+    const settingsList = document.getElementById("settings").cloneNode(true);
+    settingsList.style.display = "block";
+    dialog.container.appendChild(settingsList);
+
+    const scrollAnimationOption = settingsList.querySelector(".option.scrollAnimation");
+    scrollAnimationOption.checked = settings.scrollAnimation;
+
+    const zoomAnimationOption = settingsList.querySelector(".option.zoomAnimation");
+    zoomAnimationOption.checked = settings.zoomAnimation;
+
+    const showDebugInfoOption = settingsList.querySelector(".option.showDebugInfo");
+    showDebugInfoOption.checked = settings.showDebugInfo;
+
+    const visualizeComponentUpdatesOption = settingsList.querySelector(".option.visualizeComponentUpdates");
+    visualizeComponentUpdatesOption.checked = settings.visualizeComponentUpdates;
+
+    settingsList.querySelector("#settings #reset").onclick = () => dialog.confirm(
+        'Are you sure you want to clear all local stored data?',
+        () => {
+            delete localStorage.pwsData;
+            window.onbeforeunload = undefined;
+            location.reload()
+        }
+    );
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK", () => {
+        settings.scrollAnimation = scrollAnimationOption.checked;
+        settings.zoomAnimation = zoomAnimationOption.checked;
+        settings.showDebugInfo = showDebugInfoOption.checked;
+        settings.visualizeComponentUpdates = visualizeComponentUpdatesOption.checked;
+    });
 }
 
 dialog.confirm = function(text,callback) {

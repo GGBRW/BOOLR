@@ -91,6 +91,14 @@ c.onkeydown = function(e) {
                 } else if(findComponentByPos()) {
                     clipbord.copy([findComponentByPos()]);
                 }
+            } else if(e.shiftKey && selecting && selecting.components) {
+                componentize(
+                    findComponentsInSelection(selecting.x,selecting.y,selecting.w,selecting.h),
+                    findWiresInSelection(selecting.x,selecting.y,selecting.w,selecting.h),
+                    undefined,
+                    Math.round(selecting.x + selecting.w / 2),
+                    Math.round(selecting.y + selecting.h / 2)
+                )
             }
             break;
         case 69: // E:
@@ -126,7 +134,12 @@ c.onkeydown = function(e) {
             //     );
             // } else document.getElementById("open_file").click();
 
-            popup.openproject.show();
+            if(e.ctrlKey) {
+                popup.openproject.show();
+            } else if(e.shiftKey) {
+                const component = findComponentByPos(...contextMenu.getPos());
+                component.open && component.open();
+            }
             return false;
             break;
         case 82: // R
@@ -136,6 +149,11 @@ c.onkeydown = function(e) {
                     'Are you sure you want to clear all local stored data?',
                     () => { localStorage.pwsData = ''; window.onbeforeunload = undefined; location.reload() }
                 );
+            } else if(e.shiftKey) {
+                const component = findComponentByPos(...contextMenu.getPos());
+                if(component.constructor == Custom) {
+                    savedCustomComponents.push(component);
+                }
             } else {
                 var component = findComponentByPos();
                 component && component.rotate && component.rotate();

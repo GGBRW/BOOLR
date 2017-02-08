@@ -58,17 +58,16 @@ Connects two components
 @param {boolean} [option to add wire to the wires array]
  */
 function connect(from,to,wire) {
-    if(from) {
-        from.connection = wire;
-        wire.from = from;
-    }
     if(to) {
         to.connection = wire;
         wire.to = to;
     }
-    wire.from && wire.from.component.update();
-    from && from.component.onconnect && from.component.onconnect();
-    to && to.component.onconnect && to.component.onconnect();
+    if(from) {
+        from.connection = wire;
+        wire.from = from;
+
+        from.component.update();
+    }
 }
 
 /*
@@ -79,13 +78,9 @@ Disconnects two components
 function disconnect(wire) {
     const from = wire.from;
     const to = wire.to;
+
     delete from.connection;
     delete to.connection;
-    to.value = 0;
-    to.component.update();
-
-    from.component.ondisconnect && from.component.ondisconnect();
-    to.component.ondisconnect && to.component.ondisconnect();
 
     const index = wires.indexOf(wire);
     if(index > -1) wires.splice(index,1);
@@ -325,10 +320,8 @@ function componentize(
     // Check if there are connections with components outside the selection
     for(let i = 0; i < wires_.length; ++i) {
         const wire = wires_[i];
-        if(!components_.includes(wire.from.component) ||
-           !components_.includes(wire.to.component)) {
-            return;
-        }
+        if(!components_.includes(wire.from.component)) return;
+        if(!components_.includes(wire.to.component)) return;
     }
 
     // Remove the components and wires
@@ -350,38 +343,6 @@ function componentize(
 
     components.push(component);
     dialog.editCustom(component);
-}
-
-/*
- Merges multiple wires to one wire at a given position
- @param {number} x
- @param {number} y
- @param {array} wires,
- */
-function merge(x = mouse.grid.x, y = mouse.grid.y) {
-    const wires = findAllWiresByPos(x,y);
-    if(wires.length < 2) return false;
-    const intersection = new WireIntersection({x,y});
-    intersection.colorOn = wires[0].colorOn;
-    intersection.colorOff = wires[0].colorOff;
-
-    console.log(wires);
-
-    for(let i = 0; i < wires.length; ++i) {
-        const [wire1,wire2] = wires[i].split(x,y);
-
-        if(wire1) {
-            const portTo = intersection.addInputPort();
-            connect(undefined,portTo,wire1);
-        }
-        if(wire2) {
-            const portFrom = intersection.addOutputPort();
-            connect(portFrom,undefined,wire2);
-        }
-    }
-
-    components.push(intersection);
-    return true;
 }
 
 /*
@@ -421,29 +382,40 @@ class Component {
     }
 
     update() {
+        // Highlight
+        if(settings.visualizeComponentUpdates) this.highlight(250);
+
         // Update output ports
         this.function();
 
-        const components = [];
+        const wires = [];
+        const values = [];
         for(let i = 0; i < this.output.length; ++i) {
             const port = this.output[i];
             // If the port is empty, skip to the next port
             if(!port.connection) continue;
-            // If this output port's value has changed, update all the connected components
-            if(port.value != port.connection.value) {
-                port.connection.value = port.value;
+            // // If this output port's value has changed, update all the connected components
+            // if(port.value != port.connection.value) {
+            //     port.connection.update(port.value);
+            // }
 
-                const to = port.connection.to;
-                to.value = port.value;
-                if(components.indexOf(to.component) == -1) {
-                    components.push(to.component);
-                }
-            }
-
-            for(let i = 0; i < components.length; ++i) {
-                components[i].update();
+            const index = wires.indexOf(port.connection);
+            if(index == -1) {
+                wires.push(port.connection);
+                values.push(port.value);
+            } else if(values[index] < port.value) {
+                values[index] = port.value;
             }
         }
+
+        for(let i = 0; i < wires.length; ++i) {
+            wires[i].update(values[i]);
+        }
+    }
+
+    highlight(duration = 500) {
+        this.outline = 1;
+        setTimeout(() => this.outline = 0, duration)
     }
 
     draw() {
@@ -543,11 +515,11 @@ class Component {
             ctx.arc(
                 ox + Math.sin(angle) / 2 * zoom,
                 oy - Math.cos(angle) / 2 * zoom,
-                zoom / 8 - zoom / 16,
+                zoom / 8 - zoom / 20,
                 0,
                 Math.PI * 2
             );
-            ctx.lineWidth = zoom / 8;
+            ctx.lineWidth = zoom / 10;
             ctx.fillStyle = "#fff";
             ctx.stroke();
             ctx.fill();
@@ -593,6 +565,20 @@ class Component {
             );
             ctx.fillStyle = "#111";
             ctx.fill();
+        }
+
+        // If the component is highlighted, draw a colored layer over the frame
+        if(this.outline > 0) {
+            ctx.strokeStyle = "#d00";
+            ctx.lineWidth = zoom / 12 | 0;
+            ctx.beginPath();
+            ctx.rect(
+                x - zoom / 2,
+                y - zoom / 2,
+                this.width * zoom,
+                this.height * zoom
+            );
+            ctx.stroke();
         }
     }
 
@@ -957,14 +943,17 @@ class Custom extends Component {
         components = this.components;
         wires = this.wires;
 
-        setTimeout(() => {
-            this.components = components;
-            this.wires = wires;
-            this.create();
+        customComponentToolbar.show(
+            this.name,
+            () => {
+                this.components = components;
+                this.wires = wires;
+                this.create();
 
-            components = componentsTmp;
-            wires = wiresTmp;
-        }, 1000);
+                components = componentsTmp;
+                wires = wiresTmp;
+            }
+        );
     }
 
     draw() {
@@ -1057,15 +1046,17 @@ class Custom extends Component {
             ctx.stroke();
             ctx.fill();
 
-            const name = this.input[i].name;
-            if(name) {
-                ctx.fillStyle = "#111";
-                ctx.font = zoom / 5 + "px Monospaced";
-                ctx.fillText(
-                    name,
-                    ox - ctx.measureText(name).width / 2,
-                    oy - zoom / 3
-                );
+            if(zoom > 30) {
+                const name = this.input[i].name;
+                if(name) {
+                    ctx.fillStyle = "#888";
+                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.fillText(
+                        name,
+                        ox - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? oy + zoom / 3 : oy - zoom / 4)
+                    );
+                }
             }
         }
 
@@ -1113,136 +1104,152 @@ class Custom extends Component {
             ctx.fillStyle = "#111";
             ctx.fill();
 
-            const name = this.output[i].name;
-            if(name) {
-                ctx.fillStyle = "#111";
-                ctx.font = zoom / 5 + "px Monospaced";
-                ctx.fillText(
-                    name,
-                    ox - ctx.measureText(name).width / 2,
-                    oy - zoom / 3
-                );
-            }
-        }
-    }
-}
-
-class WireIntersection {
-    constructor(
-        pos = Object.assign({},mouse.grid)
-    ) {
-        this.id = generateId();
-        this.pos = pos;
-        this.input = [];
-        this.output = [];
-        this.value = 0;
-    }
-
-    update(value = 0) {
-        for(let i = 0; i < this.input.length; ++i) {
-            if(this.input[i].value == 1) value = 1;
-        }
-
-        if(this.value != value) {
-            this.value = value;
-
-            for(let i = 0; i < this.input.length; ++i) {
-                const port = this.input[i];
-                if(!port.connection) continue;
-                port.connection.value = value;
-            }
-
-            const components = [];
-            for(let i = 0; i < this.output.length; ++i) {
-                const port = this.output[i];
-                port.value = value;
-
-                if(!port.connection) continue;
-                port.connection.value = value;
-
-                const to = port.connection.to;
-                to.value = value;
-                if(components.indexOf(to.component) == -1) {
-                    components.push(to.component);
+            if(zoom > 30) {
+                const name = this.output[i].name;
+                if(name) {
+                    ctx.fillStyle = "#888";
+                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.fillText(
+                        name,
+                        ox - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? oy + zoom / 3 : oy - zoom / 4)
+                    );
                 }
             }
-
-            for(let i = 0; i < components.length; ++i) {
-                components[i].update();
-            }
-        }
-    }
-
-    ondisconnect() {
-        this.input = this.input.filter(a => a.connection);
-        this.output = this.output.filter(a => a.connection);
-
-        if(this.input.length == 1 && this.output.length == 1) {
-            this.input[0].connection.merge(this.output[0].connection);
         }
 
-        if(this.input.length == 0 || this.output.length == 0) {
-            remove(this);
+        // If the component is highlighted, draw a colored layer over the frame
+        if(this.outline > 0) {
+            ctx.strokeStyle = "#d00";
+            ctx.lineWidth = zoom / 12 | 0;
+            ctx.beginPath();
+            ctx.rect(
+                x - zoom / 2,
+                y - zoom / 2,
+                this.width * zoom,
+                this.height * zoom
+            );
+            ctx.stroke();
         }
-    }
-
-    draw() {
-        const x = (this.pos.x - offset.x) * zoom;
-        const y = -(this.pos.y - offset.y) * zoom;
-
-        if(!(
-            x >= 0 &&
-            x <= c.width &&
-            y >= 0 &&
-            y <= c.height
-        )) return;
-
-        ctx.beginPath();
-        ctx.arc(
-            x,y,
-            zoom / 8,
-            0,
-            Math.PI * 2
-        );
-        ctx.fillStyle = this.colorOn;
-        ctx.fill();
-    }
-
-    addInputPort(name,pos,properties = {}) {
-        if(!name) {
-            name = String.fromCharCode(65 + this.input.length);
-        }
-
-        const port = {
-            type: "input",
-            component: this,
-            name,
-            pos,
-            value: 0
-        }
-
-        Object.assign(port,properties);
-
-        this.input.push(port);
-        return port;
-    }
-
-    addOutputPort(properties = {}) {
-        const name = String.fromCharCode(65 + this.output.length);
-
-        const port = {
-            type: "output",
-            component: this,
-            name,
-            value: 0
-        }
-
-        Object.assign(port,properties);
-
-        this.output.push(port);
-        return port;
     }
 }
+
+// class WireIntersection {
+//     constructor(
+//         pos = Object.assign({},mouse.grid)
+//     ) {
+//         this.id = generateId();
+//         this.pos = pos;
+//         this.input = [];
+//         this.output = [];
+//         this.value = 0;
+//     }
+//
+//     update(value = 0) {
+//         for(let i = 0; i < this.input.length; ++i) {
+//             if(this.input[i].value == 1) value = 1;
+//         }
+//
+//         if(this.value != value) {
+//             this.value = value;
+//
+//             for(let i = 0; i < this.input.length; ++i) {
+//                 const port = this.input[i];
+//                 if(!port.connection) continue;
+//                 port.connection.value = value;
+//             }
+//
+//             const components = [];
+//             for(let i = 0; i < this.output.length; ++i) {
+//                 const port = this.output[i];
+//                 port.value = value;
+//
+//                 if(!port.connection) continue;
+//                 port.connection.value = value;
+//
+//                 const to = port.connection.to;
+//                 to.value = value;
+//                 if(components.indexOf(to.component) == -1) {
+//                     components.push(to.component);
+//                 }
+//             }
+//
+//             for(let i = 0; i < components.length; ++i) {
+//                 components[i].update();
+//             }
+//         }
+//     }
+//
+//     ondisconnect() {
+//         this.input = this.input.filter(a => a.connection);
+//         this.output = this.output.filter(a => a.connection);
+//
+//         if(this.input.length == 1 && this.output.length == 1) {
+//             this.input[0].connection.merge(this.output[0].connection);
+//         }
+//
+//         if(this.input.length == 0 || this.output.length == 0) {
+//             remove(this);
+//         }
+//     }
+//
+//     draw() {
+//         const x = (this.pos.x - offset.x) * zoom;
+//         const y = -(this.pos.y - offset.y) * zoom;
+//
+//         if(!(
+//             x >= 0 &&
+//             x <= c.width &&
+//             y >= 0 &&
+//             y <= c.height
+//         )) return;
+//
+//         ctx.beginPath();
+//         ctx.arc(
+//             x,y,
+//             zoom / 8,
+//             0,
+//             Math.PI * 2
+//         );
+//         ctx.fillStyle = this.colorOn;
+//         ctx.fill();
+//     }
+//
+//     addInputPort(name,pos,properties = {}) {
+//         if(!name) {
+//             name = String.fromCharCode(65 + this.input.length);
+//         }
+//
+//         const port = {
+//             type: "input",
+//             component: this,
+//             name,
+//             pos,
+//             value: 0
+//         }
+//
+//         Object.assign(port,properties);
+//
+//         this.input.push(port);
+//         return port;
+//     }
+//
+//     addOutputPort(properties = {}) {
+//         const name = String.fromCharCode(65 + this.output.length);
+//
+//         const port = {
+//             type: "output",
+//             component: this,
+//             name,
+//             value: 0
+//         }
+//
+//         Object.assign(port,properties);
+//
+//         this.output.push(port);
+//         return port;
+//     }
+// }
 
 class Wire {
     constructor(
@@ -1262,61 +1269,28 @@ class Wire {
         if(color.length == 4) color = "#" + color.slice(1).replace(/(.)/g, '$1$1');
         const r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
         this.colorOff = '#' +
-            ((0|(1<<8) + r + (256 - r) * .5).toString(16)).substr(1) +
-            ((0|(1<<8) + g + (256 - g) * .5).toString(16)).substr(1) +
-            ((0|(1<<8) + b + (256 - b) * .5).toString(16)).substr(1);
+            ((0|(1<<8) + r + (256 - r) * .75).toString(16)).substr(1) +
+            ((0|(1<<8) + g + (256 - g) * .75).toString(16)).substr(1) +
+            ((0|(1<<8) + b + (256 - b) * .75).toString(16)).substr(1);
     }
 
-    split(x,y) {
-        const posIndex = this.pos.findIndex(pos => pos.x == x && pos.y == y);
-        if(posIndex < 0) return;
+    update(value = 0) {
+        // If the given value is the same as the value the wire already has,
+        // there's no need for an update
+        if(this.value == value) return;
 
-        let wire1;
-        if(this.from || posIndex > 0) {
-            wire1 = new Wire(this.pos.slice(0,posIndex + 1));
-            wire1.from = this.from;
-            this.from.connection = wire1;
-        }
+        this.value = value;
 
-        let wire2;
-        if(this.to || posIndex < this.pos.length - 1) {
-            wire2 = new Wire(this.pos.slice(posIndex));
-            wire2.to = this.to;
-            this.to.connection = wire2;
-        }
-
-        // Remove wire from wires list
-        const index = wires.indexOf(this);
-        if(index > -1) wires.splice(index,1);
-
-        // Add the new wires to wires list
-        if(wire1) wires.push(wire1);
-        if(wire2) wires.push(wire2);
-
-        return [wire1,wire2];
-    }
-
-    merge(wire) {
-        if(this.to.component != wire.from.component) return;
-
-        this.pos = this.pos.concat(wire.pos);
-
-        let index = components.indexOf(this.to.component);
-        if(index > -1) {
-            components.splice(index,1);
-        }
-
-        this.to = wire.to;
-
-        index = wires.indexOf(wire);
-        if(index > -1) {
-            wires.splice(index,1);
-        }
+        this.to.value = value;
+        if(Math.random() < .1) setTimeout(() => this.to.component.update());
     }
 
     draw() {
         // TODO: OPTIMIZE
         const pos = this.pos;
+
+        ctx.lineWidth = zoom / 8;
+        ctx.strokeStyle = ctx.fillStyle = this.value ? this.colorOn : this.colorOff;
 
         ctx.beginPath();
         ctx.lineTo(
@@ -1324,6 +1298,21 @@ class Wire {
             -(pos[0].y - offset.y) * zoom
         );
         for(let i = 1; i < pos.length - 1; ++i) {
+            if(pos[i].intersection) {
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(
+                    (pos[i].x - offset.x) * zoom,
+                    -(pos[i].y - offset.y) * zoom,
+                    zoom / 8,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+
+                ctx.beginPath();
+            }
+
             ctx.lineTo(
                 (pos[i].x - offset.x) * zoom,
                 -(pos[i].y - offset.y) * zoom
@@ -1333,8 +1322,6 @@ class Wire {
             (pos[pos.length - 1].x - offset.x) * zoom,
             -(pos[pos.length - 1].y - offset.y) * zoom
         );
-        ctx.lineWidth = zoom / 8;
-        ctx.strokeStyle = this.value ? this.colorOn : this.colorOff;
         ctx.stroke();
     }
 }

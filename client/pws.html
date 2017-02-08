@@ -4,7 +4,7 @@
 
         <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/pws.css">
-        <link rel="stylesheet" href="css/popup.css">
+        <!--<link rel="stylesheet" href="css/popup.css">-->
         <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
 
         <title>BOOLR | New Project</title>
@@ -64,10 +64,10 @@
 
         <!-- Credits -->
         <div id="credits">
-            <button id="version" onclick="dialog.update()" tooltip="Version">PWS v0.1.58</button>
+            <button id="version" onclick="dialog.update()" tooltip="Version"></button>
             <button onclick="dialog.save()" tooltip="Save project <br>(Ctrl+S)" class="material-icons">save</button>
             <button onclick="popup.openproject.show()" tooltip="Open project <br>(Ctrl+O)" class="material-icons">open_in_browser</button>
-            <button onclick="popup.settings.show()" tooltip="Settings" class="material-icons">settings</button>
+            <button onclick="dialog.settings()" tooltip="Settings" class="material-icons">settings</button>
             <button onclick="popup.info.show()" tooltip="Help" class="material-icons">help</button>
         </div>
         <div id="creditstip"></div>
@@ -91,140 +91,140 @@
         <div id="overlay"></div>
 
         <!-- Pop-ups -->
-        <div class="popup" id="confirm">
-            <h1></h1>
-            <p></p>
-            <button class="ok">OK</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="confirm">-->
+            <!--<h1></h1>-->
+            <!--<p></p>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="prompt">
-            <h1>Prompt</h1>
-            <p>Text</p>
-            <input spellcheck="false">
-            <button class="ok">OK</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="prompt">-->
+            <!--<h1>Prompt</h1>-->
+            <!--<p>Text</p>-->
+            <!--<input spellcheck="false">-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="whatsnew">
-            <h1></h1>
-            <ul>
-                <li><i class="material-icons">memory</i> Componentizing selections</li>
-            </ul>
-            <p style="color: #666; font-size: 14px">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</p>
-            <button class="ok">Close</button>
-        </div>
+        <!--<div class="popup" id="whatsnew">-->
+            <!--<h1></h1>-->
+            <!--<ul>-->
+                <!--<li><i class="material-icons">memory</i> Componentizing selections</li>-->
+            <!--</ul>-->
+            <!--<p style="color: #666; font-size: 14px">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</p>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="custom_component">
-            <h1></h1>
-            <button class="ok" disabled="true">OK</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="custom_component">-->
+            <!--<h1></h1>-->
+            <!--<button class="ok" disabled="true">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="component_list">
-            <h1>Component list</h1>
-            <p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>
-            <button class="ok">Close</button>
-        </div>
+        <!--<div class="popup" id="component_list">-->
+            <!--<h1>Component list</h1>-->
+            <!--<p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="settings">
-            <h1>Settings</h1>
-            <ul>
-                <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
-                <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
-                <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
-                <li><button onclick="
-                dialog.confirm(
-                    'Are you sure you want to clear all local stored data?',
-                    () => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }
-                );
-                ">Clear localStorage</button></li>
-            </ul>
-            <button class="ok">OK</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="settings">-->
+            <!--<h1>Settings</h1>-->
+            <!--<ul>-->
+                <!--<li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>-->
+                <!--<li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>-->
+                <!--<li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>-->
+                <!--<li><button onclick="-->
+                <!--dialog.confirm(-->
+                    <!--'Are you sure you want to clear all local stored data?',-->
+                    <!--() => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }-->
+                <!--);-->
+                <!--">Clear localStorage</button></li>-->
+            <!--</ul>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="info">
-            <h1>Info</h1>
-            <button class="ok">Close</button>
-        </div>
+        <!--<div class="popup" id="info">-->
+            <!--<h1>Info</h1>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="openproject">
-            <h1>Open project</h1>
+        <!--<div class="popup" id="openproject">-->
+            <!--<h1>Open project</h1>-->
 
-            Upload a project save file or connect to a server:
-            <br><br>
+            <!--Upload a project save file or connect to a server:-->
+            <!--<br><br>-->
 
-            <button id="local_btn" class="selected">Local</button>
-            <button id="server_btn">Server</button>
-            <div id="local">
-                <div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <i class="material-icons">file_upload</i>
-                    <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
-                </div>
-            </div>
-            <script>
-                function allowDrop(e) {
-                    e.preventDefault();
-                }
+            <!--<button id="local_btn" class="selected">Local</button>-->
+            <!--<button id="server_btn">Server</button>-->
+            <!--<div id="local">-->
+                <!--<div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">-->
+                    <!--<i class="material-icons">file_upload</i>-->
+                    <!--<p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<script>-->
+                <!--function allowDrop(e) {-->
+                    <!--e.preventDefault();-->
+                <!--}-->
 
-                function drop(e) {
-                    e.preventDefault();
-                    readFile(e.dataTransfer);
-                }
-            </script>
+                <!--function drop(e) {-->
+                    <!--e.preventDefault();-->
+                    <!--readFile(e.dataTransfer);-->
+                <!--}-->
+            <!--</script>-->
 
-            <div id="server" style="display: none;">
-                <input id="url" placeholder="Enter server url">
-                <button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>
-                <ul>
-                    <li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-                    <li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-                </ul>
-            </div>
+            <!--<div id="server" style="display: none;">-->
+                <!--<input id="url" placeholder="Enter server url">-->
+                <!--<button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>-->
+                <!--<ul>-->
+                    <!--<li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                    <!--<li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                <!--</ul>-->
+            <!--</div>-->
 
-            <script>
-                document.querySelector("#openproject #local_btn").onclick = function() {
-                    this.className = "selected";
-                    document.querySelector("#openproject #server_btn").className = "";
-                    document.querySelector("#openproject #local").style.display = "block";
-                    document.querySelector("#openproject #server").style.display = "none";
-                }
+            <!--<script>-->
+                <!--document.querySelector("#openproject #local_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #server_btn").className = "";-->
+                    <!--document.querySelector("#openproject #local").style.display = "block";-->
+                    <!--document.querySelector("#openproject #server").style.display = "none";-->
+                <!--}-->
 
-                document.querySelector("#openproject #server_btn").onclick = function() {
-                    this.className = "selected";
-                    document.querySelector("#openproject #local_btn").className = "";
-                    document.querySelector("#openproject #server").style.display = "block";
-                    document.querySelector("#openproject #local").style.display = "none";
-                }
-            </script>
-            <button class="ok">Close</button>
-        </div>
+                <!--document.querySelector("#openproject #server_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #local_btn").className = "";-->
+                    <!--document.querySelector("#openproject #server").style.display = "block";-->
+                    <!--document.querySelector("#openproject #local").style.display = "none";-->
+                <!--}-->
+            <!--</script>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="login">
-            <h1>Login</h1>
-            <p id="wrong" style="display: none; color: #500; font-family: 'Ubuntu'; font-weight: 600">Wrong username/password</p>
-            <input id="username" placeholder="Username">
-            <br><br>
-            <input id="password" placeholder="Password" type="password">
-            <button class="ok">Login</button>
-            <button id="spectate">Spectate mode</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="login">-->
+            <!--<h1>Login</h1>-->
+            <!--<p id="wrong" style="display: none; color: #500; font-family: 'Ubuntu'; font-weight: 600">Wrong username/password</p>-->
+            <!--<input id="username" placeholder="Username">-->
+            <!--<br><br>-->
+            <!--<input id="password" placeholder="Password" type="password">-->
+            <!--<button class="ok">Login</button>-->
+            <!--<button id="spectate">Spectate mode</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="color_picker">
-            <h1>Color picker</h1>
-            <input type="color">
-            <br>
-            <button class="ok">OK</button>
-            <button class="cancel">Cancel</button>
-        </div>
+        <!--<div class="popup" id="color_picker">-->
+            <!--<h1>Color picker</h1>-->
+            <!--<input type="color">-->
+            <!--<br>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
 
-        <div class="popup" id="connections">
-            <h1>Connections</h1>
-            <div></div>
-            <button class="ok">Close</button>
-        </div>
+        <!--<div class="popup" id="connections">-->
+            <!--<h1>Connections</h1>-->
+            <!--<div></div>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
         <!-- Dialog -->
         <div id="over"></div>
@@ -233,6 +233,30 @@
             <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
             <div class="container"></div>
             <div class="options"></div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" style="display: none;">
+            <ul>
+                <li>
+                    Scroll animation
+                    <label class="switch"><input class="option scrollAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Zoom animation
+                    <label class="switch"><input class="option zoomAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Show debug info
+                    <label class="switch"><input class="option showDebugInfo" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Visualize component updates
+                    <label class="switch"><input class="option visualizeComponentUpdates" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <br>
+                <button id="reset">Clear localStorage</button>
+            </ul>
         </div>
 
         <!-- Waypoints menu -->
@@ -263,6 +287,13 @@
 
         <!-- Spectate indicator -->
         <div id="spectateIndicator">Spectate mode</div>
+
+        <!-- Close button -->
+        <div id="customComponentToolbar">
+            <button class="close material-icons">close</button>
+            <span id="name">Full adder</span>
+            <button class="menu material-icons">menu</button>
+        </div>
 
         <!-- Open files -->
         <input id="open_file" type="file" accept=".board" style="display: none">
@@ -304,9 +335,10 @@
         <!--<script src="js/contextmenu.js"></script>-->
         <script src="js/contextmenu2.js"></script>
         <script src="js/hover.js"></script>
+        <script src="js/customComponentToolbar.js"></script>
         <script src="js/componentInfo.js"></script>
         <script src="js/tips.js"></script>
-        <script src="js/popup.js"></script>
+        <!--<script src="js/popup.js"></script>-->
         <script src="js/dialogs.js"></script>
         <script src="js/stringifier.js"></script>
         <!--<script src="js/localStorage.js"></script>-->
@@ -315,8 +347,8 @@
         <script>
             "use strict";
 
-            const VERSION = "0.202";
-            document.getElementById("version").innerHTML = "BOOLR v" + VERSION;
+            const VERSION = "0.229";
+            document.getElementById("version").innerHTML = "<i class=\"material-icons\">memory</i>BOOLR v" + VERSION;
 
 //            let data;
 //            if(localStorage.pws) data = JSON.parse(localStorage.pws);

@@ -104,7 +104,6 @@ createContextMenuOption(
     }
 );
 
-
 createContextMenuOption(
     "Edit name",
     "mode_edit",
@@ -130,9 +129,9 @@ createContextMenuOption(
                 wire.colorOn = color;
                 const [r, g, b] = color.slice(4,-1).split(",").map(a => +a);
                 wire.colorOff = '#' +
-                    ((0|(1<<8) + r + (256 - r) * .5).toString(16)).substr(1) +
-                    ((0|(1<<8) + g + (256 - g) * .5).toString(16)).substr(1) +
-                    ((0|(1<<8) + b + (256 - b) * .5).toString(16)).substr(1);
+                    ((0|(1<<8) + r + (256 - r) * .75).toString(16)).substr(1) +
+                    ((0|(1<<8) + g + (256 - g) * .75).toString(16)).substr(1) +
+                    ((0|(1<<8) + b + (256 - b) * .75).toString(16)).substr(1);
             }
         )
     },

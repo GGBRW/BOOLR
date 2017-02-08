@@ -57,8 +57,8 @@ setInterval(function() {
            mouse.screen.y < 100 || mouse.screen.y > c.height - 100) {
             tips.connecting_ctrl.show();
         } else if(!tips.connecting_shift.disabled) {
-            const x = connecting.wire.pos.slice(-8).map(n => n.x);
-            const y = connecting.wire.pos.slice(-8).map(n => n.y);
+            const x = connecting.pos.slice(-8).map(n => n.x);
+            const y = connecting.pos.slice(-8).map(n => n.y);
             if(x.join("") == x[0].toString().repeat(8) || y.join("") == y[0].toString().repeat(8)) {
                  tips.connecting_shift.show();
             }

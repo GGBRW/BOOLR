@@ -4,7 +4,7 @@ const c = document.getElementById("canvas");
 c.height = window.innerHeight;
 c.width = window.innerWidth;
 
-const ctx = c.getContext("2d");
+const ctx = c.getContext("2d", {alpha: false});
 
 let offset = {
     x: 0,
@@ -12,14 +12,14 @@ let offset = {
 };
 let zoom = 100;
 
-let scroll_animation = { v: 0, r: 0, animate: false };
-let zoom_animation = zoom;
+let scrollAnimation = { v: 0, r: 0, animate: false };
+let zoomAnimation = zoom;
 
 const scroll = (dx,dy) => {
-    if(settings.scroll_animation) {
-        scroll_animation.v = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 16;
-        scroll_animation.r = Math.atan2(-dx, dy);
-        scroll_animation.animate = true;
+    if(settings.scrollAnimation) {
+        scrollAnimation.v = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 16;
+        scrollAnimation.r = Math.atan2(-dx, dy);
+        scrollAnimation.animate = true;
     } else {
         offset.x += dx;
         offset.y += dy;
@@ -30,9 +30,9 @@ const scroll = (dx,dy) => {
 }
 
 const changeZoom = (dz) => {
-    zoom_animation = Math.min(
+    zoomAnimation = Math.min(
         Math.max(
-            zoom_animation + dz,
+            zoomAnimation + dz,
             2),
         300
     );
@@ -41,9 +41,9 @@ const changeZoom = (dz) => {
 let framerate = 60, lastFrame = new Date;
 function draw() {
     // Scherm leegmaken
-    ctx.clearRect(0, 0, c.width, c.height);
-    //ctx.fillStyle = "#eee";
-    //ctx.fillRect(0,0,c.width,c.height);
+    // ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0,0,c.width,c.height);
 
     // Roosterpunten tekenen
     if(zoom > 24) {
@@ -63,7 +63,7 @@ function draw() {
     }
 
     // Draw connecting wire
-    if(connecting) connecting.wire.draw();
+    if(connecting) connecting.draw();
 
     // Componenten tekenen
     // visibleComponents = 0;
@@ -158,29 +158,29 @@ function draw() {
     }
 
     // Scroll animatie
-    if(settings.scroll_animation) {
-        if(scroll_animation.animate && settings.scroll_animation) {
-            offset.x -= Math.sin(scroll_animation.r) * scroll_animation.v;
-            offset.y += Math.cos(scroll_animation.r) * scroll_animation.v;
+    if(settings.scrollAnimation) {
+        if(scrollAnimation.animate && settings.scrollAnimation) {
+            offset.x -= Math.sin(scrollAnimation.r) * scrollAnimation.v;
+            offset.y += Math.cos(scrollAnimation.r) * scrollAnimation.v;
 
-            scroll_animation.v -= scroll_animation.v / 16;
-            scroll_animation <= 0 && (scroll_animation.animate = false);
-            if(scroll_animation <= 0) {
-                scroll_animation.animate = false;
+            scrollAnimation.v -= scrollAnimation.v / 16;
+            scrollAnimation <= 0 && (scrollAnimation.animate = false);
+            if(scrollAnimation <= 0) {
+                scrollAnimation.animate = false;
 
             }
         }
     }
 
     // Zoom animation
-    if(settings.zoom_animation) {
-        offset.x += mouse.screen.x * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-        offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoom_animation + 7 * zoom));
-        zoom -= (zoom - zoom_animation) / 8;
+    if(settings.zoomAnimation) {
+        offset.x += mouse.screen.x * (1 / zoom - 8 / (zoomAnimation + 7 * zoom));
+        offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoomAnimation + 7 * zoom));
+        zoom -= (zoom - zoomAnimation) / 8;
     } else {
-        offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoom_animation)));
-        offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoom_animation)));
-        zoom = zoom_animation;
+        offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoomAnimation)));
+        offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoomAnimation)));
+        zoom = zoomAnimation;
     }
 
     // Selectie animate
@@ -211,10 +211,10 @@ let mouse = {
 }
 
 let settings = {
-    scroll_animation: true,
-    zoom_animation: true,
-    show_debugInfo: true,
-    update_delay: 0
+    scrollAnimation: true,
+    zoomAnimation: true,
+    showDebugInfo: false,
+    visualizeComponentUpdates: false
 }
 
 var dragging;
@@ -259,9 +259,9 @@ window.onerror = function(msg,url,line) {
 
 c.oncontextmenu = () => false;
 
-c.onmouseleave = () => { scroll_animation.animate = true; connecting = null };
+c.onmouseleave = () => { scrollAnimation.animate = true; connecting = null };
 
-c.onmouseenter = e => { e.which > 0 && (scroll_animation.animate = false) };
+c.onmouseenter = e => { e.which > 0 && (scrollAnimation.animate = false) };
 
 let wheel_click = false;
 c.onmousedown = function(e) {
@@ -306,7 +306,7 @@ c.onmousedown = function(e) {
             }
         }
         else if(e.ctrlKey) {
-            scroll_animation.animate = false;
+            scrollAnimation.animate = false;
             if(selecting) {
                 dragging = {
                     selection: true,
@@ -333,7 +333,7 @@ c.onmousedown = function(e) {
         }
         else if(e.altKey) {
             e.preventDefault();
-            scroll_animation.animate = false;
+            scrollAnimation.animate = false;
             return false;
         }
         else {
@@ -347,32 +347,23 @@ c.onmousedown = function(e) {
                 if(found = findComponentByPos()) {
                     const component = found;
                     if(component.onmousedown) {
-                        action(
-                            "mousedown",
-                            [
-                                component,
-                                mouse.grid.x - component.pos.x,
-                                component.pos.y - mouse.grid.y
-                            ],
-                            true
-                        );
+                        component.onmousedown();
+                    } else {
+                        component.update();
                     }
                 } else if(found = findWireByPos()) {
-                    const wire = new Wire();
-                    connecting = { wire };
-                    connecting.wire.pos.push({
+                    connecting = new Wire();
+                    connecting.pos.push({
                         x: mouse.grid.x,
-                        y: mouse.grid.y
+                        y: mouse.grid.y,
+                        intersection: true
                     });
                 } else if(found = findPortByPos()) {
                     const port = found;
-
                     if(port.type == "output") {
-                        const wire = new Wire();
-                        wire.from = port;
-
-                        connecting = { wire };
-                        connecting.wire.pos.push({
+                        connecting = new Wire();
+                        connecting.from = port;
+                        connecting.pos.push({
                             x: mouse.grid.x,
                             y: mouse.grid.y
                         });
@@ -451,7 +442,7 @@ c.onmousedown = function(e) {
     }
     else if(e.which == 2) {
         wheel_click = true;
-        scroll_animation.animate = false;
+        scrollAnimation.animate = false;
         return false;
     }
     else if(e.which == 3) {
@@ -738,18 +729,15 @@ c.onmousemove = function(e) {
         }
         else if(connecting) {
             // Scroll and return if the user is holding the ctrl key
-            if(e.ctrlKey && connecting.wire.pos.length > 1) {
+            if(e.ctrlKey && connecting.pos.length > 1) {
                 offset.x -= e.movementX / zoom;
                 offset.y += e.movementY / zoom;
                 return;
             }
 
-            // The wire we are connecting two components with
-            const wire = connecting.wire;
-
             // Calculate the delta x and y
-            let dx = mouse.grid.x - wire.pos.slice(-1)[0].x;
-            let dy = mouse.grid.y - wire.pos.slice(-1)[0].y;
+            let dx = mouse.grid.x - connecting.pos.slice(-1)[0].x;
+            let dy = mouse.grid.y - connecting.pos.slice(-1)[0].y;
 
             // If dx and dy are both 0, no new positions have to be put into the wire's 'pos' array: return
             if(!dx && !dy) return;
@@ -766,46 +754,43 @@ c.onmousemove = function(e) {
             }
 
             while((dx || dy) && dx + dy < 10000) {
+                const prev = connecting.pos.slice(-2)[0];
+                const last = connecting.pos.slice(-1)[0];
+
                 if(Math.abs(dx) > Math.abs(dy)) {
-                    if(wire.pos.slice(-1)[0].x + Math.sign(dx) == wire.pos.slice(-2)[0].x &&
-                       wire.pos.slice(-1)[0].y == wire.pos.slice(-2)[0].y) {
-                        wire.pos.splice(-1);
+                    if(prev && last &&
+                       last.x + Math.sign(dx) == prev.x &&
+                       last.y == connecting.pos.slice(-2)[0].y) {
+                        connecting.pos.splice(-1);
                     } else {
-                        wire.pos.push({
-                            x: wire.pos.slice(-1)[0].x + Math.sign(dx),
-                            y: wire.pos.slice(-1)[0].y
+                        connecting.pos.push({
+                            x: last.x + Math.sign(dx),
+                            y: last.y
                         });
                     }
                     dx -= Math.sign(dx);
                 } else {
-                    if(wire.pos.slice(-1)[0].x == wire.pos.slice(-2)[0].x &&
-                        wire.pos.slice(-1)[0].y + Math.sign(dy) == wire.pos.slice(-2)[0].y) {
-                        wire.pos.splice(-1);
+                    if(prev && last &&
+                       last.x == prev.x &&
+                       last.y + Math.sign(dy) == prev.y) {
+                        connecting.pos.splice(-1);
                     } else {
-                        wire.pos.push({
-                            x: wire.pos.slice(-1)[0].x,
-                            y: wire.pos.slice(-1)[0].y + Math.sign(dy)
+                        connecting.pos.push({
+                            x: last.x,
+                            y: last.y + Math.sign(dy)
                         });
                     }
                     dy -= Math.sign(dy);
                 }
             }
 
-            const port = findPortByPos();
-            if(port && port.type == "input") {
-                action(
-                    "connect",
-                    [
-                        wire.from,
-                        port,
-                        wire
-                    ],
-                    true
-                );
+            const to = findPortByPos();
+            if(to && to.type == "input") {
+                connecting.to = to;
 
-                if(!wire.from) {
-                    merge(wire.pos[0].x,wire.pos[0].y);
-                }
+                connect(connecting.from,to,connecting);
+                wires.push(connecting);
+
                 connecting = null;
             }
 
@@ -863,8 +848,8 @@ c.onmousemove = function(e) {
             offset.x -= e.movementX / zoom;
             offset.y += e.movementY / zoom;
 
-            scroll_animation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
-            scroll_animation.r = Math.atan2(e.movementX, e.movementY);
+            scrollAnimation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
+            scrollAnimation.r = Math.atan2(e.movementX, e.movementY);
             return false;
         }
         else if(e.ctrlKey) {
@@ -872,8 +857,8 @@ c.onmousemove = function(e) {
             offset.x -= e.movementX / zoom;
             offset.y += e.movementY / zoom;
 
-            scroll_animation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
-            scroll_animation.r = Math.atan2(e.movementX, e.movementY);
+            scrollAnimation.v = Math.sqrt(Math.pow(e.movementX, 2) + Math.pow(e.movementY, 2)) / zoom;
+            scrollAnimation.r = Math.atan2(e.movementX, e.movementY);
             return false;
         }
         // else {
@@ -907,8 +892,8 @@ c.onmousemove = function(e) {
         offset.x -= e.movementX / zoom;
         offset.y += e.movementY / zoom;
 
-        scroll_animation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
-        scroll_animation.r = Math.atan2(e.movementX,e.movementY);
+        scrollAnimation.v = Math.sqrt(Math.pow(e.movementX,2) + Math.pow(e.movementY,2)) / zoom;
+        scrollAnimation.r = Math.atan2(e.movementX,e.movementY);
 
         wheel_click = false;
     }
@@ -917,7 +902,8 @@ c.onmousemove = function(e) {
     }
 }
 
-c.onmouseup = function(e) {
+// TODO: onmouseleave
+c.onmouseup = c.onmouseleave = function(e) {
     mouse.screen.x = e.x;
     mouse.screen.y = e.y;
     mouse.grid.x = Math.round(e.x / zoom + offset.x);
@@ -1097,21 +1083,15 @@ c.onmouseup = function(e) {
             }
         }
         else if(connecting) {
-            const pos = connecting.wire.pos.slice(-1)[0];
-            const wire = findWireByPos(pos.x,pos.y);
-
-            if(wire) {
-                wires.push(connecting.wire);
-                merge(pos.x,pos.y);
-            }
             connecting = null;
         }
         else if(e.altKey) {
-            scroll_animation.animate = true;
+            scrollAnimation.animate = true;
         }
         else if(e.ctrlKey) {
-            scroll_animation.animate = true;
-        } else {
+            scrollAnimation.animate = true;
+        }
+        else {
             const component = findComponentByPos();
             if(component && component.onmouseup) {
                 action(
@@ -1125,9 +1105,8 @@ c.onmouseup = function(e) {
                 );
             }
         }
-
     } else if(e.which == 2) {
-        scroll_animation.animate = true;
+        scrollAnimation.animate = true;
 
         if(wheel_click) {
             const component = findComponentByPos();
@@ -1139,6 +1118,7 @@ c.onmouseup = function(e) {
     }
 }
 
+
 // Zooming
 c.onmousewheel = function(e) {
     e.preventDefault();
@@ -1148,9 +1128,9 @@ c.onmousewheel = function(e) {
     mouse.grid.x = Math.round(e.x / zoom + offset.x);
     mouse.grid.y = Math.round(-e.y / zoom + offset.y);
 
-    zoom_animation = Math.min(
+    zoomAnimation = Math.min(
         Math.max(
-            zoom_animation - zoom / 8 * (e.deltaY > 0 ? .5 : -1),
+            zoomAnimation - zoom / 8 * (e.deltaY > 0 ? .5 : -1),
             2),
         300
     );

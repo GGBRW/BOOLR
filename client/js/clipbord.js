@@ -33,6 +33,7 @@ clipbord.copy = function(components = [], wires = [], selection) {
     clipbord.connections = [];
     for(let i = 0; i < wires.length; ++i) {
         const wire = wires[i];
+
         const fromIndex = components.indexOf(wire.from.component);
         const toIndex = components.indexOf(wire.to.component);
         if(fromIndex > -1 && toIndex > -1) {

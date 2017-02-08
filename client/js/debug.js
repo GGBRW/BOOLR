@@ -21,7 +21,7 @@ debugInfo.addLine = function(name,val) {
 }
 
 function updateDebugInfo() {
-    if(settings.show_debugInfo) {
+    if(settings.showDebugInfo) {
         debugInfo.style.display = "block";
         debugInfo.innerText = "";
 
