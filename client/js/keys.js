@@ -161,7 +161,7 @@ c.onkeydown = function(e) {
             break;
         case 83: // S
             if(e.ctrlKey && e.shiftKey) {
-                popup.settings.show();
+                dialog.settings();
             } else if(e.ctrlKey) {
                 dialog.save();
             } else if(e.shiftKey) {

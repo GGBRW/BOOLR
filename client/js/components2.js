@@ -1283,6 +1283,7 @@ class Wire {
 
         this.to.value = value;
         if(Math.random() < .1) setTimeout(() => this.to.component.update());
+        else this.to.component.update();
     }
 
     draw() {
