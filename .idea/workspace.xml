@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/components2.js" afterPath="$PROJECT_DIR$/client/js/components2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/customComponentToolbar.js" afterPath="$PROJECT_DIR$/client/js/customComponentToolbar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/localStorage2.js" afterPath="$PROJECT_DIR$/client/js/localStorage2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/toolbar.js" afterPath="$PROJECT_DIR$/client/js/toolbar.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,8 +37,8 @@
       <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/js/components2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="259" column="26" lean-forward="true" selection-start-line="259" selection-start-column="26" selection-end-line="259" selection-end-column="26" />
+            <state relative-caret-position="439">
+              <caret line="272" column="72" lean-forward="true" selection-start-line="272" selection-start-column="72" selection-end-line="272" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -727,14 +723,7 @@
       <workItem from="1486502817609" duration="189000" />
       <workItem from="1486504372049" duration="2166000" />
       <workItem from="1486559631386" duration="28121000" />
-      <workItem from="1486593603967" duration="5455000" />
-    </task>
-    <task id="LOCAL-00054" summary="update 0.1.102">
-      <created>1479287657532</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1479287657535</updated>
+      <workItem from="1486593603967" duration="5468000" />
     </task>
     <task id="LOCAL-00055" summary="update 0.1.102">
       <created>1479291623650</created>
@@ -1072,12 +1061,19 @@
       <option name="project" value="LOCAL" />
       <updated>1486594013742</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="update 0.1.202">
+      <created>1486599077671</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1486599077671</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1017644000" />
+    <option name="totallyTimeSpent" value="1017657000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1431,8 +1427,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/js/components2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="259" column="26" lean-forward="true" selection-start-line="259" selection-start-column="26" selection-end-line="259" selection-end-column="26" />
+        <state relative-caret-position="439">
+          <caret line="272" column="72" lean-forward="true" selection-start-line="272" selection-start-column="72" selection-end-line="272" selection-end-column="72" />
           <folding />
         </state>
       </provider>
