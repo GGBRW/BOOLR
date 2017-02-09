@@ -34,17 +34,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="components2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/components2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="272" column="72" lean-forward="true" selection-start-line="272" selection-start-column="72" selection-end-line="272" selection-end-column="72" />
+            <state relative-caret-position="313">
+              <caret line="266" column="31" lean-forward="true" selection-start-line="266" selection-start-column="31" selection-end-line="268" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="customComponentToolbar.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="customComponentToolbar.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="399">
@@ -274,8 +274,10 @@
     <handled-path value="$PROJECT_DIR$/server (Node.js)/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1366" />
-    <option name="height" value="768" />
+    <option name="x" value="63" />
+    <option name="y" value="24" />
+    <option name="width" value="1303" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -723,14 +725,7 @@
       <workItem from="1486502817609" duration="189000" />
       <workItem from="1486504372049" duration="2166000" />
       <workItem from="1486559631386" duration="28121000" />
-      <workItem from="1486593603967" duration="5474000" />
-    </task>
-    <task id="LOCAL-00056" summary="update 0.1.102">
-      <created>1479313315147</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1479313315148</updated>
+      <workItem from="1486593603967" duration="5484000" />
     </task>
     <task id="LOCAL-00057" summary="update 0.1.102">
       <created>1479322745069</created>
@@ -1068,12 +1063,19 @@
       <option name="project" value="LOCAL" />
       <updated>1486599089841</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="update 0.1.202">
+      <created>1486599095403</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1486599095403</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1017663000" />
+    <option name="totallyTimeSpent" value="1017673000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1085,7 +1087,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="768" extended-state="6" />
+    <frame x="63" y="24" width="1303" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.159375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1417,18 +1419,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js">
+    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="19" column="36" lean-forward="false" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+        <state relative-caret-position="313">
+          <caret line="266" column="31" lean-forward="true" selection-start-line="266" selection-start-column="31" selection-end-line="268" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
+    <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="272" column="72" lean-forward="true" selection-start-line="272" selection-start-column="72" selection-end-line="272" selection-end-column="72" />
+        <state relative-caret-position="399">
+          <caret line="19" column="36" lean-forward="false" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
           <folding />
         </state>
       </provider>
