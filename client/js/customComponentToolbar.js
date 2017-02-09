@@ -1,20 +1,31 @@
 const customComponentToolbar = document.getElementById("customComponentToolbar");
+customComponentToolbar.queue = [];
 customComponentToolbar.querySelector(".close").onmouseup = () => customComponentToolbar.hide();
 
 customComponentToolbar.show = function(name,close) {
-    customComponentToolbar.style.display = "block";
+    this.queue.push({ name, close });
 
-    customComponentToolbar.querySelector("#name").innerHTML = name;
-    customComponentToolbar.querySelector(".close").onclick = close;
+    this.style.display = "block";
+
+    this.querySelector("#name").innerHTML = name;
+    this.querySelector(".close").onclick = close;
 
     setTimeout(() => {
-        customComponentToolbar.style.top = 0;
+        this.style.top = 0;
     }, 10);
 }
 
 customComponentToolbar.hide = function() {
-    customComponentToolbar.style.top = -50;
-    setTimeout(() => {
-        customComponentToolbar.style.display = "none";
-    }, 200);
+    const item = this.queue.splice(-1)[0];
+    if(item && this.queue.length > 0) {
+        this.show(item.name,item.close);
+        this.queue.splice(-1);
+    }
+
+    if(this.queue.length == 0) {
+        this.style.top = -50;
+        setTimeout(() => {
+            this.style.display = "none";
+        }, 200);
+    }
 }

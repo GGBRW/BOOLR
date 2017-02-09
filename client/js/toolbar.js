@@ -37,6 +37,7 @@ list.show = function() {
 list.hide = function() {
     list.style.opacity = 0;
     list.style.transform = "scale(.5) translateX(-63px) translateY(150px)";
+    c.focus();
     setTimeout(() => list.style.display = "none",200);
 }
 

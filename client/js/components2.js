@@ -273,6 +273,11 @@ function cloneComponent(component, dx = 0, dy = 0) {
     if(component.hasOwnProperty("value")) clone.value = component.value;
     clone.properties = Object.assign({}, component.properties);
 
+    if(component.constructor == Custom) {
+        clone.components = [...component.components];
+        clone.wires = [...component.wires];
+    }
+
     clone.input = [];
     for(let i = 0; i < component.input.length; ++i) {
         clone.input.push(Object.assign({},component.input[i]));
@@ -948,7 +953,6 @@ class Custom extends Component {
             () => {
                 this.components = components;
                 this.wires = wires;
-                this.create();
 
                 components = componentsTmp;
                 wires = wiresTmp;
@@ -1264,6 +1268,9 @@ class Wire {
         this.to = to;
         this.value = 0;
 
+        this.wireInput = [];
+        this.wireOutput = [];
+
         this.colorOn = color;
         // Generate lighter version of this.colorOn for this.colorOff
         if(color.length == 4) color = "#" + color.slice(1).replace(/(.)/g, '$1$1');
@@ -1282,8 +1289,12 @@ class Wire {
         this.value = value;
 
         this.to.value = value;
-        if(Math.random() < .1) setTimeout(() => this.to.component.update());
-        else this.to.component.update();
+        this.to.component.update();
+
+        for(let i = 0; i < this.wireOutput.length; ++i) {
+            const wire = this.wireOutput[i];
+            if(wire.value != value) wire.update(value);
+        }
     }
 
     draw() {

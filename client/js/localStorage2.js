@@ -215,7 +215,6 @@ function parse(data) {
             const parsed = parse(data.componentData);
             component.components = parsed.components;
             component.wires = parsed.wires;
-            console.log(component.components,component.wires,data.componentData);
             delete component.componentData;
             component.create();
         }
