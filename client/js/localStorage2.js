@@ -35,7 +35,7 @@ function getLocalStorage() {
     try {
         data = JSON.parse(data);
     } catch(e) {
-        console.warn("Could not parse localStorage data");
+        console.warn("Could not parse localStorage data " + e);
         return;
     }
 
@@ -52,7 +52,7 @@ function getLocalStorage() {
                 parsed.selection
             );
         } catch(e) {
-            console.warn("Could not parse clipbord data from localStorage ");
+            console.warn("Could not parse clipbord data from localStorage " + e);
         }
     }
 
@@ -74,6 +74,7 @@ function getLocalStorage() {
 const constructors = {
     Input,Output,NOT,AND,OR,XOR,
     Button,Constant,Clock,Key,Debug,
+    Beep,Counter,LED,
     Custom
 };
 

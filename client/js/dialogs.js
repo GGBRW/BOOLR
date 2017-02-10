@@ -83,7 +83,7 @@ dialog.update = function(component) {
         "<li>Create custom components</li>" +
         "<li>Components have input and output pins now</li>" +
         "<li>Merge wires</li>" +
-        "<li>Visualize components updates</li>" +
+        "<li>Show components updates</li>" +
         "</ul>";
     dialog.addOption("Close");
 }
@@ -107,8 +107,8 @@ dialog.settings = function(component) {
     const showDebugInfoOption = settingsList.querySelector(".option.showDebugInfo");
     showDebugInfoOption.checked = settings.showDebugInfo;
 
-    const visualizeComponentUpdatesOption = settingsList.querySelector(".option.visualizeComponentUpdates");
-    visualizeComponentUpdatesOption.checked = settings.visualizeComponentUpdates;
+    const showComponentUpdatesOption = settingsList.querySelector(".option.showComponentUpdates");
+    showComponentUpdatesOption.checked = settings.showComponentUpdates;
 
     settingsList.querySelector("#settings #reset").onclick = () => dialog.confirm(
         'Are you sure you want to clear all local stored data?',
@@ -124,7 +124,7 @@ dialog.settings = function(component) {
         settings.scrollAnimation = scrollAnimationOption.checked;
         settings.zoomAnimation = zoomAnimationOption.checked;
         settings.showDebugInfo = showDebugInfoOption.checked;
-        settings.visualizeComponentUpdates = visualizeComponentUpdatesOption.checked;
+        settings.showComponentUpdates = showComponentUpdatesOption.checked;
     });
 }
 
@@ -191,6 +191,29 @@ dialog.colorPicker = function(callback = a => a) {
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => component.name = input.value);
+}
+
+dialog.editDelay = function(component) {
+    if(!component) return;
+    dialog.show();
+    dialog.name.innerHTML = "Edit delay";
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>access_time<i>";
+    dialog.container.innerHTML += `<p>Enter a new delay for component <i>${component.name}</i></p>`;
+    const input = document.createElement("input");
+    input.style.width = 100;
+    dialog.container.appendChild(input);
+    setTimeout(() => input.focus(),10);
+    dialog.container.appendChild(
+        document.createTextNode("ms")
+    );
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK",  () => {
+        if(!isNaN(input.value)) {
+            component.properties.delay = +input.value;
+            component.tick();
+        }
+    });
 }
 
 dialog.editCustom = function(component) {

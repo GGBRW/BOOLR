@@ -35,11 +35,7 @@ c.onkeydown = function(e) {
                         true
                     );
                 } else if(found = findWireByPos()) {
-                    action(
-                        "disconnect",
-                        findWireByPos(),
-                        true
-                    );
+                    removeWire(found);
                 }
             }
             break;

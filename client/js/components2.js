@@ -32,7 +32,7 @@ function remove(component) {
         // Remove connections
         const wire = component.input[i].connection;
         if(wire) {
-            disconnect(wire);
+            removeWire(wire);
         }
     }
 
@@ -40,7 +40,7 @@ function remove(component) {
         // Remove connections
         const wire = component.output[i].connection;
         if(wire) {
-            disconnect(wire);
+            removeWire(wire);
         }
     }
 
@@ -50,12 +50,47 @@ function remove(component) {
     index > -1 && components.splice(index,1);
 }
 
+function removeWire(wire) {
+    const from = wire.from;
+    const to = wire.to;
+
+    from && delete from.connection;
+    to && delete to.connection;
+
+    //delete wire.from;
+    //delete wire.to;
+
+    for(let i = 0; i < wire.input.length; ++i) {
+        const index = wire.input[i].output.indexOf(wire);
+        if(index > -1) {
+            wire.input[i].output.splice(index,1);
+            if(!wire.input[i].to) removeWire(wire.input[i]);
+        }
+    }
+
+    for(let i = 0; i < wire.output.length; ++i) {
+        const index = wire.output[i].input.indexOf(wire);
+        if(index > -1) {
+            wire.output[i].input.splice(index,1);
+            if(!wire.output[i].from) removeWire(wire.output[i]);
+        }
+    }
+
+    const index = wires.indexOf(wire);
+    if(index > -1) wires.splice(index,1);
+}
+
+function removeSelection(components,wires) {
+    for(let i = 0; i < components.length; ++i) {
+        remove(components[i]);
+    }
+}
+
 /*
-Connects two components
+Connects two components with a wire
 @param {object} output port of component 1
 @param {object} input port of component 2
 @param {object} wire
-@param {boolean} [option to add wire to the wires array]
  */
 function connect(from,to,wire) {
     if(to) {
@@ -71,19 +106,26 @@ function connect(from,to,wire) {
 }
 
 /*
-Disconnects two components
-@param {object} output port of component 1
-@param {object} input port of component 2
+ Connects two wires
+ @param {object} wire 1
+ @param {object} wire 2
+ @param {number} x coordinate of intersection
+ @param {number} y coordinate of intersection
  */
-function disconnect(wire) {
-    const from = wire.from;
-    const to = wire.to;
+function connectWires(wire1,wire2) {
+    console.log(wire1,wire2);
 
-    delete from.connection;
-    delete to.connection;
+    if(!wire1.output.includes(wire2)) {
+        wire1.output.push(wire2);
+    }
+    if(!wire2.input.includes(wire1)) {
+        wire2.input.push(wire1);
+    }
 
-    const index = wires.indexOf(wire);
-    if(index > -1) wires.splice(index,1);
+    wire2.colorOn = wire1.colorOn;
+    wire2.colorOff = wire1.colorOff;
+
+    wire2.update(wire1.value);
 }
 
 /*
@@ -151,6 +193,19 @@ function findAllWiresByPos(x = mouse.grid.x, y = mouse.grid.y) {
 }
 
 /*
+ Finds and returns a port of a given component
+ If no port is found, it returns undefined
+ @param {object} component,
+ @param {number} side
+ @param {number} pos
+ @return {object} port
+ */
+function findPortByComponent(component,side,pos) {
+    return component.input.find(port => port.pos.side == side && port.pos.pos == pos) ||
+           component.output.find(port => port.pos.side == side && port.pos.pos == pos);
+}
+
+/*
  Finds and returns a port of a component by position
  If no port is found, it returns undefined
  @param {number} x,
@@ -158,44 +213,26 @@ function findAllWiresByPos(x = mouse.grid.x, y = mouse.grid.y) {
  @return {object} port
  */
 function findPortByPos(x = mouse.grid.x, y = mouse.grid.y,type) {
-    for(let i = 0; i < components.length; ++i) {
-        const component = components[i];
-        if(type == "input" && !component.input.length) continue;
-        if(type == "output" && !component.output.length) continue;
+    if(findComponentByPos()) return;
+    for(let i = 0; i < 4; ++i) {
+        const component = findComponentByPos(
+            x - Math.round(Math.sin(Math.PI / 2 * i)),
+            y - Math.round(Math.cos(Math.PI / 2 * i))
+        );
 
-        // TODO: optimization cause this is just dumb
-        let side = -1;
-        for(let i = 0; i < 4; ++i) {
-            if(
-                findComponentByPos(
-                    x - Math.round(Math.sin(Math.PI / 2 * i)),
-                    y - Math.round(Math.cos(Math.PI / 2 * i))
-                ) == component
-            ) {
-                side = i;
-                break;
+        if(component) {
+            const side = i;
+            let pos;
+            if(side % 2 == 0) {
+                pos = x - component.pos.x;
+                if(side == 2) pos = component.width - 1 - pos;
+            } else {
+                pos = component.pos.y - y;
+                if(side == 3) pos = component.height - 1 - pos;
             }
-        }
 
-        let pos;
-        if(side == -1) continue;
-        else if(side == 0) pos = x - component.pos.x;
-        else if(side == 1) pos = component.pos.y - y;
-        else if(side == 2) pos = component.width - 1 - (x - component.pos.x);
-        else if(side == 3) pos = component.height - 1 - (component.pos.y - y);
-
-        for(let i = 0; i < component.input.length; ++i) {
-            if(
-                side == component.input[i].pos.side &&
-                pos == component.input[i].pos.pos
-            ) return component.input[i];
-        }
-
-        for(let i = 0; i < component.output.length; ++i) {
-            if(
-                side == component.output[i].pos.side &&
-                pos == component.output[i].pos.pos
-            ) return component.output[i];
+            const found = findPortByComponent(component,side,pos);
+            if(found) return found;
         }
     }
 }
@@ -304,9 +341,78 @@ function cloneWire(wire, dx = 0, dy = 0) {
     clone.pos = wire.pos.map(pos => {
         return { x: pos.x + dx, y: pos.y + dy }
     });
+    clone.intersections = wire.intersections.map(intersection => {
+        return { x: intersection.x + dx, y: intersection.y + dy }
+    });
     clone.colorOn = wire.colorOn;
     clone.colorOff = wire.colorOff;
     return clone;
+}
+
+/*
+ Creates and returns an array of clones of components and wires
+ @param {array} components
+ @param {array} wires
+ @returns {array} clones
+ */
+function cloneSelection(components, wires, dx = 0, dy = 0) {
+    const clonedComponents = components.map(component => cloneComponent(component,dx,dy));
+    const clonedWires = [];
+
+    for(let i = 0; i < wires.length; ++i) {
+        const wire = wires[i];
+        const clonedWire = cloneWire(wire,dx,dy);
+
+        let fromIndex, fromPortIndex;
+        if(wire.from) {
+            fromIndex = components.indexOf(wire.from.component);
+            fromPortIndex = wire.from.component.output.indexOf(wire.from);
+        }
+
+        let toIndex, toPortIndex;
+        if(wire.to) {
+            toIndex = components.indexOf(wire.to.component);
+            toPortIndex = wire.to.component.input.indexOf(wire.to);
+        }
+
+        const fromPort = clonedComponents[fromIndex] && clonedComponents[fromIndex].output[fromPortIndex];
+        const toPort = clonedComponents[toIndex] && clonedComponents[toIndex].input[toPortIndex];
+
+        connect(
+            fromPort,
+            toPort,
+            clonedWire
+        );
+
+        clonedWires.push(clonedWire);
+    }
+
+    for(let i = 0; i < wires.length; ++i) {
+        for(let j = 0; j < wires[i].input.length; ++j) {
+            const index = wires.indexOf(wires[i].input[j]);
+            if(index > -1) {
+                connectWires(
+                    clonedWires[index],
+                    clonedWires[i]
+                );
+            }
+        }
+
+        for(let j = 0; j < wires[i].output.length; ++j) {
+            const index = wires.indexOf(wires[i].output[j]);
+            if(index > -1) {
+                connectWires(
+                    clonedWires[i],
+                    clonedWires[index]
+                );
+            }
+        }
+    }
+
+    return {
+        components: clonedComponents,
+        wires: clonedWires
+    }
 }
 
 /*
@@ -325,8 +431,8 @@ function componentize(
     // Check if there are connections with components outside the selection
     for(let i = 0; i < wires_.length; ++i) {
         const wire = wires_[i];
-        if(!components_.includes(wire.from.component)) return;
-        if(!components_.includes(wire.to.component)) return;
+        if(wire.from && !components_.includes(wire.from.component)) return;
+        if(wire.to && !components_.includes(wire.to.component)) return;
     }
 
     // Remove the components and wires
@@ -388,7 +494,7 @@ class Component {
 
     update() {
         // Highlight
-        if(settings.visualizeComponentUpdates) this.highlight(250);
+        if(settings.showComponentUpdates) this.highlight(250);
 
         // Update output ports
         this.function();
@@ -794,34 +900,22 @@ class Clock extends Component {
         this.addOutputPort("A",{ side: 1, pos: 0 });
         this.value = 0;
 
-        function tick() {
-            this.value = 1 - this.value;
-            this.update();
-            this.delay && setTimeout(
-                tick.bind(this),
-                this.delay
-            );
-        }
-
         setTimeout(() => {
-            if(this.hasOwnProperty("delay")) {
-                tick.call(this);
+            if(this.properties.hasOwnProperty("delay")) {
+                this.tick();
             } else {
-                popup.prompt.show(
-                    "Enter delay",
-                    "Enter the delay of the clock port in milliseconds",
-                    n => {
-                        if(isNaN(n)) {
-                            remove(this);
-                            toolbar.message("Not a valid delay value","warning");
-                        } else {
-                            this.delay = +n;
-                            tick.call(this);
-                        }
-                    }
-                );
+                dialog.editDelay(this);
             }
         }, 100);
+    }
+
+    tick() {
+        this.value = 1 - this.value;
+        this.update();
+        this.properties.delay && setTimeout(
+            this.tick.bind(this),
+            this.properties.delay
+        );
     }
 
     function() {
@@ -867,6 +961,183 @@ class Beep extends Component {
     }
 }
 
+class Counter extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "value" });
+        this.addInputPort("A",{ side: 3, pos: 0 });
+        this.value = 0;
+    }
+
+    function() {
+        if(this.input[0].value == 1) ++this.value;
+    }
+}
+
+class LED extends Component {
+    constructor(name,pos,color = "#a00") {
+        super(name,pos,1,1,{ type: "value" });
+        this.addInputPort("A",{ side: 3, pos: 0 });
+        this.value = 0;
+
+        this.colorOff = "#500";
+        this.colorOn = "#f00";
+    }
+
+    function() {
+        this.value = this.input[0].value;
+    }
+
+    draw() {
+        const x = (this.pos.x - offset.x) * zoom;
+        const y = -(this.pos.y - offset.y) * zoom;
+
+        if(!(
+            x + this.width * zoom + zoom / 2 >= 0 &&
+            x - zoom * 1.5 <= c.width &&
+            y + this.height * zoom + zoom / 2 >= 0 &&
+            y - zoom * 1.5 <= c.height
+        )) return;
+
+        // Draw the frame of the component
+        ctx.fillStyle = this.fillColor || "#fff";
+        ctx.strokeStyle = this.strokeColor || "#111";
+        ctx.lineWidth = zoom / 12 | 0;
+        ctx.beginPath();
+        ctx.rect(
+            x - zoom / 2,
+            y - zoom / 2,
+            this.width * zoom,
+            this.height * zoom
+        );
+        ctx.fill();
+        ctx.fill();
+        ctx.fill();
+        ctx.fill();
+        ctx.fill();
+        ctx.fill();
+        ctx.stroke();
+
+        if(this.value == 1) {
+            ctx.fillStyle = this.colorOn;
+            ctx.shadowColor = this.colorOn;
+            ctx.shadowBlur = zoom / 3;
+        } else {
+            ctx.fillStyle = this.colorOff;
+        }
+
+        ctx.beginPath();
+        ctx.arc(
+            x - zoom / 2 + this.width / 2 * zoom,
+            y - zoom / 2 + this.height / 2 * zoom,
+            zoom / 4,
+            0, Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+
+        // Draw input pins
+        for(let i = 0; i < this.input.length; ++i) {
+            const pos = this.input[i].pos;
+
+            let ox = x;
+            let oy = y;
+            const angle = Math.PI / 2 * pos.side;
+            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            ox += Math.sin(angle) / 2 * zoom;
+            oy -= Math.cos(angle) / 2 * zoom;
+
+            if(pos.side == 2) ox += (this.width - 1) * zoom;
+            if(pos.side == 3) oy += (this.height - 1) * zoom;
+
+            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
+            ctx.beginPath();
+            ctx.moveTo(
+                ox,
+                oy
+            );
+            ctx.lineTo(
+                ox + Math.sin(angle) / 2 * zoom,
+                oy - Math.cos(angle) / 2 * zoom
+            );
+            ctx.lineWidth = zoom / 8;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(
+                ox + Math.sin(angle) / 2 * zoom,
+                oy - Math.cos(angle) / 2 * zoom,
+                zoom / 8 - zoom / 20,
+                0,
+                Math.PI * 2
+            );
+            ctx.lineWidth = zoom / 10;
+            ctx.fillStyle = "#fff";
+            ctx.stroke();
+            ctx.fill();
+        }
+
+        // Draw output pins
+        for(let i = 0; i < this.output.length; ++i) {
+            const pos = this.output[i].pos;
+
+            let ox = x;
+            let oy = y;
+            const angle = Math.PI / 2 * pos.side;
+            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            ox += Math.sin(angle) / 2 * zoom;
+            oy -= Math.cos(angle) / 2 * zoom;
+
+            if(pos.side == 2) ox += (this.width - 1) * zoom;
+            if(pos.side == 3) oy += (this.height - 1) * zoom;
+
+            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
+            ctx.beginPath();
+            ctx.moveTo(
+                ox,
+                oy
+            );
+            ctx.lineTo(
+                ox + Math.sin(angle) / 2 * zoom,
+                oy - Math.cos(angle) / 2 * zoom
+            );
+            ctx.lineWidth = zoom / 8;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(
+                ox + Math.sin(angle) / 2 * zoom,
+                oy - Math.cos(angle) / 2 * zoom,
+                zoom / 8,
+                0,
+                Math.PI * 2
+            );
+            ctx.fillStyle = "#111";
+            ctx.fill();
+        }
+
+        // If the component is highlighted, draw a colored layer over the frame
+        if(this.outline > 0) {
+            ctx.strokeStyle = "#d00";
+            ctx.lineWidth = zoom / 12 | 0;
+            ctx.beginPath();
+            ctx.rect(
+                x - zoom / 2,
+                y - zoom / 2,
+                this.width * zoom,
+                this.height * zoom
+            );
+            ctx.stroke();
+        }
+    }
+}
 
 let savedCustomComponents = [];
 class Custom extends Component {
@@ -894,13 +1165,13 @@ class Custom extends Component {
         for(let i = 0; i < this.input.length; ++i) {
             const port = this.input[i];
             if(port.connection) {
-                disconnect(port.connection);
+                removeWire(port.connection);
             }
         }
         for(let i = 0; i < this.output.length; ++i) {
             const port = this.output[i];
             if(port.connection) {
-                disconnect(port.connection);
+                removeWire(port.connection);
             }
         }
 
@@ -1264,12 +1535,15 @@ class Wire {
     ) {
         this.id = generateId();
         this.pos = pos;
+        this.intersections = [];
+
         this.from = from;
         this.to = to;
         this.value = 0;
 
-        this.wireInput = [];
-        this.wireOutput = [];
+        // Input and output from other wires
+        this.input = [];
+        this.output = [];
 
         this.colorOn = color;
         // Generate lighter version of this.colorOn for this.colorOff
@@ -1286,13 +1560,26 @@ class Wire {
         // there's no need for an update
         if(this.value == value) return;
 
+        if(this.from && this.from.value == 1) value = 1;
+
+        for(let i = 0; i < this.input.length; ++i) {
+            if(this.input[i].value == 1) {
+                value = 1;
+                break;
+            }
+        }
+
+        if(this.value == value) return;
+
         this.value = value;
 
-        this.to.value = value;
-        this.to.component.update();
+        if(this.to) {
+            this.to.value = value;
+            this.to.component.update();
+        }
 
-        for(let i = 0; i < this.wireOutput.length; ++i) {
-            const wire = this.wireOutput[i];
+        for(let i = 0; i < this.output.length; ++i) {
+            const wire = this.output[i];
             if(wire.value != value) wire.update(value);
         }
     }
@@ -1310,21 +1597,6 @@ class Wire {
             -(pos[0].y - offset.y) * zoom
         );
         for(let i = 1; i < pos.length - 1; ++i) {
-            if(pos[i].intersection) {
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.arc(
-                    (pos[i].x - offset.x) * zoom,
-                    -(pos[i].y - offset.y) * zoom,
-                    zoom / 8,
-                    0, Math.PI * 2
-                );
-                ctx.fill();
-
-                ctx.beginPath();
-            }
-
             ctx.lineTo(
                 (pos[i].x - offset.x) * zoom,
                 -(pos[i].y - offset.y) * zoom
@@ -1335,6 +1607,18 @@ class Wire {
             -(pos[pos.length - 1].y - offset.y) * zoom
         );
         ctx.stroke();
+
+        for(let i = 0; i < this.intersections.length; ++i) {
+            const pos = this.intersections[i];
+            ctx.beginPath();
+            ctx.arc(
+                (pos.x - offset.x) * zoom,
+                -(pos.y - offset.y) * zoom,
+                zoom / 8,
+                0, Math.PI * 2
+            );
+            ctx.fill();
+        }
     }
 }
 

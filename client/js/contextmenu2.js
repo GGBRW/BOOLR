@@ -269,11 +269,7 @@ createContextMenuOption(
     "delete",
     "Delete",
     function() {
-        action(
-            "removeSelection",
-            [...selecting.components],
-            true
-        );
+        removeSelection(selecting.components,selecting.wires);
     },
     function() {
         return selecting;
@@ -286,11 +282,7 @@ createContextMenuOption(
     "Delete",
     function() {
         const wire = findWireByPos(...contextMenu.getPos());
-        action(
-            "disconnect",
-            wire,
-            true
-        );
+        removeWire(wire);
     },
     function() {
         return findWireByPos(...contextMenu.getPos()) && !selecting;

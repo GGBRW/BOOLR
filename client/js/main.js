@@ -164,10 +164,8 @@ function draw() {
             offset.y += Math.cos(scrollAnimation.r) * scrollAnimation.v;
 
             scrollAnimation.v -= scrollAnimation.v / 16;
-            scrollAnimation <= 0 && (scrollAnimation.animate = false);
-            if(scrollAnimation <= 0) {
+            if(scrollAnimation.v <= .001) {
                 scrollAnimation.animate = false;
-
             }
         }
     }
@@ -343,6 +341,12 @@ c.onmousedown = function(e) {
                 selecting = null;
             }
             else {
+                const wires = findAllWiresByPos();
+                if(wires.length == 2) {
+                    connectWires(wires[0],wires[1]);
+                    connectWires(wires[1],wires[0]);
+                }
+
                 let found;
                 if(found = findComponentByPos()) {
                     const component = found;
@@ -353,10 +357,10 @@ c.onmousedown = function(e) {
                     }
                 } else if(found = findWireByPos()) {
                     connecting = new Wire();
+                    connecting.input.push(found);
                     connecting.pos.push({
                         x: mouse.grid.x,
-                        y: mouse.grid.y,
-                        intersection: true
+                        y: mouse.grid.y
                     });
                 } else if(found = findPortByPos()) {
                     const port = found;
@@ -669,6 +673,16 @@ c.onmousemove = function(e) {
                         pos.pos = component.height - 1 - dy;
                     }
 
+                    const port2 = findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos));
+                    if(port2) {
+                        if(pos.side % 2 == 0) {
+                            const placeFree = !findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos - Math.sign(e.movementX)));
+                            if(placeFree) {
+                                port2.pos.pos -= Math.sign(e.movementX);
+                            }
+                        }
+                    }
+
                     // const port = dragging.port;
                     // const pos = port.pos;
                     //
@@ -787,9 +801,24 @@ c.onmousemove = function(e) {
             const to = findPortByPos();
             if(to && to.type == "input") {
                 connecting.to = to;
-
-                connect(connecting.from,to,connecting);
                 wires.push(connecting);
+
+                if(connecting.input.length > 0) {
+                    connectWires(
+                        connecting.input[0],
+                        connecting
+                    );
+                    /*
+                        Give the intersection point to the wire with the highest index,
+                        so the intersection point is drawn
+                     */
+                    if(wires.indexOf(connecting) > wires.indexOf(connecting.input[0])) {
+                        connecting.intersections.push(Object.assign({},connecting.pos[0]));
+                    } else {
+                        connecting.input[0].intersections.push(Object.assign({},connecting.pos[0]));
+                    }
+                }
+                connect(connecting.from,to,connecting);
 
                 connecting = null;
             }
@@ -994,7 +1023,8 @@ c.onmouseup = c.onmouseleave = function(e) {
                         c.style.cursor = "crosshair";
                     }
                 })();
-            } else {
+            }
+            else {
                 if(dragging.component) {
                     /*
                      The x and y coordinate of the component need to be integers. While dragging, they are floats. So I created a little animation for the x
@@ -1083,6 +1113,21 @@ c.onmouseup = c.onmouseleave = function(e) {
             }
         }
         else if(connecting) {
+            const pos = connecting.pos.slice(-1)[0];
+            const wire = findWireByPos(pos.x,pos.y);
+
+            if(wire && wire != connecting) {
+                wires.push(connecting);
+
+                connectWires(connecting,wire);
+                if(wires.indexOf(connecting) > wires.indexOf(wire)) {
+                    connecting.intersections.push(Object.assign({},pos));
+                } else {
+                    wire.intersections.push(Object.assign({},pos));
+                }
+
+                connect(connecting.from,undefined,connecting);
+            }
             connecting = null;
         }
         else if(e.altKey) {
