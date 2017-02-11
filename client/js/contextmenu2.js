@@ -119,6 +119,20 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
+    "Edit delay",
+    "timer",
+    "E",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        dialog.editDelay(component);
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return component && component.properties.hasOwnProperty("delay") && !selecting;
+    }
+);
+
+createContextMenuOption(
     "Edit color",
     "color_lens",
     "E",

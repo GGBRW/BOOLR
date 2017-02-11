@@ -1,4 +1,20 @@
+function localStorageAvailable() {
+    try {
+        localStorage.setItem("","");
+        localStorage.removeItem("");
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+
 function setLocalStorage() {
+    if(!localStorageAvailable()) {
+        dialog.localStorageError();
+        return;
+    }
+
     const data = {};
 
     let tipsData = {};
@@ -25,6 +41,11 @@ function setLocalStorage() {
 }
 
 function getLocalStorage() {
+    if(!localStorageAvailable()) {
+        dialog.localStorageError();
+        return;
+    }
+
     let data = localStorage.pwsData;
 
     if(!localStorage.pwsData) {
@@ -73,7 +94,7 @@ function getLocalStorage() {
 
 const constructors = {
     Input,Output,NOT,AND,OR,XOR,
-    Button,Constant,Clock,Key,Debug,
+    Button,Constant,Delay,Clock,Key,Debug,
     Beep,Counter,LED,
     Custom
 };

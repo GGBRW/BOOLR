@@ -894,6 +894,31 @@ class Constant extends Component {
     }
 }
 
+class Delay extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "icon", text: "timer" });
+        this.addInputPort("A", { side: 3, pos: 0 });
+        this.addOutputPort("A", { side: 1, pos: 0 });
+
+        setTimeout(() => {
+            if(!this.properties.hasOwnProperty("delay")) {
+                dialog.editDelay(this);
+            }
+        }, 100);
+    }
+
+    update() {
+        // Highlight
+        if(settings.showComponentUpdates) this.highlight(250);
+
+        const value = this.input[0].value;
+        setTimeout(() => {
+            this.output[0].value = value;
+            this.output[0].connection.update(value);
+        }, this.properties.delay);
+    }
+}
+
 class Clock extends Component {
     constructor(name,pos) {
         super(name,pos,2,1,{ type: "icon", text: "access_time" });
@@ -904,7 +929,7 @@ class Clock extends Component {
             if(this.properties.hasOwnProperty("delay")) {
                 this.tick();
             } else {
-                dialog.editDelay(this);
+                dialog.editDelay(this,this.tick.bind(this));
             }
         }, 100);
     }
@@ -1009,11 +1034,6 @@ class LED extends Component {
             this.width * zoom,
             this.height * zoom
         );
-        ctx.fill();
-        ctx.fill();
-        ctx.fill();
-        ctx.fill();
-        ctx.fill();
         ctx.fill();
         ctx.stroke();
 
@@ -1562,14 +1582,19 @@ class Wire {
 
         if(this.from && this.from.value == 1) value = 1;
 
+        this.value = 0;
         for(let i = 0; i < this.input.length; ++i) {
+            if(this.input[i].output.includes(this)) {
+                this.input[i].update(this.input[i].from.value);
+            }
             if(this.input[i].value == 1) {
                 value = 1;
                 break;
             }
         }
 
-        if(this.value == value) return;
+        // TODO
+        //if(this.value == value) return;
 
         this.value = value;
 

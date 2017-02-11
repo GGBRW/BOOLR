@@ -147,6 +147,17 @@ dialog.warning = function(text) {
     dialog.addOption("OK");
 }
 
+dialog.localStorageError = function() {
+    dialog.show();
+    dialog.name.innerHTML = "localStorage not available";
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>warning<i>";
+    dialog.container.innerHTML += "<p>Your browser doesn't allow this application to store data locally. " +
+        "BOOLR uses localStorage to store clipbord data, settings, etc. " +
+        "Either you have disabled localStorage in your browser's settings or your browser is too old.</p>";
+
+    dialog.addOption("OK");
+}
+
 dialog.editName = function(component) {
     if(!component) return;
     dialog.show();
@@ -193,7 +204,7 @@ dialog.colorPicker = function(callback = a => a) {
     dialog.addOption("OK",  () => component.name = input.value);
 }
 
-dialog.editDelay = function(component) {
+dialog.editDelay = function(component,callback) {
     if(!component) return;
     dialog.show();
     dialog.name.innerHTML = "Edit delay";
@@ -211,7 +222,7 @@ dialog.editDelay = function(component) {
     dialog.addOption("OK",  () => {
         if(!isNaN(input.value)) {
             component.properties.delay = +input.value;
-            component.tick();
+            callback && callback();
         }
     });
 }

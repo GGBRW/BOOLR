@@ -3,8 +3,9 @@ clipbord.components = [];
 clipbord.wires = [];
 
 clipbord.copy = function(components = [], wires = [], selection) {
-    clipbord.components = components;
-    clipbord.wires = wires;
+    const clone = cloneSelection(components,wires);
+    clipbord.components = clone.components;
+    clipbord.wires = clone.wires;
     if(selection) {
         clipbord.selection = Object.assign({},selection);
     } else {

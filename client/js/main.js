@@ -316,9 +316,14 @@ c.onmousedown = function(e) {
             } else {
                 let found;
                 if(found = findComponentByPos()) {
+                    const x = mouse.screen.x / zoom + offset.x;
+                    const y = -mouse.screen.y / zoom + offset.y;
+
                     dragging = {
                         component: found,
-                        pos: Object.assign({}, found.pos)
+                        pos: Object.assign({}, found.pos),
+                        dx: x - found.pos.x,
+                        dy: y - found.pos.y
                     }
                     c.style.cursor = "move";
                 } else if(found = findPortByPos()) {
@@ -341,12 +346,6 @@ c.onmousedown = function(e) {
                 selecting = null;
             }
             else {
-                const wires = findAllWiresByPos();
-                if(wires.length == 2) {
-                    connectWires(wires[0],wires[1]);
-                    connectWires(wires[1],wires[0]);
-                }
-
                 let found;
                 if(found = findComponentByPos()) {
                     const component = found;
@@ -628,26 +627,99 @@ c.onmousemove = function(e) {
                 if(dragging.component) {
                     const component = dragging.component;
 
+                    const x = mouse.screen.x / zoom + offset.x;
+                    const y = -mouse.screen.y / zoom + offset.y;
+
+                    const dx = Math.round((x - dragging.dx)) - Math.round(component.pos.x);
+                    const dy = Math.round((y - dragging.dy)) - Math.round(component.pos.y);
+
                     // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
-                    component.pos.x += e.movementX / zoom;
-                    component.pos.y -= e.movementY / zoom;
+                    component.pos.x = x - dragging.dx;
+                    component.pos.y = y - dragging.dy;
 
                     // Then, all the wires to and from the component need to be fixed...
                     for(let i = 0; i < component.input.length; ++i) {
                         const wire = component.input[i].connection;
                         if(wire) {
-                            wire.pos.slice(-1)[0].x += e.movementX / zoom;
-                            wire.pos.slice(-1)[0].y -= e.movementY / zoom;
+                            wire.pos.push({
+                                x: wire.pos.slice(-1)[0].x + dx,
+                                y: wire.pos.slice(-1)[0].y + dy
+                            });
                         }
                     }
 
                     for(let i = 0; i < component.output.length; ++i) {
                         const wire = component.output[i].connection;
                         if(wire) {
-                            wire.pos[0].x += e.movementX / zoom;
-                            wire.pos[0].y -= e.movementY / zoom;
+                            wire.pos.unshift({
+                                x: wire.pos[0].x + dx,
+                                y: wire.pos[0].y + dy
+                            });
                         }
                     }
+
+                    // for(let i = 0; i < component.input.length; ++i) {
+                    //     const wire = component.input[i].connection;
+                    //     if(wire) {
+                    //         let dx = Math.round(wire.pos.slice(-1)[0].x) - Math.round(wire.pos.slice(-2)[0].x);
+                    //         let dy = Math.round(wire.pos.slice(-1)[0].y) - Math.round(wire.pos.slice(-2)[0].y);
+                    //
+                    //         while(Math.abs(dx) + Math.abs(dy) > 1) {
+                    //             if(Math.abs(dx) > Math.abs(dy)) {
+                    //                 wire.pos.splice(
+                    //                     wire.pos.length - 1,
+                    //                     0,
+                    //                     {
+                    //                         x: wire.pos.slice(-2)[0].x + Math.sign(dx),
+                    //                         y: wire.pos.slice(-2)[0].y
+                    //                     }
+                    //                 );
+                    //                 dx -= Math.sign(dx);
+                    //             } else {
+                    //                 wire.pos.splice(
+                    //                     wire.pos.length - 1,
+                    //                     0,
+                    //                     {
+                    //                         x: wire.pos.slice(-2)[0].x,
+                    //                         y: wire.pos.slice(-2)[0].y + Math.sign(dy)
+                    //                     }
+                    //                 );
+                    //                 dy -= Math.sign(dy);
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                    //
+                    // for(let i = 0; i < component.output.length; ++i) {
+                    //     const wire = component.output[i].connection;
+                    //     if(wire) {
+                    //         let dx = Math.round(wire.pos[0].x) - Math.round(wire.pos[1].x);
+                    //         let dy = Math.round(wire.pos[0].y) - Math.round(wire.pos[1].y);
+                    //
+                    //         while(Math.abs(dx) + Math.abs(dy) > 1) {
+                    //             if(Math.abs(dx) > Math.abs(dy)) {
+                    //                 wire.pos.splice(
+                    //                     1, 0,
+                    //                     {
+                    //                         x: wire.pos[1].x + Math.sign(dx),
+                    //                         y: wire.pos[1].y
+                    //                     }
+                    //                 );
+                    //                 dx -= Math.sign(dx);
+                    //             } else {
+                    //                 wire.pos.splice(
+                    //                     1, 0,
+                    //                     {
+                    //                         x: wire.pos[1].x,
+                    //                         y: wire.pos[1].y + Math.sign(dy)
+                    //                     }
+                    //                 );
+                    //                 dy -= Math.sign(dy);
+                    //             }
+                    //         }
+                    //     }
+                    // }
+
                 } else if(dragging.port) {
                     const port = dragging.port;
                     const pos = port.pos;
@@ -932,7 +1004,7 @@ c.onmousemove = function(e) {
 }
 
 // TODO: onmouseleave
-c.onmouseup = c.onmouseleave = function(e) {
+c.onmouseup = function(e) {
     mouse.screen.x = e.x;
     mouse.screen.y = e.y;
     mouse.grid.x = Math.round(e.x / zoom + offset.x);
@@ -1113,20 +1185,34 @@ c.onmouseup = c.onmouseleave = function(e) {
             }
         }
         else if(connecting) {
-            const pos = connecting.pos.slice(-1)[0];
-            const wire = findWireByPos(pos.x,pos.y);
+            if(connecting.pos.length > 1) {
+                const pos = connecting.pos.slice(-1)[0];
+                const wire = findWireByPos(pos.x, pos.y);
 
-            if(wire && wire != connecting) {
-                wires.push(connecting);
+                if(wire && wire != connecting) {
+                    wires.push(connecting);
 
-                connectWires(connecting,wire);
-                if(wires.indexOf(connecting) > wires.indexOf(wire)) {
-                    connecting.intersections.push(Object.assign({},pos));
-                } else {
-                    wire.intersections.push(Object.assign({},pos));
+                    connectWires(connecting, wire);
+                    if(wires.indexOf(connecting) > wires.indexOf(wire)) {
+                        connecting.intersections.push(Object.assign({}, pos));
+                    } else {
+                        wire.intersections.push(Object.assign({}, pos));
+                    }
+
+                    connect(connecting.from, undefined, connecting);
                 }
+            } else {
+                const wires = findAllWiresByPos();
+                if(wires.length > 1) {
+                    connectWires(wires[0],wires[1]);
+                    connectWires(wires[1],wires[0]);
 
-                connect(connecting.from,undefined,connecting);
+                    if(wires.indexOf(wires[0]) > wires.indexOf(wires[1])) {
+                        wires[0].intersections.push(Object.assign({}, mouse.grid));
+                    } else {
+                        wires[1].intersections.push(Object.assign({}, mouse.grid));
+                    }
+                }
             }
             connecting = null;
         }
