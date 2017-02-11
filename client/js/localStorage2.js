@@ -65,16 +65,16 @@ function getLocalStorage() {
     }
 
     if(data.clipbord) {
-        try {
+        // try {
             const parsed = parse(data.clipbord);
             clipbord.copy(
                 parsed.components,
                 parsed.wires,
                 parsed.selection
             );
-        } catch(e) {
-            console.warn("Could not parse clipbord data from localStorage " + e);
-        }
+        // } catch(e) {
+        //     console.warn("Could not parse clipbord data from localStorage " + e);
+        // }
     }
 
     if(data.savedCustomComponents) {
@@ -142,7 +142,7 @@ function stringify(components = [], wires = [], selection) {
         }
 
         if(constructor == "Custom") {
-            data.componentData = stringify(component.components,component.wires);
+            data.componentData = JSON.parse(stringify(component.components,component.wires));
         }
 
         stringified[0].push([constructor,data]);
@@ -156,12 +156,25 @@ function stringify(components = [], wires = [], selection) {
         const toIndex = components.indexOf(wire.to && wire.to.component);
         const toPortIndex = wire.to && wire.to.component && wire.to.component.input.indexOf(wire.to);
 
+        const input = [];
+        for(let i = 0; i < wire.input.length; ++i) {
+            input.push(wires.indexOf(wire.input[i]));
+        }
+
+        const output = [];
+        for(let i = 0; i < wire.output.length; ++i) {
+            output.push(wires.indexOf(wire.output[i]));
+        }
+
         stringified[1].push([
             fromIndex,
             fromPortIndex,
             toIndex,
             toPortIndex,
+            input,
+            output,
             wire.pos,
+            wire.intersections,
             wire.colorOn
         ]);
     }
@@ -234,7 +247,7 @@ function parse(data) {
         component.pos = Object.assign({},data.pos);
 
         if(constructor == "Custom") {
-            const parsed = parse(data.componentData);
+            const parsed = parse(JSON.stringify(data.componentData));
             component.components = parsed.components;
             component.wires = parsed.wires;
             delete component.componentData;
@@ -245,27 +258,57 @@ function parse(data) {
     }
 
     for(let i = 0; i < wires.length; ++i) {
-        const from = components[wires[i][0]];
-        let fromPort;
-        if(from && from.output) fromPort = from.output[wires[i][1]];
+        // const from = components[wires[i][0]];
+        // let fromPort;
+        // if(from && from.output) fromPort = from.output[wires[i][1]];
+        //
+        // const to = components[wires[i][2]];
+        // let toPort;
+        // if(to && to.input) toPort = to.input[wires[i][3]];
 
-        const to = components[wires[i][2]];
-        let toPort;
-        if(to && to.input) toPort = to.input[wires[i][3]];
-
-        const pos = wires[i][4];
-        const color = wires[i][5];
+        const pos = wires[i][6];
+        const intersections = wires[i][7];
+        const color = wires[i][8];
 
         const wire = new Wire(
-            pos,
-            fromPort,
-            toPort,
-            color
+            pos, intersections, color
         );
 
-        if(fromPort && toPort) connect(fromPort,toPort,wire);
+        wire.from = [wires[i][0],wires[i][1]]; // This is getting parsed later
+        wire.to = [wires[i][2],wires[i][3]]; // This one too
+
+        wire.input = wires[i][4];
+        wire.output = wires[i][5];
+
+        //if(fromPort && toPort) connect(fromPort,toPort,wire);
 
         wires[i] = wire;
+    }
+
+    // Create connections
+    for(let i = 0; i < wires.length; ++i) {
+        const wire = wires[i];
+
+        const from = components[wire.from[0]];
+        let fromPort;
+        if(from && from.output) fromPort = from.output[wire.from[1]];
+
+        const to = components[wire.to[0]];
+        let toPort;
+        if(to && to.input) toPort = to.input[wire.to[1]];
+
+        wire.from = fromPort;
+        wire.to = toPort;
+
+        for(let i = 0; i < wire.input.length; ++i) {
+            wire.input[i] = wires[wire.input[i]];
+        }
+
+        for(let i = 0; i < wire.output.length; ++i) {
+            wire.output[i] = wires[wire.output[i]];
+        }
+
+        if(wire.from && wire.to) connect(wire.from,wire.to,wire);
     }
 
     if(selection) {

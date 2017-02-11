@@ -112,8 +112,6 @@ function connect(from,to,wire) {
  @param {number} y coordinate of intersection
  */
 function connectWires(wire1,wire2) {
-    console.log(wire1,wire2);
-
     if(!wire1.output.includes(wire2)) {
         wire1.output.push(wire2);
     }
@@ -224,10 +222,8 @@ function findPortByPos(x = mouse.grid.x, y = mouse.grid.y,type) {
             let pos;
             if(side % 2 == 0) {
                 pos = x - component.pos.x;
-                if(side == 2) pos = component.width - 1 - pos;
             } else {
                 pos = component.pos.y - y;
-                if(side == 3) pos = component.height - 1 - pos;
             }
 
             const found = findPortByComponent(component,side,pos);
@@ -310,22 +306,26 @@ function cloneComponent(component, dx = 0, dy = 0) {
     clone.properties = Object.assign({}, component.properties);
 
     if(component.constructor == Custom) {
-        clone.components = [...component.components];
-        clone.wires = [...component.wires];
-    }
-
-    clone.input = [];
-    for(let i = 0; i < component.input.length; ++i) {
-        clone.input.push(Object.assign({},component.input[i]));
-        clone.input[i].component = clone;
-        clone.input[i].pos = Object.assign({},component.input[i].pos);
-        delete clone.input[i].connection;
-    }
-    clone.output = [];
-    for(let i = 0; i < component.output.length; ++i) {
-        clone.output.push(Object.assign({},component.output[i]));
-        clone.output[i].component = clone;
-        delete clone.output[i].connection;
+        const inner = cloneSelection(component.components,component.wires);
+        clone.components = inner.components;
+        clone.wires = inner.wires;
+        clone.input = [];
+        clone.output = [];
+        clone.create();
+    } else {
+        clone.input = [];
+        for(let i = 0; i < component.input.length; ++i) {
+            clone.input.push(Object.assign({},component.input[i]));
+            clone.input[i].component = clone;
+            clone.input[i].pos = Object.assign({},component.input[i].pos);
+            delete clone.input[i].connection;
+        }
+        clone.output = [];
+        for(let i = 0; i < component.output.length; ++i) {
+            clone.output.push(Object.assign({},component.output[i]));
+            clone.output[i].component = clone;
+            delete clone.output[i].connection;
+        }
     }
     return clone;
 }
@@ -601,38 +601,48 @@ class Component {
 
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
+            const screen = { x,y };
             const pos = this.input[i].pos;
 
-            let ox = x;
-            let oy = y;
+            // let ox = x;
+            // let oy = y;
+            // const angle = Math.PI / 2 * pos.side;
+            // if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            // if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            // ox += Math.sin(angle) / 2 * zoom;
+            // oy -= Math.cos(angle) / 2 * zoom;
+            //
+            // if(pos.side == 2) ox += (this.width - 1) * zoom;
+            // if(pos.side == 3) oy += (this.height - 1) * zoom;
+            //
+            // ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            // oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
             const angle = Math.PI / 2 * pos.side;
-            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
-            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
 
-            if(pos.side == 2) ox += (this.width - 1) * zoom;
-            if(pos.side == 3) oy += (this.height - 1) * zoom;
-
-            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
-            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
 
             ctx.beginPath();
             ctx.moveTo(
-                ox,
-                oy
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
             );
             ctx.lineTo(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom
+                screen.x,
+                screen.y
             );
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.arc(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom,
+                screen.x,
+                screen.y,
                 zoom / 8 - zoom / 20,
                 0,
                 Math.PI * 2
@@ -645,38 +655,48 @@ class Component {
 
         // Draw output pins
         for(let i = 0; i < this.output.length; ++i) {
+            const screen = { x,y };
             const pos = this.output[i].pos;
 
-            let ox = x;
-            let oy = y;
+            // let ox = x;
+            // let oy = y;
+            // const angle = Math.PI / 2 * pos.side;
+            // if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            // if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            // ox += Math.sin(angle) / 2 * zoom;
+            // oy -= Math.cos(angle) / 2 * zoom;
+            //
+            // if(pos.side == 2) ox += (this.width - 1) * zoom;
+            // if(pos.side == 3) oy += (this.height - 1) * zoom;
+            //
+            // ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            // oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
             const angle = Math.PI / 2 * pos.side;
-            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
-            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
 
-            if(pos.side == 2) ox += (this.width - 1) * zoom;
-            if(pos.side == 3) oy += (this.height - 1) * zoom;
-
-            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
-            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
 
             ctx.beginPath();
             ctx.moveTo(
-                ox,
-                oy
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
             );
             ctx.lineTo(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom
+                screen.x,
+                screen.y
             );
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.arc(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom,
+                screen.x,
+                screen.y,
                 zoom / 8,
                 0,
                 Math.PI * 2
@@ -706,6 +726,7 @@ class Component {
         }
 
         const port = {
+            id: generateId(),
             type: "input",
             component: this,
             name,
@@ -725,6 +746,7 @@ class Component {
         }
 
         const port = {
+            id: generateId(),
             type: "output",
             component: this,
             name,
@@ -921,7 +943,7 @@ class Delay extends Component {
         const value = this.input[0].value;
         setTimeout(() => {
             this.output[0].value = value;
-            this.output[0].connection.update(value);
+            this.output[0].connection && this.output[0].connection.update(value);
         }, this.properties.delay);
     }
 }
@@ -1177,8 +1199,8 @@ class Custom extends Component {
     ) {
         super(name,pos);
 
-        this.height = 0;
-        this.width = 0;
+        this.height = 1;
+        this.width = 3;
         this.properties.description = description;
 
         this.components = components;
@@ -1187,55 +1209,135 @@ class Custom extends Component {
         if(this.components.length || this.wires.length) this.create();
     }
 
+    update() {
+        this.function();
+    }
+
     create() {
-        // Reset connections
+        // Filter input and output ports out of the components array
+        const input = this.components.filter(component => component.constructor == Input);
+        const output = this.components.filter(component => component.constructor == Output);
+
+        // If an input/output port is removed, remove the corresponding port
         for(let i = 0; i < this.input.length; ++i) {
-            const port = this.input[i];
-            if(port.connection) {
-                removeWire(port.connection);
+            if(!input.includes(this.input[i].inputPort)) {
+                if(this.input[i].connection) {
+                    removeWire(this.input[i].connection);
+                }
+                this.input.splice(i,1);
+                --i;
             }
         }
         for(let i = 0; i < this.output.length; ++i) {
-            const port = this.output[i];
-            if(port.connection) {
-                removeWire(port.connection);
+            if(!output.includes(this.output[i].outputPort)) {
+                if(this.output[i].connection) {
+                    removeWire(this.output[i].connection);
+                }
+                this.output.splice(i,1);
+                --i;
             }
         }
 
-        const input = this.components.filter(a => a.constructor == Input);
-        const output = this.components.filter(a => a.constructor == Output);
-
-        this.height = Math.max(input.length,output.length,1);
-        this.width = 3;
-
+        let inputPos = 0;
         for(let i = 0; i < input.length; ++i) {
-            this.addInputPort(
-                input[i].name,
-                { side: 3, pos: this.height - 1 - i },
-                { input: input[i] }
-            );
+            const port = this.input.find(port => port.inputPort == input[i]);
+            if(!port) {
+                while(findPortByComponent(this,3,inputPos)) {
+                    ++inputPos;
+                    if(inputPos > this.height - 1) ++this.height;
+                }
+
+                this.addInputPort(
+                    input[i].name,
+                    { side: 3, pos: inputPos },
+                    { inputPort: input[i] }
+                );
+            } else {
+                port.name = input[i].name;
+            }
         }
 
+        let outputPos = 0;
         for(let i = 0; i < output.length; ++i) {
-            this.addOutputPort(
-                output[i].name,
-                { side: 1, pos: i },
-                { output: output[i] }
-            );
+            let port = this.output.find(port => port.outputPort == output[i]);
+            if(!port) {
+                while(findPortByComponent(this,1,outputPos)) {
+                    ++outputPos;
+                    if(outputPos > this.height - 1) ++this.height;
+                }
+
+                port = this.addOutputPort(
+                    output[i].name,
+                    { side: 1, pos: outputPos },
+                    { outputPort: output[i] }
+                );
+
+                output[i].port = port;
+                output[i].update = function() {
+                    // Highlight
+                    if(settings.showComponentUpdates) this.highlight(250);
+
+                    this.function();
+
+                    const value = this.input[0].value;
+                    this.port.value = value;
+                    this.port.connection && this.port.connection.update(value);
+                }
+            } else {
+                port.name = output[i].name;
+            }
         }
     }
+
+    // create() {
+    //     // Reset connections
+    //     for(let i = 0; i < this.input.length; ++i) {
+    //         const port = this.input[i];
+    //         if(port.connection) {
+    //             removeWire(port.connection);
+    //         }
+    //     }
+    //     for(let i = 0; i < this.output.length; ++i) {
+    //         const port = this.output[i];
+    //         if(port.connection) {
+    //             removeWire(port.connection);
+    //         }
+    //     }
+    //
+    //     const input = this.components.filter(a => a.constructor == Input);
+    //     const output = this.components.filter(a => a.constructor == Output);
+    //
+    //     this.height = Math.max(input.length,output.length,1);
+    //     this.width = 3;
+    //
+    //     for(let i = 0; i < input.length; ++i) {
+    //         this.addInputPort(
+    //             input[i].name,
+    //             { side: 3, pos: this.height - 1 - i },
+    //             { input: input[i] }
+    //         );
+    //     }
+    //
+    //     for(let i = 0; i < output.length; ++i) {
+    //         this.addOutputPort(
+    //             output[i].name,
+    //             { side: 1, pos: i },
+    //             { output: output[i] }
+    //         );
+    //     }
+    // }
 
     function() {
         for(let i = 0; i < this.input.length; ++i) {
             const port = this.input[i];
-            if(port.value != port.input.value) {
-                port.input.value = port.value;
-                port.input.update();
-            }
+            //if(port.value != port.inputPort.value) {
+                port.inputPort.value = port.value;
+                port.inputPort.update();
+            //}
         }
 
         for(let i = 0; i < this.output.length; ++i) {
-            this.output[i].value = this.output[i].output.value;
+            this.output[i].value = this.output[i].outputPort.value;
         }
     }
 
@@ -1254,6 +1356,8 @@ class Custom extends Component {
 
                 components = componentsTmp;
                 wires = wiresTmp;
+
+                this.create();
             }
         );
     }
@@ -1285,7 +1389,7 @@ class Custom extends Component {
 
         // Draw the name of the component
         ctx.fillStyle = "#888";
-        ctx.font = zoom / 2 + "px Monospaced";
+        ctx.font = zoom / 3 + "px Ubuntu";
         ctx.fillText(
             this.name,
             x + ((this.width - 1) / 2 * zoom - ctx.measureText(this.name).width / 2),
@@ -1294,56 +1398,63 @@ class Custom extends Component {
 
         // Draw the description of the component
         const description = this.properties.description;
-        ctx.fillStyle = "#888";
-        ctx.font = zoom / 5 + "px Monospaced";
+        ctx.fillStyle = "#666";
+        ctx.font = zoom / 7 + "px Ubuntu";
         ctx.fillText(
             description,
             x + ((this.width - 1) / 2 * zoom - ctx.measureText(description).width / 2),
-            y + (this.height) / 2 * zoom
+            y + (this.height - .5) / 2 * zoom
         );
 
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
+            const screen = { x,y };
             const pos = this.input[i].pos;
 
-            let ox = x;
-            let oy = y;
+            // let ox = x;
+            // let oy = y;
+            // const angle = Math.PI / 2 * pos.side;
+            // if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            // if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            // ox += Math.sin(angle) / 2 * zoom;
+            // oy -= Math.cos(angle) / 2 * zoom;
+            //
+            // if(pos.side == 2) ox += (this.width - 1) * zoom;
+            // if(pos.side == 3) oy += (this.height - 1) * zoom;
+            //
+            // ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            // oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
             const angle = Math.PI / 2 * pos.side;
-            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
-            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
 
-            if(pos.side == 2) ox += (this.width - 1) * zoom;
-            if(pos.side == 3) oy += (this.height - 1) * zoom;
-
-            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
-            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
 
             ctx.beginPath();
             ctx.moveTo(
-                ox,
-                oy
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
             );
             ctx.lineTo(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom
+                screen.x,
+                screen.y
             );
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
-
             ctx.beginPath();
             ctx.arc(
-                ox,
-                oy,
-                zoom / 8 - zoom / 16,
+                screen.x,
+                screen.y,
+                zoom / 8 - zoom / 20,
                 0,
                 Math.PI * 2
             );
-            ctx.lineWidth = zoom / 8;
+            ctx.lineWidth = zoom / 10;
             ctx.fillStyle = "#fff";
             ctx.stroke();
             ctx.fill();
@@ -1355,8 +1466,8 @@ class Custom extends Component {
                     ctx.font = zoom / 7 + "px Ubuntu";
                     ctx.fillText(
                         name,
-                        ox - ctx.measureText(name).width / 2,
-                        (pos.side == 2 ? oy + zoom / 3 : oy - zoom / 4)
+                        screen.x - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? screen.y + zoom / 3 : screen.y - zoom / 4)
                     );
                 }
             }
@@ -1364,41 +1475,48 @@ class Custom extends Component {
 
         // Draw output pins
         for(let i = 0; i < this.output.length; ++i) {
+            const screen = { x,y };
             const pos = this.output[i].pos;
 
-            let ox = x;
-            let oy = y;
+            // let ox = x;
+            // let oy = y;
+            // const angle = Math.PI / 2 * pos.side;
+            // if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
+            // if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
+            // ox += Math.sin(angle) / 2 * zoom;
+            // oy -= Math.cos(angle) / 2 * zoom;
+            //
+            // if(pos.side == 2) ox += (this.width - 1) * zoom;
+            // if(pos.side == 3) oy += (this.height - 1) * zoom;
+            //
+            // ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
+            // oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+
             const angle = Math.PI / 2 * pos.side;
-            if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
-            if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
 
-            if(pos.side == 2) ox += (this.width - 1) * zoom;
-            if(pos.side == 3) oy += (this.height - 1) * zoom;
-
-            ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
-            oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
 
             ctx.beginPath();
             ctx.moveTo(
-                ox,
-                oy
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
             );
             ctx.lineTo(
-                ox + Math.sin(angle) / 2 * zoom,
-                oy - Math.cos(angle) / 2 * zoom
+                screen.x,
+                screen.y
             );
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ox += Math.sin(angle) / 2 * zoom;
-            oy -= Math.cos(angle) / 2 * zoom;
-
             ctx.beginPath();
             ctx.arc(
-                ox,
-                oy,
+                screen.x,
+                screen.y,
                 zoom / 8,
                 0,
                 Math.PI * 2
@@ -1413,8 +1531,8 @@ class Custom extends Component {
                     ctx.font = zoom / 7 + "px Ubuntu";
                     ctx.fillText(
                         name,
-                        ox - ctx.measureText(name).width / 2,
-                        (pos.side == 2 ? oy + zoom / 3 : oy - zoom / 4)
+                        screen.x - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? screen.y + zoom / 3 : screen.y - zoom / 4)
                     );
                 }
             }
@@ -1556,13 +1674,14 @@ class Custom extends Component {
 class Wire {
     constructor(
         pos = [],
+        intersections = [],
+        color = "#888",
         from,
-        to,
-        color = "#888"
+        to
     ) {
         this.id = generateId();
         this.pos = pos;
-        this.intersections = [];
+        this.intersections = intersections;
 
         this.from = from;
         this.to = to;
@@ -1588,12 +1707,12 @@ class Wire {
         } else if(this.from && this.from.value == 1) {
             this.value = 1;
         } else if(this.input.find(wire => wire != from && wire.value == 1)) {
-            const wire = this.input.find(wire => wire.input.includes(this))
+
+            const wire = this.input.find(wire => wire.input.includes(this));
             if(wire) {
                 wire.updateValue(value,this);
-                console.log(wire.value);
             }
-            if(this.input.find(wire => wire != from && wire.value == 1)) {
+            if(this.input.find(wire => wire.value == 1)) {
                 this.value = 1;
             } else {
                 this.value = 0;
@@ -1606,18 +1725,20 @@ class Wire {
     update(value,from) {
         if(this.input.length > 0) {
             this.updateValue(value, from);
-
-            for(let i = 0; i < this.output.length; ++i) {
-                const wire = this.output[i];
-                if(wire != from) wire.update(this.value, this);
-            }
         } else {
             this.value = value;
         }
 
+        for(let i = 0; i < this.output.length; ++i) {
+            const wire = this.output[i];
+            if(wire != from) {
+                setTimeout(() => wire.update(this.value, this));
+            }
+        }
+
         if(this.to) {
             this.to.value = this.value;
-            this.to.component.update();
+            setTimeout(() => this.to.component.update());
         }
     }
 

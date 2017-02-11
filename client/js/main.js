@@ -739,10 +739,10 @@ c.onmousemove = function(e) {
                         pos.pos = dy;
                     } else if(dy > component.height - .5 && dx > -.5 && dx < component.width - .5) {
                         pos.side = 2;
-                        pos.pos = component.width - 1 - dx;
+                        pos.pos = dx;
                     } else if(dx < -.5 && dy > -.5 && dy < component.height - .5) {
                         pos.side = 3;
-                        pos.pos = component.height - 1 - dy;
+                        pos.pos = dy;
                     }
 
                     const port2 = findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos));

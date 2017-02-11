@@ -88,13 +88,21 @@ c.onkeydown = function(e) {
                     clipbord.copy([findComponentByPos()]);
                 }
             } else if(e.shiftKey && selecting && selecting.components) {
-                componentize(
-                    findComponentsInSelection(selecting.x,selecting.y,selecting.w,selecting.h),
-                    findWiresInSelection(selecting.x,selecting.y,selecting.w,selecting.h),
-                    undefined,
-                    Math.round(selecting.x + selecting.w / 2),
-                    Math.round(selecting.y + selecting.h / 2)
-                )
+                const component = new Custom();
+                component.pos = {
+                    x: Math.round(selecting.x + selecting.w / 2),
+                    y: Math.round(selecting.y + selecting.h / 2)
+                }
+
+                const clone = cloneSelection(selecting.components,selecting.wires);
+                component.components = clone.components;
+                component.wires = clone.wires;
+                component.create();
+
+                removeSelection(selecting.components,selecting.wires);
+                components.push(component);
+
+                selecting = null;
             }
             break;
         case 69: // E:
