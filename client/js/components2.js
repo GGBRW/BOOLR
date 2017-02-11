@@ -1,6 +1,5 @@
 var components = [];
 var wires = [];
-const connections = [];
 
 /*
 Adds component to the board
@@ -355,10 +354,11 @@ function cloneWire(wire, dx = 0, dy = 0) {
  @param {array} wires
  @returns {array} clones
  */
-function cloneSelection(components, wires, dx = 0, dy = 0) {
+function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
     const clonedComponents = components.map(component => cloneComponent(component,dx,dy));
     const clonedWires = [];
 
+    // Clone wires and recreate connections by getting all connection indexes from components array
     for(let i = 0; i < wires.length; ++i) {
         const wire = wires[i];
         const clonedWire = cloneWire(wire,dx,dy);
@@ -387,6 +387,7 @@ function cloneSelection(components, wires, dx = 0, dy = 0) {
         clonedWires.push(clonedWire);
     }
 
+    // Recreate wire connections
     for(let i = 0; i < wires.length; ++i) {
         for(let j = 0; j < wires[i].input.length; ++j) {
             const index = wires.indexOf(wires[i].input[j]);
@@ -474,12 +475,18 @@ class Component {
         icon
     ) {
         this.id = generateId();
+
+        // If no name is given, create a standard name in the format [Component type]#[Number of components with the same type that are already on the board]
+        // Example: if you create an AND gate and there are already 16 AND gates on the board, the name will be AND#16
         if(!name) {
             name =
                 this.constructor.name + "#" +
                 components.filter(a => a.constructor == this.constructor).length;
         }
         this.name = name;
+
+        // The position of the component on the grid
+        // Each dot on the screen is a point in the grid, the space between the dots is 1
         this.pos = pos;
         this.width = width;
         this.height = height;
@@ -1575,34 +1582,42 @@ class Wire {
             ((0|(1<<8) + b + (256 - b) * .75).toString(16)).substr(1);
     }
 
-    updateValue(value = 0) {
+    updateValue(value = 0,from) {
         if(value == 1) {
             this.value = 1;
         } else if(this.from && this.from.value == 1) {
             this.value = 1;
-        } else if(this.input.find(wire => wire.value == 1)) {
-            this.value = 1;
+        } else if(this.input.find(wire => wire != from && wire.value == 1)) {
+            const wire = this.input.find(wire => wire.input.includes(this))
+            if(wire) {
+                wire.updateValue(value,this);
+                console.log(wire.value);
+            }
+            if(this.input.find(wire => wire != from && wire.value == 1)) {
+                this.value = 1;
+            } else {
+                this.value = 0;
+            }
         } else {
             this.value = 0;
         }
     }
 
-    update(value) {
-        console.log(arguments.callee.caller);
-        this.updateValue(value);
+    update(value,from) {
+        if(this.input.length > 0) {
+            this.updateValue(value, from);
 
-        if(this.to) {
-            this.to.value = value;
-            this.to.component.update();
+            for(let i = 0; i < this.output.length; ++i) {
+                const wire = this.output[i];
+                if(wire != from) wire.update(this.value, this);
+            }
+        } else {
+            this.value = value;
         }
 
-        for(let i = 0; i < this.output.length; ++i) {
-            const wire = this.output[i];
-            if(wire.output.includes(this)) {
-                console.log("Oh here comes trouble lalala");
-            } else {
-                wire.update(this.value);
-            }
+        if(this.to) {
+            this.to.value = this.value;
+            this.to.component.update();
         }
     }
 

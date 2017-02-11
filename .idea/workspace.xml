@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LINCENCE" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/binaryfloat.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/clipbord.js" afterPath="$PROJECT_DIR$/client/js/clipbord.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/components2.js" afterPath="$PROJECT_DIR$/client/js/components2.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.bat" afterPath="$PROJECT_DIR$/run.bat" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,7 +30,7 @@
       <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/pws.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5832">
+            <state relative-caret-position="0">
               <caret line="243" column="21" lean-forward="false" selection-start-line="243" selection-start-column="21" selection-end-line="243" selection-end-column="21" />
               <folding />
             </state>
@@ -65,18 +68,18 @@
       <file leaf-file-name="components2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/components2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="1590" column="45" lean-forward="true" selection-start-line="1590" selection-start-column="45" selection-end-line="1590" selection-end-column="45" />
+            <state relative-caret-position="576">
+              <caret line="488" column="89" lean-forward="false" selection-start-line="488" selection-start-column="89" selection-end-line="488" selection-end-column="89" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="run.bat" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/run.bat">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="4" lean-forward="true" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+            <state relative-caret-position="48">
+              <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -85,8 +88,8 @@
       <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="21" column="21" lean-forward="false" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+            <state relative-caret-position="360">
+              <caret line="24" column="36" lean-forward="false" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -119,7 +122,7 @@
         <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="472">
-              <caret line="120" column="24" lean-forward="true" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
+              <caret line="120" column="24" lean-forward="false" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -149,7 +152,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>show_d</find>
       <find>settings =</find>
       <find>settings</find>
       <find>from</find>
@@ -179,6 +181,7 @@
       <find>properties</find>
       <find>Delay</find>
       <find>Dea</find>
+      <find>cloneSel</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
@@ -204,8 +207,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Client/Local/contextmenu.js" />
-        <option value="$PROJECT_DIR$/Client/Local/localStorage.js" />
         <option value="$PROJECT_DIR$/Client/Local/socket.js" />
         <option value="$PROJECT_DIR$/Server (Node.js)/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/keys.js" />
@@ -248,13 +249,15 @@
         <option value="$PROJECT_DIR$/client/index.html" />
         <option value="$PROJECT_DIR$/client/css/style.css" />
         <option value="$PROJECT_DIR$/client/css/pws.css" />
-        <option value="$PROJECT_DIR$/client/js/clipbord.js" />
         <option value="$PROJECT_DIR$/client/js/main.js" />
         <option value="$PROJECT_DIR$/client/js/dialogs.js" />
         <option value="$PROJECT_DIR$/client/js/localStorage2.js" />
         <option value="$PROJECT_DIR$/client/js/contextmenu2.js" />
-        <option value="$PROJECT_DIR$/client/js/components2.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/client/js/clipbord.js" />
+        <option value="$PROJECT_DIR$/client/js/components2.js" />
+        <option value="$PROJECT_DIR$/LINCENCE" />
+        <option value="$PROJECT_DIR$/run.bat" />
       </list>
     </option>
   </component>
@@ -754,14 +757,7 @@
       <workItem from="1486637553883" duration="12219000" />
       <workItem from="1486726011366" duration="3320000" />
       <workItem from="1486729842713" duration="14099000" />
-      <workItem from="1486805574153" duration="9403000" />
-    </task>
-    <task id="LOCAL-00059" summary="update 0.1.129">
-      <created>1479323039023</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1479323039034</updated>
+      <workItem from="1486805574153" duration="12012000" />
     </task>
     <task id="LOCAL-00060" summary="update 0.1.129">
       <created>1479323936988</created>
@@ -1099,12 +1095,19 @@
       <option name="project" value="LOCAL" />
       <updated>1486811694062</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="update 0.1.202">
+      <created>1486821418922</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1486821418923</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1056714000" />
+    <option name="totallyTimeSpent" value="1059323000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1141,6 +1144,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.bat" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1189,9 +1195,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Client/project/socket.js" />
-    <entry file="file://$PROJECT_DIR$/Client/project/misc.js" />
-    <entry file="file://$PROJECT_DIR$/Client/popup.css" />
     <entry file="file://$PROJECT_DIR$/Client/project/console.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/audio.js" />
     <entry file="file://$PROJECT_DIR$/Client/popup.js" />
@@ -1372,7 +1375,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/pws.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5832">
+        <state relative-caret-position="0">
           <caret line="243" column="21" lean-forward="false" selection-start-line="243" selection-start-column="21" selection-end-line="243" selection-end-column="21" />
           <folding />
         </state>
@@ -1423,14 +1426,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="21" column="21" lean-forward="false" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1442,7 +1437,7 @@
     <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="472">
-          <caret line="120" column="24" lean-forward="true" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
+          <caret line="120" column="24" lean-forward="false" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1455,18 +1450,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="1590" column="45" lean-forward="true" selection-start-line="1590" selection-start-column="45" selection-end-line="1590" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="4" lean-forward="true" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="36" lean-forward="false" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LINCENCE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="488" column="89" lean-forward="false" selection-start-line="488" selection-start-column="89" selection-end-line="488" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/binaryfloat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
           <folding />
         </state>
       </provider>

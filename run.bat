@@ -1,3 +1,3 @@
 @echo off
 git pull
-start chrome file:///C:/Users/Jaap/Documents/School/Informatica/PWS/client/pws.html
+start chrome file:///%HOMEDRIVE%%HOMEPATH%/Documents/School/Informatica/PWS/client/pws.html

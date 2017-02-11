@@ -32,7 +32,7 @@ clipbord.paste = function(x,y) {
             selecting.x + selecting.w,
             selecting.y + selecting.h
         );
-    } else {
+    } else if(this.components.length > 0) {
         const clone = cloneComponent(this.components[0])
         clone.pos.x = x;
         clone.pos.y = y;
