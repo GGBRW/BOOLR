@@ -1575,28 +1575,21 @@ class Wire {
             ((0|(1<<8) + b + (256 - b) * .75).toString(16)).substr(1);
     }
 
-    update(value = 0) {
-        // If the given value is the same as the value the wire already has,
-        // there's no need for an update
-        if(this.value == value) return;
-
-        if(this.from && this.from.value == 1) value = 1;
-
-        this.value = 0;
-        for(let i = 0; i < this.input.length; ++i) {
-            if(this.input[i].output.includes(this)) {
-                this.input[i].update(this.input[i].from.value);
-            }
-            if(this.input[i].value == 1) {
-                value = 1;
-                break;
-            }
+    updateValue(value = 0) {
+        if(value == 1) {
+            this.value = 1;
+        } else if(this.from && this.from.value == 1) {
+            this.value = 1;
+        } else if(this.input.find(wire => wire.value == 1)) {
+            this.value = 1;
+        } else {
+            this.value = 0;
         }
+    }
 
-        // TODO
-        //if(this.value == value) return;
-
-        this.value = value;
+    update(value) {
+        console.log(arguments.callee.caller);
+        this.updateValue(value);
 
         if(this.to) {
             this.to.value = value;
@@ -1605,7 +1598,11 @@ class Wire {
 
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
-            if(wire.value != value) wire.update(value);
+            if(wire.output.includes(this)) {
+                console.log("Oh here comes trouble lalala");
+            } else {
+                wire.update(this.value);
+            }
         }
     }
 
