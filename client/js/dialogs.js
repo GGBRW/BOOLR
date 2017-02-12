@@ -78,12 +78,7 @@ dialog.update = function(component) {
     dialog.container.innerHTML += "<p>What's new:</p>";
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
-        "<li>Finally a name!</li>" +
-        "<li><span style='font-family: Fancy; font-size: 25px'>New design</span></li>" +
-        "<li>Create custom components</li>" +
-        "<li>Components have input and output pins now</li>" +
-        "<li>Merge wires</li>" +
-        "<li>Show components updates</li>" +
+        "<li>BUG FIXES</li>" +
         "</ul>";
     dialog.addOption("Close");
 }
@@ -227,6 +222,53 @@ dialog.editDelay = function(component,callback) {
     });
 }
 
+dialog.editPort = function(port) {
+    if(!port) return;
+    dialog.show();
+    dialog.name.innerHTML = "Edit port " + (port.name || "");
+
+    dialog.container.appendChild(
+        document.createTextNode("Name: ")
+    );
+    const name = document.createElement("input");
+    dialog.container.appendChild(name);
+    name.value = port.name || "";
+    setTimeout(() => name.focus(),10);
+    dialog.container.appendChild(document.createElement("br"));
+
+
+    const from = document.createElement("p");
+    from.innerHTML = "From: " + port.component.name;
+    dialog.container.appendChild(from);
+
+    const portType = document.createElement("p");
+    portType.innerHTML = "Port type: " + port.type;
+    dialog.container.appendChild(portType);
+
+    const portId = document.createElement("p");
+    portId.innerHTML = "ID: " + port.id;
+    dialog.container.appendChild(portId);
+
+    const position = document.createElement("p");
+    position.innerHTML = "Position: " + port.pos;
+    dialog.container.appendChild(position);
+
+    const deleteConnection = document.createElement("button");
+    deleteConnection.innerHTML = "Delete connection";
+    deleteConnection.style.background = "#600";
+    deleteConnection.onclick = () => {
+        removeWire(port.connection);
+    }
+    dialog.container.appendChild(deleteConnection);
+
+    dialog.container.appendChild(document.createElement("br"));
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK",  () => {
+        if(name.value.length > 0 && name.value.length < 20) port.name = name.value;
+    });
+}
+
 dialog.editCustom = function(component) {
     if(!component) return;
     dialog.show();
@@ -271,8 +313,8 @@ dialog.editCustom = function(component) {
     dialog.addOption("OK",  () => {
         if(name.value.length > 0 && name.value.length < 20) component.name = name.value;
         if(description.value.length > 0) component.properties.description = description.value;
-        if(+width.value > 2) component.width = +width.value;
-        if(+height.value > 2) component.height = +height.value;
+        if(+width.value > 1) component.width = +width.value;
+        if(+height.value > 1) component.height = +height.value;
     });
 }
 

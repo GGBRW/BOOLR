@@ -4,7 +4,7 @@ const c = document.getElementById("canvas");
 c.height = window.innerHeight;
 c.width = window.innerWidth;
 
-const ctx = c.getContext("2d", {alpha: false});
+const ctx = c.getContext("2d", { alpha: false });
 
 let offset = {
     x: 0,
@@ -101,10 +101,19 @@ function draw() {
     //     }
     // }
 
+    // For nice rounded edges
+    if(zoom > 50) {
+        ctx.lineJoin = "round";
+    } else {
+        ctx.lineJoin = "miter";
+    }
+
     // Draw wires
     for(let i = 0, l = wires.length; i < l; ++i) {
         wires[i].draw();
     }
+
+    ctx.lineCap = "butt";
 
     // Draw components
     for(let i = 0, l = components.length; i < l; ++i) {
@@ -179,21 +188,6 @@ function draw() {
         offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoomAnimation)));
         offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoomAnimation)));
         zoom = zoomAnimation;
-    }
-
-    // Selectie animate
-    if(selecting) {
-        if(selecting.w != selecting.animate.w) {
-            selecting.w += (selecting.animate.w - selecting.w) / 2;
-        }
-        if(selecting.h != selecting.animate.h) {
-            selecting.h += (selecting.animate.h - selecting.h) / 2;
-        }
-
-        if(contextMenu.style.display == "block") {
-            contextMenu.x = selecting.x + selecting.w;
-            contextMenu.y = selecting.y + selecting.h;
-        }
     }
 
     // Framerate berekenen
@@ -274,31 +268,44 @@ c.onmousedown = function(e) {
 
         if(e.shiftKey) {
             if(selecting) {
-                selecting.animate.w = mouse.grid.x - selecting.x;
-                selecting.animate.h = mouse.grid.y - selecting.y;
+                // selecting.w = mouse.grid.x - selecting.x;
+                // selecting.h = mouse.grid.y - selecting.y;
+
+                contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
+
+                (function animate() {
+                    selecting.w += ((mouse.grid.x - selecting.x) - selecting.w) / 2.5;
+                    selecting.h += ((mouse.grid.y - selecting.y) - selecting.h) / 2.5;
+                    contextMenu.x = selecting.x + selecting.w;
+                    contextMenu.y = selecting.y + selecting.h;
+
+                    if(Math.abs((mouse.grid.x - selecting.x) - selecting.w) * zoom > 1 ||
+                        Math.abs((mouse.grid.y - selecting.y) - selecting.h) * zoom > 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        selecting.w = mouse.grid.x - selecting.x;
+                        selecting.h = mouse.grid.y - selecting.y;
+                    }
+                })();
 
                 selecting.components = findComponentsInSelection(
                     selecting.x,selecting.y,
-                    selecting.animate.w,
-                    selecting.animate.h
+                    selecting.w,
+                    selecting.h
                 );
                 selecting.wires = findWiresInSelection(
                     selecting.x,selecting.y,
-                    selecting.animate.w,
-                    selecting.animate.h
+                    selecting.w,
+                    selecting.h
                 );
 
-                contextMenu.show((selecting.x + selecting.w - offset.x) * zoom, -(selecting.y + selecting.h - offset.y) * zoom);
+                //contextMenu.show((selecting.x + selecting.w - offset.x) * zoom, -(selecting.y + selecting.h - offset.y) * zoom);
             } else {
                 selecting = {
                     x: Math.round(e.x / zoom + offset.x),
                     y: Math.round(-(e.y / zoom - offset.y)),
                     h: 0,
                     w: 0,
-                    animate: {
-                        w: 0,
-                        h: 0
-                    },
                     dashOffset: 0
                 }
             }
@@ -595,8 +602,8 @@ c.onmousemove = function(e) {
                 return;
             }
 
-            selecting.animate.w = Math.round((e.x / zoom + offset.x) - selecting.x);
-            selecting.animate.h = Math.round(-(e.y / zoom - offset.y) -  selecting.y);
+            selecting.w = (e.x / zoom + offset.x) - selecting.x;
+            selecting.h = -(e.y / zoom - offset.y) -  selecting.y;
         }
         else if(dragging) {
             if(dragging.selection) {
@@ -1012,20 +1019,36 @@ c.onmouseup = function(e) {
 
     if(e.which == 1) {
         if(selecting && !dragging) {
-            if(!selecting.animate.w && !selecting.animate.h) return;
+            if(selecting.w < .5 && selecting.h < .5) {
+                selecting = null;
+                return;
+            } else {
+                (function animate() {
+                    selecting.w += (Math.round(selecting.w) - selecting.w) / 2.5;
+                    selecting.h += (Math.round(selecting.h) - selecting.h) / 2.5;
+
+                    if(Math.abs(Math.round(selecting.w) - selecting.w) * zoom > 1 ||
+                       Math.abs(Math.round(selecting.h) - selecting.h) * zoom > 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        selecting.w = Math.round(selecting.w);
+                        selecting.h = Math.round(selecting.h);
+
+                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
+                    }
+                })();
+            }
 
             selecting.components = findComponentsInSelection(
                 selecting.x,selecting.y,
-                selecting.animate.w,
-                selecting.animate.h
+                selecting.w,
+                selecting.h
             );
             selecting.wires = findWiresInSelection(
                 selecting.x,selecting.y,
-                selecting.animate.w,
-                selecting.animate.h
+                selecting.w,
+                selecting.h
             );
-
-            contextMenu.show();
 
             for(let i of selecting.components) {
                 i.blink && i.blink(1000);

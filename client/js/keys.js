@@ -107,7 +107,9 @@ c.onkeydown = function(e) {
             break;
         case 69: // E:
             var found;
-            if(found = findWireByPos()) {
+            if(found = findPortByPos()) {
+                dialog.editPort(found);
+            } else if(found = findWireByPos()) {
                 const wire = found;
                 dialog.colorPicker(
                     color => {

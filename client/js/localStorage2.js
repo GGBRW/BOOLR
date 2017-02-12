@@ -95,7 +95,7 @@ function getLocalStorage() {
 const constructors = {
     Input,Output,NOT,AND,OR,XOR,
     Button,Constant,Delay,Clock,Key,Debug,
-    Beep,Counter,LED,
+    Beep,Counter,LED,Display,
     Custom
 };
 
@@ -128,7 +128,7 @@ function stringify(components = [], wires = [], selection) {
         data.input = [];
         for(let i = 0; i < component.input.length; ++i) {
             data.input[i] = {
-                name: component.name,
+                name: component.input[i].name,
                 pos: Object.assign({},component.input[i].pos)
             }
         }
@@ -136,7 +136,7 @@ function stringify(components = [], wires = [], selection) {
         data.output = [];
         for(let i = 0; i < component.output.length; ++i) {
             data.output[i] = {
-                name: component.name,
+                name: component.output[i].name,
                 pos: Object.assign({},component.output[i].pos)
             }
         }
@@ -230,12 +230,21 @@ function parse(data) {
 
         const component = new constructors[constructor]();
 
+        if(constructor == "Custom") {
+            const parsed = parse(JSON.stringify(data.componentData));
+            component.components = parsed.components;
+            component.wires = parsed.wires;
+            delete component.componentData;
+            component.create();
+        }
+
         const input = data.input;
         for(let i = 0; i < component.input.length; ++i) {
             component.input[i].name = input[i].name;
             component.input[i].pos = input[i].pos;
         }
         delete data.input;
+
         const output = data.output;
         for(let i = 0; i < component.output.length; ++i) {
             component.output[i].name = output[i].name;
@@ -245,14 +254,6 @@ function parse(data) {
 
         Object.assign(component,data);
         component.pos = Object.assign({},data.pos);
-
-        if(constructor == "Custom") {
-            const parsed = parse(JSON.stringify(data.componentData));
-            component.components = parsed.components;
-            component.wires = parsed.wires;
-            delete component.componentData;
-            component.create();
-        }
 
         components[i] = component;
     }
