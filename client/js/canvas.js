@@ -910,7 +910,8 @@ c.onmousemove = function(e) {
                 if(connecting.input.length > 0) {
                     connectWires(
                         connecting.input[0],
-                        connecting
+                        connecting,
+                        true
                     );
                     /*
                         Give the intersection point to the wire with the highest index,
@@ -1241,7 +1242,7 @@ c.onmouseup = function(e) {
                 if(wire && wire != connecting) {
                     wires.push(connecting);
 
-                    connectWires(connecting, wire);
+                    connectWires(connecting, wire, true);
                     if(wires.indexOf(connecting) > wires.indexOf(wire)) {
                         connecting.intersections.push(Object.assign({}, pos));
                     } else {
