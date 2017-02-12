@@ -1351,9 +1351,47 @@ c.onmouseup = function(e) {
                 }
             } else {
                 const wires = findAllWiresByPos();
+
+                const wire1PosIndex = wires[0].pos.findIndex(pos => pos.x == mouse.grid.x && pos.y == mouse.grid.y);
+                if(wire1PosIndex) {
+                    const wire1Dx = wires[0].pos[wire1PosIndex].x - wires[0].pos[wire1PosIndex + 1].x;
+                    if (wire1Dx != 0) {
+                        const tmp = wires[0];
+                        wires[0] = wires[1];
+                        wires[1] = tmp;
+                    }
+                }
+
+                    // TODO: mongolen
+
                 if(wires.length > 1) {
-                    connectWires(wires[0],wires[1]);
-                    connectWires(wires[1],wires[0]);
+                    // TODO: meer dan 2
+                    if(wires.length > 2) dialog.warning(wires.length + " wires found. Please don't. Get out (menuutje voor Teun)");
+                    if(wires[0].input.includes(wires[1]) && wires[0].output.includes(wires[1])) {
+                        console.log(1);
+                        const inputIndex = wires[0].input.indexOf(wires[1]);
+                        if(inputIndex > -1) wires[0].input.splice(inputIndex,1);
+                        const outputIndex = wires[1].output.indexOf(wires[0]);
+                        if(outputIndex > -1) wires[1].output.splice(outputIndex,1);
+                    } else if(wires[1].input.includes(wires[0])) {
+                        console.log(2);
+                        const inputIndex = wires[1].input.indexOf(wires[0]);
+                        if(inputIndex > -1) wires[1].input.splice(inputIndex,1);
+                        const outputIndex = wires[0].output.indexOf(wires[1]);
+                        if(outputIndex > -1) wires[0].output.splice(outputIndex,1);
+
+                        connectWires(wires[1],wires[0]);
+                    } else if(wires[1].output.includes(wires[0])) {
+                        console.log(3);
+                        const inputIndex = wires[0].input.indexOf(wires[1]);
+                        if(inputIndex > -1) wires[0].input.splice(inputIndex,1);
+                        const outputIndex = wires[1].output.indexOf(wires[0]);
+                        if(outputIndex > -1) wires[1].output.splice(outputIndex,1);
+                    } else {
+                        console.log(4);
+                        connectWires(wires[0],wires[1]);
+                        connectWires(wires[1],wires[0]);
+                    }
 
                     if(wires.indexOf(wires[0]) > wires.indexOf(wires[1])) {
                         wires[0].intersections.push(Object.assign({}, mouse.grid));
