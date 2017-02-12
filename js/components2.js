@@ -484,8 +484,24 @@ function movePort() {
 
 }
 
-function moveSelection() {
+function moveSelection(
+    components,
+    wires,
+    dx,dy,
+    undoable = false
+) {
+    const dx = x - selection.x;
+    const dy = y - selection.y;
 
+    for(let i = 0; i < components.length; ++i) {
+        const component = components[i];
+        component.pos.x += dx;
+        component.pos.y += dy;
+    }
+
+    for(let i = 0; i < wires.length; ++i) {
+
+    }
 }
 
 /*
@@ -2586,13 +2602,13 @@ class Wire {
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire != from) {
-                setTimeout(() => wire.update(this.value, this));
+                wire.update && wire.update(this.value, this);
             }
         }
 
         if(this.to && this.to.value != this.value) {
             this.to.value = this.value;
-            setTimeout(() => this.to.component.update());
+            this.to.component && this.to.component.update();
         }
     }
 

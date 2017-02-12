@@ -299,6 +299,21 @@ c.onmousedown = function(e) {
                     selecting.h
                 );
 
+                for(let i = 0; i < selecting.wires.length; ++i) {
+                    const wire = selecting.wires[i];
+                    if(wire.from && !selecting.components.includes(wire.from.component)) {
+                        selecting.wires.splice(i, 1);
+                        --i;
+                        continue;
+                    }
+
+                    if(wire.to && !selecting.components.includes(wire.to.component)) {
+                        selecting.wires.splice(i, 1);
+                        --i;
+                        continue;
+                    }
+                }
+
                 //contextMenu.show((selecting.x + selecting.w - offset.x) * zoom, -(selecting.y + selecting.h - offset.y) * zoom);
             } else {
                 selecting = {
@@ -1076,8 +1091,19 @@ c.onmouseup = function(e) {
                 selecting.h
             );
 
-            for(let i of selecting.components) {
-                i.blink && i.blink(1000);
+            for(let i = 0; i < selecting.wires.length; ++i) {
+                const wire = selecting.wires[i];
+                if(wire.from && !selecting.components.includes(wire.from.component)) {
+                    selecting.wires.splice(i, 1);
+                    --i;
+                    continue;
+                }
+
+                if(wire.to && !selecting.components.includes(wire.to.component)) {
+                    selecting.wires.splice(i, 1);
+                    --i;
+                    continue;
+                }
             }
         }
         else if(dragging) {
