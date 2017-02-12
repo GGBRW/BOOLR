@@ -51,7 +51,20 @@ function addSelection(
 ) {
 
     window.components.push(...components);
-    window.wires.push(...wires);
+
+    for(let i = 0; i < wires.length; ++i) {
+        const wire = wires[0];
+        connect(wire.from,wire.to,wire);
+        for(let i = 0; i < wire.input.length; ++i) {
+            connectWires(wire.input[i],wire);
+        }
+
+        for(let i = 0; i < wire.output.length; ++i) {
+            connectWires(wire,wire.output[i]);
+        }
+
+        window.wires.push(wire);
+    }
 
     if(selection) {
         if(x == undefined) x = selection.x;
@@ -73,6 +86,7 @@ function addSelection(
         redoStack = [];
 
         undoStack.push(() => {
+            console.log(wires);
             removeSelection(components,wires);
             selecting = null;
             contextMenu.hide();
@@ -861,7 +875,7 @@ function componentize(
     component.wires = clone.wires;
     component.create();
 
-    const selection = Object.assign(selecting);
+    const selection = Object.assign({},selecting);
 
     const removed = removeSelection(selecting.components,selecting.wires);
     window.components.push(component);
