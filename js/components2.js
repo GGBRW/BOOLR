@@ -53,7 +53,7 @@ function addSelection(
     window.components.push(...components);
 
     for(let i = 0; i < wires.length; ++i) {
-        const wire = wires[0];
+        const wire = wires[i];
         connect(wire.from,wire.to,wire);
         for(let i = 0; i < wire.input.length; ++i) {
             connectWires(wire.input[i],wire);
@@ -86,7 +86,6 @@ function addSelection(
         redoStack = [];
 
         undoStack.push(() => {
-            console.log(wires);
             removeSelection(components,wires);
             selecting = null;
             contextMenu.hide();

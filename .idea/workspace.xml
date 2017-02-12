@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/canvas.js" afterPath="$PROJECT_DIR$/client/js/canvas.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/components2.js" afterPath="$PROJECT_DIR$/js/components2.js" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,116 +22,68 @@
     <favorites_list name="Profielwerkstuk" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/pws.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7464">
-              <caret line="311" column="26" lean-forward="false" selection-start-line="311" selection-start-column="26" selection-end-line="311" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/canvas.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="914" column="22" lean-forward="true" selection-start-line="914" selection-start-column="22" selection-end-line="914" selection-end-column="22" />
-              <folding>
-                <element signature="e#15593#15691#0" expanded="false" />
-                <element signature="e#42184#44969#0" expanded="false" />
-                <marker date="1486912262957" expanded="true" signature="7228:7239" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/js/components2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="312" column="0" lean-forward="true" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!block;n#draw#0;n#Display#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="contextmenu2.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6120">
-              <caret line="255" column="10" lean-forward="false" selection-start-line="255" selection-start-column="10" selection-end-line="255" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="undo.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/undo.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="keys.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/keys.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4056">
-              <caret line="169" column="13" lean-forward="false" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="customComponentToolbar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dialogs.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/dialogs.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1944">
-              <caret line="81" column="40" lean-forward="true" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
-              <folding>
-                <marker date="1486910196178" expanded="true" signature="1917:1933" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="2009:2042" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="2510:2525" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="2649:2662" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="3105:3120" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="4731:4746" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="5046:5061" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="5350:5365" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="6453:6468" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="7396:7411" ph="..." />
-                <marker date="1486910196178" expanded="true" signature="12470:12485" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/canvas.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="360">
+                  <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+                  <folding>
+                    <marker date="1486912262957" expanded="true" signature="7228:7239" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/js/components2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="323">
+                  <caret line="885" column="39" lean-forward="true" selection-start-line="885" selection-start-column="39" selection-end-line="885" selection-end-column="39" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="undo.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/undo.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="312">
+                  <caret line="13" column="3" lean-forward="false" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="clipbord.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/clipbord.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/js/components2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="672">
+                  <caret line="145" column="16" lean-forward="false" selection-start-line="145" selection-start-column="16" selection-end-line="145" selection-end-column="33" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -200,8 +152,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Client/Local/clipbord.js" />
-        <option value="$PROJECT_DIR$/Client/Local/hover.js" />
         <option value="$PROJECT_DIR$/Client/Local/toolbar.js" />
         <option value="$PROJECT_DIR$/Client/Local/main.js" />
         <option value="$PROJECT_DIR$/Client/Local/style.css" />
@@ -251,6 +201,8 @@
         <option value="$PROJECT_DIR$/client/js/components2.js" />
         <option value="$PROJECT_DIR$/client/js/components2.js" />
         <option value="$PROJECT_DIR$/client/js/canvas.js" />
+        <option value="$PROJECT_DIR$/js/components2.js" />
+        <option value="$PROJECT_DIR$/js/undo.js" />
       </list>
     </option>
   </component>
@@ -275,14 +227,10 @@
       <scroll-view-position x="0" y="0" />
     </layout>
   </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/server (Node.js)/node_modules" />
-  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1981" />
-    <option name="y" value="24" />
-    <option name="width" value="1859" />
-    <option name="height" value="1056" />
+    <option name="x" value="1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -302,7 +250,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -325,24 +272,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BOOLR" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BOOLR" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -357,10 +286,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="img" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -368,6 +293,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -383,7 +309,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="C:\Program Files\nodejs\node" />
     <property name="js.eslint.eslintPackage" value="" />
-    <property name="SearchEverywhereHistoryKey" value="cl&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/client/js/clipbord.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/server (Node.js)/main.js&#10;cust&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;actio&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;action&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;actop&#9;null&#9;null&#10;clipb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;ke&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;keys&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;loca&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;custom&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/pws.html&#10;lo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;contex&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;debug&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/debug.js&#10;tool&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;lip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;deb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/debug.js&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/popup.js&#10;DIA&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;sty&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;too&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;pws.cs&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css" />
+    <property name="SearchEverywhereHistoryKey" value="und&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/undo.js&#10;clipbor&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/clipbord.js&#10;cl&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/client/js/clipbord.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/server (Node.js)/main.js&#10;cust&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;actio&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;action&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;actop&#9;null&#9;null&#10;clipb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;ke&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;keys&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;loca&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;custom&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/pws.html&#10;lo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;contex&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;debug&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/debug.js&#10;tool&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;lip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;deb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/debug.js&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/popup.js&#10;DIA&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;sty&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/keys.js&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js&#10;too&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;pws.cs&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/pws.css" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
@@ -806,13 +732,7 @@
       <workItem from="1486828603819" duration="27986000" />
       <workItem from="1486896409905" duration="13239000" />
       <workItem from="1486911611634" duration="801000" />
-    </task>
-    <task id="LOCAL-00064" summary="update 0.1.142">
-      <created>1480017510611</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1480017510613</updated>
+      <workItem from="1486912605960" duration="1239000" />
     </task>
     <task id="LOCAL-00065" summary="update 0.1.143">
       <created>1480017678321</created>
@@ -1150,12 +1070,19 @@
       <option name="project" value="LOCAL" />
       <updated>1486859843728</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="update 0.1.241&#10;">
+      <created>1486913458217</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1486913458218</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1101364000" />
+    <option name="totallyTimeSpent" value="1102603000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1167,12 +1094,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1981" y="24" width="1859" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15868747" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15364583" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1186,7 +1114,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1200,7 +1127,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15868747" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15364583" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1264,10 +1191,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Client/project/contextmenu.js" />
-    <entry file="file://$PROJECT_DIR$/Client/project/notifications.js" />
-    <entry file="file://$PROJECT_DIR$/Client/project/chat.js" />
-    <entry file="file://$PROJECT_DIR$/Client/project/toolbar.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/keys.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/hover.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/clipbord.js" />
@@ -1278,20 +1201,8 @@
     <entry file="file://$PROJECT_DIR$/Client/project/main.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/components.js" />
     <entry file="file://$PROJECT_DIR$/Client/project/actions2.js" />
-    <entry file="file://$PROJECT_DIR$/server (C)/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/audio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/server (C)/main.c" />
+    <entry file="file://$PROJECT_DIR$/client/js/audio.js" />
     <entry file="file://$PROJECT_DIR$/TODO.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1306,13 +1217,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/waypoints.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="31" column="32" lean-forward="false" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/waypoints.js" />
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/ECMAScript7.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -1327,86 +1232,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/localStorage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="94" column="4" lean-forward="false" selection-start-line="94" selection-start-column="4" selection-end-line="99" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/hover.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1032">
-          <caret line="38" column="40" lean-forward="false" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/tips.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="60" column="56" lean-forward="false" selection-start-line="60" selection-start-column="56" selection-end-line="60" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="82" column="46" lean-forward="false" selection-start-line="82" selection-start-column="46" selection-end-line="82" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/css/popup.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1577">
-          <caret line="201" column="1" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="201" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/popup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/debug.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="28" lean-forward="false" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
-          <folding>
-            <marker date="1486585373598" expanded="true" signature="2719:2730" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/toolbar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="936">
-          <caret line="39" column="14" lean-forward="false" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
-          <folding>
-            <marker date="1486637261086" expanded="true" signature="584:595" ph="..." />
-            <marker date="1486637261086" expanded="true" signature="726:745" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="130" column="20" lean-forward="false" selection-start-line="130" selection-start-column="17" selection-end-line="130" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="16" column="18" lean-forward="false" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/localStorage.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/hover.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/tips.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/contextmenu.js" />
+    <entry file="file://$PROJECT_DIR$/client/css/popup.css" />
+    <entry file="file://$PROJECT_DIR$/client/js/popup.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/debug.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/toolbar.js" />
+    <entry file="file://$PROJECT_DIR$/client/css/style.css" />
+    <entry file="file://$PROJECT_DIR$/client/index.html" />
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1429,45 +1264,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-918">
-          <caret line="943" column="31" lean-forward="true" selection-start-line="927" selection-start-column="12" selection-end-line="943" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3360">
-          <caret line="140" column="13" lean-forward="true" selection-start-line="140" selection-start-column="13" selection-end-line="140" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/css/pws.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17640">
-          <caret line="735" column="20" lean-forward="false" selection-start-line="735" selection-start-column="20" selection-end-line="735" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="236" column="6" lean-forward="false" selection-start-line="236" selection-start-column="6" selection-end-line="236" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/actions2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="8" lean-forward="true" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/js/components.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/localStorage2.js" />
+    <entry file="file://$PROJECT_DIR$/client/css/pws.css" />
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/node_modules/ws/lib/Receiver.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/actions2.js" />
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
@@ -1475,101 +1276,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/keys.js">
+    <entry file="file://$PROJECT_DIR$/client/js/keys.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js" />
+    <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js" />
+    <entry file="file://$PROJECT_DIR$/client/pws.html" />
+    <entry file="file://$PROJECT_DIR$/client/js/undo.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/dialogs.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/canvas.js" />
+    <entry file="file://$PROJECT_DIR$/client/js/components2.js" />
+    <entry file="file://$PROJECT_DIR$/js/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4056">
-          <caret line="169" column="13" lean-forward="false" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/customComponentToolbar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server (Node.js)/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/pws.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7464">
-          <caret line="311" column="26" lean-forward="false" selection-start-line="311" selection-start-column="26" selection-end-line="311" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/undo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/contextmenu2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6120">
-          <caret line="255" column="10" lean-forward="false" selection-start-line="255" selection-start-column="10" selection-end-line="255" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/dialogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1944">
-          <caret line="81" column="40" lean-forward="true" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
+        <state relative-caret-position="360">
+          <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
           <folding>
-            <marker date="1486910196178" expanded="true" signature="1917:1933" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="2009:2042" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="2510:2525" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="2649:2662" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="3105:3120" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="4731:4746" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="5046:5061" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="5350:5365" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="6453:6468" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="7396:7411" ph="..." />
-            <marker date="1486910196178" expanded="true" signature="12470:12485" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/clipbord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="914" column="22" lean-forward="true" selection-start-line="914" selection-start-column="22" selection-end-line="914" selection-end-column="22" />
-          <folding>
-            <element signature="e#15593#15691#0" expanded="false" />
-            <element signature="e#42184#44969#0" expanded="false" />
             <marker date="1486912262957" expanded="true" signature="7228:7239" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/js/components2.js">
+    <entry file="file://$PROJECT_DIR$/js/clipbord.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="312" column="0" lean-forward="true" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#draw#0;n#Display#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/undo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="13" column="3" lean-forward="false" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/components2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="885" column="39" lean-forward="true" selection-start-line="885" selection-start-column="39" selection-end-line="885" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
