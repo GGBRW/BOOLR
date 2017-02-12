@@ -79,6 +79,10 @@ dialog.update = function(component) {
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
         "<li>BUG FIXES</li>" +
+        "<li>Merge wires</li>" +
+        "<li>Componentize</li>" +
+        "<li>7 segment display</li>" +
+        "<li>Binairy to decimal</li>" +
         "</ul>";
     dialog.addOption("Close");
 }
