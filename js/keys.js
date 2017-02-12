@@ -85,6 +85,7 @@ c.onkeydown = function(e) {
                 componentize(
                     components,
                     wires,
+                    selecting,
                     Math.round(selecting.x + selecting.w / 2),
                     Math.round(selecting.y + selecting.h / 2),
                     true

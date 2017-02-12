@@ -250,6 +250,7 @@ createContextMenuOption(
         componentize(
             selecting.components,
             selecting.wires,
+            selecting,
             Math.round(selecting.x + selecting.w / 2),
             Math.round(selecting.y + selecting.h / 2),
             true

@@ -862,19 +862,19 @@ function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
 function componentize(
     components,
     wires,
+    selection = selecting,
     x = mouse.grid.x,
     y = mouse.grid.y,
     undoable = false
 ) {
     const component = new Custom(undefined, { x,y });
 
-
     const clone = cloneSelection(components,wires);
     component.components = clone.components;
     component.wires = clone.wires;
     component.create();
 
-    const selection = Object.assign({},selecting);
+    selection = Object.assign({}, selection);
 
     const removed = removeSelection(selecting.components,selecting.wires);
     window.components.push(component);

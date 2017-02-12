@@ -43,12 +43,12 @@ body {
 }
 
 body > h1 {
-    font-family: 'Ubuntu';
+    font-family: 'Righteous';
     font-size: 200px;
-    font-weight: 800;
+    font-weight: 400;
     margin-top: 50px;
-    color: #111;
-    background: transparent;
+    color: #ddd;
+    background: #111;
 }
 
 #container {
