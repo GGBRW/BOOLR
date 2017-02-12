@@ -326,6 +326,9 @@ c.onmousedown = function(e) {
             }
         }
         else if(e.ctrlKey) {
+            const x = mouse.screen.x / zoom + offset.x;
+            const y = -mouse.screen.y / zoom + offset.y;
+
             scrollAnimation.animate = false;
             if(selecting) {
                 dragging = {
@@ -333,14 +336,13 @@ c.onmousedown = function(e) {
                     pos: {
                         x: selecting.x,
                         y: selecting.y
-                    }
+                    },
+                    dx: x - selecting.x,
+                    dy: y - selecting.y
                 }
             } else {
                 let found;
                 if(found = findComponentByPos()) {
-                    const x = mouse.screen.x / zoom + offset.x;
-                    const y = -mouse.screen.y / zoom + offset.y;
-
                     dragging = {
                         component: found,
                         pos: Object.assign({}, found.pos),
@@ -634,24 +636,47 @@ c.onmousemove = function(e) {
                 const components = selecting.components;
                 const wires = selecting.wires;
 
+                const x = mouse.screen.x / zoom + offset.x;
+                const y = -mouse.screen.y / zoom + offset.y;
+
+                const dx = (x - dragging.dx) - selecting.x;
+                const dy = (y - dragging.dy) - selecting.y;
+
                 // If we are dragging a selection, we are first going to move the selection box and the context menu
-                selecting.x += e.movementX / zoom;
-                selecting.y -= e.movementY / zoom;
-                contextMenu.x += e.movementX / zoom;
-                contextMenu.y -= e.movementY / zoom;
+                selecting.x += dx;
+                selecting.y += dy;
+                contextMenu.x += dx;
+                contextMenu.y += dy;
 
                 // Loop over all the components within the selections and move them
                 for(let i = 0; i < components.length; ++i) {
-                    components[i].pos.x += e.movementX / zoom;
-                    components[i].pos.y -= e.movementY / zoom;
+                    const component = components[i];
+                    component.pos.x += dx;
+                    component.pos.y += dy;
+
+                    for(let i = 0; i < component.input.length; ++i) {
+                        const wire = component.input[i].connection
+                        if(!wires.includes(wire)) {
+                            wire.pos.slice(-1)[0].x += dx;
+                            wire.pos.slice(-1)[0].y += dy;
+                        }
+                    }
+
+                    for(let i = 0; i < component.output.length; ++i) {
+                        const wire = component.output[i].connection
+                        if(!wires.includes(wire)) {
+                            wire.pos[0].x += dx;
+                            wire.pos[0].y += dy;
+                        }
+                    }
                 }
 
                 // Loop over all the wires within the selections and move them
                 for(let i = 0; i < wires.length; ++i) {
                     const pos = wires[i].pos;
                     for(let j = 0; j < pos.length; ++j) {
-                        pos[j].x += e.movementX / zoom;
-                        pos[j].y -= e.movementY / zoom;
+                        pos[j].x += dx;
+                        pos[j].y += dy;
                     }
                 }
             } else if(dragging.component) {
@@ -1126,8 +1151,25 @@ c.onmouseup = function(e) {
                     contextMenu.y += dy / 2.5;
 
                     for(let i = 0; i < components.length; ++i) {
-                        components[i].pos.x += dx / 2.5;
-                        components[i].pos.y += dy / 2.5;
+                        const component = components[i];
+                        component.pos.x += dx / 2.5;
+                        component.pos.y += dy / 2.5;
+
+                        for(let i = 0; i < component.input.length; ++i) {
+                            const wire = component.input[i].connection
+                            if(!wires.includes(wire)) {
+                                wire.pos.slice(-1)[0].x += dx / 2.5;
+                                wire.pos.slice(-1)[0].y += dy / 2.5;
+                            }
+                        }
+
+                        for(let i = 0; i < component.output.length; ++i) {
+                            const wire = component.output[i].connection
+                            if(!wires.includes(wire)) {
+                                wire.pos[0].x += dx / 2.5;
+                                wire.pos[0].y += dy / 2.5;
+                            }
+                        }
                     }
 
                     for(let i = 0; i < wires.length; ++i) {
@@ -1154,6 +1196,22 @@ c.onmouseup = function(e) {
                             const component = components[i];
                             component.pos.x = Math.round(component.pos.x);
                             component.pos.y = Math.round(component.pos.y);
+
+                            for(let i = 0; i < component.input.length; ++i) {
+                                const wire = component.input[i].connection
+                                if(!wires.includes(wire)) {
+                                    wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                    wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                }
+                            }
+
+                            for(let i = 0; i < component.output.length; ++i) {
+                                const wire = component.output[i].connection
+                                if(!wires.includes(wire)) {
+                                    wire.pos[0].x = Math.round(wire.pos[0].x);
+                                    wire.pos[0].y = Math.round(wire.pos[0].y);
+                                }
+                            }
                         }
 
                         for(let i = 0; i < wires.length; ++i) {
@@ -1163,6 +1221,22 @@ c.onmouseup = function(e) {
                                 pos[j].y = Math.round(pos[j].y);
                             }
                         }
+
+                        // Only for undo purposes
+                        const dx = selecting.x - dragging.pos.x;
+                        const dy = selecting.y - dragging.pos.y;
+                        moveSelection(
+                            selecting.components,
+                            selecting.wires,
+                            -dx,-dy,
+                            false
+                        );
+                        moveSelection(
+                            selecting.components,
+                            selecting.wires,
+                            dx,dy,
+                            true
+                        );
 
                         dragging = null;
                         c.style.cursor = "crosshair";
