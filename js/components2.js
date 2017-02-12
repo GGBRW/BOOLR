@@ -2602,13 +2602,21 @@ class Wire {
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire != from) {
-                wire.update && wire.update(this.value, this);
+                if(Math.random() < .01) {
+                    setTimeout(() => wire.update && wire.update(this.value, this));
+                } else {
+                    wire.update && wire.update(this.value, this);
+                }
             }
         }
 
         if(this.to && this.to.value != this.value) {
             this.to.value = this.value;
-            this.to.component && this.to.component.update();
+            if(Math.random() < .01) {
+                setTimeout(() => this.to.component && this.to.component.update());
+            } else {
+                this.to.component && this.to.component.update();
+            }
         }
     }
 
