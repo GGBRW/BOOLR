@@ -1138,8 +1138,6 @@ c.onmouseup = function(e) {
                             }
                         }
 
-                        action("moveSelection",[selecting.components,dragging.pos.x,dragging.pos.y,selecting.x,selecting.y],true);
-
                         dragging = null;
                         c.style.cursor = "crosshair";
                     }
@@ -1275,15 +1273,7 @@ c.onmouseup = function(e) {
         else {
             const component = findComponentByPos();
             if(component && component.onmouseup) {
-                action(
-                    "mouseup",
-                    [
-                        component,
-                        mouse.grid.x - component.pos.x,
-                        component.pos.y - mouse.grid.y
-                    ],
-                    true
-                );
+
             }
         }
     } else if(e.which == 2) {

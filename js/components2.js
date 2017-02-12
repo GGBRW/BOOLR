@@ -480,6 +480,14 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
     }
 }
 
+function movePort() {
+
+}
+
+function moveSelection() {
+
+}
+
 /*
  Edits a property of a component/port/wire
  @param {object} component
