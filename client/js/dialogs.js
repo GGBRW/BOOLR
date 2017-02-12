@@ -79,6 +79,7 @@ dialog.update = function(component) {
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
         "<li>BUG FIXES</li>" +
+        "<li>Dragging + wire fix</li>" +
         "<li>Merge wires</li>" +
         "<li>Componentize</li>" +
         "<li>7 segment display</li>" +
@@ -168,7 +169,9 @@ dialog.editName = function(component) {
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {
-        if(input.value.length > 0 && input.value.length < 16) component.name = input.value
+        if(input.value.length > 0 && input.value.length < 16) {
+            edit(component,"name",input.value,true);
+        }
     });
 }
 
@@ -200,7 +203,6 @@ dialog.colorPicker = function(callback = a => a) {
     }
 
     dialog.addOption("Cancel");
-    dialog.addOption("OK",  () => component.name = input.value);
 }
 
 dialog.editDelay = function(component,callback) {
@@ -371,7 +373,7 @@ dialog.save = function(text) {
     dialog.container.innerHTML += "Name: ";
 
     let input = document.createElement("input");
-    input.setAttribute("placeholder","PWS-Save-" + new Date().toLocaleString());
+    input.setAttribute("placeholder","BOOLR-Save-" + new Date().toLocaleString());
     dialog.container.appendChild(input);
     setTimeout(() => input.focus());
 

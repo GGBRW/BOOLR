@@ -1,6 +1,9 @@
 const customComponentToolbar = document.getElementById("customComponentToolbar");
 customComponentToolbar.queue = [];
-customComponentToolbar.querySelector(".close").onmouseup = () => customComponentToolbar.hide();
+customComponentToolbar.querySelector(".close").onmouseup = () => {
+    customComponentToolbar.hide();
+    c.focus();
+}
 
 customComponentToolbar.show = function(name,close) {
     this.queue.push({ name, close });

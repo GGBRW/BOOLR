@@ -11,21 +11,21 @@ function connectToSocket(url) {
         components = [];
         notifications.push("Connected to " + url);
 
-        document.title = "PWS | Server Project";
+        document.title = "BOOLR | Server Project";
     }
 
     socket.onclose = function() {
         notifications.push("Connection closed", "error");
         socket = null;
 
-        document.title = "PWS | Sandbox Mode";
+        document.title = "BOOLR | Sandbox Mode";
     }
 
     socket.onerror = function(err) {
         notifications.push("Connection error: " + err, "error");
         socket = null;
 
-        document.title = "PWS | Sandbox Mode";
+        document.title = "BOOLR | Sandbox Mode";
     }
 
     socket.onmessage = function(e) {

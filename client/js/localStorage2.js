@@ -343,7 +343,7 @@ function saveBoard(
 ) {
     let data = stringify(components_,wires_);
 
-    name = name || "PWS-Save-" + new Date().toLocaleString();
+    name = name || "BOOLR-Save-" + new Date().toLocaleString();
     document.title = "BOOLR | " + name;
 
     // Export data as .board file

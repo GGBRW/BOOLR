@@ -96,6 +96,6 @@ function download(name, string) {
     const data = "data:text/json;charset=utf-8," + encodeURIComponent(string);
     a.setAttribute('href', data);
     if(name) a.setAttribute('download', name + ".dat");
-    else a.setAttribute('download', "PWS-Save-" + new Date().toLocaleString() + ".dat");
+    else a.setAttribute('download', "BOOLR-Save-" + new Date().toLocaleString() + ".dat");
     a.click();
 }

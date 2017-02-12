@@ -21,21 +21,15 @@ c.onkeydown = function(e) {
             break;
         case 46: // Delete
             if(selecting && selecting.components) {
-                action(
-                    "removeSelection",
-                    [...selecting.components],
-                    true
-                );
+                removeSelection(selecting.components,selecting.wires,true);
+                selecting = null;
+                contextMenu.hide();
             } else {
                 let found;
                 if(found = findComponentByPos()) {
-                    action(
-                        "remove",
-                        findComponentByPos(),
-                        true
-                    );
+                    removeComponent(found,true);
                 } else if(found = findWireByPos()) {
-                    removeWire(found);
+                    removeWire(found,true);
                 }
             }
             break;
@@ -88,21 +82,16 @@ c.onkeydown = function(e) {
                     clipbord.copy([findComponentByPos()]);
                 }
             } else if(e.shiftKey && selecting && selecting.components) {
-                const component = new Custom();
-                component.pos = {
-                    x: Math.round(selecting.x + selecting.w / 2),
-                    y: Math.round(selecting.y + selecting.h / 2)
-                }
-
-                const clone = cloneSelection(selecting.components,selecting.wires);
-                component.components = clone.components;
-                component.wires = clone.wires;
-                component.create();
-
-                removeSelection(selecting.components,selecting.wires);
-                components.push(component);
+                componentize(
+                    components,
+                    wires,
+                    Math.round(selecting.x + selecting.w / 2),
+                    Math.round(selecting.y + selecting.h / 2),
+                    true
+                );
 
                 selecting = null;
+                contextMenu.hide();
             }
             break;
         case 69: // E:
@@ -202,9 +191,6 @@ c.onkeydown = function(e) {
             // gotoWaypoint(waypoints.length - 1);
             break;
         case 90: // Z
-            selecting = null;
-            contextMenu.hide();
-
             if(e.ctrlKey) {
                 if(e.shiftKey) redo();
                 else undo();

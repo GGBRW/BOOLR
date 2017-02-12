@@ -380,7 +380,13 @@ c.onmousedown = function(e) {
                     }
                 } else {
                     const component = new Selected();
-                    action("add",component,true);
+                    add(
+                        component,
+                        mouse.grid.x,
+                        mouse.grid.y,
+                        false,
+                        true
+                    );
                 }
 
                 // if(component) {
@@ -521,7 +527,7 @@ c.onmousedown = function(e) {
                         c.style.cursor = "crosshair";
                     }
                 })();
-            } else {
+            } else if(dragging.component) {
                 // An animation for the component flying back to his old position
                 const component = dragging.component;
                 (function animate() {
@@ -579,6 +585,9 @@ c.onmousedown = function(e) {
                         c.style.cursor = "crosshair";
                     }
                 })();
+            } else if(dragging.port) {
+                dragging.port.pos.side = dragging.pos.side;
+                dragging.port.pos.pos = dragging.pos.pos;
             }
         } else if(connecting) {
             connecting = null;
@@ -630,194 +639,210 @@ c.onmousemove = function(e) {
                         pos[j].y -= e.movementY / zoom;
                     }
                 }
-            } else {
-                if(dragging.component) {
-                    const component = dragging.component;
+            } else if(dragging.component) {
+                const component = dragging.component;
 
-                    const x = mouse.screen.x / zoom + offset.x;
-                    const y = -mouse.screen.y / zoom + offset.y;
+                const x = mouse.screen.x / zoom + offset.x;
+                const y = -mouse.screen.y / zoom + offset.y;
 
-                    const dx = Math.round((x - dragging.dx)) - Math.round(component.pos.x);
-                    const dy = Math.round((y - dragging.dy)) - Math.round(component.pos.y);
+                const dx = (x - dragging.dx) - component.pos.x;
+                const dy = (y - dragging.dy) - component.pos.y;
 
-                    // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
-                    component.pos.x = x - dragging.dx;
-                    component.pos.y = y - dragging.dy;
+                // Add the delta mouse x and y (e.movementX and e.movementY) to the position of the component the user is dragging
+                component.pos.x = x - dragging.dx;
+                component.pos.y = y - dragging.dy;
 
-                    // Then, all the wires to and from the component need to be fixed...
-                    for(let i = 0; i < component.input.length; ++i) {
-                        const wire = component.input[i].connection;
-                        if(wire) {
-                            wire.pos.push({
-                                x: wire.pos.slice(-1)[0].x + dx,
-                                y: wire.pos.slice(-1)[0].y + dy
-                            });
-                        }
+                // Then, all the wires to and from the component need to be fixed...
+                for(let i = 0; i < component.input.length; ++i) {
+                    const wire = component.input[i].connection;
+                    if(wire) {
+                        wire.pos.slice(-1)[0].x += dx;
+                        wire.pos.slice(-1)[0].y += dy;
                     }
-
-                    for(let i = 0; i < component.output.length; ++i) {
-                        const wire = component.output[i].connection;
-                        if(wire) {
-                            wire.pos.unshift({
-                                x: wire.pos[0].x + dx,
-                                y: wire.pos[0].y + dy
-                            });
-                        }
-                    }
-
-                    // for(let i = 0; i < component.input.length; ++i) {
-                    //     const wire = component.input[i].connection;
-                    //     if(wire) {
-                    //         let dx = Math.round(wire.pos.slice(-1)[0].x) - Math.round(wire.pos.slice(-2)[0].x);
-                    //         let dy = Math.round(wire.pos.slice(-1)[0].y) - Math.round(wire.pos.slice(-2)[0].y);
-                    //
-                    //         while(Math.abs(dx) + Math.abs(dy) > 1) {
-                    //             if(Math.abs(dx) > Math.abs(dy)) {
-                    //                 wire.pos.splice(
-                    //                     wire.pos.length - 1,
-                    //                     0,
-                    //                     {
-                    //                         x: wire.pos.slice(-2)[0].x + Math.sign(dx),
-                    //                         y: wire.pos.slice(-2)[0].y
-                    //                     }
-                    //                 );
-                    //                 dx -= Math.sign(dx);
-                    //             } else {
-                    //                 wire.pos.splice(
-                    //                     wire.pos.length - 1,
-                    //                     0,
-                    //                     {
-                    //                         x: wire.pos.slice(-2)[0].x,
-                    //                         y: wire.pos.slice(-2)[0].y + Math.sign(dy)
-                    //                     }
-                    //                 );
-                    //                 dy -= Math.sign(dy);
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                    //
-                    // for(let i = 0; i < component.output.length; ++i) {
-                    //     const wire = component.output[i].connection;
-                    //     if(wire) {
-                    //         let dx = Math.round(wire.pos[0].x) - Math.round(wire.pos[1].x);
-                    //         let dy = Math.round(wire.pos[0].y) - Math.round(wire.pos[1].y);
-                    //
-                    //         while(Math.abs(dx) + Math.abs(dy) > 1) {
-                    //             if(Math.abs(dx) > Math.abs(dy)) {
-                    //                 wire.pos.splice(
-                    //                     1, 0,
-                    //                     {
-                    //                         x: wire.pos[1].x + Math.sign(dx),
-                    //                         y: wire.pos[1].y
-                    //                     }
-                    //                 );
-                    //                 dx -= Math.sign(dx);
-                    //             } else {
-                    //                 wire.pos.splice(
-                    //                     1, 0,
-                    //                     {
-                    //                         x: wire.pos[1].x,
-                    //                         y: wire.pos[1].y + Math.sign(dy)
-                    //                     }
-                    //                 );
-                    //                 dy -= Math.sign(dy);
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
-                } else if(dragging.port) {
-                    const port = dragging.port;
-                    const pos = port.pos;
-                    const component = port.component;
-
-                    const x = mouse.screen.x / zoom + offset.x;
-                    const y = -mouse.screen.y / zoom + offset.y;
-
-                    const dx = x - port.component.pos.x;
-                    const dy = port.component.pos.y - y;
-
-                    if(dy < -.5 && dx > -.5 && dx < component.width - .5) {
-                        pos.side = 0;
-                        pos.pos = dx;
-                    } else if(dx > component.width - .5 && dy > -.5 && dy < component.height - .5) {
-                        pos.side = 1;
-                        pos.pos = dy;
-                    } else if(dy > component.height - .5 && dx > -.5 && dx < component.width - .5) {
-                        pos.side = 2;
-                        pos.pos = dx;
-                    } else if(dx < -.5 && dy > -.5 && dy < component.height - .5) {
-                        pos.side = 3;
-                        pos.pos = dy;
-                    }
-
-                    const port2 = findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos));
-                    if(port2) {
-                        if(pos.side % 2 == 0) {
-                            const placeFree = !findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos - Math.sign(e.movementX)));
-                            if(placeFree) {
-                                port2.pos.pos -= Math.sign(e.movementX);
-                            }
-                        }
-                    }
-
-                    // const port = dragging.port;
-                    // const pos = port.pos;
-                    //
-                    // pos.pos += Math.round(Math.sin(Math.PI / 2 * pos.side)) * e.movementY / zoom;
-                    // pos.pos += Math.round(Math.cos(Math.PI / 2 * pos.side)) * e.movementX / zoom;
-                    //
-                    // if(pos.pos < -.5) {
-                    //     pos.side = (4 + --pos.side) % 4;
-                    //     if(pos.side % 2 == 0) {
-                    //         pos.pos = port.component.width - 1;
-                    //     } else {
-                    //         pos.pos = port.component.height - 1;
-                    //     }
-                    // } else if(pos.side % 2 == 0 && pos.pos > port.component.width - .5) {
-                    //     pos.side = ++pos.side % 4;
-                    //     if(pos.side % 2 == 0) {
-                    //         pos.pos = -.5;
-                    //     } else {
-                    //         pos.pos = -.5;
-                    //     }
-                    // } else if(pos.side % 2 == 1 && pos.pos > port.component.height - .5) {
-                    //     pos.side = ++pos.side % 4;
-                    //     ++pos.side;
-                    //     if(pos.side % 2 == 0) {
-                    //         pos.pos = -.5;
-                    //     } else {
-                    //         pos.pos = -.5;
-                    //     }
-                    // }
-                    //
-                    // if(port.connection) {
-                    //     let x = port.component.pos.x;
-                    //     let y = port.component.pos.y;
-                    //     const angle = Math.PI / 2 * pos.side;
-                    //     if(Math.sin(angle) == 1) x += (port.component.width - 1);
-                    //     if(Math.cos(angle) == -1) y += (port.component.height - 1);
-                    //     console.log(x,y);
-                    //     x += Math.sin(angle) / 2;
-                    //     y += Math.cos(angle) / 2;
-                    //     if(pos.side == 2) x += (port.component.width - 1);
-                    //     if(pos.side == 3) y += (port.component.height - 1);
-                    //     x += Math.sin(angle + Math.PI / 2) * pos.pos;
-                    //     y += Math.cos(angle + Math.PI / 2) * pos.pos;
-                    //     x += Math.sin(angle) / 2;
-                    //     y += Math.cos(angle) / 2;
-                    //
-                    //     const wire = port.connection;
-                    //     if(port.type == "output") {
-                    //         wire.pos[0].x = x;
-                    //         wire.pos[0].y = y;
-                    //     } else if(port.type == "input") {
-                    //         wire.pos.slice(-1)[0].x = x;
-                    //         wire.pos.slice(-1)[0].y = y;
-                    //     }
-                    // }
                 }
+
+                for(let i = 0; i < component.output.length; ++i) {
+                    const wire = component.output[i].connection;
+                    if(wire) {
+                        wire.pos[0].x += dx;
+                        wire.pos[0].y += dy;
+                    }
+                }
+
+                // for(let i = 0; i < component.input.length; ++i) {
+                //     const wire = component.input[i].connection;
+                //     if(wire) {
+                //         let dx = Math.round(wire.pos.slice(-1)[0].x) - Math.round(wire.pos.slice(-2)[0].x);
+                //         let dy = Math.round(wire.pos.slice(-1)[0].y) - Math.round(wire.pos.slice(-2)[0].y);
+                //
+                //         while(Math.abs(dx) + Math.abs(dy) > 1) {
+                //             if(Math.abs(dx) > Math.abs(dy)) {
+                //                 wire.pos.splice(
+                //                     wire.pos.length - 1,
+                //                     0,
+                //                     {
+                //                         x: wire.pos.slice(-2)[0].x + Math.sign(dx),
+                //                         y: wire.pos.slice(-2)[0].y
+                //                     }
+                //                 );
+                //                 dx -= Math.sign(dx);
+                //             } else {
+                //                 wire.pos.splice(
+                //                     wire.pos.length - 1,
+                //                     0,
+                //                     {
+                //                         x: wire.pos.slice(-2)[0].x,
+                //                         y: wire.pos.slice(-2)[0].y + Math.sign(dy)
+                //                     }
+                //                 );
+                //                 dy -= Math.sign(dy);
+                //             }
+                //         }
+                //     }
+                // }
+                //
+                // for(let i = 0; i < component.output.length; ++i) {
+                //     const wire = component.output[i].connection;
+                //     if(wire) {
+                //         let dx = Math.round(wire.pos[0].x) - Math.round(wire.pos[1].x);
+                //         let dy = Math.round(wire.pos[0].y) - Math.round(wire.pos[1].y);
+                //
+                //         while(Math.abs(dx) + Math.abs(dy) > 1) {
+                //             if(Math.abs(dx) > Math.abs(dy)) {
+                //                 wire.pos.splice(
+                //                     1, 0,
+                //                     {
+                //                         x: wire.pos[1].x + Math.sign(dx),
+                //                         y: wire.pos[1].y
+                //                     }
+                //                 );
+                //                 dx -= Math.sign(dx);
+                //             } else {
+                //                 wire.pos.splice(
+                //                     1, 0,
+                //                     {
+                //                         x: wire.pos[1].x,
+                //                         y: wire.pos[1].y + Math.sign(dy)
+                //                     }
+                //                 );
+                //                 dy -= Math.sign(dy);
+                //             }
+                //         }
+                //     }
+                // }
+
+            } else if(dragging.port) {
+                const port = dragging.port;
+                const pos = port.pos;
+                const component = port.component;
+
+                const x = mouse.screen.x / zoom + offset.x;
+                const y = -mouse.screen.y / zoom + offset.y;
+
+                const dx = x - port.component.pos.x;
+                const dy = port.component.pos.y - y;
+
+                if(dy < -.5 && dx > -.5 && dx < component.width - .5) {
+                    pos.side = 0;
+                    pos.pos = dx;
+                } else if(dx > component.width - .5 && dy > -.5 && dy < component.height - .5) {
+                    pos.side = 1;
+                    pos.pos = dy;
+                } else if(dy > component.height - .5 && dx > -.5 && dx < component.width - .5) {
+                    pos.side = 2;
+                    pos.pos = dx;
+                } else if(dx < -.5 && dy > -.5 && dy < component.height - .5) {
+                    pos.side = 3;
+                    pos.pos = dy;
+                }
+
+                const port2 = findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos));
+                if(port2) {
+                    if(pos.side % 2 == 0) {
+                        const placeFree = !findPortByComponent(component,Math.round(pos.side),Math.round(pos.pos - Math.sign(e.movementX)));
+                        if(placeFree) {
+                            port2.pos.pos -= Math.sign(e.movementX);
+                        }
+                    }
+                }
+
+                if(port.connection) {
+                    const pos = port.pos;
+                    const gridPos = Object.assign({}, component.pos);
+
+                    const angle = Math.PI / 2 * pos.side;
+                    gridPos.x += Math.sin(angle);
+                    gridPos.y += Math.cos(angle);
+                    if(pos.side == 1) gridPos.x += (component.width - 1);
+                    else if(pos.side == 2) gridPos.y += (component.height - 1);
+
+                    if(pos.side % 2 == 0) gridPos.x += pos.pos;
+                    else gridPos.y -= pos.pos;
+
+                    if(port.type == "input") {
+                        port.connection.pos.slice(-1)[0].x = gridPos.x;
+                        port.connection.pos.slice(-1)[0].y = gridPos.y;
+                    } else {
+                        port.connection.pos[0].x = gridPos.x;
+                        port.connection.pos[0].y = gridPos.y;
+                    }
+                }
+
+                // const port = dragging.port;
+                // const pos = port.pos;
+                //
+                // pos.pos += Math.round(Math.sin(Math.PI / 2 * pos.side)) * e.movementY / zoom;
+                // pos.pos += Math.round(Math.cos(Math.PI / 2 * pos.side)) * e.movementX / zoom;
+                //
+                // if(pos.pos < -.5) {
+                //     pos.side = (4 + --pos.side) % 4;
+                //     if(pos.side % 2 == 0) {
+                //         pos.pos = port.component.width - 1;
+                //     } else {
+                //         pos.pos = port.component.height - 1;
+                //     }
+                // } else if(pos.side % 2 == 0 && pos.pos > port.component.width - .5) {
+                //     pos.side = ++pos.side % 4;
+                //     if(pos.side % 2 == 0) {
+                //         pos.pos = -.5;
+                //     } else {
+                //         pos.pos = -.5;
+                //     }
+                // } else if(pos.side % 2 == 1 && pos.pos > port.component.height - .5) {
+                //     pos.side = ++pos.side % 4;
+                //     ++pos.side;
+                //     if(pos.side % 2 == 0) {
+                //         pos.pos = -.5;
+                //     } else {
+                //         pos.pos = -.5;
+                //     }
+                // }
+                //
+                // if(port.connection) {
+                //     let x = port.component.pos.x;
+                //     let y = port.component.pos.y;
+                //     const angle = Math.PI / 2 * pos.side;
+                //     if(Math.sin(angle) == 1) x += (port.component.width - 1);
+                //     if(Math.cos(angle) == -1) y += (port.component.height - 1);
+                //     console.log(x,y);
+                //     x += Math.sin(angle) / 2;
+                //     y += Math.cos(angle) / 2;
+                //     if(pos.side == 2) x += (port.component.width - 1);
+                //     if(pos.side == 3) y += (port.component.height - 1);
+                //     x += Math.sin(angle + Math.PI / 2) * pos.pos;
+                //     y += Math.cos(angle + Math.PI / 2) * pos.pos;
+                //     x += Math.sin(angle) / 2;
+                //     y += Math.cos(angle) / 2;
+                //
+                //     const wire = port.connection;
+                //     if(port.type == "output") {
+                //         wire.pos[0].x = x;
+                //         wire.pos[0].y = y;
+                //     } else if(port.type == "input") {
+                //         wire.pos.slice(-1)[0].x = x;
+                //         wire.pos.slice(-1)[0].y = y;
+                //     }
+                // }
             }
         }
         else if(connecting) {
@@ -897,7 +922,7 @@ c.onmousemove = function(e) {
                         connecting.input[0].intersections.push(Object.assign({},connecting.pos[0]));
                     }
                 }
-                connect(connecting.from,to,connecting);
+                connect(connecting.from,to,connecting, true);
 
                 connecting = null;
             }
@@ -1175,7 +1200,8 @@ c.onmouseup = function(e) {
                                 }
                             }
 
-                            action("move", [dragging.component, dragging.component.pos.x, dragging.component.pos.y], true);
+                            // The component is already in his new place, but this function is only called for undo purposes
+                            moveComponent(component,undefined,undefined,true);
 
                             dragging = null;
                             c.style.cursor = "crosshair";
@@ -1222,7 +1248,7 @@ c.onmouseup = function(e) {
                         wire.intersections.push(Object.assign({}, pos));
                     }
 
-                    connect(connecting.from, undefined, connecting);
+                    connect(connecting.from, undefined, connecting, true);
                 }
             } else {
                 const wires = findAllWiresByPos();

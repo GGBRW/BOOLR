@@ -211,7 +211,7 @@ if(popup.login) {
         notifications.push("Disconnected from " + socket.url);
         socket = null;
 
-        document.title = "PWS | Sandbox Mode";
+        document.title = "BOOLR | Sandbox Mode";
     }
 }
 
