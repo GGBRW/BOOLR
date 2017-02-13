@@ -793,6 +793,81 @@ function findWiresInSelection(x,y,w,h) {
 }
 
 /*
+ Finds all wires that are completely inside a selection, and has no connections outside the selection
+ @param {number} x
+ @param {number} y
+ @param {number} w
+ @param {number} h
+ @return {array} wires
+ */
+function findWiresInSelection2(
+    x = selecting.x,
+    y = selecting.y,
+    w = selecting.w,
+    h = selecting.h
+) {
+    const x2 = Math.max(x,x + w);
+    const y2 = Math.max(y,y + h);
+    x = Math.min(x,x + w);
+    y = Math.min(y,y + h);
+
+    const result = [];
+    for(let i = 0; i < wires.length; ++i) {
+        let inSelection = true;
+        const wire = wires[i];
+        const pos = wire.pos;
+        for(let j = 0; j < pos.length; ++j) {
+            if(!(pos[j].x >= x && pos[j].x <= x2 &&
+               pos[j].y >= y && pos[j].y <= y2)) {
+                inSelection = false;
+                break;
+            }
+
+            if(wire.from && wire.from.component &&
+                !(wire.from.component.pos.x + (wire.from.component.width || 0) - .5 > x &&
+                wire.from.component.pos.x - .5 < x2 &&
+                wire.from.component.pos.y + (wire.from.component.height || 0) - .5 > y &&
+                wire.from.component.pos.y - .5 < y2)) {
+                inSelection = false;
+                break;
+            }
+
+            if(wire.to && wire.to.component &&
+                !(wire.to.component.pos.x + (wire.to.component.width || 0) - .5 > x &&
+                wire.to.component.pos.x - .5 < x2 &&
+                wire.to.component.pos.y + (wire.to.component.height || 0) - .5 > y &&
+                wire.to.component.pos.y - .5 < y2)) {
+                inSelection = false;
+                break;
+            }
+        }
+        if(inSelection) result.push(wires[i]);
+    }
+
+    function remove(i) {
+        if(i < 0) return;
+        const wire = result.splice(i,1)[0];
+        for(let i = 0; i < wire.input.length; ++i) {
+            if(!result.includes(wire.input[i])) remove(result.indexOf(wire.input[i]));
+        }
+        for(let i = 0; i < wire.output.length; ++i) {
+            if(!result.includes(wire.output[i])) remove(result.indexOf(wire.output[i]));
+        }
+    }
+
+    for(let i = 0; i < result.length; ++i) {
+        const wire = result[i];
+        for(let i = 0; i < wire.input.length; ++i) {
+            if(!result.includes(wire.input[i])) remove(result.indexOf(wire));
+        }
+        for(let i = 0; i < wire.output.length; ++i) {
+            if(!result.includes(wire.output[i])) remove(result.indexOf(wire));
+        }
+    }
+    return result;
+}
+
+/*
  Creates and returns a clone of a given component
  @param {object} component
  @returns {object} clone
@@ -1109,7 +1184,8 @@ class Component {
         }
 
         for(let i = 0; i < wires.length; ++i) {
-            wires[i].update(values[i]);
+            //wires[i].update(values[i]);
+            updateQueue.push(wires[i].update.bind(wires[i],values[i]));
         }
     }
 
@@ -1130,8 +1206,12 @@ class Component {
         )) return;
 
         // Draw the frame of the component
+        if(this.outline) {
+            ctx.strokeStyle = "#f55";
+        } else {
+            ctx.strokeStyle = this.strokeColor || "#111";
+        }
         ctx.fillStyle = this.fillColor || "#fff";
-        ctx.strokeStyle = this.strokeColor || "#111";
         ctx.lineWidth = zoom / 12 | 0;
         ctx.beginPath();
         ctx.rect(
@@ -1143,9 +1223,10 @@ class Component {
         ctx.fill();
         ctx.stroke();
 
+        ctx.textBaseline = "middle";
+
         // Draw the icon of the component
         if(this.icon) {
-            ctx.textBaseline = "middle";
             ctx.textAlign = "center";
 
             if(this.icon.type == "icon") {
@@ -1316,20 +1397,6 @@ class Component {
                 }
             }
         }
-
-        // If the component is highlighted, draw a colored layer over the frame
-        if(this.outline > 0) {
-            ctx.strokeStyle = "#d00";
-            ctx.lineWidth = zoom / 12 | 0;
-            ctx.beginPath();
-            ctx.rect(
-                x - zoom / 2,
-                y - zoom / 2,
-                this.width * zoom,
-                this.height * zoom
-            );
-            ctx.stroke();
-        }
     }
 
     addInputPort(pos,name,properties = {}) {
@@ -1416,7 +1483,7 @@ class Input extends Component {
 
     onmousedown() {
         this.value = 1 - this.value;
-        this.update();
+        this.update(true);
     }
 
     function() {
@@ -1429,6 +1496,52 @@ class Output extends Component {
         super(name,pos,2,1,{ type: "value" });
         this.addInputPort({ side: 3, pos: 0 });
         this.value = 0;
+    }
+
+    function() {
+        this.value = this.input[0].value;
+    }
+}
+
+class TimerStart extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "value" });
+        this.addOutputPort({ side: 1, pos: 0 });
+        this.value = 0;
+    }
+
+    onmousedown() {
+        this.value = 1 - this.value;
+        this.update(true);
+    }
+
+    update() {
+        console.time();
+
+        this.function();
+
+        this.output[0].value = this.value;
+        this.output[0].connection && this.output[0].connection.update(this.value);
+    }
+
+    function() {
+        this.output[0].value = this.value;
+    }
+}
+
+class TimerEnd extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "value" });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.value = 0;
+    }
+
+    update() {
+        console.timeEnd();
+
+        this.function();
+
+        this.input[0].value == 1 && (this.value = 1);
     }
 
     function() {
@@ -2705,21 +2818,24 @@ class Wire {
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire != from) {
-                if(Math.random() < .01) {
-                    setTimeout(() => wire.update && wire.update(this.value, this));
-                } else {
-                    wire.update && wire.update(this.value, this);
-                }
+                // if(Math.random() < .01) {
+                //     setTimeout(() => { wire.update && wire.update(this.value, this) });
+                // } else {
+                //     wire.update && wire.update(this.value, this);
+                // }
+                wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
             }
         }
 
         if(this.to && this.to.value != this.value) {
             this.to.value = this.value;
-            if(Math.random() < .01) {
-                setTimeout(() => this.to.component && this.to.component.update());
-            } else {
-                this.to.component && this.to.component.update();
-            }
+
+            // if(Math.random() < .01) {
+            //     setTimeout(() => { this.to.component && this.to.component.update(); });
+            // } else {
+            //     this.to.component && this.to.component.update();
+            // }
+            this.to.component && updateQueue.push(this.to.component.update.bind(this.to.component));
         }
     }
 
@@ -2752,6 +2868,12 @@ class Wire {
 
         for(let i = 0; i < this.intersections.length; ++i) {
             const pos = this.intersections[i];
+
+            if(!pos.type) ctx.fillStyle = "#111";
+            else if(pos.type == 1) ctx.fillStyle = "#11f";
+            else if(pos.type == 2) ctx.fillStyle = "#1f1";
+            else if(pos.type == 3) ctx.fillStyle = "#f11";
+
             ctx.beginPath();
             ctx.arc(
                 (pos.x - offset.x) * zoom,
@@ -2800,6 +2922,7 @@ class CompressedWire extends Wire {
 
         for(let i = 0; i < this.intersections.length; ++i) {
             const pos = this.intersections[i];
+
             ctx.beginPath();
             ctx.arc(
                 (pos.x - offset.x) * zoom,

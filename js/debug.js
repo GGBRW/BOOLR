@@ -44,15 +44,11 @@ function updateDebugInfo() {
             debugInfo.addLine("Selected components", selecting.components.length);
         }
         debugInfo.addLine("Connecting", !!connecting);
-        let i = 0;
-        components.map(n => n.constructor != Wire && ++i);
-        debugInfo.addLine("Components", i);
-        i = 0;
-        components.map(n => n.constructor == Wire && ++i);
-        debugInfo.addLine("Wires", i);
+        debugInfo.addLine("Components", components.length);
+        debugInfo.addLine("Wires", wires.length);
         debugInfo.addLine("Selected", Selected.name);
-        debugInfo.addLine("Ticks/sec", Math.round(tickrate));
-        debugInfo.addLine("Updates", update_queue.length);
+        debugInfo.addLine("Ticks/sec", Math.round(ticksPerSecond));
+        debugInfo.addLine("Updates", updateQueue.length);
         if(socket) {
             debugInfo.innerHTML += "<br>";
             debugInfo.addLine("Socket", !!socket);
