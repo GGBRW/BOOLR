@@ -505,7 +505,7 @@ function moveSelection(
 
         for(let i = 0; i < component.input.length; ++i) {
             const wire = component.input[i].connection;
-            if(!wires.includes(wire)) {
+            if(wire && !wires.includes(wire)) {
                 wire.pos.slice(-1)[0].x += dx;
                 wire.pos.slice(-1)[0].y += dy;
                 let wdx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
@@ -544,7 +544,7 @@ function moveSelection(
 
         for(let i = 0; i < component.output.length; ++i) {
             const wire = component.output[i].connection;
-            if(!wires.includes(wire)) {
+            if(wire && !wires.includes(wire)) {
                 wire.pos[0].x += dx;
                 wire.pos[0].y += dy;
                 let wdx = wire.pos[0].x - wire.pos[1].x;

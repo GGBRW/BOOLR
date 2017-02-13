@@ -656,7 +656,7 @@ c.onmousemove = function(e) {
 
                     for(let i = 0; i < component.input.length; ++i) {
                         const wire = component.input[i].connection
-                        if(!wires.includes(wire)) {
+                        if(wire && !wires.includes(wire)) {
                             wire.pos.slice(-1)[0].x += dx;
                             wire.pos.slice(-1)[0].y += dy;
                         }
@@ -664,7 +664,7 @@ c.onmousemove = function(e) {
 
                     for(let i = 0; i < component.output.length; ++i) {
                         const wire = component.output[i].connection
-                        if(!wires.includes(wire)) {
+                        if(wire && !wires.includes(wire)) {
                             wire.pos[0].x += dx;
                             wire.pos[0].y += dy;
                         }
@@ -1157,7 +1157,7 @@ c.onmouseup = function(e) {
 
                         for(let i = 0; i < component.input.length; ++i) {
                             const wire = component.input[i].connection
-                            if(!wires.includes(wire)) {
+                            if(wire && !wires.includes(wire)) {
                                 wire.pos.slice(-1)[0].x += dx / 2.5;
                                 wire.pos.slice(-1)[0].y += dy / 2.5;
                             }
@@ -1165,7 +1165,7 @@ c.onmouseup = function(e) {
 
                         for(let i = 0; i < component.output.length; ++i) {
                             const wire = component.output[i].connection
-                            if(!wires.includes(wire)) {
+                            if(wire && !wires.includes(wire)) {
                                 wire.pos[0].x += dx / 2.5;
                                 wire.pos[0].y += dy / 2.5;
                             }
@@ -1199,7 +1199,7 @@ c.onmouseup = function(e) {
 
                             for(let i = 0; i < component.input.length; ++i) {
                                 const wire = component.input[i].connection
-                                if(!wires.includes(wire)) {
+                                if(wire && !wires.includes(wire)) {
                                     wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
                                     wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
                                 }
@@ -1207,7 +1207,7 @@ c.onmouseup = function(e) {
 
                             for(let i = 0; i < component.output.length; ++i) {
                                 const wire = component.output[i].connection
-                                if(!wires.includes(wire)) {
+                                if(wire && !wires.includes(wire)) {
                                     wire.pos[0].x = Math.round(wire.pos[0].x);
                                     wire.pos[0].y = Math.round(wire.pos[0].y);
                                 }
