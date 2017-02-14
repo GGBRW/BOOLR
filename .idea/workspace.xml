@@ -28,8 +28,8 @@
           <file leaf-file-name="pws.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/pws.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="336">
-                  <caret line="383" column="47" lean-forward="true" selection-start-line="383" selection-start-column="47" selection-end-line="383" selection-end-column="47" />
+                <state relative-caret-position="600">
+                  <caret line="353" column="34" lean-forward="false" selection-start-line="353" selection-start-column="34" selection-end-line="353" selection-end-column="34" />
                   <folding>
                     <element signature="n#style#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#1;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -786,14 +786,7 @@
       <workItem from="1487077721306" duration="2190000" />
       <workItem from="1487082607624" duration="370000" />
       <workItem from="1487094015245" duration="3683000" />
-      <workItem from="1487110085458" duration="32000" />
-    </task>
-    <task id="LOCAL-00080" summary="update 0.1.159">
-      <created>1483555372654</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1483555372654</updated>
+      <workItem from="1487110085458" duration="128000" />
     </task>
     <task id="LOCAL-00081" summary="update 0.1.159">
       <created>1483556010791</created>
@@ -1131,12 +1124,19 @@
       <option name="project" value="LOCAL" />
       <updated>1487099500343</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="update 0.1.241&#10;">
+      <created>1487110119519</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1487110119519</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1133731000" />
+    <option name="totallyTimeSpent" value="1133827000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1433,8 +1433,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pws.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="383" column="47" lean-forward="true" selection-start-line="383" selection-start-column="47" selection-end-line="383" selection-end-column="47" />
+        <state relative-caret-position="600">
+          <caret line="353" column="34" lean-forward="false" selection-start-line="353" selection-start-column="34" selection-end-line="353" selection-end-column="34" />
           <folding>
             <element signature="n#style#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
