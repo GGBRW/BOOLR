@@ -57,16 +57,6 @@ function draw() {
         }
     }
 
-    // Labels, Areas, etc. tekenen
-    for(let i = labels.length - 1; i >= 0; --i) {
-        const x = (labels[i].pos.x - offset.x) * zoom;
-        const y = -(labels[i].pos.y - offset.y) * zoom;
-        labels[i].draw();
-    }
-
-    // Draw connecting wire
-    if(connecting) connecting.draw();
-
     // Componenten tekenen
     // visibleComponents = 0;
     // for(let i = 0, len = components.length; i < len; ++i) {
@@ -111,6 +101,11 @@ function draw() {
     }
 
     // Draw wires
+    ctx.lineWidth = zoom < 20 ? 1 : Math.round(zoom / 8);
+
+    // Draw connecting wire
+    if(connecting) connecting.draw();
+
     for(let i = 0, l = wires.length; i < l; ++i) {
         wires[i].draw();
     }

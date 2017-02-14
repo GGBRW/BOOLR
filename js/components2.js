@@ -1207,11 +1207,11 @@ class Component {
 
         // Draw the frame of the component
         if(this.outline) {
-            ctx.strokeStyle = "#f55";
+            ctx.strokeStyle = "#f00";
         } else {
-            ctx.strokeStyle = this.strokeColor || "#111";
+            ctx.strokeStyle = "#111";
         }
-        ctx.fillStyle = this.fillColor || "#fff";
+        ctx.fillStyle = "#fff";
         ctx.lineWidth = zoom / 12 | 0;
         ctx.beginPath();
         ctx.rect(
@@ -1220,13 +1220,13 @@ class Component {
             this.width * zoom,
             this.height * zoom
         );
-        ctx.fill();
+        zoom > 24 && ctx.fill();
         ctx.stroke();
 
         ctx.textBaseline = "middle";
 
         // Draw the icon of the component
-        if(this.icon) {
+        if(this.icon && zoom > 3) {
             ctx.textAlign = "center";
 
             if(this.icon.type == "icon") {
@@ -1257,14 +1257,16 @@ class Component {
         }
 
         // Draw the name of the component in the upper left corner
-        ctx.textAlign = "left";
-        ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
-        ctx.fillStyle = "#888";
-        ctx.fillText(
-            this.name,
-            x - .5 * zoom + zoom / 15,
-            y - .37 * zoom
-        );
+        if(this.name && zoom > 30) {
+            ctx.textAlign = "left";
+            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.name,
+                x - .5 * zoom + zoom / 15,
+                y - .37 * zoom
+            );
+        }
 
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
@@ -1306,18 +1308,20 @@ class Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ctx.beginPath();
-            ctx.arc(
-                screen.x,
-                screen.y,
-                zoom / 8 - zoom / 20,
-                0,
-                Math.PI * 2
-            );
-            ctx.lineWidth = zoom / 10;
-            ctx.fillStyle = "#fff";
-            ctx.stroke();
-            ctx.fill();
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8 - zoom / 20,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.lineWidth = zoom / 10;
+                ctx.fillStyle = "#fff";
+                ctx.stroke();
+                ctx.fill();
+            }
 
             if(zoom > 30) {
                 const name = this.input[i].name;
@@ -1373,16 +1377,18 @@ class Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ctx.beginPath();
-            ctx.arc(
-                screen.x,
-                screen.y,
-                zoom / 8,
-                0,
-                Math.PI * 2
-            );
-            ctx.fillStyle = "#111";
-            ctx.fill();
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+            }
 
             if(zoom > 30) {
                 const name = this.output[i].name;
@@ -2458,39 +2464,43 @@ class Custom extends Component {
         )) return;
 
         // Draw the frame of the component
-        ctx.fillStyle = this.fillColor || "#111";
-        ctx.strokeStyle = this.strokeColor || "#111";
+        ctx.fillStyle = "#111";
         ctx.lineWidth = zoom / 12 | 0;
         ctx.beginPath();
         ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
+            x - zoom / 2 - zoom / 24,
+            y - zoom / 2 - zoom / 24,
+            this.width * zoom + zoom / 24,
+            this.height * zoom + zoom / 24
         );
         ctx.fill();
-        ctx.stroke();
 
         ctx.textAlign = "center";
 
         // Draw the name of the component
-        ctx.fillStyle = "#888";
-        ctx.font = zoom / 3 + "px Ubuntu";
-        ctx.fillText(
-            this.name,
-            x + (this.width - 1) / 2 * zoom,
-            y + (this.height - 1) / 2 * zoom
-        );
+        if(this.name && zoom > 5) {
+            ctx.fillStyle = "#888";
+            ctx.font = zoom / 3 + "px Ubuntu";
+            ctx.fillText(
+                this.name,
+                x + (this.width - 1) / 2 * zoom,
+                y + (this.height - 1) / 2 * zoom
+            );
+        }
 
         // Draw the description of the component
         const description = this.properties.description;
-        ctx.fillStyle = "#666";
-        ctx.font = zoom / 7 + "px Ubuntu";
-        ctx.fillText(
-            description,
-            x + (this.width - 1) / 2 * zoom,
-            y + (this.height - .5) / 2 * zoom
-        );
+        if(description && zoom > 30) {
+            ctx.fillStyle = "#666";
+            ctx.font = zoom / 7 + "px Ubuntu";
+            ctx.fillText(
+                description,
+                x + (this.width - 1) / 2 * zoom,
+                y + (this.height - .5) / 2 * zoom
+            );
+        }
+
+        ctx.strokeStyle = "#111";
 
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
@@ -2532,18 +2542,20 @@ class Custom extends Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ctx.beginPath();
-            ctx.arc(
-                screen.x,
-                screen.y,
-                zoom / 8 - zoom / 20,
-                0,
-                Math.PI * 2
-            );
-            ctx.lineWidth = zoom / 10;
-            ctx.fillStyle = "#fff";
-            ctx.stroke();
-            ctx.fill();
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8 - zoom / 20,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.lineWidth = zoom / 10;
+                ctx.fillStyle = "#fff";
+                ctx.stroke();
+                ctx.fill();
+            }
 
             if(zoom > 30) {
                 const name = this.input[i].name;
@@ -2599,16 +2611,18 @@ class Custom extends Component {
             ctx.lineWidth = zoom / 8;
             ctx.stroke();
 
-            ctx.beginPath();
-            ctx.arc(
-                screen.x,
-                screen.y,
-                zoom / 8,
-                0,
-                Math.PI * 2
-            );
-            ctx.fillStyle = "#111";
-            ctx.fill();
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+            }
 
             if(zoom > 30) {
                 const name = this.output[i].name;
@@ -2840,13 +2854,12 @@ class Wire {
     }
 
     draw() {
-        // TODO: OPTIMIZE
         const pos = this.pos;
 
         if(zoom > 50) {
             ctx.lineCap = "round";
         }
-        ctx.lineWidth = zoom / 8;
+
         ctx.strokeStyle = ctx.fillStyle = this.value ? this.colorOn : this.colorOff;
 
         ctx.beginPath();
@@ -2854,7 +2867,12 @@ class Wire {
             (pos[0].x - offset.x) * zoom,
             -(pos[0].y - offset.y) * zoom
         );
+
         for(let i = 1; i < pos.length - 1; ++i) {
+            if(i + 1 < pos.length
+                && pos[i].x - pos[i - 1].x == pos[i + 1].x - pos[i].x
+                && pos[i].y - pos[i - 1].y == pos[i + 1].y - pos[i].y) continue;
+
             ctx.lineTo(
                 (pos[i].x - offset.x) * zoom,
                 -(pos[i].y - offset.y) * zoom
