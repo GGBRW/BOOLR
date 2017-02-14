@@ -380,12 +380,15 @@
             function receiveMessage(e) {
                 const data = e.data;
                 try {
+                    // TODO: dit is lelijk!
                     const parsed = parse(data);
-                    components = parsed.components || [];
-                    wires = parsed.wires || [];
-                    console.log(components,wires);
+                    const clone = cloneSelection(parsed.components || [],parsed.wires || []);
+                    addSelection(
+                        clone.components,
+                        clone.wires
+                    )
                 } catch(e) {
-
+                    throw new Error("Error reading save file");
                 }
 
                 // Let the main menu window know we have received the message
