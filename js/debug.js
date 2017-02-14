@@ -48,7 +48,7 @@ function updateDebugInfo() {
         debugInfo.addLine("Wires", wires.length);
         debugInfo.addLine("Selected", Selected.name);
         debugInfo.addLine("Ticks/sec", Math.round(ticksPerSecond));
-        debugInfo.addLine("Updates", updateQueue.length);
+        debugInfo.addLine("Updates", updates);
         if(socket) {
             debugInfo.innerHTML += "<br>";
             debugInfo.addLine("Socket", !!socket);

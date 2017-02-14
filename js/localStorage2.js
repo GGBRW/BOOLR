@@ -126,6 +126,8 @@ function stringify(components = [], wires = [], selection) {
         data.rotation = component.rotation;
         data.properties = component.properties;
 
+        if(component.value) data.value = component.value;
+
         data.input = [];
         for(let i = 0; i < component.input.length; ++i) {
             data.input[i] = {
@@ -174,6 +176,7 @@ function stringify(components = [], wires = [], selection) {
             toPortIndex,
             input,
             output,
+            wire.value,
             wire.pos,
             wire.intersections,
             wire.colorOn
@@ -268,9 +271,9 @@ function parse(data) {
         // let toPort;
         // if(to && to.input) toPort = to.input[wires[i][3]];
 
-        const pos = wires[i][6];
-        const intersections = wires[i][7];
-        const color = wires[i][8];
+        const pos = wires[i][7];
+        const intersections = wires[i][8];
+        const color = wires[i][9];
 
         const wire = new Wire(
             pos, intersections, color
@@ -281,6 +284,8 @@ function parse(data) {
 
         wire.input = wires[i][4];
         wire.output = wires[i][5];
+
+        wire.value = wires[i][6];
 
         //if(fromPort && toPort) connect(fromPort,toPort,wire);
 
@@ -311,11 +316,15 @@ function parse(data) {
         }
 
         if(wire.from && wire.to) {
-            connect(wire.from,wire.to,wire);
+            if(wire.to) {
+                wire.to.connection = wire;
+            }
+
+            if(wire.from) {
+                wire.from.connection = wire;
+            }
         }
     }
-
-    updateQueue = [];
 
     if(selection) {
         selection = {
@@ -376,9 +385,13 @@ function readFile(input) {
         const data = reader.result;
 
         try {
+            // TODO: dit is lelijk!
             const parsed = parse(data);
-            components = parsed.components || [];
-            wires = parsed.wires || [];
+            const clone = cloneSelection(parsed.components || [],parsed.wires || []);
+            addSelection(
+                clone.components,
+                clone.wires
+            )
         } catch(e) {
             throw new Error("Error reading save file");
         }

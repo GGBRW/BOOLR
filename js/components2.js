@@ -286,7 +286,7 @@ function connect(from, to, wire, undoable = false) {
         from.connection = wire;
         wire.from = from;
 
-        from.component.update();
+        updateQueue.push(from.component.update.bind(from.component));
     }
 
     if(undoable) {
