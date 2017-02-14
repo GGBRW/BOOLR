@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/componentUpdates.js" />
+    <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="update 0.1.241&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/canvas.js" afterPath="$PROJECT_DIR$/js/canvas.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/components2.js" afterPath="$PROJECT_DIR$/js/components2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/debug.js" afterPath="$PROJECT_DIR$/js/debug.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/localStorage2.js" afterPath="$PROJECT_DIR$/js/localStorage2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pws.html" afterPath="$PROJECT_DIR$/pws.html" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,14 +24,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="1321" column="68" lean-forward="true" selection-start-line="1321" selection-start-column="68" selection-end-line="1321" selection-end-column="68" />
-              <folding>
-                <marker date="1487006113208" expanded="true" signature="7263:7274" ph="..." />
-              </folding>
+            <state relative-caret-position="21">
+              <caret line="1326" column="25" lean-forward="false" selection-start-line="1326" selection-start-column="25" selection-end-line="1326" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -43,8 +37,8 @@
       <file leaf-file-name="components2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/components2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="2871" column="43" lean-forward="true" selection-start-line="2871" selection-start-column="43" selection-end-line="2871" selection-end-column="43" />
+            <state relative-caret-position="60291">
+              <caret line="2871" column="43" lean-forward="false" selection-start-line="2871" selection-start-column="43" selection-end-line="2871" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -53,7 +47,7 @@
       <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pws.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
+            <state relative-caret-position="1281">
               <caret line="61" column="55" lean-forward="false" selection-start-line="61" selection-start-column="55" selection-end-line="61" selection-end-column="55" />
               <folding />
             </state>
@@ -63,7 +57,7 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1680">
+            <state relative-caret-position="1470">
               <caret line="70" column="24" lean-forward="false" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
               <folding />
             </state>
@@ -73,7 +67,7 @@
       <file leaf-file-name="componentUpdates.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/componentUpdates.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
+            <state relative-caret-position="168">
               <caret line="8" column="47" lean-forward="false" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
               <folding />
             </state>
@@ -83,20 +77,18 @@
       <file leaf-file-name="debug.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/debug.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="50" column="57" lean-forward="true" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
-              <folding>
-                <marker date="1487003740574" expanded="true" signature="2599:2610" ph="..." />
-              </folding>
+            <state relative-caret-position="1050">
+              <caret line="50" column="57" lean-forward="false" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="localStorage2.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="localStorage2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="99" column="4" lean-forward="false" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="4" />
+            <state relative-caret-position="310">
+              <caret line="368" column="14" lean-forward="false" selection-start-line="368" selection-start-column="14" selection-end-line="368" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -217,11 +209,11 @@
         <option value="$PROJECT_DIR$/js/contextmenu2.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/pws.html" />
-        <option value="$PROJECT_DIR$/js/localStorage2.js" />
         <option value="$PROJECT_DIR$/js/componentUpdates.js" />
         <option value="$PROJECT_DIR$/js/debug.js" />
         <option value="$PROJECT_DIR$/js/components2.js" />
         <option value="$PROJECT_DIR$/js/canvas.js" />
+        <option value="$PROJECT_DIR$/js/localStorage2.js" />
       </list>
     </option>
   </component>
@@ -247,9 +239,8 @@
     </layout>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1920" />
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="width" value="1366" />
+    <option name="height" value="768" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -311,8 +302,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -427,7 +418,7 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
-      <command value="run" />
+      <command value="run-script" />
       <scripts />
       <node-interpreter value="project" />
       <envs />
@@ -755,6 +746,8 @@
       <workItem from="1486943271515" duration="28000" />
       <workItem from="1486991368911" duration="587000" />
       <workItem from="1486992554616" duration="10944000" />
+      <workItem from="1487067908906" duration="16000" />
+      <workItem from="1487067966353" duration="1407000" />
     </task>
     <task id="LOCAL-00076" summary="update 0.1.159">
       <created>1483550821925</created>
@@ -1104,7 +1097,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1125173000" />
+    <option name="totallyTimeSpent" value="1126596000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1116,10 +1109,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="0" y="0" width="1366" height="768" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15364583" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14641288" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1296,7 +1289,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2328">
           <caret line="97" column="14" lean-forward="false" selection-start-line="97" selection-start-column="14" selection-end-line="97" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1304,13 +1296,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1680">
+        <state relative-caret-position="1470">
           <caret line="70" column="24" lean-forward="false" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
           <folding />
         </state>
@@ -1320,7 +1311,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1848">
           <caret line="77" column="27" lean-forward="false" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1328,7 +1318,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6048">
           <caret line="252" column="22" lean-forward="false" selection-start-line="252" selection-start-column="22" selection-end-line="252" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1336,7 +1325,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="14" column="16" lean-forward="true" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1344,33 +1332,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pws.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
+        <state relative-caret-position="1281">
           <caret line="61" column="55" lean-forward="false" selection-start-line="61" selection-start-column="55" selection-end-line="61" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="99" column="4" lean-forward="false" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/debug.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="50" column="57" lean-forward="true" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
-          <folding>
-            <marker date="1487003740574" expanded="true" signature="2599:2610" ph="..." />
-          </folding>
+        <state relative-caret-position="1050">
+          <caret line="50" column="57" lean-forward="false" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1378,33 +1355,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
           <caret line="466" column="6" lean-forward="false" selection-start-line="466" selection-start-column="6" selection-end-line="466" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/components2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60291">
+          <caret line="2871" column="43" lean-forward="false" selection-start-line="2871" selection-start-column="43" selection-end-line="2871" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/componentUpdates.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
+        <state relative-caret-position="168">
           <caret line="8" column="47" lean-forward="false" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/components2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="2871" column="43" lean-forward="true" selection-start-line="2871" selection-start-column="43" selection-end-line="2871" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="1321" column="68" lean-forward="true" selection-start-line="1321" selection-start-column="68" selection-end-line="1321" selection-end-column="68" />
-          <folding>
-            <marker date="1487006113208" expanded="true" signature="7263:7274" ph="..." />
-          </folding>
+        <state relative-caret-position="21">
+          <caret line="1326" column="25" lean-forward="false" selection-start-line="1326" selection-start-column="25" selection-end-line="1326" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="368" column="14" lean-forward="false" selection-start-line="368" selection-start-column="14" selection-end-line="368" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -343,19 +343,29 @@ function parse(data) {
  */
 function saveBoard(
     name,
-    components_ = components,
-    wires_ = wires
+    components = window.components,
+    wires = window.wires
 ) {
-    let data = stringify(components_,wires_);
+    // let data = stringify(components_,wires_);
+    //
+    // name = name || "BOOLR-Save-" + new Date().toLocaleString();
+    // document.title = "BOOLR | " + name;
+    //
+    // // Export data as .board file
+    // const a = document.createElement("a");
+    // data = "data:text/json;charset=utf-8," + encodeURIComponent(data);
+    // a.setAttribute('href', data);
+    // a.setAttribute('download', name + ".board");
+    // a.click();
 
-    name = name || "BOOLR-Save-" + new Date().toLocaleString();
-    document.title = "BOOLR | " + name;
+    const data = stringify(components,wires);
+    const csvData = new Blob([data], { type: "text/csv" });
+    const csvUrl = URL.createObjectURL(csvData);
 
-    // Export data as .board file
     const a = document.createElement("a");
-    data = "data:text/json;charset=utf-8," + encodeURIComponent(data);
-    a.setAttribute('href', data);
-    a.setAttribute('download', name + ".board");
+    a.href = csvUrl;
+    a.target = "_blank";
+    a.download = "test.board";
     a.click();
 }
 
