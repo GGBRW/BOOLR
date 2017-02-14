@@ -65,16 +65,16 @@ function getLocalStorage() {
     }
 
     if(data.clipbord) {
-        // try {
+        try {
             const parsed = parse(data.clipbord);
             clipbord.copy(
                 parsed.components,
                 parsed.wires,
                 parsed.selection
             );
-        // } catch(e) {
-        //     console.warn("Could not parse clipbord data from localStorage " + e);
-        // }
+        } catch(e) {
+            console.warn("Could not parse clipbord data from localStorage " + e);
+        }
     }
 
     if(data.savedCustomComponents) {
@@ -348,7 +348,6 @@ function saveBoard(
 ) {
     // let data = stringify(components_,wires_);
     //
-    // name = name || "BOOLR-Save-" + new Date().toLocaleString();
     // document.title = "BOOLR | " + name;
     //
     // // Export data as .board file
@@ -358,6 +357,8 @@ function saveBoard(
     // a.setAttribute('download', name + ".board");
     // a.click();
 
+    name = name || "BOOLR-save-" + new Date().toLocaleString();
+
     const data = stringify(components,wires);
     const csvData = new Blob([data], { type: "text/csv" });
     const csvUrl = URL.createObjectURL(csvData);
@@ -365,7 +366,7 @@ function saveBoard(
     const a = document.createElement("a");
     a.href = csvUrl;
     a.target = "_blank";
-    a.download = "test.board";
+    a.download = name + ".board";
     a.click();
 }
 
