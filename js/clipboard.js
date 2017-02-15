@@ -1,19 +1,19 @@
-let clipbord = {};
-clipbord.components = [];
-clipbord.wires = [];
+let clipboard = {};
+clipboard.components = [];
+clipboard.wires = [];
 
-clipbord.copy = function(components = [], wires = [], selection) {
+clipboard.copy = function(components = [], wires = [], selection) {
     const clone = cloneSelection(components,wires);
-    clipbord.components = clone.components;
-    clipbord.wires = clone.wires;
+    clipboard.components = clone.components;
+    clipboard.wires = clone.wires;
     if(selection) {
-        clipbord.selection = Object.assign({},selection);
+        clipboard.selection = Object.assign({},selection);
     } else {
-        delete clipbord.selection;
+        delete clipboard.selection;
     }
 }
 
-clipbord.paste = function(x, y, undoable = false) {
+clipboard.paste = function(x, y, undoable = false) {
     if(this.selection) {
         const dx = Math.round(x - this.selection.x) || 0;
         const dy = Math.round(y - this.selection.y) || 0;
@@ -47,7 +47,7 @@ clipbord.paste = function(x, y, undoable = false) {
     }
 }
 
-// clipbord.paste = function(x,y) {
+// clipboard.paste = function(x,y) {
 //     if(this.components.length == 0 && this.wires.length == 0) {
 //         return;
 //     }
@@ -57,29 +57,29 @@ clipbord.paste = function(x, y, undoable = false) {
 //     const connections = this.connections;
 //
 //     let added = [];
-//     if(clipbord.selection) {
+//     if(clipboard.selection) {
 //         const dx = Math.round(x - this.selection.x) || 0;
 //         const dy = Math.round(y - this.selection.y) || 0;
 //
-//         // for(let i = clipbord.components.length - 1; i >= 0; --i) {
-//         //     const pos = clipbord.components[i].pos;
+//         // for(let i = clipboard.components.length - 1; i >= 0; --i) {
+//         //     const pos = clipboard.components[i].pos;
 //         //
-//         //     clipbord.components[i] = clone(clipbord.components[i]);
+//         //     clipboard.components[i] = clone(clipboard.components[i]);
 //         //
 //         //     if(Array.isArray(pos)) {
 //         //         for(let j = 0, len2 = pos.length; j < len2; ++j) {
-//         //             clipbord.components[i].pos.push({
+//         //             clipboard.components[i].pos.push({
 //         //                 x: Math.round(pos[j].x + dx),
 //         //                 y: Math.round(pos[j].y + dy)
 //         //             });
 //         //         }
 //         //
-//         //         added.unshift(clipbord.components[i]);
+//         //         added.unshift(clipboard.components[i]);
 //         //     }
 //         //     else {
-//         //         clipbord.components[i].pos.x = Math.round(pos.x + dx);
-//         //         clipbord.components[i].pos.y = Math.round(pos.y + dy);
-//         //         added.push(clipbord.components[i]);
+//         //         clipboard.components[i].pos.x = Math.round(pos.x + dx);
+//         //         clipboard.components[i].pos.y = Math.round(pos.y + dy);
+//         //         added.push(clipboard.components[i]);
 //         //     }
 //         // }
 //

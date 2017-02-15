@@ -77,9 +77,9 @@ c.onkeydown = function(e) {
         case 67: // C
             if(e.ctrlKey) {
                 if(selecting) {
-                    clipbord.copy(selecting.components,selecting.wires,selecting);
+                    clipboard.copy(selecting.components,selecting.wires,selecting);
                 } else if(findComponentByPos()) {
-                    clipbord.copy([findComponentByPos()]);
+                    clipboard.copy([findComponentByPos()]);
                 }
             } else if(e.shiftKey && selecting && selecting.components) {
                 componentize(
@@ -103,12 +103,7 @@ c.onkeydown = function(e) {
                 const wire = found;
                 dialog.colorPicker(
                     color => {
-                        wire.colorOn = color;
-                        const [r, g, b] = color.slice(4,-1).split(",").map(a => +a);
-                        wire.colorOff = '#' +
-                            ((0|(1<<8) + r + (256 - r) * .5).toString(16)).substr(1) +
-                            ((0|(1<<8) + g + (256 - g) * .5).toString(16)).substr(1) +
-                            ((0|(1<<8) + b + (256 - b) * .5).toString(16)).substr(1);
+                        wire.color = color
                     }
                 )
             } else if(found = findComponentByPos()) {
@@ -182,7 +177,7 @@ c.onkeydown = function(e) {
             break;
         case 86: // V
             if(e.ctrlKey) {
-                clipbord.paste(mouse.grid.x,mouse.grid.y);
+                clipboard.paste(mouse.grid.x,mouse.grid.y);
             }
             break;
         case 87: // W

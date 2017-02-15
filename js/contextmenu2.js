@@ -19,6 +19,13 @@ contextMenu.show = function(
         }
     }
 
+    if(selecting) {
+
+    } else {
+        const component = findComponentByPos(...contextMenu.getPos());
+        const wires = findAllWiresByPos(...contextMenu.getPos());
+    }
+
     // Show the context menu on the screen
     this.style.display = "block";
     setTimeout(() => {
@@ -63,13 +70,13 @@ createContextMenuOption(
     "Ctrl+C",
     function() {
         if(selecting) {
-            clipbord.copy(
+            clipboard.copy(
                 selecting.components,
                 selecting.wires,
                 selecting
             );
         } else if(findComponentByPos(...contextMenu.getPos())) {
-            clipbord.copy(
+            clipboard.copy(
                 [findComponentByPos(...contextMenu.getPos())]
             );
         }
@@ -84,10 +91,12 @@ createContextMenuOption(
     "content_paste",
     "Ctrl+V",
     function() {
-        clipbord.paste(...contextMenu.getPos());
+        clipboard.paste(...contextMenu.getPos());
     },
     function() {
-        if(clipbord.components.length < 1) this.className += " disabled";
+        if(clipboard.components.length < 1) this.className += " disabled";
+        else this.className = "";
+
         return !findComponentByPos() && !findPortByPos() && !findWireByPos() && !selecting;
     }
 );
@@ -139,14 +148,7 @@ createContextMenuOption(
     function() {
         const wire = findWireByPos(...contextMenu.getPos());
         dialog.colorPicker(
-            color => {
-                wire.colorOn = color;
-                const [r, g, b] = color.slice(4,-1).split(",").map(a => +a);
-                wire.colorOff = '#' +
-                    ((0|(1<<8) + r + (256 - r) * .75).toString(16)).substr(1) +
-                    ((0|(1<<8) + g + (256 - g) * .75).toString(16)).substr(1) +
-                    ((0|(1<<8) + b + (256 - b) * .75).toString(16)).substr(1);
-            }
+            color => wire.color = color
         )
     },
     function() {

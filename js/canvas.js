@@ -217,8 +217,8 @@ window.onbeforeunload = setLocalStorage;
 //     if(localStorage.pws) data = JSON.parse(localStorage.pws);
 //     else data = {};
 //
-//     if(data.clipbord) {
-//         parse(data.clipbord,true);
+//     if(data.clipboard) {
+//         parse(data.clipboard,true);
 //     }
 //     if(data.settings) {
 //         settings = data.settings;
@@ -914,7 +914,10 @@ c.onmousemove = function(e) {
                 }
             }
 
-            const to = findPortByPos();
+            const to = findPortByPos(
+                connecting.pos.slice(-1)[0].x,
+                connecting.pos.slice(-1)[0].y
+            );
             if(to && to.type == "input") {
                 connecting.to = to;
                 wires.push(connecting);

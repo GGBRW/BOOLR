@@ -78,12 +78,8 @@ dialog.update = function(component) {
     dialog.container.innerHTML += "<p>What's new:</p>";
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
-        "<li>BUG FIXES</li>" +
-        "<li>Dragging + wire fix</li>" +
-        "<li>Merge wires</li>" +
-        "<li>Componentize</li>" +
-        "<li>7 segment display</li>" +
-        "<li>Binairy to decimal</li>" +
+        "<li>Kleurtjes worden nu goed opgeslagen</li>" +
+        "<li>Bug fixes</li>" +
         "</ul>";
     dialog.addOption("Close");
 }
@@ -187,7 +183,7 @@ dialog.colorPicker = function(callback = a => a) {
     el.style.display = "inline-block";
     el.style.margin = 10;
     el.onclick = function() {
-        callback(this.style.background);
+        callback(this.style.background.match(/\d+/g).map(n => +n));
         dialog.hide()
     }
 

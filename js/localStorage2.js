@@ -23,10 +23,10 @@ function setLocalStorage() {
     }
 
     data.version = VERSION;
-    data.clipbord = stringify(
-        clipbord.components,
-        clipbord.wires,
-        clipbord.selection
+    data.clipboard = stringify(
+        clipboard.components,
+        clipboard.wires,
+        clipboard.selection
     );
     data.settings = settings;
     data.tips = tipsData;
@@ -64,16 +64,16 @@ function getLocalStorage() {
         dialog.update();
     }
 
-    if(data.clipbord) {
+    if(data.clipboard) {
         try {
-            const parsed = parse(data.clipbord);
-            clipbord.copy(
+            const parsed = parse(data.clipboard);
+            clipboard.copy(
                 parsed.components,
                 parsed.wires,
                 parsed.selection
             );
         } catch(e) {
-            console.warn("Could not parse clipbord data from localStorage " + e);
+            console.warn("Could not parse clipboard data from localStorage " + e);
         }
     }
 
@@ -169,6 +169,8 @@ function stringify(components = [], wires = [], selection) {
             output.push(wires.indexOf(wire.output[i]));
         }
 
+        console.log(wire);
+
         stringified[1].push([
             fromIndex,
             fromPortIndex,
@@ -179,7 +181,7 @@ function stringify(components = [], wires = [], selection) {
             wire.value,
             wire.pos,
             wire.intersections,
-            wire.colorOn
+            wire.color
         ]);
     }
 
@@ -273,7 +275,20 @@ function parse(data) {
 
         const pos = wires[i][7];
         const intersections = wires[i][8];
-        const color = wires[i][9];
+        let color = wires[i][9];
+
+        // If color is not in array format ([r,g,b]), convert
+        if(typeof color == "string") {
+            if(color[0] == "#" && color.length == 4) {
+                color = color.match(/\w/g).map(n => parseInt(n.repeat(2),16));
+            } else if(color[0] == "#" && color.length == 7) {
+                color = color.match(/\w{2}/g).map(n => parseInt(n,16));
+            } else if(color[0] == "r") {
+                color = color.match(/\d+/g).map(n => +n);
+            } else {
+                color = [136,136,136];
+            }
+        }
 
         const wire = new Wire(
             pos, intersections, color
