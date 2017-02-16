@@ -47,6 +47,8 @@ function updateDebugInfo() {
         debugInfo.addLine("Components", components.length);
         debugInfo.addLine("Wires", wires.length);
         debugInfo.addLine("Selected", Selected.name);
+        debugInfo.addLine("undoStack", undoStack.length);
+        debugInfo.addLine("redoStack", redoStack.length);
         debugInfo.addLine("Ticks/sec", Math.round(ticksPerSecond));
         debugInfo.addLine("Updates", updates);
         if(socket) {

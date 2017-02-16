@@ -78,10 +78,27 @@ dialog.update = function(component) {
     dialog.container.innerHTML += "<p>What's new:</p>";
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
-        "<li>Kleurtjes worden nu goed opgeslagen</li>" +
-        "<li>Bug fixes</li>" +
+        "<li>Componenten in componenten openen</li>" +
+        "<li>Dubbel klik om component te openen</li>" +
         "</ul>";
     dialog.addOption("Close");
+}
+
+dialog.openBoard = function() {
+    dialog.show();
+    dialog.name.innerHTML = "Open board";
+
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>insert_drive_file<i>";
+
+    const openboard = document.getElementById("openboard").cloneNode(true);
+    openboard.style.display = "block";
+    dialog.container.appendChild(openboard);
+
+    dialog.addOption("Cancel");
+}
+
+dialog.connectToServer = function() {
+
 }
 
 dialog.settings = function(component) {

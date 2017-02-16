@@ -146,13 +146,42 @@ createContextMenuOption(
     "color_lens",
     "E",
     function() {
-        const wire = findWireByPos(...contextMenu.getPos());
+        const el = findComponentByPos(...contextMenu.getPos()) || findWireByPos(...contextMenu.getPos());
         dialog.colorPicker(
-            color => wire.color = color
+            color => el.color = color
         )
     },
     function() {
-        return findWireByPos(...contextMenu.getPos()) && !selecting;
+        const wire = findWireByPos(...contextMenu.getPos());
+        const component = findComponentByPos(...contextMenu.getPos());
+        return (wire || (component && component.color)) && !selecting;
+    }
+);
+
+createContextMenuOption(
+    "Edit color",
+    "color_lens",
+    "E",
+    function() {
+        const components = selecting.components;
+        const wires = findWiresInSelection();
+        dialog.colorPicker(
+            color => {
+                for(let i = 0; i < wires.length; ++i) {
+                    wires[i].color = color;
+                }
+
+                for(let i = 0; i < components.length; ++i) {
+                    if(components[i].color) {
+                        components[i].color = color;
+                    }
+                }
+            }
+        )
+    },
+    function() {
+        return selecting && selecting.components &&
+            (findWiresInSelection().length > 0 || selecting.components.find(a => a.color));
     }
 );
 

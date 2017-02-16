@@ -1,15 +1,13 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <title>BOOLR | New Project</title>
 
         <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/pws.css">
-        <!--<link rel="stylesheet" href="css/popup.css">-->
-        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
-
-        <title>BOOLR | New Project</title>
     </head>
     <body>
+        <!-- Preload canvas fonts -->
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
         <canvas id="canvas" tabindex="1"></canvas>
@@ -23,23 +21,22 @@
         </div>
 
         <!-- Chat -->
-        <input id="chat" spellcheck="false">
+        <input id="chat" spellcheck="false"></input>
 
-        </input>
-
+        <!-- Notifications -->
         <ul id="notifications"></ul>
 
         <!-- Component toolbar -->
         <div id="toolbar">
+            <div id="toast"></div>
+
             <div class="slot" tooltip="Input and output ports">I/O</div>
             <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
             <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
             <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
             <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
-            <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">+</div>
-            <div class="slot" tooltip="Component list" onmousedown="dialog.savedCustomComponents()">...</div>
-
-            <div id="toast"></div>
+            <div class="slot" tooltip="Custom component" onmousedown="select(Custom)"><i class="material-icons">memory</i></div>
+            <div class="slot" tooltip="Saved components" onmousedown="dialog.savedCustomComponents()"><i class="material-icons">list</i></div>
 
             <ul id="list" tabindex="1" style="display: none">
                 <li onclick="select(Input)">Input</li>
@@ -64,15 +61,33 @@
         </div>
         <div id="toolbartip"></div>
 
-        <!-- Credits -->
-        <div id="credits">
-            <button id="version" onclick="dialog.update()" tooltip="Version"></button>
-            <button onclick="dialog.save()" tooltip="Save project <br>(Ctrl+S)" class="material-icons">save</button>
-            <button onclick="popup.openproject.show()" tooltip="Open project <br>(Ctrl+O)" class="material-icons">open_in_browser</button>
-            <button onclick="dialog.settings()" tooltip="Settings" class="material-icons">settings</button>
-            <button onclick="popup.info.show()" tooltip="Help" class="material-icons">help</button>
-        </div>
-        <div id="creditstip"></div>
+        <!-- Menu -->
+        <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version"></button>
+        <button class="brbtn material-icons" id="pause" title="Pause simulation" onclick="pauseSimulation = !pauseSimulation; this.innerHTML = pauseSimulation ? 'play_arrow' : 'pause'">pause</button>
+        <button class="brbtn material-icons" id="menuopen" title="Open menu" onclick="menu.style.opacity == '0' ? menu.show() : menu.hide()">keyboard_arrow_up</button>
+
+        <ul id="menu">
+           <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>   New board <span>Ctrl+N</span></li>
+           <li onmousedown="dialog.openBoard()"><i class="material-icons" >folder</i>                Open board<span>Ctrl+O</span></li>
+           <li onmousedown="dialog.save()"><i class="material-icons" >save</i>               Save board<span>Ctrl+S</span></li>
+           <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>       Settings<span>Ctrl+Shift+S</span></li>
+           <li onmousedown="dialog.help()"><i class="material-icons">help</i>               Help<span>F1</span></li>
+
+            <script>
+                const menu = document.getElementById("menu");
+                menu.onmousedown = () => setTimeout(menu.hide.bind(menu));
+
+                menu.show = function() {
+                    this.style.opacity = 1;
+                    this.style.bottom = 30;
+                }
+
+                menu.hide = function() {
+                    this.style.opacity = 0;
+                    this.style.bottom = -300;
+                }
+            </script>
+        </ul>
 
         <!-- Debug info -->
         <div id="debugInfo"></div>
@@ -151,57 +166,46 @@
             <!--<button class="ok">Close</button>-->
         <!--</div>-->
 
-        <div class="popup" id="openproject" style="display: none">
-            <h1>Open project</h1>
+        <!--<div class="popup" id="openproject" style="display: none">-->
+            <!--<h1>Open project</h1>-->
 
-            Upload a project save file or connect to a server:
-            <br><br>
+            <!--Upload a project save file or connect to a server:-->
+            <!--<br><br>-->
 
-            <button id="local_btn" class="selected">Local</button>
-            <button id="server_btn">Server</button>
-            <div id="local">
-                <div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <i class="material-icons">file_upload</i>
-                    <p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>
-                </div>
-            </div>
-            <script>
-                function allowDrop(e) {
-                    e.preventDefault();
-                }
+            <!--<button id="local_btn" class="selected">Local</button>-->
+            <!--<button id="server_btn">Server</button>-->
+            <!--<div id="local">-->
+                <!--<div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">-->
+                    <!--<i class="material-icons">file_upload</i>-->
+                    <!--<p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="server" style="display: none;">-->
+                <!--<input id="url" placeholder="Enter server url">-->
+                <!--<button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>-->
+                <!--<ul>-->
+                    <!--<li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                    <!--<li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                <!--</ul>-->
+            <!--</div>-->
 
-                function drop(e) {
-                    e.preventDefault();
-                    readFile(e.dataTransfer);
-                }
-            </script>
+            <!--<script>-->
+                <!--document.querySelector("#openproject #local_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #server_btn").className = "";-->
+                    <!--document.querySelector("#openproject #local").style.display = "block";-->
+                    <!--document.querySelector("#openproject #server").style.display = "none";-->
+                <!--}-->
 
-            <div id="server" style="display: none;">
-                <input id="url" placeholder="Enter server url">
-                <button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>
-                <ul>
-                    <li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-                    <li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>
-                </ul>
-            </div>
-
-            <script>
-                document.querySelector("#openproject #local_btn").onclick = function() {
-                    this.className = "selected";
-                    document.querySelector("#openproject #server_btn").className = "";
-                    document.querySelector("#openproject #local").style.display = "block";
-                    document.querySelector("#openproject #server").style.display = "none";
-                }
-
-                document.querySelector("#openproject #server_btn").onclick = function() {
-                    this.className = "selected";
-                    document.querySelector("#openproject #local_btn").className = "";
-                    document.querySelector("#openproject #server").style.display = "block";
-                    document.querySelector("#openproject #local").style.display = "none";
-                }
-            </script>
-            <button class="ok">Close</button>
-        </div>
+                <!--document.querySelector("#openproject #server_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #local_btn").className = "";-->
+                    <!--document.querySelector("#openproject #server").style.display = "block";-->
+                    <!--document.querySelector("#openproject #local").style.display = "none";-->
+                <!--}-->
+            <!--</script>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
 
         <!--<div class="popup" id="login">-->
             <!--<h1>Login</h1>-->
@@ -235,6 +239,29 @@
             <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
             <div class="container"></div>
             <div class="options"></div>
+        </div>
+
+        <!-- Open board -->
+        <div id="openboard" style="display: none;">
+            <div id="dropfile" onclick="openFile()" ondrop="drop(event)" ondragover="allowDrop(event); this.style.background = 'rgba(255,255,255,.5)'">
+                <span style="font-size: 20px;">Choose a .board file</span>
+                <br>
+                Or drop a file in this box
+            </div>
+
+            <script>
+                function allowDrop(e) {
+                    e.preventDefault();
+                }
+
+                const drop = e => {
+                    e.preventDefault();
+                    readFile(e.dataTransfer);
+                }
+            </script>
+
+            <br>
+            <span style="text-decoration: underline">Connect to a BOOLR server</span>
         </div>
 
         <!-- Settings -->
@@ -294,22 +321,13 @@
         <div id="customComponentToolbar">
             <button class="close material-icons">close</button>
             <span id="name">Full adder</span>
-            <button class="menu material-icons">menu</button>
+            <button class="edit material-icons">edit</button>
         </div>
 
-        <!-- Open files -->
-        <input id="open_file" type="file" accept=".board" style="display: none">
-
-        <!-- Chrome -->
+        <!-- Use Chrome -->
         <div id="usechrome">
             <h1>Please use Chrome to run this application</h1>
         </div>
-
-        <script>
-            document.getElementById("open_file").onchange = function(e) {
-                readFile(e.target);
-            }
-        </script>
 
         <!-- Scrippies -->
         <script>
@@ -378,11 +396,13 @@
 
             // Listen for message from main menu window
             function receiveMessage(e) {
+                // Let the main menu window know we have received the message
+                window.opener.postMessage(null,"*");
+
                 const data = e.data;
                 try {
-                    // TODO: dit is lelijk!
                     const parsed = parse(data);
-                    const clone = cloneSelection(parsed.components || [],parsed.wires || []);
+                    const clone = cloneSelection(parsed.components,parsed.wires);
                     addSelection(
                         clone.components,
                         clone.wires
@@ -390,9 +410,6 @@
                 } catch(e) {
                     throw new Error("Error reading save file");
                 }
-
-                // Let the main menu window know we have received the message
-                window.opener.postMessage(null,"*");
             }
             window.addEventListener("message", receiveMessage, false);
 

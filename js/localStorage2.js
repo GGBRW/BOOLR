@@ -97,6 +97,7 @@ const constructors = {
     Button,Constant,Delay,Clock,Key,Debug,
     Beep,Counter,LED,Display,
     Custom, TimerStart, TimerEnd,
+    Merger, Splitter,
     BinaryToDecimal, DecimalToBinary
 };
 
@@ -168,8 +169,6 @@ function stringify(components = [], wires = [], selection) {
         for(let i = 0; i < wire.output.length; ++i) {
             output.push(wires.indexOf(wire.output[i]));
         }
-
-        console.log(wire);
 
         stringified[1].push([
             fromIndex,
@@ -394,15 +393,31 @@ function saveBoard(
     a.click();
 }
 
+function openFile() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".board";
+    input.click();
+    input.onchange = e => readFile(e.target);
+}
+
 function readFile(input) {
+    const name = input.files[0] && input.files[0].name.replace(".board","");
+    document.title = "BOOLR | " + name;
+
     const reader = new FileReader;
     reader.onload = function() {
         const data = reader.result;
-
         try {
             // TODO: dit is lelijk!
             const parsed = parse(data);
             const clone = cloneSelection(parsed.components || [],parsed.wires || []);
+
+            components = [];
+            wires = [];
+            redoStack = [];
+            undoStack = [];
+
             addSelection(
                 clone.components,
                 clone.wires
@@ -413,5 +428,5 @@ function readFile(input) {
     }
 
     reader.readAsText(input.files[0]);
-    popup.openproject.hide();
+    dialog.hide();
 }

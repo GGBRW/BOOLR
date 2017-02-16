@@ -126,7 +126,7 @@ c.onkeydown = function(e) {
             // } else document.getElementById("open_file").click();
 
             if(e.ctrlKey) {
-                popup.openproject.show();
+                dialog.openBoard();
             } else if(e.shiftKey) {
                 const component = findComponentByPos(...contextMenu.getPos());
                 component.open && component.open();
@@ -202,7 +202,7 @@ c.onkeydown = function(e) {
             break;
         case 114: // F3
             if(keys[114] instanceof Date && new Date - keys[114] > 50) {
-                settings.show_debugInfo = !settings.show_debugInfo;
+                settings.showDebugInfo = !settings.showDebugInfo;
                 keys[114] = true;
             }
             return false;
@@ -229,6 +229,8 @@ window.onkeydown = function(e) {
         for(let i = 0; i < inputKeys[e.which].length; ++i) {
             inputKeys[e.which][i].update(1);
         }
+    } else if(e.which == 27) {
+        menu.hide();
     }
 }
 

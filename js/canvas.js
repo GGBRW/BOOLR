@@ -14,6 +14,11 @@ let offset = {
 };
 let zoom = 100;
 
+function isVisible(x,y,w,h) {
+    return x + (w || 0) > offset.x && x < offset.x + c.width / zoom &&
+           y - (h || 0) < offset.y && y > offset.y - c.height / zoom;
+}
+
 let scrollAnimation = { v: 0, r: 0, animate: false };
 let zoomAnimation = zoom;
 
@@ -246,6 +251,10 @@ window.onerror = function(msg,url,line) {
     );
 }
 
+c.onfocus = () => {
+    menu.hide();
+}
+
 c.oncontextmenu = () => false;
 
 c.onmouseleave = () => { scrollAnimation.animate = true; connecting = null };
@@ -254,6 +263,8 @@ c.onmouseenter = e => { e.which > 0 && (scrollAnimation.animate = false) };
 
 let wheel_click = false;
 c.onmousedown = function(e) {
+    c.focus();
+
     mouse.screen.x = e.x;
     mouse.screen.y = e.y;
     mouse.grid.x = Math.round(e.x / zoom + offset.x);
@@ -268,35 +279,33 @@ c.onmousedown = function(e) {
                 // selecting.w = mouse.grid.x - selecting.x;
                 // selecting.h = mouse.grid.y - selecting.y;
 
-                contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
+                const x = mouse.grid.x;
+                const y = mouse.grid.y;
 
                 (function animate() {
-                    selecting.w += ((mouse.grid.x - selecting.x) - selecting.w) / 2.5;
-                    selecting.h += ((mouse.grid.y - selecting.y) - selecting.h) / 2.5;
-                    contextMenu.x = selecting.x + selecting.w;
-                    contextMenu.y = selecting.y + selecting.h;
+                    selecting.w += ((x - selecting.x) - selecting.w) / 4;
+                    selecting.h += ((y - selecting.y) - selecting.h) / 4;
 
-                    if(Math.abs((mouse.grid.x - selecting.x) - selecting.w) * zoom > 1 ||
-                        Math.abs((mouse.grid.y - selecting.y) - selecting.h) * zoom > 1) {
+                    if(Math.abs((x - selecting.x) - selecting.w) * zoom > 1 ||
+                        Math.abs((y - selecting.y) - selecting.h) * zoom > 1) {
                         requestAnimationFrame(animate);
                     } else {
-                        selecting.w = mouse.grid.x - selecting.x;
-                        selecting.h = mouse.grid.y - selecting.y;
+                        selecting.w = x - selecting.x;
+                        selecting.h = y - selecting.y;
+                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
+
+                        selecting.components = findComponentsInSelection(
+                            selecting.x,selecting.y,
+                            selecting.w,
+                            selecting.h
+                        );
+                        selecting.wires = findWiresInSelection2(
+                            selecting.x,selecting.y,
+                            selecting.w,
+                            selecting.h
+                        );
                     }
                 })();
-
-                selecting.components = findComponentsInSelection(
-                    selecting.x,selecting.y,
-                    selecting.w,
-                    selecting.h
-                );
-                selecting.wires = findWiresInSelection2(
-                    selecting.x,selecting.y,
-                    selecting.w,
-                    selecting.h
-                );
-
-                //contextMenu.show((selecting.x + selecting.w - offset.x) * zoom, -(selecting.y + selecting.h - offset.y) * zoom);
             } else {
                 selecting = {
                     x: Math.round(e.x / zoom + offset.x),
@@ -370,7 +379,8 @@ c.onmousedown = function(e) {
                 } else if(found = findPortByPos()) {
                     const port = found;
                     if(port.type == "output") {
-                        connecting = new Wire();
+                        if(port.component.constructor == Merger) connecting = new CompressedWire();
+                        else connecting = new Wire();
                         connecting.from = port;
                         connecting.pos.push({
                             x: mouse.grid.x,
@@ -387,71 +397,6 @@ c.onmousedown = function(e) {
                         true
                     );
                 }
-
-                // if(component) {
-                //     if(component.onmousedown) {
-                //         action(
-                //             "mousedown",
-                //             [
-                //                 component,
-                //                 mouse.grid.x - component.pos.x,
-                //                 component.pos.y - mouse.grid.y
-                //             ],
-                //             true
-                //         );
-                //     }
-                // } else {
-                //     const newComponent = new Selected();
-                //     action("add",newComponent,true);
-                // }
-                // let component = findComponentByPos(mouse.grid.x,mouse.grid.y);
-                //
-                //
-                //
-                // if(component && (component.output || component.from)) {
-                //     // const wire = new Wire();
-                //     //
-                //     // if(component.from) {
-                //     //     wire.from = component.from;
-                //     //
-                //     //     let i = 0;
-                //     //     while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
-                //     //     && i < component.pos.length) {
-                //     //         wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
-                //     //         ++i;
-                //     //     }
-                //     // } else if(component.output) {
-                //     //     wire.from = component;
-                //     // }
-                //     //
-                //     // connecting = { wire };
-                //     // connecting.wire.pos.push({
-                //     //     x: mouse.grid.x,
-                //     //     y: mouse.grid.y
-                //     // });
-                // } else if(component) {
-                //     if(component.onclick) {
-                //         // component.onclick(
-                //         //     mouse.grid.x - component.pos.x,
-                //         //     component.pos.y - mouse.grid.y
-                //         // );
-                //         action("click",[component,mouse.grid.x - component.pos.x,component.pos.y - mouse.grid.y],true);
-                //     }
-                // } else {
-                //     component = new Selected();
-                //     //add(component);
-                //     action("add",component,true);
-                //
-                //     // if(component.output) {
-                //     //     const wire = new Wire();
-                //     //     wire.from = component;
-                //     //     connecting = { wire };
-                //     //     connecting.wire.pos.push({
-                //     //         x: mouse.grid.x,
-                //     //         y: mouse.grid.y
-                //     //     });
-                //     // }
-                // }
             }
         }
     }
@@ -690,69 +635,6 @@ c.onmousemove = function(e) {
                         wire.pos[0].y += dy;
                     }
                 }
-
-                // for(let i = 0; i < component.input.length; ++i) {
-                //     const wire = component.input[i].connection;
-                //     if(wire) {
-                //         let dx = Math.round(wire.pos.slice(-1)[0].x) - Math.round(wire.pos.slice(-2)[0].x);
-                //         let dy = Math.round(wire.pos.slice(-1)[0].y) - Math.round(wire.pos.slice(-2)[0].y);
-                //
-                //         while(Math.abs(dx) + Math.abs(dy) > 1) {
-                //             if(Math.abs(dx) > Math.abs(dy)) {
-                //                 wire.pos.splice(
-                //                     wire.pos.length - 1,
-                //                     0,
-                //                     {
-                //                         x: wire.pos.slice(-2)[0].x + Math.sign(dx),
-                //                         y: wire.pos.slice(-2)[0].y
-                //                     }
-                //                 );
-                //                 dx -= Math.sign(dx);
-                //             } else {
-                //                 wire.pos.splice(
-                //                     wire.pos.length - 1,
-                //                     0,
-                //                     {
-                //                         x: wire.pos.slice(-2)[0].x,
-                //                         y: wire.pos.slice(-2)[0].y + Math.sign(dy)
-                //                     }
-                //                 );
-                //                 dy -= Math.sign(dy);
-                //             }
-                //         }
-                //     }
-                // }
-                //
-                // for(let i = 0; i < component.output.length; ++i) {
-                //     const wire = component.output[i].connection;
-                //     if(wire) {
-                //         let dx = Math.round(wire.pos[0].x) - Math.round(wire.pos[1].x);
-                //         let dy = Math.round(wire.pos[0].y) - Math.round(wire.pos[1].y);
-                //
-                //         while(Math.abs(dx) + Math.abs(dy) > 1) {
-                //             if(Math.abs(dx) > Math.abs(dy)) {
-                //                 wire.pos.splice(
-                //                     1, 0,
-                //                     {
-                //                         x: wire.pos[1].x + Math.sign(dx),
-                //                         y: wire.pos[1].y
-                //                     }
-                //                 );
-                //                 dx -= Math.sign(dx);
-                //             } else {
-                //                 wire.pos.splice(
-                //                     1, 0,
-                //                     {
-                //                         x: wire.pos[1].x,
-                //                         y: wire.pos[1].y + Math.sign(dy)
-                //                     }
-                //                 );
-                //                 dy -= Math.sign(dy);
-                //             }
-                //         }
-                //     }
-                // }
-
             } else if(dragging.port) {
                 const port = dragging.port;
                 const pos = port.pos;
@@ -799,62 +681,6 @@ c.onmousemove = function(e) {
                         port.connection.pos[0].y = gridPos.y;
                     }
                 }
-
-                // const port = dragging.port;
-                // const pos = port.pos;
-                //
-                // pos.pos += Math.round(Math.sin(Math.PI / 2 * pos.side)) * e.movementY / zoom;
-                // pos.pos += Math.round(Math.cos(Math.PI / 2 * pos.side)) * e.movementX / zoom;
-                //
-                // if(pos.pos < -.5) {
-                //     pos.side = (4 + --pos.side) % 4;
-                //     if(pos.side % 2 == 0) {
-                //         pos.pos = port.component.width - 1;
-                //     } else {
-                //         pos.pos = port.component.height - 1;
-                //     }
-                // } else if(pos.side % 2 == 0 && pos.pos > port.component.width - .5) {
-                //     pos.side = ++pos.side % 4;
-                //     if(pos.side % 2 == 0) {
-                //         pos.pos = -.5;
-                //     } else {
-                //         pos.pos = -.5;
-                //     }
-                // } else if(pos.side % 2 == 1 && pos.pos > port.component.height - .5) {
-                //     pos.side = ++pos.side % 4;
-                //     ++pos.side;
-                //     if(pos.side % 2 == 0) {
-                //         pos.pos = -.5;
-                //     } else {
-                //         pos.pos = -.5;
-                //     }
-                // }
-                //
-                // if(port.connection) {
-                //     let x = port.component.pos.x;
-                //     let y = port.component.pos.y;
-                //     const angle = Math.PI / 2 * pos.side;
-                //     if(Math.sin(angle) == 1) x += (port.component.width - 1);
-                //     if(Math.cos(angle) == -1) y += (port.component.height - 1);
-                //     console.log(x,y);
-                //     x += Math.sin(angle) / 2;
-                //     y += Math.cos(angle) / 2;
-                //     if(pos.side == 2) x += (port.component.width - 1);
-                //     if(pos.side == 3) y += (port.component.height - 1);
-                //     x += Math.sin(angle + Math.PI / 2) * pos.pos;
-                //     y += Math.cos(angle + Math.PI / 2) * pos.pos;
-                //     x += Math.sin(angle) / 2;
-                //     y += Math.cos(angle) / 2;
-                //
-                //     const wire = port.connection;
-                //     if(port.type == "output") {
-                //         wire.pos[0].x = x;
-                //         wire.pos[0].y = y;
-                //     } else if(port.type == "input") {
-                //         wire.pos.slice(-1)[0].x = x;
-                //         wire.pos.slice(-1)[0].y = y;
-                //     }
-                // }
             }
         }
         else if(connecting) {
@@ -918,7 +744,14 @@ c.onmousemove = function(e) {
                 connecting.pos.slice(-1)[0].x,
                 connecting.pos.slice(-1)[0].y
             );
+
             if(to && to.type == "input") {
+                if(connecting.constructor == CompressedWire && to.component.constructor == Splitter) {
+                    connect(connecting.from,to,connecting, true);
+                    wires.push(connecting);
+                    return;
+                }
+
                 connecting.to = to;
                 wires.push(connecting);
 
@@ -942,55 +775,6 @@ c.onmousemove = function(e) {
 
                 connecting = null;
             }
-
-            // // Get component under user's mouse
-            // const component = findComponentByPos();
-            // if(component == connecting.wire.from) {
-            //     connecting.wire.pos = [{
-            //         x: mouse.grid.x,
-            //         y: mouse.grid.y
-            //     }];
-            // } else if(component && component.constructor != Wire && component.input) {
-            //     // connect(connecting.wire.from,component,connecting.wire);
-            //     action("connect",[connecting.wire.from,component,connecting.wire],true);
-            //
-            //     if(component.output) {
-            //         // If the component under the user's mouse has output ports, we'll keep connecting
-            //         const wire = new Wire();
-            //         wire.from = component;
-            //
-            //         connecting = { wire };
-            //         connecting.wire.pos.push({
-            //             x: mouse.grid.x,
-            //             y: mouse.grid.y
-            //         });
-            //     } else {
-            //         connecting = null;
-            //     }
-            // } else if(component && component.output) {
-            //     const output = [...component.output];
-            //     const wire = connecting.wire;
-            //
-            //     popup.confirm.show(
-            //         "Replace input port?",
-            //         "Do you want to replace this input port?",
-            //         () => {
-            //             //remove(component);
-            //             action("remove",component,true);
-            //
-            //             for(let i = 0; i < output.length; ++i) {
-            //                 wire.pos[0].x += Math.sign(wire.pos[1].x - wire.pos[0].x) / 2;
-            //                 wire.pos[0].y += Math.sign(wire.pos[1].y - wire.pos[0].y) / 2;
-            //                 output[i].wire.pos = wire.pos.concat(output[i].wire.pos);
-            //                 components.unshift(output[i].wire);
-            //
-            //                 connect(wire.from,output[i].wire.to,output[i].wire);
-            //             }
-            //         }
-            //     );
-            // } else if(component && component.constructor != Wire && component && component != connecting.wire.from) {
-            //     toolbar.message(`Can't connect to ${component.name}`)
-            // }
         }
         else if(e.altKey) {
             e.preventDefault();
@@ -1010,32 +794,6 @@ c.onmousemove = function(e) {
             scrollAnimation.r = Math.atan2(e.movementX, e.movementY);
             return false;
         }
-        // else {
-        //     const component = findComponentByPos(mouse.grid.x,mouse.grid.y);
-        //
-        //     if(component && (component.output || component.from)) {
-        //         const wire = new Wire();
-        //
-        //         if(component.from) {
-        //             wire.from = component.from;
-        //
-        //             let i = 0;
-        //             while((component.pos[i].x != mouse.grid.x || component.pos[i].y != mouse.grid.y)
-        //             && i < component.pos.length) {
-        //                 wire.pos.push({ x: component.pos[i].x, y: component.pos[i].y });
-        //                 ++i;
-        //             }
-        //         } else if(component.output) {
-        //             wire.from = component;
-        //         }
-        //
-        //         connecting = { wire };
-        //         connecting.wire.pos.push({
-        //             x: mouse.grid.x,
-        //             y: mouse.grid.y
-        //         });
-        //     }
-        // }
     }
     else if(e.which == 2) {
         offset.x -= e.movementX / zoom;
@@ -1059,14 +817,14 @@ c.onmouseup = function(e) {
     mouse.grid.y = Math.round(-e.y / zoom + offset.y);
 
     if(e.which == 1) {
-        if(selecting && !dragging) {
+        if(selecting && !selecting.components && !dragging) {
             if(selecting.w < .5 && selecting.h < .5) {
-                selecting = null;
+                //selecting = null;
                 return;
             } else {
                 (function animate() {
-                    selecting.w += (Math.round(selecting.w) - selecting.w) / 2.5;
-                    selecting.h += (Math.round(selecting.h) - selecting.h) / 2.5;
+                    selecting.w += (Math.round(selecting.w) - selecting.w) / 4;
+                    selecting.h += (Math.round(selecting.h) - selecting.h) / 4;
 
                     if(Math.abs(Math.round(selecting.w) - selecting.w) * zoom > 1 ||
                        Math.abs(Math.round(selecting.h) - selecting.h) * zoom > 1) {
@@ -1076,20 +834,20 @@ c.onmouseup = function(e) {
                         selecting.h = Math.round(selecting.h);
 
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
+
+                        selecting.components = findComponentsInSelection(
+                            selecting.x,selecting.y,
+                            selecting.w,
+                            selecting.h
+                        );
+                        selecting.wires = findWiresInSelection2(
+                            selecting.x,selecting.y,
+                            selecting.w,
+                            selecting.h
+                        );
                     }
                 })();
             }
-
-            selecting.components = findComponentsInSelection(
-                selecting.x,selecting.y,
-                selecting.w,
-                selecting.h
-            );
-            selecting.wires = findWiresInSelection2(
-                selecting.x,selecting.y,
-                selecting.w,
-                selecting.h
-            );
         }
         else if(dragging) {
             if(dragging.selection) {
@@ -1288,6 +1046,19 @@ c.onmouseup = function(e) {
                         }
                     }
 
+                    const wire = port.connection;
+                    if(wire) {
+                        if(port.type == "input") {
+                            wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                            wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                        } else {
+                            wire.pos[0].x = Math.round(wire.pos[0].x);
+                            wire.pos[0].y = Math.round(wire.pos[0].y);
+                        }
+                    }
+
+                    movePort(port,undefined,undefined,true);
+
                     dragging = null;
                 }
             }
@@ -1404,6 +1175,18 @@ c.onmouseup = function(e) {
 
         e.preventDefault();
         return false;
+    }
+}
+
+c.ondblclick = function(e) {
+    mouse.screen.x = e.x;
+    mouse.screen.y = e.y;
+    mouse.grid.x = Math.round(e.x / zoom + offset.x);
+    mouse.grid.y = Math.round(-e.y / zoom + offset.y);
+
+    const component = findComponentByPos();
+    if(e.which == 1 && component && component.open) {
+        component.open();
     }
 }
 
