@@ -114,6 +114,20 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
+    "Edit",
+    "mode_edit",
+    "E",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        dialog.edit(component);
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return component && Object.keys(component.properties).length > 0;
+    }
+);
+
+createContextMenuOption(
     "Edit name",
     "mode_edit",
     "E",

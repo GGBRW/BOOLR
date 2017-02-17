@@ -171,6 +171,30 @@ dialog.localStorageError = function() {
     dialog.addOption("OK");
 }
 
+dialog.edit = function(component) {
+    if(!component) return;
+    dialog.show();
+    dialog.name.innerHTML = "Edit";
+
+    const inputs = [];
+    for(let i in component.properties) {
+        const input = document.createElement("input");
+        inputs.push(input);
+        input.value = component.properties[i];
+
+        dialog.container.appendChild(document.createTextNode(i));
+        dialog.container.appendChild(input);
+        dialog.container.appendChild(document.createElement("br"));
+    }
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK",  () => {
+        for(let i in component.properties) {
+            component.properties[i] = inputs[Object.keys(component.properties).indexOf(i)].value;
+        }
+    });
+}
+
 dialog.editName = function(component) {
     if(!component) return;
     dialog.show();

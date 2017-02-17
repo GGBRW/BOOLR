@@ -63,8 +63,25 @@
 
         <!-- Menu -->
         <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version"></button>
-        <button class="brbtn material-icons" id="pause" title="Pause simulation" onclick="pauseSimulation = !pauseSimulation; this.innerHTML = pauseSimulation ? 'play_arrow' : 'pause'">pause</button>
-        <button class="brbtn material-icons" id="menuopen" title="Open menu" onclick="menu.style.opacity == '0' ? menu.show() : menu.hide()">keyboard_arrow_up</button>
+        <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
+        <button class="brbtn material-icons" id="menuopen" title="Open menu">keyboard_arrow_up</button>
+
+        <script>
+            document.querySelector("#pause").onclick = function() {
+                pauseSimulation = !pauseSimulation;
+                this.innerHTML = pauseSimulation ? "play_arrow" : "pause";
+            }
+
+            document.querySelector("#menuopen").onclick = function() {
+                if(menu.style.opacity == "0") {
+                    menu.show();
+                    this.innerHTML = "keyboard_arrow_down";
+                } else {
+                    menu.hide();
+                    this.innerHTML = "keyboard_arrow_up";
+                }
+            }
+        </script>
 
         <ul id="menu">
            <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>   New board <span>Ctrl+N</span></li>
@@ -75,6 +92,7 @@
 
             <script>
                 const menu = document.getElementById("menu");
+                menu.style.opacity = "0";
                 menu.onmousedown = () => setTimeout(menu.hide.bind(menu));
 
                 menu.show = function() {
@@ -369,7 +387,7 @@
         <script>
             "use strict";
 
-            const VERSION = "test0.2";
+            const VERSION = "0.271";
             document.getElementById("version").innerHTML = "<i class=\"material-icons\">memory</i>BOOLR v" + VERSION;
 
 //            let data;

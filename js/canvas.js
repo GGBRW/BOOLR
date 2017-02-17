@@ -292,7 +292,6 @@ c.onmousedown = function(e) {
                     } else {
                         selecting.w = x - selecting.x;
                         selecting.h = y - selecting.y;
-                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
 
                         selecting.components = findComponentsInSelection(
                             selecting.x,selecting.y,
@@ -304,6 +303,8 @@ c.onmousedown = function(e) {
                             selecting.w,
                             selecting.h
                         );
+
+                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
             } else {
@@ -833,8 +834,6 @@ c.onmouseup = function(e) {
                         selecting.w = Math.round(selecting.w);
                         selecting.h = Math.round(selecting.h);
 
-                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
-
                         selecting.components = findComponentsInSelection(
                             selecting.x,selecting.y,
                             selecting.w,
@@ -845,6 +844,8 @@ c.onmouseup = function(e) {
                             selecting.w,
                             selecting.h
                         );
+
+                        contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
             }
@@ -1162,7 +1163,7 @@ c.onmouseup = function(e) {
         else {
             const component = findComponentByPos();
             if(component && component.onmouseup) {
-
+                component.onmouseup();
             }
         }
     } else if(e.which == 2) {
