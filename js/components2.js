@@ -1070,7 +1070,7 @@ function cloneComponent(component, dx = 0, dy = 0) {
  */
 function cloneWire(wire, dx = 0, dy = 0) {
     const clone = new Wire();
-    clone.value = wire.value;
+    //clone.value = wire.value;
     clone.pos = wire.pos.map(pos => {
         return { x: pos.x + dx, y: pos.y + dy }
     });
