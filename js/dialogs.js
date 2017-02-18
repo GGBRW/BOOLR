@@ -176,21 +176,38 @@ dialog.edit = function(component) {
     dialog.show();
     dialog.name.innerHTML = "Edit";
 
+    const properties = ["name",...Object.keys(component.properties)];
     const inputs = [];
+
+    // Name
+    const name = document.createElement("input");
+    inputs.push(name);
+    name.value = component.name;
+
+    dialog.container.appendChild(document.createTextNode("Name:"));
+    dialog.container.appendChild(name);
+    dialog.container.appendChild(document.createElement("br"));
+
     for(let i in component.properties) {
         const input = document.createElement("input");
         inputs.push(input);
         input.value = component.properties[i];
 
-        dialog.container.appendChild(document.createTextNode(i));
+        dialog.container.appendChild(document.createTextNode(i.slice(0,1).toUpperCase() + i.slice(1) + ":"));
         dialog.container.appendChild(input);
+
+        if(i == "duration" || i == "delay") {
+            dialog.container.appendChild(document.createTextNode("ms"));
+        } else if(i == "frequency") {
+            dialog.container.appendChild(document.createTextNode("Hz"));
+        }
         dialog.container.appendChild(document.createElement("br"));
     }
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {
         for(let i in component.properties) {
-            component.properties[i] = inputs[Object.keys(component.properties).indexOf(i)].value;
+            component.properties[i] = inputs[Object.keys(component.properties).indexOf(i) + 1].value;
         }
     });
 }

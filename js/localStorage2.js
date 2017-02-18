@@ -408,7 +408,7 @@ function readFile(input) {
     const reader = new FileReader;
     reader.onload = function() {
         const data = reader.result;
-        try {
+        // try {
             // TODO: dit is lelijk!
             const parsed = parse(data);
             const clone = cloneSelection(parsed.components || [],parsed.wires || []);
@@ -422,9 +422,9 @@ function readFile(input) {
                 clone.components,
                 clone.wires
             )
-        } catch(e) {
-            throw new Error("Error reading save file");
-        }
+        // } catch(e) {
+        //     throw new Error("Error reading save file");
+        // }
     }
 
     reader.readAsText(input.files[0]);

@@ -123,7 +123,7 @@ createContextMenuOption(
     },
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
-        return component && Object.keys(component.properties).length > 0;
+        return component;
     }
 );
 

@@ -17,8 +17,6 @@ function tick() {
 
     ticksPerSecond = 1000 / (new Date - lastTick);
     lastTick = new Date;
-
-    setTimeout(tick);
 }
 
-tick();
+setInterval(tick,17);

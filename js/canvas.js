@@ -55,8 +55,8 @@ function draw() {
     // Roosterpunten tekenen
     if(zoom > 24) {
         ctx.fillStyle = "rgba(200,200,200," + Math.min(1, zoom / 100) + ")";
-        for(let i = (-offset.x * zoom) % zoom; i < c.width; i += zoom) {
-            for(let j = (offset.y * zoom) % zoom; j < c.height; j += zoom) {
+        for(let i = (-offset.x * zoom) % zoom; i < c.width; i = i + zoom) {
+            for(let j = (offset.y * zoom) % zoom; j < c.height; j = j + zoom) {
                 ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
             }
         }
@@ -236,7 +236,7 @@ window.onbeforeunload = setLocalStorage;
 //
 //     c.focus();
 // }
-window.onblur = setLocalStorage;
+//window.onblur = setLocalStorage;
 
 window.onresize = () => {
     c.height = window.innerHeight;
