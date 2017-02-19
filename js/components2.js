@@ -970,18 +970,20 @@ function findWiresInSelection2(
     y = Math.min(y,y + h);
 
     for(let i = 0; i < result.length; ++i) {
-        const wire = wires[i];
+        const wire = result[i];
 
         if(wire.from && wire.from.component &&
            !components.includes(wire.from.component)) {
             result.splice(i,1);
             i = -1;
+            continue;
         }
 
         if(wire.to && wire.to.component &&
           !components.includes(wire.to.component)) {
             result.splice(i,1);
             i = -1;
+            continue;
         }
 
         for(let i = 0; i < wire.input.length; ++i) {
@@ -999,11 +1001,13 @@ function findWiresInSelection2(
         if(!wire.from && wire.input.length < 1) {
             result.splice(i,1);
             i = -1;
+            continue;
         }
 
         if(!wire.to && wire.output.length < 1) {
             result.splice(i,1);
             i = -1;
+            continue;
         }
     }
 
@@ -1053,12 +1057,14 @@ function cloneComponent(component, dx = 0, dy = 0) {
         for(let i = 0; i < component.input.length; ++i) {
             const port = clone.addInputPort();
             port.name = component.input[i].name;
+            //port.value = component.input[i].value;
             port.pos = Object.assign({},component.input[i].pos);
         }
         clone.output = [];
         for(let i = 0; i < component.output.length; ++i) {
             const port = clone.addOutputPort();
             port.name = component.output[i].name;
+            //port.value = component.output[i].value;
             port.pos = Object.assign({},component.output[i].pos);
         }
     }
@@ -1131,8 +1137,21 @@ function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
             clonedWire
         );
 
+        // if(toPort) {
+        //     toPort.connection = clonedWire;
+        //     clonedWire.to = toPort;
+        // }
+        // if(fromPort) {
+        //     fromPort.connection = clonedWire;
+        //     clonedWire.from = fromPort;
+        // }
+
         clonedWires.push(clonedWire);
     }
+
+    // for(let i = 0; i < clonedComponents.length; ++i) {
+    //     clonedComponents[i].update();
+    // }
 
     // Recreate wire connections
     for(let i = 0; i < wires.length; ++i) {
@@ -2017,13 +2036,26 @@ class Clock extends Component {
     }
 
     tick() {
-        this.value = 1 - this.value;
-        this.update();
-        this.properties.delay && setTimeout(
-            this.tick.bind(this),
-            this.properties.delay
-        );
+        updateQueue.push({
+            f: () => {
+                this.value = 1 - this.value;
+                this.output[0].value = this.value;
+                this.output[0].connection && this.output[0].connection.update(this.value);
+                this.tick();
+            },
+            delay: this.properties.delay,
+            start: new Date
+        });
     }
+
+    // tick() {
+    //     this.value = 1 - this.value;
+    //     this.update();
+    //     this.properties.delay && setTimeout(
+    //         this.tick.bind(this),
+    //         this.properties.delay
+    //     );
+    // }
 
     function() {
         this.output[0].value = this.value;

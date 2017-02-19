@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pws.html" afterPath="$PROJECT_DIR$/pws.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/canvas.js" afterPath="$PROJECT_DIR$/js/canvas.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/componentUpdates.js" afterPath="$PROJECT_DIR$/js/componentUpdates.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/components2.js" afterPath="$PROJECT_DIR$/js/components2.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/dialogs.js" afterPath="$PROJECT_DIR$/js/dialogs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/localStorage2.js" afterPath="$PROJECT_DIR$/js/localStorage2.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,42 +28,115 @@
     <favorites_list name="Profielwerkstuk" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pws.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="346" column="50" lean-forward="false" selection-start-line="346" selection-start-column="50" selection-end-line="346" selection-end-column="50" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="19" lean-forward="true" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/main.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="600">
+                  <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="localStorage2.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="383">
+                  <caret line="291" column="20" lean-forward="false" selection-start-line="291" selection-start-column="20" selection-end-line="291" selection-end-column="20" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/js/components2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="168">
+                  <caret line="293" column="22" lean-forward="false" selection-start-line="293" selection-start-column="22" selection-end-line="293" selection-end-column="22" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="dialogs.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/dialogs.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="672">
+                  <caret line="290" column="31" lean-forward="false" selection-start-line="290" selection-start-column="31" selection-end-line="290" selection-end-column="31" />
+                  <folding>
+                    <marker date="1487527687289" expanded="true" signature="1917:1933" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="2009:2042" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="2510:2525" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="2649:2662" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="2992:3007" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="3439:3454" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="5065:5080" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="5380:5395" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="5684:5699" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="8171:8186" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="9141:9156" ph="..." />
+                    <marker date="1487527687289" expanded="true" signature="14606:14621" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="componentUpdates.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/componentUpdates.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="384">
+                  <caret line="16" column="63" lean-forward="false" selection-start-line="16" selection-start-column="63" selection-end-line="16" selection-end-column="63" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pws.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="168">
+                  <caret line="7" column="11" lean-forward="true" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/canvas.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="42">
+                  <caret line="291" column="28" lean-forward="true" selection-start-line="291" selection-start-column="28" selection-end-line="291" selection-end-column="28" />
+                  <folding>
+                    <marker date="1487531076439" expanded="true" signature="7283:7294" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/js/components2.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1149">
+                  <caret line="309" column="0" lean-forward="false" selection-start-line="309" selection-start-column="0" selection-end-line="309" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -73,19 +150,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>findWires</find>
-      <find>cloneSele</find>
-      <find>cloneSelec</find>
-      <find>class</find>
-      <find>ondbl</find>
-      <find>cloneWire</find>
-      <find>cloneSel</find>
-      <find>moveSelectio</find>
-      <find>moveComp</find>
-      <find>dragging.port</find>
-      <find>onmouseup</find>
-      <find>Beep</find>
-      <find>context</find>
       <find>contextMenu.show</find>
       <find>shadowBl</find>
       <find>const</find>
@@ -103,6 +167,19 @@
       <find>Delay</find>
       <find>console</find>
       <find>usech</find>
+      <find>cloneWi</find>
+      <find>connectW</find>
+      <find>cloneSel</find>
+      <find>clone</find>
+      <find>findWiresIn</find>
+      <find>findWires</find>
+      <find>cloneSe</find>
+      <find>delay</find>
+      <find>Clock</find>
+      <find>pos[</find>
+      <find>pos[j]</find>
+      <find>findComponents</find>
+      <find>findWiresI</find>
     </findStrings>
     <replaceStrings>
       <replace>openproject</replace>
@@ -172,17 +249,17 @@
         <option value="$PROJECT_DIR$/js/customComponentToolbar.js" />
         <option value="$PROJECT_DIR$/performance.html" />
         <option value="$PROJECT_DIR$/js/contextmenu2.js" />
-        <option value="$PROJECT_DIR$/js/canvas.js" />
         <option value="$PROJECT_DIR$/js/socket.js" />
-        <option value="$PROJECT_DIR$/js/componentUpdates.js" />
         <option value="$PROJECT_DIR$/css/pws.css" />
-        <option value="$PROJECT_DIR$/js/localStorage2.js" />
         <option value="$PROJECT_DIR$/js/console.js" />
-        <option value="$PROJECT_DIR$/js/components2.js" />
-        <option value="$PROJECT_DIR$/js/dialogs.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/pws.html" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/js/localStorage2.js" />
+        <option value="$PROJECT_DIR$/js/dialogs.js" />
+        <option value="$PROJECT_DIR$/js/canvas.js" />
         <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/js/componentUpdates.js" />
+        <option value="$PROJECT_DIR$/js/components2.js" />
       </list>
     </option>
   </component>
@@ -211,10 +288,9 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1981" />
-    <option name="y" value="24" />
-    <option name="width" value="1859" />
-    <option name="height" value="1056" />
+    <option name="x" value="1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -235,7 +311,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -278,6 +353,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -293,7 +369,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="C:\Program Files\nodejs\node" />
     <property name="js.eslint.eslintPackage" value="" />
-    <property name="SearchEverywhereHistoryKey" value="pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/pws.html&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/localStorage2.js&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/dialogs.js&#10;cons&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/console.js&#10;conso&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/console.js&#10;upd&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/js/contextmenu2.js&#10;custom&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/customComponentToolbar.js&#10;und&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/undo.js&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;debug&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/debug.js&#10;keys&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/index.html&#10;cloneCom&#9;null&#9;null&#10;ke&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;dialo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/dialogs.js&#10;canvas&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/canvas.js&#10;clipb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/clipbord.js&#10;upda&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/popup.js&#10;compon&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/components2.js&#10;deb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/debug.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/css/style.css&#10;clipbor&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/clipbord.js&#10;cl&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/client/js/clipbord.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/server (Node.js)/main.js&#10;cust&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;actio&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;action&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;actop&#9;null&#9;null&#10;loca&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;lo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;contex&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;tool&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;lip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;DIA&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;sty&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js" />
+    <property name="SearchEverywhereHistoryKey" value="dialo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/dialogs.js&#10;upda&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;pws&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/pws.html&#10;local&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/localStorage2.js&#10;dial&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/dialogs.js&#10;cons&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/console.js&#10;conso&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/console.js&#10;upd&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;conte&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/js/contextmenu2.js&#10;custom&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/customComponentToolbar.js&#10;und&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/undo.js&#10;key&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;com&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/componentUpdates.js&#10;debug&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/debug.js&#10;keys&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;index&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/index.html&#10;cloneCom&#9;null&#9;null&#10;ke&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/keys.js&#10;canvas&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/canvas.js&#10;clipb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/clipbord.js&#10;pop&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/popup.js&#10;compon&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/components2.js&#10;deb&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/debug.js&#10;styl&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/css/style.css&#10;clipbor&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/BOOLR/js/clipbord.js&#10;cl&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/client/js/clipbord.js&#10;main&#9;FILE&#9;file:///home/ggbrw/Documents/BOOLR/server (Node.js)/main.js&#10;cust&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/customComponentToolbar.js&#10;dia&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;actio&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;action&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;actop&#9;null&#9;null&#10;loca&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;lo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;clip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;contex&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;tool&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/toolbar.js&#10;lip&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;DIA&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/dialogs.js&#10;sty&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/css/style.css&#10;tips&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/tips.js&#10;inde&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/index.html&#10;in&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/main.js&#10;ac&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/actions2.js&#10;cli&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/clipbord.js&#10;con&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/contextmenu2.js&#10;saveB&#9;null&#9;null&#10;ocal&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/localStorage2.js&#10;compo&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components.js&#10;comp&#9;FILE&#9;file:///home/ggbrw/Documents/PWS/client/js/components2.js" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
@@ -733,14 +809,9 @@
       <workItem from="1487349052021" duration="829000" />
       <workItem from="1487428777143" duration="5330000" />
       <workItem from="1487438627814" duration="2926000" />
-      <workItem from="1487502248911" duration="9379000" />
-    </task>
-    <task id="LOCAL-00089" summary="update 0.1.196">
-      <created>1485873582498</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1485873582499</updated>
+      <workItem from="1487502248911" duration="9392000" />
+      <workItem from="1487514590629" duration="1304000" />
+      <workItem from="1487517734980" duration="13474000" />
     </task>
     <task id="LOCAL-00090" summary="update 0.1.196">
       <created>1486370904106</created>
@@ -1078,12 +1149,19 @@
       <option name="project" value="LOCAL" />
       <updated>1487509387987</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="update 0.1.241&#10;">
+      <created>1487514099740</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1487514099740</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1200904000" />
+    <option name="totallyTimeSpent" value="1215695000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1095,10 +1173,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1981" y="24" width="1859" height="1056" extended-state="6" />
+    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19096288" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17864583" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1117,6 +1195,26 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270565" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3258595" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32718447" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1592233" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23150106" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17864583" sideWeight="0.49611652" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3265625" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.159375" sideWeight="0.5038835" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -1167,7 +1265,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="25" />
+      <option name="time" value="26" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1263,7 +1361,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="470">
           <caret line="192" column="4" lean-forward="true" selection-start-line="192" selection-start-column="4" selection-end-line="192" selection-end-column="102" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1278,7 +1375,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2952">
           <caret line="123" column="34" lean-forward="false" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1286,7 +1382,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1294,7 +1389,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1303,17 +1397,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2856">
           <caret line="119" column="11" lean-forward="false" selection-start-line="119" selection-start-column="11" selection-end-line="119" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="1066" column="29" lean-forward="true" selection-start-line="1066" selection-start-column="29" selection-end-line="1066" selection-end-column="29" />
-          <folding>
-            <marker date="1487446825358" expanded="true" signature="7283:7294" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1321,17 +1404,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="377">
           <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/componentUpdates.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="16" column="21" lean-forward="false" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-          <folding>
-            <marker date="1487504500923" expanded="true" signature="136:536" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1339,15 +1411,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="593">
           <caret line="216" column="11" lean-forward="false" selection-start-line="216" selection-start-column="11" selection-end-line="216" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="173" column="0" lean-forward="false" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1355,60 +1418,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39">
           <caret line="85" column="24" lean-forward="false" selection-start-line="85" selection-start-column="24" selection-end-line="85" selection-end-column="24" />
-          <folding>
-            <marker date="1487507803967" expanded="true" signature="4282:4566" ph="{...}" />
-            <marker date="1487507803967" expanded="true" signature="4325:4452" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/components2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="1858" column="40" lean-forward="false" selection-start-line="1858" selection-start-column="40" selection-end-line="1858" selection-end-column="40" />
-          <folding>
-            <marker date="1487508040119" expanded="true" signature="50138:50589" ph="{...}" />
-            <marker date="1487508040119" expanded="true" signature="50330:50581" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/dialogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="278" column="0" lean-forward="false" selection-start-line="278" selection-start-column="0" selection-end-line="278" selection-end-column="0" />
-          <folding>
-            <marker date="1487509331991" expanded="true" signature="1917:1933" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="2009:2042" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="2510:2525" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="2649:2662" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="2992:3007" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="3439:3454" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="5065:5080" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="5380:5395" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="5684:5699" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="8171:8186" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="8983:10088" ph="{...}" />
-            <marker date="1487509331991" expanded="true" signature="9141:9156" ph="..." />
-            <marker date="1487509331991" expanded="true" signature="9583:10079" ph="{...}" />
-            <marker date="1487509331991" expanded="true" signature="9674:9779" ph="{...}" />
-            <marker date="1487509331991" expanded="true" signature="14574:14589" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="19" lean-forward="true" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
+        <state relative-caret-position="48">
+          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pws.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="346" column="50" lean-forward="false" selection-start-line="346" selection-start-column="50" selection-end-line="346" selection-end-column="50" />
+        <state relative-caret-position="168">
+          <caret line="7" column="11" lean-forward="true" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1417,10 +1441,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/localStorage2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="291" column="20" lean-forward="false" selection-start-line="291" selection-start-column="20" selection-end-line="291" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/dialogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="290" column="31" lean-forward="false" selection-start-line="290" selection-start-column="31" selection-end-line="290" selection-end-column="31" />
+          <folding>
+            <marker date="1487527687289" expanded="true" signature="1917:1933" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="2009:2042" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="2510:2525" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="2649:2662" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="2992:3007" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="3439:3454" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="5065:5080" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="5380:5395" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="5684:5699" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="8171:8186" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="9141:9156" ph="..." />
+            <marker date="1487527687289" expanded="true" signature="14606:14621" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/canvas.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="291" column="28" lean-forward="true" selection-start-line="291" selection-start-column="28" selection-end-line="291" selection-end-column="28" />
+          <folding>
+            <marker date="1487531076439" expanded="true" signature="7283:7294" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        <state relative-caret-position="600">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/componentUpdates.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="16" column="63" lean-forward="false" selection-start-line="16" selection-start-column="63" selection-end-line="16" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/components2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="293" column="22" lean-forward="false" selection-start-line="293" selection-start-column="22" selection-end-line="293" selection-end-column="22" />
           <folding />
         </state>
       </provider>

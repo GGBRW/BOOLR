@@ -111,9 +111,7 @@ const constructors = {
 function stringify(components = [], wires = [], selection) {
     let stringified = [
         [],     // Component data
-        [],     // Wire data
-        [],     // Selection data
-        []      // Variable data
+        []      // Wire data
     ];
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
@@ -135,7 +133,8 @@ function stringify(components = [], wires = [], selection) {
         for(let i = 0; i < component.input.length; ++i) {
             data.input[i] = {
                 name: component.input[i].name,
-                pos: Object.assign({},component.input[i].pos)
+                pos: Object.assign({},component.input[i].pos),
+                value: component.input[i].value
             }
         }
 
@@ -143,7 +142,8 @@ function stringify(components = [], wires = [], selection) {
         for(let i = 0; i < component.output.length; ++i) {
             data.output[i] = {
                 name: component.output[i].name,
-                pos: Object.assign({},component.output[i].pos)
+                pos: Object.assign({},component.output[i].pos),
+                value: component.output[i].value
             }
         }
 
@@ -217,7 +217,6 @@ function parse(data) {
     const components = data[0] || [];
     const wires = data[1] || [];
     let selection = data[2];
-    const vars = data[3] || {};
 
     for(let i = 0; i < components.length; ++i) {
         const constructor = components[i][0];
@@ -249,6 +248,7 @@ function parse(data) {
         const input = data.input;
         for(let i = 0; i < component.input.length; ++i) {
             component.input[i].name = input[i].name;
+            component.input[i].value = input[i].value;
             component.input[i].pos = input[i].pos;
         }
         delete data.input;
@@ -256,6 +256,7 @@ function parse(data) {
         const output = data.output;
         for(let i = 0; i < component.output.length; ++i) {
             component.output[i].name = output[i].name;
+            component.output[i].value = output[i].value;
             component.output[i].pos = output[i].pos;
         }
         delete data.output;

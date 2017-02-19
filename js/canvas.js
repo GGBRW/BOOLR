@@ -293,20 +293,20 @@ c.onmousedown = function(e) {
                         selecting.w = x - selecting.x;
                         selecting.h = y - selecting.y;
 
-                        selecting.components = findComponentsInSelection(
-                            selecting.x,selecting.y,
-                            selecting.w,
-                            selecting.h
-                        );
-                        selecting.wires = findWiresInSelection2(
-                            selecting.x,selecting.y,
-                            selecting.w,
-                            selecting.h
-                        );
-
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
+
+                selecting.components = findComponentsInSelection(
+                    selecting.x,selecting.y,
+                    x - selecting.x,
+                    y - selecting.y
+                );
+                selecting.wires = findWiresInSelection2(
+                    selecting.x,selecting.y,
+                    x - selecting.x,
+                    y - selecting.y
+                );
             } else {
                 selecting = {
                     x: Math.round(e.x / zoom + offset.x),
@@ -606,6 +606,12 @@ c.onmousemove = function(e) {
                         pos[j].x += dx;
                         pos[j].y += dy;
                     }
+
+                    const intersections = wires[i].intersections;
+                    for(let j = 0; j < intersections.length; ++j) {
+                        intersections[j].x += dx;
+                        intersections[j].y += dy;
+                    }
                 }
             } else if(dragging.component) {
                 const component = dragging.component;
@@ -834,20 +840,20 @@ c.onmouseup = function(e) {
                         selecting.w = Math.round(selecting.w);
                         selecting.h = Math.round(selecting.h);
 
-                        selecting.components = findComponentsInSelection(
-                            selecting.x,selecting.y,
-                            selecting.w,
-                            selecting.h
-                        );
-                        selecting.wires = findWiresInSelection2(
-                            selecting.x,selecting.y,
-                            selecting.w,
-                            selecting.h
-                        );
-
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
+
+                selecting.components = findComponentsInSelection(
+                    selecting.x,selecting.y,
+                    Math.round(selecting.w),
+                    Math.round(selecting.h)
+                );
+                selecting.wires = findWiresInSelection2(
+                    selecting.x,selecting.y,
+                    Math.round(selecting.w),
+                    Math.round(selecting.h)
+                );
             }
         }
         else if(dragging) {
@@ -897,6 +903,13 @@ c.onmouseup = function(e) {
                             pos[j].x += dx / 2.5;
                             pos[j].y += dy / 2.5;
                         }
+
+
+                        const intersections = wires[i].intersections;
+                        for(let j = 0; j < intersections.length; ++j) {
+                            intersections[j].x += dx / 2.5;
+                            intersections[j].y += dy / 2.5;
+                        }
                     }
 
                     if(Math.abs(dx) * zoom > 1 ||
@@ -938,6 +951,13 @@ c.onmouseup = function(e) {
                             for(let j = 0; j < pos.length; ++j) {
                                 pos[j].x = Math.round(pos[j].x);
                                 pos[j].y = Math.round(pos[j].y);
+                            }
+
+
+                            const intersections = wires[i].intersections;
+                            for(let j = 0; j < intersections.length; ++j) {
+                                intersections[j].x = Math.round(intersections[j].x);
+                                intersections[j].y = Math.round(intersections[j].y);
                             }
                         }
 

@@ -288,6 +288,7 @@ dialog.editDelay = function(component,callback) {
         if(isNaN(value)) return;
 
         component.properties.delay = value;
+        callback && callback();
 
         for(let i = 0; i < vars.length; ++i) {
             variables[vars[i]].updates.push(() => {
