@@ -185,7 +185,7 @@ function draw() {
     if(settings.zoomAnimation) {
         offset.x += mouse.screen.x * (1 / zoom - 8 / (zoomAnimation + 7 * zoom));
         offset.y -= mouse.screen.y * (1 / zoom - 8 / (zoomAnimation + 7 * zoom));
-        zoom -= (zoom - zoomAnimation) / 8;
+        zoom = zoom - (zoom - zoomAnimation) / 8;
     } else {
         offset.x = (offset.x + mouse.screen.x * (1 / zoom - 1 / (zoomAnimation)));
         offset.y = (offset.y - mouse.screen.y * (1 / zoom - 1 / (zoomAnimation)));
@@ -444,8 +444,8 @@ c.onmousedown = function(e) {
 
                     if(Math.abs(dx) * zoom > 1 ||
                         Math.abs(dy) * zoom > 1) {
-                        dx -= dx / 2.5;
-                        dy -= dy / 2.5;
+                        dx = dx - dx / 2.5;
+                        dy = dy - dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
@@ -502,8 +502,8 @@ c.onmousedown = function(e) {
 
                     if(Math.abs(dx) * zoom > 1 ||
                        Math.abs(dy) * zoom > 1) {
-                        dx -= dx / 2.5;
-                        dy -= dy / 2.5;
+                        dx = dx - dx / 2.5;
+                        dy = dy - dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
@@ -725,7 +725,7 @@ c.onmousemove = function(e) {
                             y: last.y
                         });
                     }
-                    dx -= Math.sign(dx);
+                    dx = dx - Math.sign(dx);
                 } else {
                     if(prev && last &&
                        last.x == prev.x &&
@@ -737,7 +737,7 @@ c.onmousemove = function(e) {
                             y: last.y + Math.sign(dy)
                         });
                     }
-                    dy -= Math.sign(dy);
+                    dy = dy - Math.sign(dy);
                 }
             }
 
@@ -901,8 +901,8 @@ c.onmouseup = function(e) {
 
                     if(Math.abs(dx) * zoom > 1 ||
                         Math.abs(dy) * zoom > 1) {
-                        dx -= dx / 2.5;
-                        dy -= dy / 2.5;
+                        dx = dx - dx / 2.5;
+                        dy = dy - dy / 2.5;
                         requestAnimationFrame(animate);
                     } else {
                         // Stop animation
@@ -994,8 +994,8 @@ c.onmouseup = function(e) {
 
                         if(Math.abs(Math.round(component.pos.x) - component.pos.x) * zoom > 1 ||
                             Math.abs(Math.round(component.pos.y) - component.pos.y) * zoom > 1) {
-                            dx -= dx / 2.5;
-                            dy -= dy / 2.5;
+                            dx = dx - dx / 2.5;
+                            dy = dy - dy / 2.5;
                             requestAnimationFrame(animate);
                         } else {
                             // Stop animation
@@ -1071,6 +1071,23 @@ c.onmouseup = function(e) {
 
                 if(wire && wire != connecting) {
                     wires.push(connecting);
+
+                    if(connecting.input.length > 0) {
+                        connectWires(
+                            connecting.input[0],
+                            connecting,
+                            true
+                        );
+                        /*
+                         Give the intersection point to the wire with the highest index,
+                         so the intersection point is drawn
+                         */
+                        if(wires.indexOf(connecting) > wires.indexOf(connecting.input[0])) {
+                            connecting.intersections.push(Object.assign({},connecting.pos[0]));
+                        } else {
+                            connecting.input[0].intersections.push(Object.assign({},connecting.pos[0]));
+                        }
+                    }
 
                     connectWires(connecting, wire, true);
                     if(wires.indexOf(connecting) > wires.indexOf(wire)) {

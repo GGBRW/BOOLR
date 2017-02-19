@@ -303,7 +303,9 @@ function connect(from, to, wire, undoable = false) {
         from.connection = wire;
         wire.from = from;
 
-        updateQueue.push(from.component.update.bind(from.component));
+        updateQueue.push({
+            f: from.component.update.bind(from.component)
+        });
     }
 
     if(undoable) {
@@ -423,8 +425,8 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
                         y: wire.pos.slice(-2)[0].y + sdy
                     }
                 );
-                dx -= sdx;
-                dy -= sdy;
+                dx = dx - sdx;
+                dy = dy - sdy;
             }
         }
     }
@@ -465,8 +467,8 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
                         y: wire.pos[1].y + sdy
                     }
                 );
-                dx -= sdx;
-                dy -= sdy;
+                dx = dx - sdx;
+                dy = dy - sdy;
             }
         }
     }
@@ -679,8 +681,8 @@ function moveSelection(
                             y: wire.pos.slice(-2)[0].y + sdy
                         }
                     );
-                    wdx -= sdx;
-                    wdy -= sdy;
+                    wdx = wdx - sdx;
+                    wdy = wdy - sdy;
                 }
             }
         }
@@ -718,8 +720,8 @@ function moveSelection(
                             y: wire.pos[1].y + sdy
                         }
                     );
-                    wdx -= sdx;
-                    wdy -= sdy;
+                    wdx = wdx - sdx;
+                    wdy = wdy - sdy;
                 }
             }
         }
@@ -1326,7 +1328,9 @@ class Component {
 
         for(let i = 0; i < wires.length; ++i) {
             //wires[i].update(values[i]);
-            updateQueue.push(wires[i].update.bind(wires[i],values[i]));
+            updateQueue.push({
+                f: wires[i].update.bind(wires[i],values[i])
+            });
         }
     }
 
@@ -1779,10 +1783,14 @@ class Delay extends Component {
         this.lastUpdate = new Date;
 
         const value = this.input[0].value;
-        setTimeout(() => {
-            this.output[0].value = value;
-            this.output[0].connection && this.output[0].connection.update(value);
-        }, this.properties.delay);
+        updateQueue.push({
+            f: () => {
+                this.output[0].value = value;
+                this.output[0].connection && this.output[0].connection.update(value);
+            },
+            delay: this.properties.delay,
+            start: new Date
+        });
     }
 
     draw() {
@@ -1815,7 +1823,7 @@ class Delay extends Component {
         ctx.stroke();
 
         const dTime = new Date - this.lastUpdate;
-        if(dTime > 0 && dTime - 0 < this.properties.delay) {
+        if(this.output[0].value == 0 && dTime > 0 && dTime < this.properties.delay) {
             const ratio = Math.min(dTime / this.properties.delay, 1);
             ctx.fillStyle = "#ddd";
             ctx.fillRect(
@@ -2285,8 +2293,8 @@ class Display extends Component {
         ctx.stroke();
 
         // Draw display segments
-        x -= zoom / 2;
-        y -= zoom / 2;
+        x = x - zoom / 2;
+        y = y - zoom / 2;
         const hOffset = this.width / 8 * zoom;
         const vOffset = this.width / 8 / 2 / (this.width - 1) * this.height * zoom;
         const lineWidth = this.lineWidth * this.height * zoom;
@@ -2555,7 +2563,9 @@ class Merger extends Component {
             port.value = this.value;
 
             const wire = port.connection;
-            updateQueue.push(wire.update.bind(wire,this.value));
+            updateQueue.push({
+                f: wire.update.bind(wire,this.value)
+            });
         }
     }
 
@@ -2941,20 +2951,6 @@ class Custom extends Component {
             const screen = { x,y };
             const pos = this.output[i].pos;
 
-            // let ox = x;
-            // let oy = y;
-            // const angle = Math.PI / 2 * pos.side;
-            // if(Math.sin(angle) == 1) ox += (this.width - 1) * zoom;
-            // if(Math.cos(angle) == -1) oy += (this.height - 1) * zoom;
-            // ox += Math.sin(angle) / 2 * zoom;
-            // oy -= Math.cos(angle) / 2 * zoom;
-            //
-            // if(pos.side == 2) ox += (this.width - 1) * zoom;
-            // if(pos.side == 3) oy += (this.height - 1) * zoom;
-            //
-            // ox += Math.sin(angle + Math.PI / 2) * pos.pos * zoom;
-            // oy -= Math.cos(angle + Math.PI / 2) * pos.pos * zoom;
-
             const angle = Math.PI / 2 * pos.side;
             screen.x += Math.sin(angle) * zoom;
             screen.y -= Math.cos(angle) * zoom;
@@ -3078,7 +3074,9 @@ class Wire {
                 // } else {
                 //     wire.update && wire.update(this.value, this);
                 // }
-                wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
+                wire.update && updateQueue.push({
+                    f: wire.update.bind(wire,this.value,this)
+                });
             }
         }
 
@@ -3090,7 +3088,9 @@ class Wire {
             // } else {
             //     this.to.component && this.to.component.update();
             // }
-            this.to.component && updateQueue.push(this.to.component.update.bind(this.to.component));
+            this.to.component && updateQueue.push({
+                f: this.to.component.update.bind(this.to.component)
+            });
         }
     }
 
@@ -3183,7 +3183,9 @@ class CompressedWire {
 
         if(this.to) {
             this.to.value = value;
-            updateQueue.push(this.to.component.update.bind(this.to.component));
+            updateQueue.push({
+                f: this.to.component.update.bind(this.to.component)
+            });
         }
     }
 

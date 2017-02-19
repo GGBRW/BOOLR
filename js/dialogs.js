@@ -275,11 +275,26 @@ dialog.editDelay = function(component,callback) {
 
     dialog.addOption("Cancel");
     dialog.addOption("OK",  () => {
-        if(!isNaN(input.value)) {
-            component.properties.delay = +input.value;
-            callback && callback();
+        let str = input.value;
+
+        const vars = str.match(/[a-z]+/g) || [];
+        for(let i = 0; i < vars.length; ++i) {
+            str = str.replace(
+                new RegExp(vars[i],"g"),
+                "variables['" + vars[i] + "'].value"
+            );
+            if(variables[vars[i]].value == undefined) return;
         }
-    });
+
+        component.properties.delay = eval(str);
+
+        for(let i = 0; i < vars.length; ++i) {
+            variables[vars[i]].updates.push(() => {
+                component.properties.delay = eval(str);
+            });
+        }
+    }
+    );
 }
 
 dialog.editPort = function(port) {

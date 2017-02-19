@@ -2,10 +2,11 @@ const Console = document.querySelector("#console");
 Console.input = document.querySelector("#console #input");
 Console.messages = document.querySelector("#console #messages");
 
+let variables = {};
+
 Console.show = function() {
     this.style.display = "block";
     this.style.left = 0;
-    Console.style.top = userList.clientHeight + 20;
 }
 
 Console.hide = function() {
@@ -89,6 +90,34 @@ Console.input.onkeydown = function(e) {
                 }
                 Console.messages.innerHTML +=
                     "<div class='output'>" + list + "</div>";
+                break;
+            case "set":
+                if((args[0].match(/[a-z]+/g) || []) != args[0]) {
+                    Console.error(args[0] + ": not a valid variable name");
+                } else if(!variables[args[0]]) {
+                    variables[args[0]] = {
+                        value: isNaN(args[1]) ? args[1] : +args[1],
+                        updates: []
+                    };
+                    Console.messages.innerHTML += "<div class='output'>" + args[1] + "</div>";
+                } else {
+                    const variable = variables[args[0]];
+                    variable.value = isNaN(args[1]) ? args[1] : +args[1];
+
+                    for(let i = 0; i < variable.updates.length; ++i) {
+                        variable.updates[i]();
+                    }
+
+                    Console.messages.innerHTML += "<div class='output'>" + args[1] + "</div>";
+                }
+                break;
+            case "get":
+                const value = variables[args[0]].value;
+                if(value == undefined) {
+                    Console.error("Variable " + args[0] + " not found");
+                } else {
+                    Console.messages.innerHTML += "<div class='output'>" + value + "</div>";
+                }
                 break;
             default:
                 Console.error("Command not found: \"" + command + "\"");

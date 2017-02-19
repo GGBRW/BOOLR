@@ -111,7 +111,9 @@ const constructors = {
 function stringify(components = [], wires = [], selection) {
     let stringified = [
         [],     // Component data
-        []      // Wire data
+        [],     // Wire data
+        [],     // Selection data
+        []      // Variable data
     ];
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
@@ -215,6 +217,7 @@ function parse(data) {
     const components = data[0] || [];
     const wires = data[1] || [];
     let selection = data[2];
+    const vars = data[3] || {};
 
     for(let i = 0; i < components.length; ++i) {
         const constructor = components[i][0];
@@ -421,7 +424,7 @@ function readFile(input) {
             addSelection(
                 clone.components,
                 clone.wires
-            )
+            );
         // } catch(e) {
         //     throw new Error("Error reading save file");
         // }

@@ -118,14 +118,13 @@ canvas {
 
 #console {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: -400px;
     background: #111;
-    opacity: .95;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
-    border-radius: 5px;
+    border-radius: 0 5px 0 0;
     width: 400px;
-    height: 100%;
+    height: 60%;
     color: #ddd;
 }
 
@@ -166,7 +165,7 @@ canvas {
     width: 80%;
     font-family: "Monospaced";
     font-size: 15px;
-    color: #ddd;
+    color: #fff;
     text-align: left;
     outline: none;
 }
@@ -215,11 +214,12 @@ canvas {
 #console #input:before {
     content: '> ';
     position: absolute;
+    top: 18px;
     left: 10px;
-    font-family: Consolas;
-    font-size: 18px;
+    font-family: Monospaced;
+    font-size: 20px;
     font-weight: 800;
-    color: #143d70;
+    color: #04f;
 }
 
 /* Chat */
