@@ -1879,6 +1879,18 @@ class Delay extends Component {
             );
         }
 
+        // Draw the delay value of the component in the bottom left corner
+        if(this.properties.delay && zoom > 30) {
+            ctx.textAlign = "left";
+            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.properties.delay + " ms",
+                x - .5 * zoom + zoom / 15,
+                y + this.height * zoom - .63 * zoom
+            );
+        }
+
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
             const screen = { x,y };

@@ -277,7 +277,7 @@ dialog.editDelay = function(component,callback) {
     dialog.addOption("OK",  () => {
         let str = input.value;
 
-        const vars = str.match(/[a-z]+/g) || [];
+        const vars = str.match(/[a-zA-Z'`´_-]+/g) || [];
         for(let i = 0; i < vars.length; ++i) {
             str = str.replace(
                 new RegExp(vars[i],"g"),

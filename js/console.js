@@ -92,7 +92,7 @@ Console.input.onkeydown = function(e) {
                     "<div class='output'>" + list + "</div>";
                 break;
             case "set":
-                if((args[0].match(/[a-z]+/g) || []) != args[0]) {
+                if((args[0].match(/[a-zA-Z'`´_-]+/g) || []) != args[0]) {
                     Console.error(args[0] + ": not a valid variable name");
                 } else if(!variables[args[0]]) {
                     variables[args[0]] = {
