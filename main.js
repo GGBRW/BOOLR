@@ -2,7 +2,8 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
-app.disableHardwareAcceleration();
+//app.disableHardwareAcceleration();
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
 
 let win;
 
@@ -18,11 +19,6 @@ function createWindow () {
         protocol: 'file:',
         slashes: true
     }));
-
-    win.webContents.on('paint', (event, dirty, image) => {
-        // updateBitmap(dirty, image.getBitmap())
-    });
-    win.webContents.setFrameRate(60);
 
     win.on('closed', () => {
         win = null
