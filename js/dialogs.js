@@ -278,15 +278,16 @@ dialog.editDelay = function(component,callback) {
         let str = input.value;
 
         const vars = str.match(/[a-zA-Z'`´_-]+/g) || [];
-        for(let i = 0; i < vars.length; ++i) {
-            str = str.replace(
-                new RegExp(vars[i],"g"),
-                "variables['" + vars[i] + "'].value"
-            );
-            if(variables[vars[i]].value == undefined) return;
-        }
 
-        component.properties.delay = eval(str);
+        str = str.replace(
+            /[a-zA-Z'`´_-]+/g,
+            "variables['$&'].value"
+        );
+
+        const value = eval(str);
+        if(isNaN(value)) return;
+
+        component.properties.delay = value;
 
         for(let i = 0; i < vars.length; ++i) {
             variables[vars[i]].updates.push(() => {
