@@ -537,15 +537,15 @@ canvas {
     position: fixed;
     top: 0;
     right: 0;
-    background: #ddd;
+    background: #111;
     opacity: .95;
-    font-family: "Monospaced";
-    font-size: 13px;
+    font-family: "Ubuntu", Arial;
+    font-size: 14px;
     -font-weight: 600;
-    color: #111;
+    color: #ddd;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,.25);
-    border-radius: 5px;
+    border-radius: 0 0 0 5px;
     pointer-events: none;
     z-index: 2;
 }

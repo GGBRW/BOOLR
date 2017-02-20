@@ -3,15 +3,15 @@ debugInfo.addLine = function(name,val) {
     let value = document.createElement("span");
     switch(typeof val) {
         case "number":
-            value.style.color = "#555";
+            value.style.color = "#888";
             break;
         case "string":
-            value.style.color = "#555";
+            value.style.color = "#888";
             value.style.fontStyle = "italic";
             break;
         case "boolean":
-            if(val) value.style.color = "#050";
-            else value.style.color = "#500";
+            if(val) value.style.color = "#080";
+            else value.style.color = "#800";
             value.style.fontWeight = 800;
             break;
     }

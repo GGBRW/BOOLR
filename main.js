@@ -11,7 +11,7 @@ function createWindow () {
     win = new BrowserWindow({
         width: 1920,
         height: 1080,
-        icon: "./img/icon.png"
+        icon: __dirname + '/icon.ico'
     });
 
     win.loadURL(url.format({

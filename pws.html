@@ -75,10 +75,8 @@
             document.querySelector("#menuopen").onclick = function() {
                 if(menu.style.opacity == "0") {
                     menu.show();
-                    this.innerHTML = "keyboard_arrow_down";
                 } else {
                     menu.hide();
-                    this.innerHTML = "keyboard_arrow_up";
                 }
             }
         </script>
@@ -98,11 +96,15 @@
                 menu.show = function() {
                     this.style.opacity = 1;
                     this.style.bottom = 30;
+
+                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_down";
                 }
 
                 menu.hide = function() {
                     this.style.opacity = 0;
                     this.style.bottom = -300;
+
+                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_up";
                 }
             </script>
         </ul>
