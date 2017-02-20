@@ -113,6 +113,7 @@ function stringify(components = [], wires = [], selection) {
         [],     // Component data
         []      // Wire data
     ];
+
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
 

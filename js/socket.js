@@ -44,8 +44,21 @@ function connectToSocket(url) {
 
                 addSelection(
                     clone.components,
-                    clone.wires
+                    clone.wires,
+                    undefined,undefined,undefined,
+                    false,
+                    false
                 );
+                break;
+            case "add":
+                console.log("add");
+                try {
+                    const parsed = parse(msg.data);
+                    components.push(...parsed.components);
+                    wires.push(...parsed.wires);
+                } catch(e) {
+                    console.warn("Could not parse data from server " + e);
+                }
                 break;
         }
     }

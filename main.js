@@ -5,23 +5,29 @@ const url = require('url');
 //app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
 
-let win;
+let window;
 
 function createWindow () {
-    win = new BrowserWindow({
-        width: 1920,
-        height: 1080,
-        icon: __dirname + '/icon.ico'
+    window = new BrowserWindow({
+        width: 1200,
+        height: 800,
+        icon: __dirname + '/icon.png',
+        show: false
     });
 
-    win.loadURL(url.format({
+    window.loadURL(url.format({
         pathname: path.join(__dirname, 'pws.html'),
         protocol: 'file:',
         slashes: true
     }));
 
-    win.on('closed', () => {
-        win = null
+    window.once('ready-to-show', () => {
+        window.maximize();
+        window.show();
+    });
+
+    window.on('closed', () => {
+        window = null
     });
 }
 
@@ -34,7 +40,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-    if (win === null) {
+    if (window === null) {
         createWindow()
     }
 });

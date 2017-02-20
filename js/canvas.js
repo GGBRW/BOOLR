@@ -295,7 +295,6 @@ c.onmousedown = function(e) {
                         selecting.w = x - selecting.x;
                         selecting.h = y - selecting.y;
 
-                        console.log(selecting.components,selecting.wires);
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
@@ -854,7 +853,6 @@ c.onmouseup = function(e) {
                         selecting.w = Math.round(selecting.w);
                         selecting.h = Math.round(selecting.h);
 
-                        console.log(selecting.components,selecting.wires);
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();

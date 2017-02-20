@@ -15,7 +15,8 @@ function add(
     x = component.pos.x,
     y = component.pos.y,
     force = false,
-    undoable = false
+    undoable = false,
+    sendToSocket = true
 ) {
     if(!findPortByPos(x,y) && !findWireByPos(x,y) || force) {
         components.push(component);
@@ -28,6 +29,13 @@ function add(
 
                 redoStack.push(add.bind(redoCaller,...arguments));
             });
+        }
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "add",
+                data: stringify([component])
+            }));
         }
 
         return true;
@@ -49,7 +57,8 @@ function addSelection(
     selection,
     x,
     y,
-    undoable = false
+    undoable = false,
+    sendToSocket = true
 ) {
     window.components.push(...components);
 
@@ -110,6 +119,13 @@ function addSelection(
             redoStack.push(addSelection.bind(redoCaller,...arguments));
         });
     }
+
+    if(socket && sendToSocket) {
+        socket.send(JSON.stringify({
+            type: "add",
+            data: stringify([...components],[...wires])
+        }));
+    }
 }
 
 /*
@@ -118,6 +134,8 @@ Removes component from the board
  */
 function removeComponent(component,undoable = false) {
     if(!component) return;
+
+    const wiresOld = [...wires];
 
     const removedWires = [];
 
@@ -142,6 +160,16 @@ function removeComponent(component,undoable = false) {
     delete component.delay;
 
     const index = components.indexOf(component);
+
+    const wireIndexes = removedWires.map(i => wiresOld.indexOf(i));
+
+    if(socket && sendToSocket) {
+        socket.send(JSON.stringify({
+            type: "remove",
+            data: JSON.stringify([index],wireIndexes)
+        }));
+    }
+
     index > -1 && components.splice(index,1);
 
     if(undoable) {
@@ -730,6 +758,11 @@ function moveSelection(
         for(let j = 0; j < wire.pos.length; ++j) {
             wire.pos[j].x += dx;
             wire.pos[j].y += dy;
+        }
+
+        for(let j = 0; j < wire.intersections.length; ++j) {
+            wire.intersections[j].x += dx;
+            wire.intersections[j].y += dy;
         }
     }
 
