@@ -192,6 +192,8 @@ function draw() {
         zoom = zoomAnimation;
     }
 
+    //tick();
+
     // Framerate berekenen
     framerate = 1000 / (new Date - lastFrame);
     lastFrame = new Date;
@@ -293,6 +295,7 @@ c.onmousedown = function(e) {
                         selecting.w = x - selecting.x;
                         selecting.h = y - selecting.y;
 
+                        console.log(selecting.components,selecting.wires);
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
@@ -829,6 +832,17 @@ c.onmouseup = function(e) {
                 //selecting = null;
                 return;
             } else {
+                selecting.components = findComponentsInSelection(
+                    selecting.x,selecting.y,
+                    Math.round(selecting.w),
+                    Math.round(selecting.h)
+                );
+                selecting.wires = findWiresInSelection2(
+                    selecting.x,selecting.y,
+                    Math.round(selecting.w),
+                    Math.round(selecting.h)
+                );
+
                 (function animate() {
                     selecting.w += (Math.round(selecting.w) - selecting.w) / 4;
                     selecting.h += (Math.round(selecting.h) - selecting.h) / 4;
@@ -840,20 +854,10 @@ c.onmouseup = function(e) {
                         selecting.w = Math.round(selecting.w);
                         selecting.h = Math.round(selecting.h);
 
+                        console.log(selecting.components,selecting.wires);
                         contextMenu.show(selecting.x + selecting.w,selecting.y + selecting.h);
                     }
                 })();
-
-                selecting.components = findComponentsInSelection(
-                    selecting.x,selecting.y,
-                    Math.round(selecting.w),
-                    Math.round(selecting.h)
-                );
-                selecting.wires = findWiresInSelection2(
-                    selecting.x,selecting.y,
-                    Math.round(selecting.w),
-                    Math.round(selecting.h)
-                );
             }
         }
         else if(dragging) {

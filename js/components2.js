@@ -303,9 +303,7 @@ function connect(from, to, wire, undoable = false) {
         from.connection = wire;
         wire.from = from;
 
-        updateQueue.push({
-            f: from.component.update.bind(from.component)
-        });
+        updateQueue.push(from.component.update.bind(from.component));
     }
 
     if(undoable) {
@@ -1347,9 +1345,7 @@ class Component {
 
         for(let i = 0; i < wires.length; ++i) {
             //wires[i].update(values[i]);
-            updateQueue.push({
-                f: wires[i].update.bind(wires[i],values[i])
-            });
+            updateQueue.push(wires[i].update.bind(wires[i],values[i]));
         }
     }
 
@@ -1802,14 +1798,12 @@ class Delay extends Component {
         this.lastUpdate = new Date;
 
         const value = this.input[0].value;
-        updateQueue.push({
-            f: () => {
+        setTimeout(() => updateQueue.push(
+            () => {
                 this.output[0].value = value;
                 this.output[0].connection && this.output[0].connection.update(value);
-            },
-            delay: this.properties.delay,
-            start: new Date
-        });
+            }
+        ), this.properties.delay);
     }
 
     draw() {
@@ -2036,26 +2030,13 @@ class Clock extends Component {
     }
 
     tick() {
-        updateQueue.push({
-            f: () => {
-                this.value = 1 - this.value;
-                this.output[0].value = this.value;
-                this.output[0].connection && this.output[0].connection.update(this.value);
-                this.tick();
-            },
-            delay: this.properties.delay,
-            start: new Date
-        });
+        this.value = 1 - this.value;
+        this.update();
+        this.properties.delay && setTimeout(
+            () => updateQueue.push(this.tick.bind(this)),
+            this.properties.delay
+        );
     }
-
-    // tick() {
-    //     this.value = 1 - this.value;
-    //     this.update();
-    //     this.properties.delay && setTimeout(
-    //         this.tick.bind(this),
-    //         this.properties.delay
-    //     );
-    // }
 
     function() {
         this.output[0].value = this.value;
@@ -2607,9 +2588,7 @@ class Merger extends Component {
             port.value = this.value;
 
             const wire = port.connection;
-            updateQueue.push({
-                f: wire.update.bind(wire,this.value)
-            });
+            updateQueue.push(wire.update.bind(wire,this.value));
         }
     }
 
@@ -3084,57 +3063,48 @@ class Wire {
 
     updateValue(value = 0,from) {
         if(value == 1) {
-            this.value = 1;
+            value = 1;
         } else if(this.from && this.from.value == 1) {
-            this.value = 1;
+            value = 1;
         } else if(this.input.find(wire => wire != from && wire.value == 1)) {
+            const input = this.input.map(wire => wire.value);
 
-            const wire = this.input.find(wire => wire.input.includes(this));
-            if(wire) {
-                wire.updateValue(value,this);
+            for(let i = 0; i < this.input.length; ++i) {
+                if(this.input[i].input.includes(this)) {
+                    input[i] = this.input[i].updateValue(value,this);
+                }
             }
-            if(this.input.find(wire => wire.value == 1)) {
-                this.value = 1;
+
+            if(input.indexOf(1) > -1) {
+                value = 1;
             } else {
-                this.value = 0;
+                value = 0;
             }
         } else {
-            this.value = 0;
+            value = 0;
         }
+
+        return value;
     }
 
     update(value,from) {
         if(this.input.length > 0) {
-            this.updateValue(value, from);
-        } else {
-            this.value = value;
+            value = this.updateValue(value, from);
         }
+
+        if(this.value == value) return;
+        this.value = value;
 
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire != from) {
-                // if(Math.random() < .01) {
-                //     setTimeout(() => { wire.update && wire.update(this.value, this) });
-                // } else {
-                //     wire.update && wire.update(this.value, this);
-                // }
-                wire.update && updateQueue.push({
-                    f: wire.update.bind(wire,this.value,this)
-                });
+                wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
             }
         }
 
         if(this.to && this.to.value != this.value) {
             this.to.value = this.value;
-
-            // if(Math.random() < .01) {
-            //     setTimeout(() => { this.to.component && this.to.component.update(); });
-            // } else {
-            //     this.to.component && this.to.component.update();
-            // }
-            this.to.component && updateQueue.push({
-                f: this.to.component.update.bind(this.to.component)
-            });
+            this.to.component && updateQueue.push(this.to.component.update.bind(this.to.component));
         }
     }
 
@@ -3227,9 +3197,7 @@ class CompressedWire {
 
         if(this.to) {
             this.to.value = value;
-            updateQueue.push({
-                f: this.to.component.update.bind(this.to.component)
-            });
+            updateQueue.push(this.to.component.update.bind(this.to.component));
         }
     }
 

@@ -2,30 +2,26 @@ var updateQueue = [];
 
 let lastTick = new Date;
 let ticksPerSecond = 0;
-let updates = 0;
 
 let pauseSimulation = false;
+let updates;
+
 
 function tick() {
     const start = new Date;
+    updates = 0;
 
-    const delayQueue = [];
-
-    while(updateQueue.length > 0 && new Date - start < 17 && !pauseSimulation) {
-        const update = updateQueue.splice(0,1)[0];
-
-        if(update.delay != undefined && new Date - update.start < update.delay) {
-            delayQueue.push(update);
-            continue;
-        }
-        update.f();
+    while(updateQueue.length > 0 && updates < 10000 && !pauseSimulation) {
+        updateQueue.splice(0,1)[0]();
+        ++updates;
     }
-
-
-    updateQueue.push(...delayQueue);
 
     ticksPerSecond = 1000 / (new Date - lastTick);
     lastTick = new Date;
 }
 
 setInterval(tick);
+
+
+// 500ms : 1:39
+// 250ms : 56

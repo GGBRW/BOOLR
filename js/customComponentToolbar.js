@@ -11,6 +11,8 @@ customComponentToolbar.querySelector(".close").onmouseup = function() {
     offset = data.offset;
     zoom = zoomAnimation = data.zoom;
 
+    customComponentToolbar.querySelector("#name").innerHTML = path.slice(1).map(a => a.name).join(" > ");
+
     if(path.length < 2) customComponentToolbar.hide();
 
     c.focus();
