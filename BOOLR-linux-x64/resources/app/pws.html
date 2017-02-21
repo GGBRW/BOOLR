@@ -1,0 +1,428 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>BOOLR | New Project</title>
+
+        <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+        <link rel="stylesheet" href="css/pws.css">
+    </head>
+    <body>
+        <!-- Preload canvas fonts -->
+        <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
+
+        <canvas id="canvas" tabindex="1"></canvas>
+
+        <!-- Console -->
+        <div id="console">
+            <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
+
+            <div id="input" contenteditable="true" spellcheck="false"></div>
+            <div id="messages"></div>
+        </div>
+
+        <!-- Chat -->
+        <input id="chat" spellcheck="false"></input>
+
+        <!-- Notifications -->
+        <ul id="notifications"></ul>
+
+        <!-- Component toolbar -->
+        <div id="toolbar">
+            <div id="toast"></div>
+
+            <div class="slot" tooltip="Input and output ports">I/O</div>
+            <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
+            <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
+            <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
+            <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
+            <div class="slot" tooltip="Custom component" onmousedown="select(Custom)"><i class="material-icons">memory</i></div>
+            <div class="slot" tooltip="Saved components" onmousedown="dialog.savedCustomComponents()"><i class="material-icons">list</i></div>
+
+            <ul id="list" tabindex="1" style="display: none">
+                <li onclick="select(Input)">Input</li>
+                <li onclick="select(Output)">Output</li>
+                <li onclick="select(Button)">Button</li>
+                <li onclick="select(Constant)">Constant</li>
+                <li onclick="select(Key)">Key</li>
+                <li onclick="select(Delay)">Delay</li>
+                <li onclick="select(Clock)">Clock</li>
+                <li onclick="select(LED)">LED</li>
+                <li onclick="select(Display)">Display</li>
+                <li onclick="select(Debug)">Debug</li>
+                <li onclick="select(Beep)">Beep</li>
+                <li onclick="select(Counter)">Counter</li>
+                <li onclick="select(Merger)">Merger</li>
+                <li onclick="select(Splitter)">Splitter</li>
+                <li onclick="select(D2B)">D2B Converter</li>
+                <li onclick="select(BinaryToDecimal)">B2D Converter</li>
+                <li onclick="select(TimerStart)">TimerStart</li>
+                <li onclick="select(TimerEnd)">TimerEnd</li>
+            </ul>
+        </div>
+        <div id="toolbartip"></div>
+
+        <!-- Menu -->
+        <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version"></button>
+        <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
+        <button class="brbtn material-icons" id="menuopen" title="Open menu">keyboard_arrow_up</button>
+
+        <script>
+            document.querySelector("#pause").onclick = function() {
+                pauseSimulation = !pauseSimulation;
+                this.innerHTML = pauseSimulation ? "play_arrow" : "pause";
+            }
+
+            document.querySelector("#menuopen").onclick = function() {
+                if(menu.style.opacity == "0") {
+                    menu.show();
+                } else {
+                    menu.hide();
+                }
+            }
+        </script>
+
+        <ul id="menu">
+           <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>   New board <span>Ctrl+N</span></li>
+           <li onmousedown="dialog.openBoard()"><i class="material-icons" >folder</i>                Open board<span>Ctrl+O</span></li>
+           <li onmousedown="dialog.save()"><i class="material-icons" >save</i>               Save board<span>Ctrl+S</span></li>
+           <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>       Settings<span>Ctrl+Shift+S</span></li>
+           <li onmousedown="dialog.help()"><i class="material-icons">help</i>               Help<span>F1</span></li>
+
+            <script>
+                const menu = document.getElementById("menu");
+                menu.style.opacity = "0";
+                menu.onmousedown = () => setTimeout(menu.hide.bind(menu));
+
+                menu.show = function() {
+                    this.style.opacity = 1;
+                    this.style.bottom = 30;
+
+                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_down";
+                }
+
+                menu.hide = function() {
+                    this.style.opacity = 0;
+                    this.style.bottom = -300;
+
+                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_up";
+                }
+            </script>
+        </ul>
+
+        <!-- Debug info -->
+        <div id="debugInfo"></div>
+
+        <!-- User list -->
+        <div id="userList"></div>
+
+        <!-- Component info -->
+        <div id="componentInfo"></div>
+
+        <!-- Context menu -->
+        <ul id="contextMenu" tabindex="1" oncontextmenu="return false" style="display: none;"></ul>
+
+        <!-- Loading screen -->
+        <div id="loading">Loading...</div>
+
+        <!-- Overlay -->
+        <div id="overlay"></div>
+
+        <!-- Pop-ups -->
+        <!--<div class="popup" id="confirm">-->
+            <!--<h1></h1>-->
+            <!--<p></p>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="prompt">-->
+            <!--<h1>Prompt</h1>-->
+            <!--<p>Text</p>-->
+            <!--<input spellcheck="false">-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="whatsnew">-->
+            <!--<h1></h1>-->
+            <!--<ul>-->
+                <!--<li><i class="material-icons">memory</i> Componentizing selections</li>-->
+            <!--</ul>-->
+            <!--<p style="color: #666; font-size: 14px">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</p>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="custom_component">-->
+            <!--<h1></h1>-->
+            <!--<button class="ok" disabled="true">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="component_list">-->
+            <!--<h1>Component list</h1>-->
+            <!--<p style="font-family: 'Roboto'; font-size: 20px; opacity: .5">Not yet available</p>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="settings">-->
+            <!--<h1>Settings</h1>-->
+            <!--<ul>-->
+                <!--<li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>-->
+                <!--<li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>-->
+                <!--<li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>-->
+                <!--<li><button onclick="-->
+                <!--dialog.confirm(-->
+                    <!--'Are you sure you want to clear all local stored data?',-->
+                    <!--() => { localStorage.pws = ''; window.onbeforeunload = undefined; location.reload() }-->
+                <!--);-->
+                <!--">Clear localStorage</button></li>-->
+            <!--</ul>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="info">-->
+            <!--<h1>Info</h1>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="openproject" style="display: none">-->
+            <!--<h1>Open project</h1>-->
+
+            <!--Upload a project save file or connect to a server:-->
+            <!--<br><br>-->
+
+            <!--<button id="local_btn" class="selected">Local</button>-->
+            <!--<button id="server_btn">Server</button>-->
+            <!--<div id="local">-->
+                <!--<div id="upload_file" ondrop="drop(event)" ondragover="allowDrop(event)">-->
+                    <!--<i class="material-icons">file_upload</i>-->
+                    <!--<p><b onclick="document.getElementById('open_file').click()">Choose a file</b> or drag and drop it here</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="server" style="display: none;">-->
+                <!--<input id="url" placeholder="Enter server url">-->
+                <!--<button onclick="connectToSocket(document.getElementById('url').value); popup.openproject.hide()">Connect</button>-->
+                <!--<ul>-->
+                    <!--<li>ws://188.166.50.187:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                    <!--<li>ws://localhost:3000<button onclick="connectToSocket(this.parentNode.textContent.replace('Connect','')); popup.openproject.hide()">Connect</button></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+
+            <!--<script>-->
+                <!--document.querySelector("#openproject #local_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #server_btn").className = "";-->
+                    <!--document.querySelector("#openproject #local").style.display = "block";-->
+                    <!--document.querySelector("#openproject #server").style.display = "none";-->
+                <!--}-->
+
+                <!--document.querySelector("#openproject #server_btn").onclick = function() {-->
+                    <!--this.className = "selected";-->
+                    <!--document.querySelector("#openproject #local_btn").className = "";-->
+                    <!--document.querySelector("#openproject #server").style.display = "block";-->
+                    <!--document.querySelector("#openproject #local").style.display = "none";-->
+                <!--}-->
+            <!--</script>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="login">-->
+            <!--<h1>Login</h1>-->
+            <!--<p id="wrong" style="display: none; color: #500; font-family: 'Ubuntu'; font-weight: 600">Wrong username/password</p>-->
+            <!--<input id="username" placeholder="Username">-->
+            <!--<br><br>-->
+            <!--<input id="password" placeholder="Password" type="password">-->
+            <!--<button class="ok">Login</button>-->
+            <!--<button id="spectate">Spectate mode</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="color_picker">-->
+            <!--<h1>Color picker</h1>-->
+            <!--<input type="color">-->
+            <!--<br>-->
+            <!--<button class="ok">OK</button>-->
+            <!--<button class="cancel">Cancel</button>-->
+        <!--</div>-->
+
+        <!--<div class="popup" id="connections">-->
+            <!--<h1>Connections</h1>-->
+            <!--<div></div>-->
+            <!--<button class="ok">Close</button>-->
+        <!--</div>-->
+
+        <!-- Dialog -->
+        <div id="over"></div>
+        <div id="dialog" tabindex="0">
+            <h1></h1>
+            <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
+            <div class="container"></div>
+            <div class="options"></div>
+        </div>
+
+        <!-- Open board -->
+        <div id="openboard" style="display: none;">
+            <div id="dropfile" onclick="openFile()" ondrop="drop(event)" ondragover="allowDrop(event); this.style.background = 'rgba(255,255,255,.5)'">
+                <span style="font-size: 20px;">Choose a .board file</span>
+                <br>
+                Or drop a file in this box
+            </div>
+
+            <script>
+                function allowDrop(e) {
+                    e.preventDefault();
+                }
+
+                const drop = e => {
+                    e.preventDefault();
+                    readFile(e.dataTransfer);
+                }
+            </script>
+
+            <br>
+            <span style="text-decoration: underline">Connect to a BOOLR server</span>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" style="display: none;">
+            <ul>
+                <li>
+                    Scroll animation
+                    <label class="switch"><input class="option scrollAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Zoom animation
+                    <label class="switch"><input class="option zoomAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Show debug info
+                    <label class="switch"><input class="option showDebugInfo" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Show component updates
+                    <label class="switch"><input class="option showComponentUpdates" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <br>
+                <button id="reset">Clear localStorage</button>
+            </ul>
+        </div>
+
+        <!-- Waypoints menu -->
+        <ul id="waypointsMenu"></ul>
+
+
+        <!-- Tips -->
+        <div class="tip" id="dragging">
+            <i class="material-icons">lightbulb_outline</i>
+            Press the right mouse button to cancel dragging
+        </div>
+        <div class="tip" id="connecting_ctrl">
+            <i class="material-icons">lightbulb_outline</i>
+            Move the mouse while holding the CTRL-key to scroll while connecting
+        </div>
+        <div class="tip" id="connecting_shift">
+            <i class="material-icons">lightbulb_outline</i>
+            Hold the shift key to draw the wire in a straight line
+        </div>
+        <div class="tip" id="waypoints">
+            <i class="material-icons">lightbulb_outline</i>
+            Press S to set a waypoint, press W to jump to a waypoint
+        </div>
+
+
+        <!-- Hover balloon -->
+        <div id="hoverBalloon"></div>
+
+        <!-- Spectate indicator -->
+        <div id="spectateIndicator">Spectate mode</div>
+
+        <!-- Close button -->
+        <div id="customComponentToolbar">
+            <button class="close material-icons">close</button>
+            <span id="name">Full adder</span>
+            <button class="edit material-icons">edit</button>
+        </div>
+
+        <!-- Use Chrome -->
+        <div id="usechrome">
+            <h1>Please use Chrome to run this application</h1>
+        </div>
+
+        <!-- Scrippies -->
+        <script>
+//            if(!window.chrome) {
+//                document.getElementById("usechrome").style.display = "block";
+//            }
+        </script>
+        <script src="js/components2.js"></script>
+        <script src="js/localStorage2.js"></script>
+        <script src="js/canvas.js"></script>
+        <!--<script src="js/ticker.js"></script>-->
+        <script src="js/componentUpdates.js"></script>
+        <!--script src="js/actions.js"></script-->
+        <!--<script src="js/actions2.js"></script>-->
+        <script src="js/undo.js"></script>
+        <script src="js/clipboard.js"></script>
+        <script src="js/keys.js"></script>
+        <script src="js/chat.js"></script>
+        <script src="js/console.js"></script>
+        <script src="js/notifications.js"></script>
+        <script src="js/toolbar.js"></script>
+        <!--<script src="js/components.js"></script>-->
+        <script src="js/misc.js"></script>
+        <script src="js/debug.js"></script>
+        <script src="js/audio.js"></script>
+        <script src="js/userList.js"></script>
+        <!--<script src="js/contextmenu.js"></script>-->
+        <script src="js/contextmenu2.js"></script>
+        <script src="js/hover.js"></script>
+        <script src="js/customComponentToolbar.js"></script>
+        <script src="js/componentInfo.js"></script>
+        <script src="js/tips.js"></script>
+        <script src="js/popup.js"></script>
+        <script src="js/dialogs.js"></script>
+        <script src="js/stringifier.js"></script>
+        <!--<script src="js/localStorage.js"></script>-->
+        <script src="js/waypoints.js"></script>
+        <script src="js/socket.js"></script>
+        <script>
+            "use strict";
+
+            const VERSION = "0.275";
+            document.getElementById("version").innerHTML = "<i class=\"material-icons\">memory</i>BOOLR v" + VERSION;
+
+            getLocalStorage(localStorage.pwsData);
+
+
+            // Listen for message from main menu window
+            function receiveMessage(e) {
+                // Let the main menu window know we have received the message
+                window.opener.postMessage(null,"*");
+
+                const data = e.data;
+                try {
+                    const parsed = parse(data);
+                    const clone = cloneSelection(parsed.components,parsed.wires);
+                    addSelection(
+                        clone.components,
+                        clone.wires
+                    )
+                } catch(e) {
+                    throw new Error("Error reading save file");
+                }
+            }
+            window.addEventListener("message", receiveMessage, false);
+
+            c.focus();
+
+            //connectToSocket("ws://192.168.0.33:3000");
+
+            updateDebugInfo();
+            setInterval(updateDebugInfo, 500);
+
+            draw();  // 'draw' loop starten
+            //tick(); // 'tick' loop starten
+        </script>
+    </body>
+</html>

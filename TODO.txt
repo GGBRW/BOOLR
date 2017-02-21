@@ -1,11 +1,15 @@
-[FIX] Actions
-[FIX] Draden bij draggen
-[ADD] Edit color bij selecties
-[ADD] Resize
-[BUG] Name overflow
-[ADD] Gebied invouwen 
-[ADD] labels
-[ADD] hints
-[ADD] chat
-[FIX] Replace input port Ctrl z
-[FIX] Numerieke toetsen
+Klok ms
+1 edit menu
+pinnetjes omwisselen
+custom component toolbar
+hoofdmenu
+kruispunten weergeven
+edit menu oude waardes
+contextmenu positie
+variabelen localstorage/onbekende
+delay goede richting
+custom component round
+console design
+custom component zwevende pinnetjes
+custom component create
+kopieren nummer
