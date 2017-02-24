@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cb18ea86-bd2b-4aeb-a82f-4e56dca29df3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/components2.js" afterPath="$PROJECT_DIR$/js/components2.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pws.html" afterPath="$PROJECT_DIR$/pws.html" />
     </list>
     <ignored path="Profielwerkstuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,8 +40,8 @@
           <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/components2.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="658">
-                  <caret line="2866" column="47" lean-forward="true" selection-start-line="2866" selection-start-column="47" selection-end-line="2866" selection-end-column="47" />
+                <state relative-caret-position="178">
+                  <caret line="2846" column="6" lean-forward="true" selection-start-line="2846" selection-start-column="6" selection-end-line="2846" selection-end-column="6" />
                   <folding />
                 </state>
               </provider>
@@ -132,11 +131,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="pws.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="pws.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/pws.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="216">
-                  <caret line="388" column="16" lean-forward="true" selection-start-line="388" selection-start-column="16" selection-end-line="388" selection-end-column="16" />
+                <state relative-caret-position="144">
+                  <caret line="391" column="34" lean-forward="false" selection-start-line="391" selection-start-column="34" selection-end-line="391" selection-end-column="34" />
                   <folding>
                     <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -146,7 +145,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="components2.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="components2.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/components2.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="346">
@@ -280,9 +279,9 @@
         <option value="$PROJECT_DIR$/js/canvas.js" />
         <option value="$PROJECT_DIR$/js/localStorage2.js" />
         <option value="$PROJECT_DIR$/js/keys.js" />
-        <option value="$PROJECT_DIR$/pws.html" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/js/components2.js" />
+        <option value="$PROJECT_DIR$/pws.html" />
       </list>
     </option>
   </component>
@@ -826,7 +825,7 @@
       <workItem from="1487705217252" duration="1156000" />
       <workItem from="1487706477223" duration="397000" />
       <workItem from="1487867579432" duration="6223000" />
-      <workItem from="1487929153863" duration="4274000" />
+      <workItem from="1487929153863" duration="4884000" />
     </task>
     <task id="LOCAL-00093" summary="update 0.1.202">
       <created>1486471776598</created>
@@ -1176,7 +1175,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="1242679000" />
+    <option name="totallyTimeSpent" value="1243289000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1497,18 +1496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pws.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="388" column="16" lean-forward="true" selection-start-line="388" selection-start-column="16" selection-end-line="388" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TODO.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -1519,9 +1506,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/components2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
-          <caret line="2866" column="47" lean-forward="true" selection-start-line="2866" selection-start-column="47" selection-end-line="2866" selection-end-column="47" />
+        <state relative-caret-position="346">
+          <caret line="1234" column="25" lean-forward="false" selection-start-line="1234" selection-start-column="25" selection-end-line="1234" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pws.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="391" column="34" lean-forward="false" selection-start-line="391" selection-start-column="34" selection-end-line="391" selection-end-column="34" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#11;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
