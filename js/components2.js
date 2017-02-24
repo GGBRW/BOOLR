@@ -64,7 +64,18 @@ function addSelection(
 
     for(let i = 0; i < wires.length; ++i) {
         const wire = wires[i];
-        connect(wire.from,wire.to,wire);
+        //connect(wire.from,wire.to,wire);
+
+        if(wire.to) {
+            wire.to.connection = wire;
+        }
+        if(wire.from) {
+            wire.from.connection = wire;
+
+            const component = wire.from.component;
+            updateQueue.unshift(component.update.bind(component));
+        }
+
         for(let i = 0; i < wire.input.length; ++i) {
             connectWires(wire.input[i],wire);
         }
@@ -1076,11 +1087,13 @@ function cloneComponent(component, dx = 0, dy = 0) {
 
         for(let i = 0; i < component.input.length; ++i) {
             clone.input[i].name = component.input[i].name;
+            clone.input[i].value = component.input[i].value;
             clone.input[i].pos = Object.assign({},component.input[i].pos);
         }
 
         for(let i = 0; i < component.output.length; ++i) {
             clone.output[i].name = component.output[i].name;
+            clone.output[i].value = component.output[i].value;
             clone.output[i].pos = Object.assign({},component.output[i].pos);
         }
     } else {
@@ -1088,14 +1101,14 @@ function cloneComponent(component, dx = 0, dy = 0) {
         for(let i = 0; i < component.input.length; ++i) {
             const port = clone.addInputPort();
             port.name = component.input[i].name;
-            //port.value = component.input[i].value;
+            port.value = component.input[i].value;
             port.pos = Object.assign({},component.input[i].pos);
         }
         clone.output = [];
         for(let i = 0; i < component.output.length; ++i) {
             const port = clone.addOutputPort();
             port.name = component.output[i].name;
-            //port.value = component.output[i].value;
+            port.value = component.output[i].value;
             port.pos = Object.assign({},component.output[i].pos);
         }
     }
@@ -1109,7 +1122,7 @@ function cloneComponent(component, dx = 0, dy = 0) {
  */
 function cloneWire(wire, dx = 0, dy = 0) {
     const clone = new Wire();
-    //clone.value = wire.value;
+    clone.value = wire.value;
     clone.pos = wire.pos.map(pos => {
         return { x: pos.x + dx, y: pos.y + dy }
     });
@@ -1176,7 +1189,10 @@ function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
             fromPort.connection = clonedWire;
             clonedWire.from = fromPort;
 
-            fromPort.component.update();
+            const component = fromPort.component;
+
+            // fromPort.component.update();
+            updateQueue.unshift(component.update.bind(component));
         }
 
         clonedWires.push(clonedWire);
@@ -2841,6 +2857,7 @@ class Custom extends Component {
     function() {
         for(let i = 0; i < this.input.length; ++i) {
             const port = this.input[i];
+            console.log(port.value);
             if(port.value != port.inputPort.value) {
                 port.inputPort.value = port.value;
                 port.inputPort.update();
