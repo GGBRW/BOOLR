@@ -133,6 +133,12 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
+        case 80: // P
+            if(e.ctrlKey) {
+                pauseSimulation = !pauseSimulation;
+                document.querySelector("#pause").innerHTML = pauseSimulation ? "play_arrow" : "pause";
+            }
+            break;
         case 82: // R
             if(e.ctrlKey && e.shiftKey) {
                 popup.confirm.show(

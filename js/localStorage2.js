@@ -23,11 +23,13 @@ function setLocalStorage() {
     }
 
     data.version = VERSION;
-    data.clipboard = stringify(
-        clipboard.components,
-        clipboard.wires,
-        clipboard.selection
-    );
+    if(clipboard.components.length || clipboard.wires.length || clipboard.selection) {
+        data.clipboard = stringify(
+            clipboard.components,
+            clipboard.wires,
+            clipboard.selection
+        );
+    }
     data.settings = settings;
     data.tips = tipsData;
 

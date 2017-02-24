@@ -1162,20 +1162,22 @@ function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
         const fromPort = clonedComponents[fromIndex] && clonedComponents[fromIndex].output[fromPortIndex];
         const toPort = clonedComponents[toIndex] && clonedComponents[toIndex].input[toPortIndex];
 
-        connect(
-            fromPort,
-            toPort,
-            clonedWire
-        );
+        // connect(
+        //     fromPort,
+        //     toPort,
+        //     clonedWire
+        // );
 
-        // if(toPort) {
-        //     toPort.connection = clonedWire;
-        //     clonedWire.to = toPort;
-        // }
-        // if(fromPort) {
-        //     fromPort.connection = clonedWire;
-        //     clonedWire.from = fromPort;
-        // }
+        if(toPort) {
+            toPort.connection = clonedWire;
+            clonedWire.to = toPort;
+        }
+        if(fromPort) {
+            fromPort.connection = clonedWire;
+            clonedWire.from = fromPort;
+
+            fromPort.component.update();
+        }
 
         clonedWires.push(clonedWire);
     }
