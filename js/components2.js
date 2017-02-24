@@ -2857,7 +2857,6 @@ class Custom extends Component {
     function() {
         for(let i = 0; i < this.input.length; ++i) {
             const port = this.input[i];
-            console.log(port.value);
             if(port.value != port.inputPort.value) {
                 port.inputPort.value = port.value;
                 port.inputPort.update();
@@ -2865,6 +2864,7 @@ class Custom extends Component {
         }
 
         for(let i = 0; i < this.output.length; ++i) {
+            this.output[i].outputPort.update();
             this.output[i].value = this.output[i].outputPort.value;
         }
     }

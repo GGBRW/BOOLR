@@ -13,3 +13,4 @@ console design
 custom component zwevende pinnetjes
 custom component create
 kopieren nummer
+custom highlight
