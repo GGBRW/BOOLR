@@ -6,9 +6,6 @@ contextMenu.show = function(
 ) {
     if(dragging || connecting) return;
 
-    this.x = x;
-    this.y = y;
-
     this.style.width = "auto";
 
     // Add context options
@@ -28,6 +25,15 @@ contextMenu.show = function(
 
     // Show the context menu on the screen
     this.style.display = "block";
+    this.x = Math.min(
+        x,
+        c.width / zoom + offset.x - (this.clientWidth + 1) / zoom
+    );
+    this.y = Math.max(
+        y - 1 / zoom,
+        -c.height / zoom + offset.y + this.clientHeight / zoom
+    );
+
     setTimeout(() => {
         contextMenu.style.opacity = 1;
         this.style.width = this.clientWidth + 1;

@@ -1,4 +1,4 @@
-Klok ms
+[Klok ms]
 1 edit menu
 pinnetjes omwisselen
 custom component toolbar

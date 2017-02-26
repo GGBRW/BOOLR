@@ -1479,6 +1479,18 @@ class Component {
             );
         }
 
+        // If this component has a delay value, draw the delay value of the component in the bottom left corner
+        if(this.properties.delay && zoom > 30) {
+            ctx.textAlign = "left";
+            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.fillStyle = "#888";
+            ctx.fillText(
+                this.properties.delay + " ms",
+                x - .5 * zoom + zoom / 15,
+                y + this.height * zoom - .63 * zoom
+            );
+        }
+
         // Draw input pins
         for(let i = 0; i < this.input.length; ++i) {
             const screen = { x,y };
@@ -2914,6 +2926,7 @@ class Custom extends Component {
 
         // Draw the frame of the component
         ctx.fillStyle = "#111";
+        ctx.strokeStyle = "#111";
         ctx.lineWidth = zoom / 12 | 0;
         ctx.beginPath();
         ctx.rect(
@@ -2922,6 +2935,7 @@ class Custom extends Component {
             this.width * zoom + zoom / 24,
             this.height * zoom + zoom / 24
         );
+        ctx.stroke();
         ctx.fill();
 
         ctx.textBaseline = "middle";

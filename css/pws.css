@@ -458,6 +458,10 @@ canvas {
     transition: background .2s;
 }
 
+.brbtn:hover {
+    background: #333;
+}
+
 #version {
     right: 6px;
     font-family: "Ubuntu", Arial;
@@ -478,6 +482,11 @@ canvas {
 #menuopen {
     right: 190px;
     padding: 4.5px;
+}
+
+#menuopen .container {
+    transform: rotateZ(0deg);
+    transition: transform .2s;
 }
 
 #pause {
@@ -510,6 +519,7 @@ canvas {
     line-height: 25px;
     height: 25px;
     cursor: pointer;
+    transition: background .2s;
 }
 
 #menu li:hover {
@@ -547,7 +557,7 @@ canvas {
     box-shadow: 0 0 10px rgba(0,0,0,.25);
     border-radius: 0 0 0 5px;
     pointer-events: none;
-    z-index: 2;
+    z-index: 6;
 }
 
 #debugInfo span {
@@ -634,6 +644,7 @@ canvas {
     box-shadow: 0 0 10px rgba(0,0,0,.25);
     outline: none;
     border-radius: 5px;
+    z-index: 5;
 
     opacity: 0;
     transition: opacity .2s;

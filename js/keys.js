@@ -213,6 +213,9 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
+        case 116:
+            location.reload(); // TODO: remove
+            break;
         case 93: // Context menu
             contextMenu.show({ x: mouse.screen.x, y: mouse.screen.y });
             break;

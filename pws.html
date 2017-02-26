@@ -64,7 +64,9 @@
         <!-- Menu -->
         <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version"></button>
         <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
-        <button class="brbtn material-icons" id="menuopen" title="Open menu">keyboard_arrow_up</button>
+        <button class="brbtn material-icons" id="menuopen" title="Open menu">
+            <div class="container">keyboard_arrow_up</div>
+        </button>
 
         <script>
             document.querySelector("#pause").onclick = function() {
@@ -97,14 +99,15 @@
                     this.style.opacity = 1;
                     this.style.bottom = 30;
 
-                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_down";
+                    //document.querySelector("#menuopen").innerHTML = "keyboard_arrow_down";
+                    document.querySelector("#menuopen .container").style.transform = "rotateZ(180deg)";
                 }
 
                 menu.hide = function() {
                     this.style.opacity = 0;
                     this.style.bottom = -300;
 
-                    document.querySelector("#menuopen").innerHTML = "keyboard_arrow_up";
+                    document.querySelector("#menuopen .container").style.transform = "rotateZ(0deg)";
                 }
             </script>
         </ul>
