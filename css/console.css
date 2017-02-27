@@ -1,0 +1,114 @@
+.console {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 460px;
+    width: 360px;
+    background: #111;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 0 5px 0 0;
+    padding: 20px;
+    z-index: 8;
+
+    opacity: 0;
+    transform: scale(.9) translateX(-63px) translateY(150px);
+    transition: opacity .2s, transform .2s, width .2s, height .2s;
+}
+
+::selection {
+    background: rgba(255,255,255,.5);
+    color: #111;
+}
+
+.console .container {
+    height: 95%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.console .container .focused-input .arrow {
+    color: #ddd;
+    position: relative;
+    top: 7px;
+}
+
+.console .container .focused-input input {
+    background: transparent;
+    border: none;
+    padding: 10px 10px 10px 2px;
+    font-family: "Ubuntu Mono", Monospaced;
+    font-size: 18px;
+    color: #ddd;
+    outline: none;
+    width: 90%;
+}
+
+.console .container .input, .console .container .output {
+    padding: 2px 5px;
+    font-family: "Ubuntu Mono", Monospaced;
+    font-size: 18px;
+    color: #ddd;
+}
+
+.console .container .output {
+    color: #888;
+}
+
+.console .container .input:before, .console .container .output:before {
+    content: "keyboard_arrow_right";
+    font-family: "Material-icons";
+    font-size: 24px;
+    color: #888;
+    position: relative;
+    top: 7px;
+    left: -5px;
+}
+
+.console .container .output:before {
+    content: "keyboard_arrow_left";
+}
+
+.console .container .error {
+    background: rgba(255,0,0,.1);
+    color: red;
+    font-family: "Ubuntu", Monospaced;
+    font-size: 15px;
+    padding: 10px 10px 10px 15px;
+    margin-top: 5px;
+    height: 24px;
+    line-height: 12px;
+}
+
+.console .container .error:before {
+    content: "error";
+    font-family: "Material-icons";
+    font-size: 20px;
+    color: red;
+    position: relative;
+    top: 5px;
+    left: -5px;
+}
+
+.console .toolbar {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.console .toolbar button {
+    background: transparent;
+    border: none;
+    color: #888;
+    margin: 0 15px;
+    outline: none;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.console .toolbar button:hover {
+    color: #ddd;
+}
+

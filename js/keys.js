@@ -173,8 +173,7 @@ c.onkeydown = function(e) {
             break;
         case 84: // T
             if(e.shiftKey) {
-                Console.show();
-                Console.input.focus();
+                boolrConsole.show();
             } else {
                 chat.show();
                 chat.focus();

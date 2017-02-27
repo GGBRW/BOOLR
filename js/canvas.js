@@ -243,6 +243,11 @@ window.onbeforeunload = setLocalStorage;
 window.onresize = () => {
     c.height = window.innerHeight;
     c.width = window.innerWidth;
+
+    if(boolrConsole.fullscreen) {
+        boolrConsole.style.height = innerHeight - 40;
+        boolrConsole.style.width = innerWidth - 40;
+    }
 }
 
 window.onerror = function(msg,url,line) {

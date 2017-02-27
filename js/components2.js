@@ -824,7 +824,7 @@ If no component is found, it returns undefined
 @param {number} y
 @return {object} component
  */
-function findComponentByPos(x = mouse.grid.x, y = mouse.grid.y) {
+function findComponentByPos(x = mouse.  grid.x, y = mouse.grid.y) {
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
         if(x >= component.pos.x && x < component.pos.x + component.width &&

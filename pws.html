@@ -5,6 +5,8 @@
 
         <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/pws.css">
+        <link rel="stylesheet" href="css/mainmenu.css">
+        <link rel="stylesheet" href="css/console.css">
     </head>
     <body>
         <!-- Preload canvas fonts -->
@@ -12,16 +14,51 @@
 
         <canvas id="canvas" tabindex="1"></canvas>
 
-        <!-- Console -->
-        <div id="console">
-            <button id="close" onclick="this.parentNode.hide()" class="material-icons">close</button>
+        <!-- Main menu -->
+        <div class="main-menu">
+            <h1>BOOLR</h1>
+            <button onclick="this.parentNode.hide();"><i class="material-icons">add</i>NEW BOARD</button>
+            <button><i class="material-icons">folder</i>OPEN BOARD</button>
+            <button><i class="material-icons">settings</i></button>
+        </div>
+        <script>
+            const mainMenu = document.querySelector(".main-menu");
 
-            <div id="input" contenteditable="true" spellcheck="false"></div>
-            <div id="messages"></div>
+            mainMenu.show = function() {
+                const buttons = this.querySelectorAll("button");
+                for(let i of buttons) {
+                    i.style.opacity = 1;
+                    i.style.transform = "translateX(0px)";
+
+                    i.querySelector(".material-icons").style.transform = "translateX(0px)";
+                }
+            }
+
+            mainMenu.hide = function() {
+                this.style.display = "none";
+            }
+
+            setTimeout(mainMenu.show.bind(mainMenu), 500);
+        </script>
+
+        <!-- Console -->
+        <div class="console">
+            <div class="container">
+                <div class="focused-input">
+                    <span class="arrow material-icons">keyboard_arrow_right</span>
+                    <input spellcheck="false">
+                </div>
+            </div>
+            <div class="toolbar">
+                <button class="material-icons" onclick="boolrConsole.clear();" title="Clear console">delete</button>
+                <button class="material-icons" onclick="boolrConsole.toggleFullscreen();" title="Fullscreen">fullscreen</button>
+                <button class="material-icons" onclick="boolrConsole.hide()" title="Close console">exit_to_app</button>
+                <button class="material-icons" title="Help">help</button>
+            </div>
         </div>
 
         <!-- Chat -->
-        <input id="chat" spellcheck="false"></input>
+        <input id="chat" spellcheck="false">
 
         <!-- Notifications -->
         <ul id="notifications"></ul>
@@ -84,11 +121,13 @@
         </script>
 
         <ul id="menu">
-           <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>   New board <span>Ctrl+N</span></li>
-           <li onmousedown="dialog.openBoard()"><i class="material-icons" >folder</i>                Open board<span>Ctrl+O</span></li>
-           <li onmousedown="dialog.save()"><i class="material-icons" >save</i>               Save board<span>Ctrl+S</span></li>
-           <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>       Settings<span>Ctrl+Shift+S</span></li>
-           <li onmousedown="dialog.help()"><i class="material-icons">help</i>               Help<span>F1</span></li>
+            <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>New board <span>Ctrl+N</span></li>
+            <li onmousedown="dialog.openBoard()"><i class="material-icons">folder</i>Open board<span>Ctrl+O</span></li>
+            <li onmousedown="dialog.save()"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
+            <li onmousedown="boolrConsole.show()"><i class="material-icons" >featured_play_list</i>Open console<span>Shift+T</span></li>
+            <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>Settings<span>Ctrl+Shift+S</span></li>
+            <li onmousedown="dialog.help()"><i class="material-icons">help</i>Help<span>F1</span></li>
+            <li onmousedown="window.close()"><i class="material-icons" >exit_to_app</i>Quit<span>Alt+F4</span></li>
 
             <script>
                 const menu = document.getElementById("menu");
@@ -369,7 +408,8 @@
         <script src="js/clipboard.js"></script>
         <script src="js/keys.js"></script>
         <script src="js/chat.js"></script>
-        <script src="js/console.js"></script>
+        <!--<script src="js/console.js"></script>-->
+        <script src="js/console2.js"></script>
         <script src="js/notifications.js"></script>
         <script src="js/toolbar.js"></script>
         <!--<script src="js/components.js"></script>-->

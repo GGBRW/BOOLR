@@ -32,6 +32,8 @@ chat.hide = function() {
             notifications.children[i].style.opacity = 0;
         }
     }
+
+    c.focus();
 }
 
 chat.onkeydown = function(e) {

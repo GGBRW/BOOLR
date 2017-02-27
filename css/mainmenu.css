@@ -1,0 +1,43 @@
+.main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    text-align: center;
+}
+
+.main-menu h1 {
+    font-family: "Righteous";
+    font-size: 160px;
+    font-weight: 400;
+    margin: 50px 0;
+}
+
+.main-menu button {
+    display: block;
+    background: transparent;
+    border: 0px solid #111;
+    margin: 20px auto;
+    padding: 30px;
+    width: 400px;
+    font-family: Ubuntu;
+    font-size: 24px;
+    color: #111;
+    outline: none;
+
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 1s, transform .75s;
+}
+
+.main-menu button .material-icons {
+    position: relative;
+    top: -8px;
+    float: left;
+    font-size: 40px;
+
+    transform: translateX(30px);
+    transition: transform .75s;
+}

@@ -46,6 +46,10 @@ canvas {
 }
 
 /* Fonts */
+@font-face {
+    font-family: "Righteous";
+    src: url(../fonts/Righteous-Regular.ttf);
+}
 
 @font-face {
     font-family: "Inconsolata";
@@ -116,111 +120,111 @@ canvas {
     /*box-shadow: 0 0 10px rgba(0,0,0,.5);*/
 /*}*/
 
-#console {
-    position: fixed;
-    bottom: 0;
-    left: -400px;
-    background: #111;
-    box-shadow: 0 0 20px rgba(0,0,0,.25);
-    border-radius: 0 5px 0 0;
-    width: 400px;
-    height: 60%;
-    color: #ddd;
-}
+/*#console {*/
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    /*left: -400px;*/
+    /*background: #111;*/
+    /*box-shadow: 0 0 20px rgba(0,0,0,.25);*/
+    /*border-radius: 0 5px 0 0;*/
+    /*width: 400px;*/
+    /*height: 60%;*/
+    /*color: #ddd;*/
+/*}*/
 
-#console #input {
-    color: #ddd;
-}
+/*#console #input {*/
+    /*color: #ddd;*/
+/*}*/
 
-#console #close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #444;
-    padding: 10px;
-    border: none;
-    background: none;
-    outline: none;
-}
+/*#console #close {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 0;*/
+    /*color: #444;*/
+    /*padding: 10px;*/
+    /*border: none;*/
+    /*background: none;*/
+    /*outline: none;*/
+/*}*/
 
-#console #messages .message {
-    background: #333;
-    color: #ddd;
-    padding: 10px;
-    font-family: "Monospaced";
-    margin: 8px;
-}
+/*#console #messages .message {*/
+    /*background: #333;*/
+    /*color: #ddd;*/
+    /*padding: 10px;*/
+    /*font-family: "Monospaced";*/
+    /*margin: 8px;*/
+/*}*/
 
-#console #messages .error {
-    background: rgba(255,0,0,.1);
-    color: red;
-    padding: 10px;
-    font-family: "Monospaced";
-    margin: 8px;
-}
+/*#console #messages .error {*/
+    /*background: rgba(255,0,0,.1);*/
+    /*color: red;*/
+    /*padding: 10px;*/
+    /*font-family: "Monospaced";*/
+    /*margin: 8px;*/
+/*}*/
 
-#console #messages .input {
-    padding-top: 8px;
-    margin-left: 30px;
-    width: 80%;
-    font-family: "Monospaced";
-    font-size: 15px;
-    color: #fff;
-    text-align: left;
-    outline: none;
-}
+/*#console #messages .input {*/
+    /*padding-top: 8px;*/
+    /*margin-left: 30px;*/
+    /*width: 80%;*/
+    /*font-family: "Monospaced";*/
+    /*font-size: 15px;*/
+    /*color: #fff;*/
+    /*text-align: left;*/
+    /*outline: none;*/
+/*}*/
 
-#console #messages .input:before {
-    content: '> ';
-    position: absolute;
-    left: 10px;
-    font-family: Consolas;
-    font-size: 18px;
-    font-weight: 800;
-    color: #bbb;
-}
+/*#console #messages .input:before {*/
+    /*content: '> ';*/
+    /*position: absolute;*/
+    /*left: 10px;*/
+    /*font-family: Consolas;*/
+    /*font-size: 18px;*/
+    /*font-weight: 800;*/
+    /*color: #bbb;*/
+/*}*/
 
-#console #messages .output {
-    padding-top: 8px;
-    margin-left: 30px;
-    width: 80%;
-    font-family: "Monospaced";
-    font-size: 15px;
-    text-align: left;
-    outline: none;
-    color: #666;
-}
+/*#console #messages .output {*/
+    /*padding-top: 8px;*/
+    /*margin-left: 30px;*/
+    /*width: 80%;*/
+    /*font-family: "Monospaced";*/
+    /*font-size: 15px;*/
+    /*text-align: left;*/
+    /*outline: none;*/
+    /*color: #666;*/
+/*}*/
 
-#console #messages .output:before {
-    content: '< ';
-    position: absolute;
-    left: 10px;
-    font-family: Consolas;
-    font-size: 18px;
-    font-weight: 800;
-    color: #ddd;
-}
+/*#console #messages .output:before {*/
+    /*content: '< ';*/
+    /*position: absolute;*/
+    /*left: 10px;*/
+    /*font-family: Consolas;*/
+    /*font-size: 18px;*/
+    /*font-weight: 800;*/
+    /*color: #ddd;*/
+/*}*/
 
-#console #input {
-    padding: 20px;
-    margin-left: 15px;
-    width: 80%;
-    font-family: "Monospaced";
-    font-size: 15px;
-    text-align: left;
-    outline: none;
-}
+/*#console #input {*/
+    /*padding: 20px;*/
+    /*margin-left: 15px;*/
+    /*width: 80%;*/
+    /*font-family: "Monospaced";*/
+    /*font-size: 15px;*/
+    /*text-align: left;*/
+    /*outline: none;*/
+/*}*/
 
-#console #input:before {
-    content: '> ';
-    position: absolute;
-    top: 18px;
-    left: 10px;
-    font-family: Monospaced;
-    font-size: 20px;
-    font-weight: 800;
-    color: #04f;
-}
+/*#console #input:before {*/
+    /*content: '> ';*/
+    /*position: absolute;*/
+    /*top: 18px;*/
+    /*left: 10px;*/
+    /*font-family: Monospaced;*/
+    /*font-size: 20px;*/
+    /*font-weight: 800;*/
+    /*color: #04f;*/
+/*}*/
 
 /* Chat */
 #chat {
@@ -451,7 +455,7 @@ canvas {
     color: #ddd;
     padding: 8px;
     border-radius: 5px;
-    z-index: 2;
+    z-index: 9;
     cursor: pointer;
     outline: none;
 
@@ -507,7 +511,7 @@ canvas {
     font-size: 15px;
     list-style: none;
     padding: 0;
-    z-index: 1;
+    z-index: 7;
 
     bottom: -300px;
     opacity: 0;
@@ -536,7 +540,7 @@ canvas {
     color: #888;
     position: relative;
     top: 0px;
-    padding-right: 20px;
+    margin-right: 20px;
     float: left;
 }
 
