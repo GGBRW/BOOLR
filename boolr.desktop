@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=BOOLR
+Icon=icon.png
+Path=/home/ggbrw/Documents/PWS/BOOLR
+Exec=/usr/local/lib/node_modules/electron/dist/electron .
+StartupNotify=false
+StartupWMClass=BOOLR
+OnlyShowIn=Unity;
+X-UnityGenerated=true
