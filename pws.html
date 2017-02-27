@@ -18,13 +18,18 @@
         <div class="main-menu">
             <h1>BOOLR</h1>
             <button onclick="this.parentNode.hide();"><i class="material-icons">add</i>NEW BOARD</button>
-            <button><i class="material-icons">folder</i>OPEN BOARD</button>
-            <button><i class="material-icons">settings</i></button>
+            <button onclick="dialog.openBoard()"><i class="material-icons">folder</i>OPEN BOARD</button>
+            <button onclick="dialog.settings()"><i class="material-icons">settings</i>SETTINGS</button>
         </div>
         <script>
             const mainMenu = document.querySelector(".main-menu");
 
             mainMenu.show = function() {
+                this.style.display = "block";
+
+                setTimeout(() => {
+                    this.style.opacity = 1;
+                },10);
                 const buttons = this.querySelectorAll("button");
                 for(let i of buttons) {
                     i.style.opacity = 1;
@@ -35,10 +40,19 @@
             }
 
             mainMenu.hide = function() {
-                this.style.display = "none";
+                const buttons = this.querySelectorAll("button");
+                for(let i of buttons) {
+                    i.style.top = "100%";
+                }
+
+                this.querySelector("h1").style.top = "-100%";
+
+                this.style.opacity = 0;
+
+                //setTimeout(() => this.style.display = "none", 500);
             }
 
-            setTimeout(mainMenu.show.bind(mainMenu), 500);
+            window.onload = mainMenu.show.bind(mainMenu);
         </script>
 
         <!-- Console -->

@@ -698,6 +698,7 @@ canvas {
     background: #888;
     opacity: 0;
     transition: opacity .5s;
+    z-index: 200;
 }
 
 #dialog {
