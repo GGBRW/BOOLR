@@ -1,0 +1,161 @@
+.main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-bottom: 100px;
+    width: 100%;
+    z-index: 100;
+    text-align: center;
+    background: #111;
+    overflow-y: auto;
+
+    opacity: 1;
+    transform: translateY(0px);
+    transition: opacity 1s, transform .5s;
+}
+
+.main-menu > h1 {
+    display: inline-block;
+    font-family: "Righteous";
+    font-size: 160px;
+    font-weight: 400;
+    color: #ddd;
+    margin: 50px 0;
+
+    position: relative;
+    top: 0;
+    transition: top .5s;
+}
+
+.main-menu .version {
+    display: inline-block;
+    font-family: "Ubuntu", Arial;
+    font-size: 18px;
+    color: #ddd;
+}
+
+.main-menu > button {
+    position: relative;
+    display: block;
+    background: transparent;
+
+    border: 0px solid #111;
+    margin: 10px auto;
+    padding: 30px;
+    width: 400px;
+    font-family: Ubuntu;
+    font-size: 24px;
+    color: #ddd;
+    outline: none;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateX(-50px);
+    top: 0;
+    transition: opacity 1s, transform .75s, top .5s, background .2s, color .2s;
+}
+
+.main-menu button:hover {
+    transform: translateX(5px);
+}
+
+.main-menu > button .material-icons {
+    position: relative;
+    top: -8px;
+    float: left;
+    font-size: 40px;
+    color: #888;
+
+    transform: translateX(30px);
+    transition: transform .75s, color .5s;
+}
+
+.main-menu > button:hover .material-icons {
+    color: #ddd;
+}
+
+.main-menu > button .material-icons:after {
+    content: "";
+    position: relative;
+    left: 40px;
+    top: 0px;
+    border-left: 3px solid #888;
+    color: #888;
+}
+
+.main-menu .open-board ul::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.main-menu .open-board ul::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.1);
+}
+
+.main-menu .open-board ul::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.3);
+    border-radius: 5px;
+}
+
+.main-menu .open-board {
+    position: fixed;
+    display: none;
+    width: 100%;
+    background: #ddd;
+    padding-bottom: 50px;
+    z-index: 1;
+
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: height .5s, opacity .5s, transform .5s;
+}
+
+.main-menu .open-board:before {
+    content: '';
+    position: relative;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #ddd transparent;
+    display: block;
+    width: 0;
+    z-index: 3;
+    top: -15px;
+    left: 50%;
+    margin-left: -15px;
+}
+
+.main-menu .open-board h1 {
+    font-family: "Ubuntu", Arial;
+    font-weight: 400;
+    margin: 30px;
+}
+
+.main-menu .open-board ul {
+    width: 400px;
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.main-menu .open-board li {
+    font-family: "Ubuntu", Arial;
+    font-size: 18px;
+    padding: 20px;
+    text-align: left;
+
+    transition: background .2s, color .2s;
+}
+
+.main-menu .open-board li:hover {
+    background: rgba(0,0,0,.1);
+}
+
+.main-menu .open-board li span {
+    padding-left: 20px;
+    color: #555;
+    font-size: 15px;
+    float: right;
+}

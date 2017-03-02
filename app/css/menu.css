@@ -1,0 +1,67 @@
+@font-face {
+    font-family: "Righteous";
+    src: url(../fonts/Righteous-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Ubuntu";
+    src: url(../fonts/Ubuntu-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Material-icons";
+    src: url(../fonts/MaterialIcons-Regular.ttf);
+}
+
+.material-icons {
+    font-family: "Material-icons";
+    font-style: normal;
+    font-size: 32px;
+    float: left;
+}
+
+body {
+    background: #111;
+    text-align: center;
+    overflow: hidden;
+    margin: 0;
+}
+
+#logo {
+    font-family: "Righteous", cursive;
+    font-size: 180px;
+    font-weight: 400;
+    color: #ddd;
+    margin-top: 50px;
+}
+
+.container {
+    position: fixed;
+    bottom: 0;
+    height: 60%;
+    background: #ddd;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.largebtn {
+    display: block;
+    background: #111;
+    box-shadow: 0 5px 0 0 #888;
+    color: #ddd;
+    border: none;
+    padding: 25px;
+    margin: 20px auto;
+    min-width: 400px;
+    font-family: "Ubuntu", Arial;
+    font-size: 30px;
+}
+
+#copyright {
+    position: fixed;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    color: #666;
+    font-family: "Ubuntu", Arial;
+}

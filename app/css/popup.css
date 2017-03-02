@@ -1,0 +1,309 @@
+/* Overlay */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.25);
+    opacity: 0;
+    transition: opacity .2s;
+    z-index: 1;
+}
+
+/* Pop-ups */
+.popup {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    text-align: center;
+    background: #ddd;
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    font-family: "Ubuntu";
+    padding: 10px;
+    border-radius: 5px;
+
+    opacity: 0;
+    transform: scale(.95);
+    transition: transform .2s, opacity .2s;
+    z-index: 101;
+}
+
+.popup h1 {
+    font-family: "Ubuntu";
+    font-size: 25px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+.popup button {
+    display: inline-block;
+    margin: 20px auto;
+    background: #ddd;
+    border: none;
+    padding: 10px;
+    min-width: 100px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+}
+
+.popup button:hover {
+    background: #ccc;
+}
+
+.popup ul {
+    font-family: "Ubuntu";
+    font-size: 16px;
+    text-align: left;
+}
+.popup li {
+    padding: 2px;
+}
+
+.popup .material-icons {
+    color: #333;
+    vertical-align: -5px;
+}
+
+#settings ul {
+    list-style: none;
+    padding: 0;
+}
+#settings li {
+    padding: 10px;
+}
+#settings li button {
+    margin: 0;
+    font-weight: 400;
+    background: #822;
+}
+
+.popup input:not([type=color]) {
+    width: 90%;
+    padding: 10px;
+    background: #ccc;
+    border: 1px solid #bbb;
+    outline: none;
+    font-family: "Ubuntu";
+    font-size: 18px;
+    color: #333;
+}
+
+.popup input[type=color] {
+    -webkit-appearance: none;
+    border: none;
+    width: 70px;
+    height: 50px;
+    outline: none;
+}
+
+.popup input[type=number] {
+    width: 100px;
+    float: right;
+}
+
+.popup input[type=color]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.popup input[type=color]::-webkit-color-swatch {
+    border: none;
+}
+
+.popup textarea {
+    width: 93%;
+    height: 300px;
+    resize: none;
+    outline: none;
+    background: #111;
+    padding: 10px;
+    color: #888;
+    font-family: "Inconsolata", Consolas;
+    font-size: 18px;
+}
+
+.popup table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.popup table, .popup td, .popup th {
+    border: 2px solid #bbb;
+    font-family: "Roboto", Arial;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
+
+.popup th {
+    background: #bbb;
+    font-weight: 800;
+}
+
+.popup span {
+    text-align: left;
+    color: #444444;
+}
+
+
+#confirm, #prompt { z-index: 102 }
+
+/* Options slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    float: right;
+    margin-right: 16px;
+}
+
+.switch input {display:none;}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 4px;
+    bottom: 4px;
+    background: #000;
+    opacity: .5;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+input:checked + .slider {
+    background-color: rgba(0,0,0,.25);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+}
+
+#openproject {
+    width: 500px;
+    margin-left: -250px;
+}
+
+#openproject #local, #openproject #server {
+    margin: 2px auto;
+    background: rgba(0,0,0,.1);
+    width: 500px;
+    height: 250px;
+}
+
+#openproject #local_btn, #openproject #server_btn {
+    background: rgba(0,0,0,.05);
+    border: none;
+    padding: 10px;
+    margin: -2px;
+    width: 100px;
+    font-family: Ubuntu;
+    font-size: 18px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+}
+
+#openproject button.selected {
+    background: rgba(0,0,0,.1) !important;
+}
+
+#openproject #local #upload_file {
+    position: absolute;
+    left: 50%;
+    width: 380px;
+    height: 200px;
+    margin: 20px auto 0 -190px;
+    border: 3px dashed rgba(0,0,0,.5);
+    outline-offset: -10px;
+}
+
+#openproject #local #upload_file .material-icons {
+    font-size: 70px;
+    color: rgba(0,0,0,.5);
+    position: relative;
+    top: 40px;
+}
+
+#openproject #local #upload_file p {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 0;
+    position: relative;
+    top: 50px;
+}
+
+#openproject #local #upload_file b:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#openproject #server input {
+    font-family: "Inconsolata", Consolas;
+    font-size: 18px;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(255,255,255,.8);
+}
+
+#openproject #server button {
+    font-family: "Ubuntu";
+    font-size: 18px;
+    margin: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background: rgba(0,0,0,.2);
+}
+
+#openproject #server ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+#openproject #server li {
+    padding: 10px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    text-align: left;
+}
+
+#openproject #server li:nth-child(odd) {
+    background: rgba(0,0,0,.1);
+}
+
+#openproject #server li button {
+    float: right;
+    font-size: 16px;
+    padding: 5px;
+    margin: -5px;
+    background: #888;
+}

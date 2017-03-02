@@ -1,0 +1,18 @@
+[Klok ms]
+1 edit menu
+pinnetjes omwisselen
+custom component toolbar
+[hoofdmenu]
+kruispunten weergeven
+edit menu oude waardes
+[contextmenu positie]
+variabelen localstorage/onbekende
+delay goede richting
+custom component round
+[console design]
+custom component zwevende pinnetjes
+custom component create
+kopieren nummer
+custom highlight
+klipbord geen selectie
+stylesheets
