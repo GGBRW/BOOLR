@@ -1,7 +1,0 @@
-{
-  "name": "BOOLR",
-  "description": "A digital logic simulator",
-  "version": "0.1.301",
-  "author": "Gees Brouwer <gees@ggbrw.nl>",
-  "main": "main.js"
-}
