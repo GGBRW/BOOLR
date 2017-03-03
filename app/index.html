@@ -14,11 +14,20 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+        <!-- If this file is opened by something else than Electron, stop -->
+        <script>
+            if(!(window && window.process && window.process.type)) {
+                document.write("Open BOOLR by opening the BOOLR executable.");
+                document.body.style.background = "white";
+                window.stop();
+            }
+        </script>
+
         <!-- Preload canvas fonts -->
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
         <!-- Version number -->
-        <script>const VERSION = "1.0.0"</script>
+        <script>const VERSION = "0.1.305"</script>
 
         <canvas id="canvas" tabindex="1"></canvas>
 
@@ -88,7 +97,7 @@
         <div class="tutorial">
             <h1>Tutorial</h1>
             <div class="sections">
-                <div>
+                <div style="opacity: 1; transform: translateX(0px)">
                     <p>Welcome to your first BOOLR board. Here you can create circuits with logic gates.</p>
                     <i class="material-icons">zoom_in</i>
                     <p>Scroll to zoom in/out</p>
@@ -110,7 +119,7 @@
                 <div>
                     <p>Let's connect our input gate with other logic gates.</p>
                     <p>Select the NOT gate (!) on the toolbar and give it a nice place on the board.</p>
-                    <p>Click the <i>output port</i> of our input gate and move the mouse while holding the left mouse button to the <i>input port</i> of our NOT gate.</p>
+                    <p>Click the <i>output port</i> (black) of our input gate and move the mouse while holding the left mouse button to the <i>input port</i> (white) of our NOT gate.</p>
                     <img src="img/tutorial/1.png">
                     <p>Now the input gate is connected with the NOT gate and the NOT gate will invert the value of the input gate.</p>
                 </div>
@@ -253,7 +262,7 @@
             <li onmousedown="dialog.save()"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
             <li onmousedown="boolrConsole.show()"><i class="material-icons" >featured_play_list</i>Open console<span>Shift+T</span></li>
             <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>Settings<span>Ctrl+Shift+S</span></li>
-            <li onmousedown="dialog.help()"><i class="material-icons">help</i>Help<span>F1</span></li>
+            <li onmousedown="tutorial.show()"><i class="material-icons">help</i>Open tutorial<span>F1</span></li>
             <li onmousedown="mainMenu.show(); setTimeout(clearBoard,1000)"><i class="material-icons" >exit_to_app</i>Quit<span>Alt+F4</span></li>
 
             <script>

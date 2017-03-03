@@ -210,6 +210,9 @@ c.onkeydown = function(e) {
             keys[9] = true;
             return false;
             break;
+        case 112:
+            tutorial.toggle();
+            break;
         case 114: // F3
             if(keys[114] instanceof Date && new Date - keys[114] > 50) {
                 settings.showDebugInfo = !settings.showDebugInfo;

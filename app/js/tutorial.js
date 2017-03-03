@@ -8,9 +8,14 @@ tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" +
 tutorial.nextBtn = tutorial.querySelector(".next");
 tutorial.nextBtn.onclick = function() {
     const previousSection = tutorial.sections[tutorial.sectionIndex];
-    previousSection.style.display = "none";
+    previousSection.style.opacity = 0;
+    previousSection.style.transform = "translateX(-500px)";
+
     ++tutorial.sectionIndex;
-    tutorial.sections[tutorial.sectionIndex].style.display = "block";
+
+    const nextSection = tutorial.sections[tutorial.sectionIndex]
+    nextSection.style.opacity = 1;
+    nextSection.style.transform = "translateX(0px)";
 
     tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
 
@@ -22,9 +27,15 @@ tutorial.nextBtn.onclick = function() {
 
 tutorial.previousBtn = tutorial.querySelector(".previous");
 tutorial.previousBtn.onclick = function() {
-    tutorial.sections[tutorial.sectionIndex].style.display = "none";
+    const previousSection = tutorial.sections[tutorial.sectionIndex];
+    previousSection.style.opacity = 0;
+    previousSection.style.transform = "translateX(500px)";
+
     --tutorial.sectionIndex;
-    tutorial.sections[tutorial.sectionIndex].style.display = "block";
+
+    const nextSection = tutorial.sections[tutorial.sectionIndex]
+    nextSection.style.opacity = 1;
+    nextSection.style.transform = "translateX(0px)";
 
     tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
 
@@ -47,5 +58,26 @@ tutorial.hide = function() {
     this.style.left = "-30%";
     setTimeout(() => {
         this.style.display = "none";
+
+        for(let i of this.sections) {
+            i.style.opacity = 0;
+            i.style.transform = "translateX(500px)";
+        }
+
+        const nextSection = this.sections[0];
+        nextSection.style.opacity = 1;
+        nextSection.style.transform = "translateX(0px)";
+
+        this.sectionIndex = 0;
+        tutorial.previousBtn.disabled = true;
+        tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
     }, 200);
+}
+
+tutorial.toggle = function() {
+    if(this.style.display != "block") {
+        this.show();
+    } else {
+        this.hide();
+    }
 }
