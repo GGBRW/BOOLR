@@ -76,8 +76,8 @@
             <div class="sub open-board">
                 <h1>Open board</h1>
                 <ul></ul>
-                <button>Open saves folder</button>
-                <button>Browse...</button>
+                <button onclick="require('child_process').exec('xdg-open ../saves')">Open saves folder</button>
+                <button>Open board from different location</button>
             </div>
 
             <button onclick="settingsMenu.toggle()"><i class="material-icons">settings</i>SETTINGS</button>
@@ -149,7 +149,7 @@
                 </div>
                 <div>
                     <i class="material-icons">undo</i>
-                    <p>You have done something stupid? No problem. Simply press Ctrl+Z to undo your previous action. To redo, press Ctrl+Y or Ctrl+Shift+Z.</p>
+                    <p>Done something stupid? No problem. Simply press Ctrl+Z to undo your previous action. To redo, press Ctrl+Y or Ctrl+Shift+Z.</p>
                 </div>
                 <div>
                     <p>When you are going to build large structures, you might find yourself constantly scrolling around between two places.</p>
@@ -157,6 +157,13 @@
                     <i class="material-icons">my_location</i>
                     <p>To jump to that waypoint, open the <i>context menu</i> again and click 'Go to waypoint', or hit Shift+W.
                         If you have set multiple waypoints, a list is going to pop up in which you can select a waypoint</p>
+                </div>
+                <div>
+                    <p>Other useful tips:</p>
+                    <p>Hold the Shift key while connecting to draw the wire in a straight line.</p>
+                    <p>Hold the Ctrl key while selecting/connecting to scroll.</p>
+                    <!-- TODO: meer? -->
+                    <p></p>
                 </div>
             </div>
             <button class="close material-icons" onclick="tutorial.hide()">close</button>
