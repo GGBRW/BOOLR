@@ -1,0 +1,159 @@
+#toolbar {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    margin-left: -175px;
+    width: 350px;
+    height: 50px;
+    background: #111;
+    color: #555;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 5px 5px 0 0;
+    font-size: 0;
+    opacity: 1;
+    transition: opacity .5s;
+}
+
+#toolbar .slot {
+    height: 50px;
+    width: 50px;
+    font-family: "Ubuntu";
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 18px;
+    margin: 0;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 5px;
+    vertical-align: middle;
+
+    transition: color .2s;
+}
+
+#toolbar .slot:hover {
+    background: #222;
+    color: #ddd;
+}
+
+#toolbar .slot .material-icons {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 18px;
+    margin: 0;
+}
+
+#toolbar #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 60px;
+    background: #ddd;
+    -box-shadow: 0 0 10px rgba(0,0,0,.25);
+    border-radius: 50px;
+    color: #111;
+    padding: 10px 25px;
+    font-family: "Ubuntu";
+    font-size: 15px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity .5s;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+#toolbartip {
+    display: none;
+    position: fixed;
+    bottom: 85px;
+    left: 0;
+    max-width: 100px;
+    background: #111;
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #ddd;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+    border-radius: 5px;
+    text-align: center;
+    pointer-events: none;
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform .2s, opacity .2s;
+}
+
+#toolbartip:after {
+    content: '';
+    position: fixed;
+    border-style: solid;
+    border-width: 15px 15px 0;
+    border-color: #111 transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -15px;
+    left: 50%;
+    margin-left: -15px;
+}
+
+#toolbar .material-icons {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+#toolbar button {
+    cursor: pointer;
+    pointer-events: auto;
+    background: transparent;
+    border: none;
+    border-left: 1px solid rgba(0,0,0,.5);
+    margin: 0 0 0 10px;
+    padding: 0 0 0 10px;
+    outline: none;
+}
+
+#toolbar button .material-icons {
+    margin-right: 5px;
+}
+
+#toolbar #list {
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    padding: 0;
+    margin: 0;
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #ddd;
+    list-style: none;
+    background: #111;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 5px;
+    outline: none;
+    max-height: 300px;
+    width: 150px;
+    overflow-y: auto;
+
+    opacity: 0;
+    transform: scale(.5) translateX(-63px) translateY(150px);
+    transition: opacity .2s, transform .2s;
+}
+
+#toolbar #list::-webkit-scrollbar-track {
+    background: rgba(255,255,255,.1);
+}
+
+#toolbar #list::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.3);
+    border-radius: 5px;
+}
+
+#toolbar #list li {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#toolbar #list li:hover, #toolbar #list li:active {
+    background: #ddd;
+}

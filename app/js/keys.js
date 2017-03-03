@@ -191,6 +191,11 @@ c.onkeydown = function(e) {
             }
             // gotoWaypoint(waypoints.length - 1);
             break;
+        case 89:
+            if(e.ctrlKey) {
+                redo();
+            }
+            break;
         case 90: // Z
             if(e.ctrlKey) {
                 if(e.shiftKey) redo();

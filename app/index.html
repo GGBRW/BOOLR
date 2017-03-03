@@ -1,207 +1,421 @@
-<!doctype html>
 <html>
-<head>
-    <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/popup.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <head>
+        <meta charset="utf-8">
+        <title>BOOLR | New Project</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Passion+One:400,700,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+        <link rel="stylesheet" href="css/mainmenu.css">
+        <link rel="stylesheet" href="css/tutorial.css">
+        <link rel="stylesheet" href="css/dialog.css">
+        <link rel="stylesheet" href="css/toolbar.css">
+        <link rel="stylesheet" href="css/contextmenu.css">
+        <link rel="stylesheet" href="css/customComponentToolbar.css">
+        <link rel="stylesheet" href="css/console.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <!-- Preload canvas fonts -->
+        <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
-    <meta charset="UTF-8">
-    <title>BOOLR</title>
-</head>
-<body>
-<h1 id="title">BOOLR</h1>
+        <!-- Version number -->
+        <script>const VERSION = "1.0.0"</script>
 
-    <!-- Overlay -->
-    <div id="overlay"></div>
+        <canvas id="canvas" tabindex="1"></canvas>
 
-    <!-- Pop-ups -->
-    <div class="popup" id="confirm">
-        <h1></h1>
-        <p></p>
-        <button class="ok">OK</button>
-        <button class="cancel">Cancel</button>
-    </div>
+        <!-- Main menu -->
+        <script src="js/saves.js"></script>
+        <div class="main-menu">
+            <h1>BOOLR</h1>
+            <span class="version"></span>
 
-    <div id="container">
-        <button id="sandbox_btn" onclick="openProject()">CREATE NEW BOARD</button>
-        <button id="load_project_btn">OPEN BOARD</button>
-        <button id="settings_btn" onclick="">SETTINGS</button>
-        <button id="info_btn" onclick="">INFO</button>
-    </div>
+            <div class="loading">LOADING...</div>
+            <button onclick="event.ctrlKey ? this.parentNode.hide() : newBoardMenu.toggle()"><i class="material-icons">add</i>NEW BOARD</button>
 
-    <div class="over" id="load_project">
-        <button class="close material-icons">close</button>
-        <h1>LOAD PROJECT</h1>
+            <div class="sub new-board">
+                <h1>Create new board</h1>
+                <input id="boardname" placeholder="Board name">
+                <div id="filename">This board will be saved as new-board.board</div>
 
-        <button id="local_btn" class="selected">Local</button>
-        <button id="server_btn">Server</button>
-        <div id="local">
-            <div id="upload_file">
-                <i class="material-icons">file_upload</i>
-                <p><b onclick="document.getElementById('open_file').click()">Choose a .board file</b> or drag and drop it here</p>
+                <script>
+                    (function() {
+                        const input = document.querySelector(".new-board #boardname");
+                        const filename = document.querySelector(".new-board #filename");
+                        input.onfocus = () => filename.style.opacity = 1;
+                        input.onblur = () => filename.style.opacity = 0;
+
+                        input.onkeydown = () => {setTimeout(
+                            () => {
+                                const name = createFileName(input.value);
+
+                                if(name != input.value + ".board") {
+                                    filename.innerHTML = "This board will be saved as " + name;
+                                    filename.style.opacity = 1;
+                                } else filename.style.opacity = 0;
+                            }
+                        )};
+                    })();
+                </script>
+
+                <br><br>
+                <p style="color: rgba(0,0,0,.5)">Hint: hold the Ctrl-key while clicking the NEW BOARD button to go sandbox mode without creating a save file</p>
+                <button onclick="this.parentNode.hide(); this.parentNode.querySelector('input').value = ''">Cancel</button>
+                <button onclick="createSaveFile(document.querySelector('.new-board #boardname').value); this.parentNode.parentNode.hide()">Create</button>
+            </div>
+
+            <button onclick="openBoardMenu.toggle()"><i class="material-icons">folder</i>OPEN BOARD</button>
+
+            <div class="sub open-board">
+                <h1>Open board</h1>
+                <ul></ul>
+                <button>Open saves folder</button>
+                <button>Browse...</button>
+            </div>
+
+            <button onclick="settingsMenu.toggle()"><i class="material-icons">settings</i>SETTINGS</button>
+
+            <div class="sub settings">
+                <h1>Settings</h1>
+                <br><br>
+                <button onclick="this.parentNode.hide()">Cancel</button>
+                <button onclick="this.parentNode.apply(); this.parentNode.hide()">OK</button>
+            </div>
+
+            <button onclick="window.close()"><i class="material-icons">exit_to_app</i>QUIT</button>
+        </div>
+        <script src="js/mainmenu.js"></script>
+
+        <!-- Tutorial -->
+        <div class="tutorial">
+            <h1>Tutorial</h1>
+            <div class="sections">
+                <div>
+                    <p>Welcome to your first BOOLR board. Here you can create circuits with logic gates.</p>
+                    <i class="material-icons">zoom_in</i>
+                    <p>Scroll to zoom in/out</p>
+                    <br>
+                    <i class="material-icons">swap_horiz</i>
+                    <p>Move the mouse while holding the middle mouse button to move around.</p>
+                    <p>If you don't have access to any middle mouse button, hold the Ctrl key and the left mouse button to move around.</p>
+                </div>
+                <div>
+                    <p>Now it's time to introduce you to logic gates.</p>
+                    <p>See the I/O button on the toolbar? Click it and select 'Input'.</p>
+                    <img src="img/tutorial/0.png">
+                    <p>Now you have selected the input gate. To place it on the board, simply click somewhere with the left mouse button.</p>
+                    <p>Click the input gate to toggle its value.</p>
+                    <p>Let's give our input gate a name. Right click it, select "Edit", and enter a name.</p>
+                    <p>To move our input gate to another place on the board, grab it with Ctrl+click and drag it around.</p>
+                    <p>To cancel dragging, press the right mouse button.</p>
+                </div>
+                <div>
+                    <p>Let's connect our input gate with other logic gates.</p>
+                    <p>Select the NOT gate (!) on the toolbar and give it a nice place on the board.</p>
+                    <p>Click the <i>output port</i> of our input gate and move the mouse while holding the left mouse button to the <i>input port</i> of our NOT gate.</p>
+                    <img src="img/tutorial/1.png">
+                    <p>Now the input gate is connected with the NOT gate and the NOT gate will invert the value of the input gate.</p>
+                </div>
+                <div>
+                    <p>But we can't see what value the NOT gate outputs. To see this, we are going to connect our NOT gate with an output gate.</p>
+                    <p>Select the output gate from the input/output list (I/O) on the toolbar and place it on the board.</p>
+                    <p>Now, connect the NOT gate with it the same way we connected the input gate with the NOT gate</p>
+                    <img src="img/tutorial/2.png">
+                    <p>Congratulations! You have built your first circuit!</p>
+                </div>
+                <div>
+                    <p>Imagine this circuit is so special you want another one.</p>
+                    <p>To do this, we need to select it. Hold shift and and drag the mouse while holding the left mouse button to select the circuit.
+                        Make sure every logic gate of your circuit is inside the selection box</p>
+                    <img src="img/tutorial/3.png">
+                    <p>When you have selected your circuit, a menu pops up. Click 'Copy' or hit Ctrl+C.</p>
+                    <p>To paste the circuit, right click somewhere on the board and click 'Paste' or hit Ctrl+V</p>
+                    <p>Moving a selection around works the same way as moving gates, drag it around with Ctrl+click and release to drop it, right click to cancel</p>
+                    <p>To remove a selection, click 'Remove' or hit Delete</p>
+                </div>
+                <div>
+                    <p>If circuits are going to take up too much space, don't panic. The 'componentize function' will save you. </p>
+                    <p>The 'componentize function' puts your circuit in a compact, nice little box. The input gates of your circuit are going to be its input ports, the output gates its output ports</p>
+                    <img src="img/tutorial/4.png">
+                    <p>To do this, select your circuit like the previous section and click 'Componentize'.</p>
+                    <p>Double click your <i>custom component</i> to open it en view your circuit in its original state.</p>
+                </div>
+                <div>
+                    <i class="material-icons">undo</i>
+                    <p>You have done something stupid? No problem. Simply press Ctrl+Z to undo your previous action. To redo, press Ctrl+Y or Ctrl+Shift+Z.</p>
+                </div>
+                <div>
+                    <p>When you are going to build large structures, you might find yourself constantly scrolling around between two places.</p>
+                    <p>You can set a waypoint to jump to a specific location on the board. To do this, open the <i>context menu</i> and click 'Set waypoint', or hit Shift+S.</p>
+                    <i class="material-icons">my_location</i>
+                    <p>To jump to that waypoint, open the <i>context menu</i> again and click 'Go to waypoint', or hit Shift+W.
+                        If you have set multiple waypoints, a list is going to pop up in which you can select a waypoint</p>
+                </div>
+            </div>
+            <button class="close material-icons" onclick="tutorial.hide()">close</button>
+
+            <div class="options">
+                <button class="previous material-icons" disabled>keyboard_arrow_left</button>
+                <span class="index"></span>
+                <button class="next material-icons">keyboard_arrow_right</button>
             </div>
         </div>
-        <div id="server" style="display: none;">
-            <input id="url" placeholder="Enter server url">
-            <button onclick="openServerProject(document.getElementById('url').value)">Connect</button>
+
+        <!-- Chat -->
+        <input id="chat" spellcheck="false">
+
+        <!-- Console -->
+        <div class="console">
+            <div class="container">
+                <div class="focused-input">
+                    <span class="arrow material-icons">keyboard_arrow_right</span>
+                    <input spellcheck="false">
+                </div>
+            </div>
+            <div class="toolbar">
+                <button class="material-icons" onclick="boolrConsole.clear();" title="Clear console">delete</button>
+                <button class="material-icons" onclick="boolrConsole.toggleFullscreen();" title="Fullscreen">fullscreen</button>
+                <button class="material-icons" onclick="boolrConsole.hide()" title="Close console">exit_to_app</button>
+                <button class="material-icons" title="Help">help</button>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <ul id="notifications"></ul>
+
+        <!-- Component toolbar -->
+        <div id="toolbar">
+            <div id="toast"></div>
+
+            <div class="slot" tooltip="Input and output ports">I/O</div>
+            <div class="slot" tooltip="NOT gate" onmousedown="select(NOT)">!</div>
+            <div class="slot" tooltip="AND gate" onmousedown="select(AND)">&</div>
+            <div class="slot" tooltip="OR gate" onmousedown="select(OR)">|</div>
+            <div class="slot" tooltip="XOR gate" onmousedown="select(XOR)">^</div>
+            <div class="slot" tooltip="Custom component" onmousedown="select(Custom)"><i class="material-icons">memory</i></div>
+            <div class="slot" tooltip="Saved components" onmousedown="dialog.savedCustomComponents()"><i class="material-icons">list</i></div>
+
+            <ul id="list" tabindex="1" style="display: none">
+                <li onclick="select(Input)">Input</li>
+                <li onclick="select(Output)">Output</li>
+                <li onclick="select(Button)">Button</li>
+                <li onclick="select(Constant)">Constant</li>
+                <li onclick="select(Key)">Key</li>
+                <li onclick="select(Delay)">Delay</li>
+                <li onclick="select(Clock)">Clock</li>
+                <li onclick="select(LED)">LED</li>
+                <li onclick="select(Display)">Display</li>
+                <li onclick="select(Debug)">Debug</li>
+                <li onclick="select(Beep)">Beep</li>
+                <li onclick="select(Counter)">Counter</li>
+                <li onclick="select(Merger)">Merger</li>
+                <li onclick="select(Splitter)">Splitter</li>
+                <li onclick="select(D2B)">D2B Converter</li>
+                <li onclick="select(BinaryToDecimal)">B2D Converter</li>
+                <li onclick="select(TimerStart)">TimerStart</li>
+                <li onclick="select(TimerEnd)">TimerEnd</li>
+            </ul>
+        </div>
+        <div id="toolbartip"></div>
+
+        <!-- Buttons in bottom right corner -->
+        <div class="brbtns">
+            <button class="brbtn material-icons" id="menuopen" title="Open menu">
+                <div class="container">expand_less</div>
+            </button>
+            <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
+            <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version">
+                <i class="material-icons">memory</i>
+                BOOLR
+                <span class="version"></span>
+                <script>
+                    Array.from(document.getElementsByClassName("version")).forEach(el => el.innerHTML = "v" + VERSION);
+                </script>
+            </button>
+        </div>
+        <script>
+            document.querySelector("#pause").onclick = function() {
+                pauseSimulation = !pauseSimulation;
+                this.innerHTML = pauseSimulation ? "play_arrow" : "pause";
+            }
+
+            document.querySelector("#menuopen").onclick = function() {
+                if(menu.style.opacity == "0") {
+                    menu.show();
+                } else {
+                    menu.hide();
+                }
+            }
+        </script>
+
+        <!-- Menu in bottom right corner -->
+        <ul id="menu">
+            <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>New board <span>Ctrl+N</span></li>
+            <li onmousedown="dialog.openBoard()"><i class="material-icons">folder</i>Open board<span>Ctrl+O</span></li>
+            <li onmousedown="dialog.save()"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
+            <li onmousedown="boolrConsole.show()"><i class="material-icons" >featured_play_list</i>Open console<span>Shift+T</span></li>
+            <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>Settings<span>Ctrl+Shift+S</span></li>
+            <li onmousedown="dialog.help()"><i class="material-icons">help</i>Help<span>F1</span></li>
+            <li onmousedown="mainMenu.show(); setTimeout(clearBoard,1000)"><i class="material-icons" >exit_to_app</i>Quit<span>Alt+F4</span></li>
+
+            <script>
+                const menu = document.getElementById("menu");
+                menu.style.opacity = "0";
+                menu.onmousedown = () => setTimeout(menu.hide.bind(menu));
+
+                menu.show = function() {
+                    this.style.opacity = 1;
+                    this.style.bottom = 30;
+
+                    document.querySelector("#menuopen .container").style.transform = "rotateZ(180deg)";
+                }
+
+                menu.hide = function() {
+                    this.style.opacity = 0;
+                    this.style.bottom = -this.clientHeight - 100;
+
+                    document.querySelector("#menuopen .container").style.transform = "rotateZ(0deg)";
+                }
+            </script>
+        </ul>
+
+        <!-- Debug info -->
+        <div id="debugInfo"></div>
+
+        <!-- User list -->
+        <div id="userList"></div>
+
+        <!-- Component info -->
+        <div id="componentInfo"></div>
+
+        <!-- Context menu -->
+        <ul id="contextMenu" tabindex="1" oncontextmenu="return false" style="display: none;"></ul>
+
+        <!-- Loading screen -->
+        <div id="loading">Loading...</div>
+
+        <!-- Overlay -->
+        <div id="overlay"></div>
+
+        <!-- Dialog -->
+        <div id="over"></div>
+        <div id="dialog" tabindex="0">
+            <h1></h1>
+            <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
+            <div class="container"></div>
+            <div class="options"></div>
+        </div>
+
+        <!-- Open board -->
+        <div id="openboard" style="display: none;">
+            <div id="dropfile" onclick="openFile()" ondrop="drop(event)" ondragover="allowDrop(event); this.style.background = 'rgba(255,255,255,.5)'">
+                <span style="font-size: 20px;">Choose a .board file</span>
+                <br>
+                Or drop a file in this box
+            </div>
+
+            <script>
+                function allowDrop(e) {
+                    e.preventDefault();
+                }
+
+                const drop = e => {
+                    e.preventDefault();
+                    readFile(e.dataTransfer);
+                }
+            </script>
+
+            <br>
+            <span style="text-decoration: underline">Connect to a BOOLR server</span>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" style="display: none;">
             <ul>
-                <li>ws://localhost:3000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
-                <li>ws://188.166.50.187:3000<button onclick="openServerProject(this.parentNode.textContent.replace('Connect',''))">Connect</button></li>
+                <li>
+                    Scroll animation
+                    <label class="switch"><input class="option scrollAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Zoom animation
+                    <label class="switch"><input class="option zoomAnimation" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Show debug info
+                    <label class="switch"><input class="option showDebugInfo" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <li>
+                    Show component updates
+                    <label class="switch"><input class="option showComponentUpdates" type="checkbox"><div class="slider"></div></label>
+                </li>
+                <br>
+                <button id="reset">Clear localStorage</button>
             </ul>
         </div>
 
-        <script>
-            document.querySelector("#load_project #local_btn").onclick = function() {
-                this.className = "selected";
-                document.querySelector("#load_project #server_btn").className = "";
-                document.querySelector("#load_project #local").style.display = "block";
-                document.querySelector("#load_project #server").style.display = "none";
-            }
+        <!-- Waypoints menu -->
+        <ul id="waypointsMenu"></ul>
 
-            document.querySelector("#load_project #server_btn").onclick = function() {
-                this.className = "selected";
-                document.querySelector("#load_project #local_btn").className = "";
-                document.querySelector("#load_project #server").style.display = "block";
-                document.querySelector("#load_project #local").style.display = "none";
-            }
-        </script>
-    </div>
 
-    <div class="over" id="settings">
-        <button class="close material-icons">close</button>
-        <h1>SETTINGS</h1>
-
-        <ul>
-            <li>Scroll animation<label class="switch"><input type="checkbox" setting="scroll_animation"><div class="slider"></div></label></li>
-            <li>Zoom animation<label class="switch"><input type="checkbox" setting="zoom_animation"><div class="slider"></div></label></li>
-            <li>Update delay<label><input type="number" value="0" setting="update_delay"></label></li>
-            <li><button onclick="popup.confirm.show('Clear localStorage','Are you sure you want to clear all local stored data?', () => { localStorage.pws = ''; location.reload() })">Clear localStorage</button></li>
-        </ul>
-    </div>
-
-    <div id="background"></div>
-
-    <div class="over" id="info">
-        <button class="close material-icons">close</button>
-        <h1>INFO</h1>
-        <div id="content">
-            <h4>Onzin</h4>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
-            <br><br>
-            <h4>Nog meer onzin</h4>
-            Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+        <!-- Tips -->
+        <div class="tip" id="dragging">
+            <i class="material-icons">lightbulb_outline</i>
+            Press the right mouse button to cancel dragging
         </div>
-    </div>
+        <div class="tip" id="connecting_ctrl">
+            <i class="material-icons">lightbulb_outline</i>
+            Move the mouse while holding the CTRL-key to scroll while connecting
+        </div>
+        <div class="tip" id="connecting_shift">
+            <i class="material-icons">lightbulb_outline</i>
+            Hold the shift key to draw the wire in a straight line
+        </div>
+        <div class="tip" id="waypoints">
+            <i class="material-icons">lightbulb_outline</i>
+            Press S to set a waypoint, press W to jump to a waypoint
+        </div>
 
-    <script>
-        document.getElementById("load_project_btn").onclick = function() {
-            document.getElementById("load_project").style.display = "block";
-            document.getElementById("load_project").style.transition = "opacity .5s";
-            document.getElementById("background").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("background").style.height = "430px";
-                document.getElementById("background").style.marginTop = "0px";
-                document.getElementById("background").style.opacity = "1";
-                document.getElementById("load_project").style.opacity = "1";
-            }, 1);
-        }
+        <!-- Hover balloon -->
+        <div id="hoverBalloon"></div>
 
-        document.getElementById("settings_btn").onclick = function() {
-            document.getElementById("settings").style.display = "block";
-            document.getElementById("settings").style.transition = "opacity .5s";
-            document.getElementById("background").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("background").style.height = "430px";
-                document.getElementById("background").style.marginTop = "0px";
-                document.getElementById("background").style.opacity = "1";
-                document.getElementById("settings").style.opacity = "1";
-            }, 1);
-        }
+        <!-- Spectate indicator -->
+        <div id="spectateIndicator">Spectate mode</div>
 
-        document.getElementById("info_btn").onclick = function() {
-            document.getElementById("info").style.display = "block";
-            document.getElementById("info").style.transition = "opacity .5s";
-            document.getElementById("background").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("background").style.height = "430px";
-                document.getElementById("background").style.marginTop = "0px";
-                document.getElementById("background").style.opacity = "1";
-                document.getElementById("info").style.opacity = "1";
-            }, 1);
-        }
+        <!-- Custom component toolbar -->
+        <div id="customComponentToolbar">
+            <button class="close material-icons">close</button>
+            <span id="name">Full adder</span>
+            <button class="edit material-icons">expand_more</button>
 
-        const closeButtons = document.getElementsByClassName("close");
-        for(let i = 0; i < closeButtons.length; ++i) {
-            closeButtons[i].onclick = function() {
-                document.getElementById("background").style.height = "0";
-                document.getElementById("background").style.marginTop = "200px";
-                document.getElementById("background").style.opacity = "0";
-                this.parentNode.style.transition = "opacity .2s";
-                this.parentNode.style.opacity = "0";
-                setTimeout(() => {
-                    this.parentNode.style.display = "none";
-                    document.getElementById("background").style.display = "none";
-                }, 200);
-            };
-        }
-    </script>
+            <ul class="menu">
+               <li onmousedown="dialog.edit(path.slice(-1)[0].component)"><i class="material-icons">edit</i>Edit</li>
+               <li onmousedown="saveCustomComponent(path.slice(-1)[0].component)"><i class="material-icons">file_download</i>Save component</li>
+            </ul>
+        </div>
 
-    <input id="open_file" type="file" accept=".board" style="display: none">
-
-    <script>
-        document.getElementById("open_file").onchange = function(e) {
-            const input = e.target;
-
-            const reader = new FileReader;
-            reader.onload = function() {
-                const data = reader.result;
-                openProject(data);
-            }
-            reader.readAsText(input.files[0]);
-        }
-
-        // TODO: moet netter!
-
-        function openProject(data) {
-            const project = open("pws.html");
-
-            let received = false;
-            (function send() {
-                project.postMessage(data,"*");
-                !received && setTimeout(send,10);
-            })();
-            window.addEventListener("message", () => { received = true }, false);
-        }
-
-        function openServerProject(url) {
-            const project = window.open("pws.html");
-
-            let received = false;
-            (function send() {
-                project.postMessage(url,"*");
-                !received && setTimeout(send,10);
-            })();
-            window.addEventListener("message", () => { received = true }, false);
-        }
-    </script>
-
-    <div id="copyright">Copyright &copy; 2017 by Gees Brouwer, Jaap Dechering and Teun de Theije</div>
-
-    <script src="js/popup.js"></script>
-
-    <script>
-        let offset = { x: 0, y: 0 };
-        let dir = Math.random() * Math.PI * 2;
-        setInterval(() => {
-            offset.x += Math.sin(dir);
-            offset.y += Math.cos(dir);
-            document.body.style.backgroundPosition = offset.x + "px " + offset.y + "px";
-        }, 50);
-    </script>
-</body>
+        <!-- Scripts -->
+        <script src="js/components.js"></script>
+        <script src="js/localStorage2.js"></script>
+        <script src="js/canvas.js"></script>
+        <script src="js/componentUpdates.js"></script>
+        <script src="js/undo.js"></script>
+        <script src="js/clipboard.js"></script>
+        <script src="js/keys.js"></script>
+        <script src="js/chat.js"></script>
+        <script src="js/console2.js"></script>
+        <script src="js/notifications.js"></script>
+        <script src="js/toolbar.js"></script>
+        <script src="js/debug.js"></script>
+        <script src="js/audio.js"></script>
+        <script src="js/userList.js"></script>
+        <script src="js/contextmenu2.js"></script>
+        <script src="js/hover.js"></script>
+        <script src="js/customComponentToolbar.js"></script>
+        <script src="js/componentInfo.js"></script>
+        <script src="js/tips.js"></script>
+        <script src="js/tutorial.js"></script>
+        <script src="js/dialogs.js"></script>
+        <script src="js/stringifier.js"></script>
+        <script src="js/waypoints.js"></script>
+        <script src="js/socket.js"></script>
+        <script src="js/startup.js"></script>
+    </body>
 </html>

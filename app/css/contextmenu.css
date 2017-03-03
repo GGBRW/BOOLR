@@ -1,0 +1,53 @@
+#contextMenu {
+    position: fixed;
+    background: #111;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,.25);
+    outline: none;
+    border-radius: 5px;
+    z-index: 5;
+
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+#contextMenu li {
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#contextMenu li.disabled {
+    pointer-events: none;
+    opacity: .5;
+}
+
+#contextMenu li .material-icons {
+    color: #888;
+    margin-right: 10px;
+    vertical-align: -5px;
+    white-space: nowrap;
+
+    transition: color .2s;
+}
+
+#contextMenu li .key {
+    white-space: nowrap;
+    color: #888;
+    padding-left: 10px;
+    float: right;
+    line-height: 28px;
+}
+
+#contextMenu li:hover {
+    background: rgba(255,255,255,.1);
+}
+
+#contextMenu li:hover .material-icons {
+    color: #fff;
+}

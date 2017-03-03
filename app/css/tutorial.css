@@ -1,0 +1,85 @@
+.tutorial {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    height: 100%;
+    width: 500px;
+    background: #ddd;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+    font-family: "Ubuntu", Arial;
+    font-size: 15px;
+    color: #111;
+    text-align: center;
+
+    opacity: 0;
+    transition: opacity .2s, left .2s;
+}
+
+.tutorial h1 {
+    font-weight: 400;
+}
+
+.tutorial .sections {
+    padding: 20px;
+    height: 100%;
+}
+
+.tutorial .sections div {
+    transform: translateX(-500px);
+    opacity: 0;
+    transition: transform .2s, opacity .2s;
+}
+
+.tutorial .sections div p {
+    line-height: 24px;
+    margin: 8px;
+}
+
+.tutorial .sections div a {
+    color: #888;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.tutorial .sections div img {
+    width: 250px;
+    opacity: .7;
+    border-radius: 5px;
+}
+
+.tutorial .sections .material-icons {
+    font-size: 50px;
+    margin: 20px;
+}
+
+.tutorial .options {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.tutorial span {
+    position: relative;
+    bottom: 20px;
+}
+
+.tutorial .previous, .tutorial .next {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 50px;
+    outline: none;
+    cursor: pointer;
+    margin: 20px 50px;
+}
+
+.tutorial .previous:disabled,.tutorial .next:disabled {
+    opacity: .5;
+}
+
+.tutorial .close {
+    color: #111;
+    font-size: 24px;
+    margin: 5px;
+}

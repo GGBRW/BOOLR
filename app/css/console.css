@@ -16,11 +16,6 @@
     transition: opacity .2s, transform .2s, width .2s, height .2s;
 }
 
-::selection {
-    background: rgba(255,255,255,.5);
-    color: #111;
-}
-
 .console .container {
     height: 95%;
     width: 100%;
@@ -42,6 +37,11 @@
     color: #ddd;
     outline: none;
     width: 90%;
+}
+
+.console .container .focused-input input::selection {
+    background: rgba(255,255,255,.5);
+    color: #111;
 }
 
 .console .container .input, .console .container .output {

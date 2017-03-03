@@ -64,10 +64,59 @@ dialog.welcome = function(component) {
     dialog.name.innerHTML = "Welcome";
 
     dialog.container.innerHTML += "<i class='material-icons' style='font-size: 120px'>memory<i>";
-    dialog.container.innerHTML += "<p>Welcome to <span style='font-size: 20px; font-weight: 600'>BOOLR</span> !</p>";
-    dialog.container.innerHTML += "<p>If you are new to this application, you can take a tour to see how this application works</p>";
-    dialog.addOption("Take a tour", () => dialog.warning("This function is not yet available"));
-    dialog.addOption("Just start");
+    dialog.container.innerHTML += "<p>Welcome to <span style='font-family: Righteous; font-size: 24px;'>BOOLR</span> !</p>";
+    dialog.container.innerHTML += "<p>If i'm right this is the first time you are using BOOLR.</p>";
+    dialog.container.innerHTML += "<p>Need a tutorial to learn how everything works?</p>";
+    dialog.addOption("Yes please!", () => tutorial.show());
+    dialog.addOption("No, just start");
+}
+
+dialog.createBoard = function() {
+
+}
+
+dialog.editBoard = function(save) {
+    dialog.show();
+    dialog.name.innerHTML = "Edit board";
+
+    dialog.container.appendChild(document.createTextNode("Board name"));
+    const boardName = document.createElement("input");
+    boardName.value = save.name;
+    dialog.container.appendChild(boardName);
+    setTimeout(() => boardName.focus(),10);
+    dialog.container.appendChild(document.createElement("br"));
+
+    dialog.container.appendChild(document.createTextNode("File name"));
+    const fileName = document.createElement("input");
+    fileName.value = save.fileName.slice(0,save.fileName.indexOf(".board"));
+    dialog.container.appendChild(fileName);
+    dialog.container.appendChild(document.createTextNode(".board"));
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK",  () => {
+        if(boardName.value != save.name && boardName.value.length > 0 && boardName.value.length < 100) {
+            save.name = boardName.value;
+
+            const content = JSON.parse(fs.readFileSync(savesFolder + save.fileName));
+            content.name = boardName.value;
+            fs.writeFile(
+                savesFolder + save.fileName,
+                JSON.stringify(content),
+                "utf-8"
+            );
+        }
+
+        if(fileName.value + ".board" != save.fileName) {
+            const newFileName = createFileName(fileName.value);
+            fs.rename(
+                savesFolder + save.fileName,
+                savesFolder + newFileName
+            );
+            save.fileName = newFileName;
+        }
+
+        openBoardMenu.onopen();
+    });
 }
 
 dialog.update = function(component) {

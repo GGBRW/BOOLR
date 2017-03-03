@@ -1,0 +1,90 @@
+#customComponentToolbar {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: -50px;
+    margin-left: -175px;
+    width: 350px;
+    height: 50px;
+    background: #111;
+    color: #444;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+    border-radius: 0 0 5px 5px;
+    text-align: center;
+
+    transition: top .2s;
+}
+
+#customComponentToolbar .close {
+    position: absolute;
+    bottom: 6px;
+    left: 0;
+    opacity: 1;
+    color: #ddd;
+}
+
+#customComponentToolbar .edit {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    color: #ddd;
+    line-height: 30px;
+    margin: 10px 0;
+    outline: none;
+    cursor: pointer;
+
+    transition: opacity .2s, transform .2s;
+}
+
+#customComponentToolbar .edit:hover {
+    opacity: .7;
+}
+
+#customComponentToolbar #name {
+    position: relative;
+    top: 15px;
+    font-family: "Ubuntu", Arial;
+    font-size: 15px;
+    color: #ddd;
+}
+
+#customComponentToolbar .menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    background: #111;
+    border-radius: 5px;
+    color: #ddd;
+    list-style: none;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+
+    display: none;
+    opacity: 0;
+    transform: scale(.5) translateX(80px) translateY(-40px);
+    transition: opacity .2s, transform .2s;
+}
+
+#customComponentToolbar .menu li {
+    padding: 8px;
+    font-family: "Ubuntu", Arial;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+#customComponentToolbar .menu li:hover {
+    background: rgba(255,255,255,.1);
+}
+
+#customComponentToolbar .menu li .material-icons {
+    color: #888;
+    margin-right: 10px;
+    vertical-align: -5px;
+    white-space: nowrap;
+
+    transition: color .2s;
+}

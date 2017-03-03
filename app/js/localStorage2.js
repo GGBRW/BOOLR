@@ -121,6 +121,8 @@ function stringify(components = [], wires = [], selection) {
 
         const constructor = component.constructor.name;
         const data = {};
+
+        data.id = component.id;
         data.name = component.name;
         data.pos = component.pos;
 
@@ -135,6 +137,7 @@ function stringify(components = [], wires = [], selection) {
         data.input = [];
         for(let i = 0; i < component.input.length; ++i) {
             data.input[i] = {
+                id: component.input[i].id,
                 name: component.input[i].name,
                 pos: Object.assign({},component.input[i].pos),
                 value: component.input[i].value
@@ -144,6 +147,7 @@ function stringify(components = [], wires = [], selection) {
         data.output = [];
         for(let i = 0; i < component.output.length; ++i) {
             data.output[i] = {
+                id: component.output[i].id,
                 name: component.output[i].name,
                 pos: Object.assign({},component.output[i].pos),
                 value: component.output[i].value
@@ -182,6 +186,7 @@ function stringify(components = [], wires = [], selection) {
             toPortIndex,
             input,
             output,
+            wire.id,
             wire.value,
             wire.pos,
             wire.intersections,
@@ -275,17 +280,9 @@ function parse(data) {
     }
 
     for(let i = 0; i < wires.length; ++i) {
-        // const from = components[wires[i][0]];
-        // let fromPort;
-        // if(from && from.output) fromPort = from.output[wires[i][1]];
-        //
-        // const to = components[wires[i][2]];
-        // let toPort;
-        // if(to && to.input) toPort = to.input[wires[i][3]];
-
-        const pos = wires[i][7];
-        const intersections = wires[i][8];
-        let color = wires[i][9];
+        const pos = wires[i][8];
+        const intersections = wires[i][9];
+        let color = wires[i][10];
 
         // If color is not in array format ([r,g,b]), convert
         if(typeof color == "string") {
@@ -304,13 +301,15 @@ function parse(data) {
             pos, intersections, color
         );
 
+        wire.id = wires[i][6];
+
         wire.from = [wires[i][0],wires[i][1]]; // This is getting parsed later
         wire.to = [wires[i][2],wires[i][3]]; // This one too
 
         wire.input = wires[i][4];
         wire.output = wires[i][5];
 
-        wire.value = wires[i][6];
+        wire.value = wires[i][7];
 
         //if(fromPort && toPort) connect(fromPort,toPort,wire);
 

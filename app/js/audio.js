@@ -1,3 +1,5 @@
+"use strict";
+
 let audioCtx;
 try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -5,7 +7,7 @@ try {
     console.error("Web Audio API is not supported.");
 }
 
-function beep(frequency = 440,duration = 500) {
+function beep(frequency = 440, duration = 500) {
     let oscillator = audioCtx.createOscillator();
     oscillator.type = "sine";
     oscillator.frequency.value = frequency;

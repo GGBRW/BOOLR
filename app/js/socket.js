@@ -33,9 +33,8 @@ function connectToSocket(url) {
 
         switch(msg.type) {
             case "board":
-                const data = msg.data;
+                var data = msg.data;
                 const parsed = parse(data);
-                const clone = cloneSelection(parsed.components || [],parsed.wires || []);
 
                 components = [];
                 wires = [];
@@ -43,15 +42,14 @@ function connectToSocket(url) {
                 undoStack = [];
 
                 addSelection(
-                    clone.components,
-                    clone.wires,
+                    parsed.components,
+                    parsed.wires,
                     undefined,undefined,undefined,
                     false,
                     false
                 );
                 break;
             case "add":
-                console.log("add");
                 try {
                     const parsed = parse(msg.data);
                     components.push(...parsed.components);
@@ -59,6 +57,24 @@ function connectToSocket(url) {
                 } catch(e) {
                     console.warn("Could not parse data from server " + e);
                 }
+                break;
+            case "remove":
+                var data = JSON.parse(msg.data);
+
+                const componentIndex = data[0];
+                if(componentIndex > -1) components.splice(componentIndex,1);
+
+                const wireIndexes = data[1];
+                for(let i = 0; i < wireIndexes.length; ++i) {
+                    if(wireIndexes[i] > -1) wires.splice(wireIndexes[i],1);
+                }
+                break;
+            case "connect":
+                var data = JSON.parse(msg.data);
+
+                const from = components[data[0]].output[data[1]];
+                const to = components[data[2]].input[data[3]];
+                connect(from,to,new Wire());
                 break;
         }
     }

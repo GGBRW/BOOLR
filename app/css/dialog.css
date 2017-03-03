@@ -1,0 +1,117 @@
+#over {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #888;
+    opacity: 0;
+    transition: opacity .5s;
+    z-index: 200;
+}
+
+#dialog {
+    display: none;
+    position: fixed;
+    top: 16%;
+    left: 50%;
+    height: auto;
+    width: 400px;
+    margin-left: -200px;
+    padding-bottom: 100px;
+    background: #111;
+    border-radius: 5px;
+    text-align: center;
+    font-family: Ubuntu;
+    color: #ddd;
+    font-size: 15px;
+    z-index: 1000;
+    outline: none;
+
+    top: 100%;
+    opacity: 0;
+    transition: opacity .2s, transform .2s, top .2s, height 1s;
+}
+
+#dialog h1 {
+    font-family: Ubuntu;
+    font-size: 26px;
+    font-weight: 400;
+    margin: 0;
+    padding: 20px 0;
+}
+
+#dialog .container {
+    padding: 0 20px;
+}
+
+#dialog input {
+    font-family: Monospaced;
+    font-size: 15px;
+    background: rgba(255,255,255,0);
+    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
+    border: none;
+    outline: none;
+    margin: 8px;
+    padding: 2px;
+    color: #ddd;
+}
+
+#dialog .container button {
+    background: rgba(255,255,255,.2);
+    border: none;
+    font-family: Ubuntu;
+    font-size: 15px;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    min-width: 100px;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+
+#dialog ul {
+    margin-left: 10%;
+}
+
+#dialog li {
+    text-align: left;
+    padding: 5px;
+}
+
+#dialog .options {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px 0;
+}
+
+#dialog .options button {
+    position: relative;
+    top: 0;
+    background: rgba(255,255,255,.2);
+    box-shadow: 0 3px 0 0 rgba(255,255,255,.1);
+    border: none;
+    font-family: Ubuntu;
+    font-size: 15px;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    min-width: 100px;
+    outline: none;
+    cursor: pointer;
+
+    transition: top .1s, box-shadow .1s, background .1s;
+}
+
+#dialog .options button:hover {
+    background: rgba(255,255,255,.3);
+    box-shadow: 0 3px 0 0 rgba(255,255,255,.2);
+}
+
+#dialog .options button:active {
+    box-shadow: 0 0 0 0 #111;
+    top: 3px;
+}

@@ -1,6 +1,6 @@
 function select(Component) {
     Selected = Component;
-    toolbar.message(`Selected ${Component.name} ${[Input,Output].includes(Component) ? "port" : "gate"}`);
+    toolbar.message(`Selected ${Component.name} ${"gate"}`);
     document.getElementById("list").style.display = "none";
 }
 

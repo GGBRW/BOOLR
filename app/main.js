@@ -16,7 +16,7 @@ function createWindow () {
     });
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, 'pws.html'),
+        pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
     }));

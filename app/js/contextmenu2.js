@@ -237,7 +237,7 @@ createContextMenuOption(
     "Shift+R",
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
-        savedCustomComponents.push(component);
+        saveCustomComponent(component);
     },
     function() {
         const component = findComponentByPos(...contextMenu.getPos());

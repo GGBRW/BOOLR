@@ -2,6 +2,10 @@
   "name": "BOOLR",
   "description": "A digital logic simulator",
   "version": "0.1.301",
-  "author": "Gees Brouwer <gees@ggbrw.nl>",
+  "author": {
+    "name": "Gees Brouwer",
+    "email": "gees@ggbrw.nl",
+    "url": "http://ggbrw.nl"
+  },
   "main": "main.js"
 }
