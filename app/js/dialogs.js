@@ -574,6 +574,7 @@ dialog.savedCustomComponents = function() {
         const component = savedCustomComponents[i];
 
         const li = document.createElement("li");
+        li.component = component;
         li.innerHTML = component.name;
         li.onclick = function() {
             select(
@@ -596,15 +597,10 @@ dialog.savedCustomComponents = function() {
         removeBtn.title = "Remove component";
         removeBtn.innerHTML = "delete";
         removeBtn.onclick = function(e) {
-            dialog.confirm(
-                "Are you sure you want to delete " + this.parentNode.save.name + "?",
-                () => {
-                    fs.unlink(savesFolder + save.fileName, (err) => console.log(err));
-                    const index = saves.indexOf(save);
-                    if(index > -1) saves.splice(index,1);
-                    openBoardMenu.onopen();
-                }
-            );
+            const index = savedCustomComponents.indexOf(component);
+            index > -1 && savedCustomComponents.splice(index,1);
+
+            dialog.savedCustomComponents();
             e.stopPropagation();
         }
         li.appendChild(removeBtn);
@@ -622,7 +618,12 @@ dialog.savedCustomComponents = function() {
 
         list.appendChild(li);
     }
-    dialog.container.appendChild(list);
+
+    if(!savedCustomComponents || savedCustomComponents.length == 0) {
+        dialog.container.innerHTML = "<p>You have no saved custom components.</p>";
+    } else {
+        dialog.container.appendChild(list);
+    }
 
     dialog.addOption("Close");
 }

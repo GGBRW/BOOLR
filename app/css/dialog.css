@@ -94,6 +94,8 @@
     cursor: pointer;
     text-align: left;
     padding: 12px;
+    width: 75%;
+    margin: 0 auto;
 }
 
 #dialog li:hover {
@@ -105,7 +107,7 @@
     top: -3px;
     float: right;
     cursor: pointer;
-    margin-left: 15px;
+    margin-left: 20px;
     color: #ddd;
 }
 

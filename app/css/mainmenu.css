@@ -235,6 +235,8 @@
 }
 
 .main-menu .open-board li span {
+    position: relative;
+    top: 2px;
     padding-left: 20px;
     color: #555;
     font-size: 15px;
