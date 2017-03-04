@@ -16,6 +16,8 @@ setInterval(function() {
     }
 }, 100);
 
+
+// TODO: moet worden bijgewerkt!
 const hoverBalloon = document.getElementById("hoverBalloon");
 hoverBalloon.show = function(component) {
     if(this.display) return;
@@ -29,6 +31,7 @@ hoverBalloon.show = function(component) {
     } else {
         this.innerHTML = "<h1>" + component.name + "</h1>";
         this.innerHTML += Math.round(component.pos.x) + "," + Math.round(component.pos.y) + "<br>";
+        this.innerHTML += "ID: " + component.id + "<br>";
         this.innerHTML += "Placed by: " + (component.placedBy ? component.placedBy : "you") + "<br>";
         if(component.hasOwnProperty("value")) this.innerHTML += "Value: " + component.value + "<br>";
     }
@@ -58,11 +61,17 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
         const toolbartip = document.getElementById("toolbartip");
 
         if(toolbartip.style.display == "block") {
-            toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";
+            toolbartip.innerHTML = this.getAttribute("tooltip");
+            if(i > 0 && i < 5) {
+                toolbartip.innerHTML += "<br><span style='font-size: 10px; color: #555'>Right click for details</span>";
+            }
             toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
         } else {
             toolbartip.style.display = "block";
-            toolbartip.innerHTML = this.getAttribute("tooltip") + "<br><span style='font-size: 10px; color: #555'>Press tab for details</span>";;
+            toolbartip.innerHTML = this.getAttribute("tooltip")
+            if(i > 0 && i < 5) {
+                toolbartip.innerHTML += "<br><span style='font-size: 10px; color: #555'>Right click for details</span>";
+            }
             setTimeout(() => {
                 toolbartip.style.opacity = 1;
                 toolbartip.style.transform = "translateY(20px)";

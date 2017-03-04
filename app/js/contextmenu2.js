@@ -122,7 +122,7 @@ createContextMenuOption(
     "E",
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
-        dialog.edit(component);
+        dialog.editComponent(component);
     },
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
@@ -131,30 +131,16 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
-    "Edit name",
+    "Edit",
     "mode_edit",
     "E",
     function() {
-        const component = findComponentByPos(...contextMenu.getPos());
-        dialog.editName(component);
+        const port = findPortByPos(...contextMenu.getPos());
+        dialog.editPort(port);
     },
     function() {
-        const component = findComponentByPos(...contextMenu.getPos());
-        return component && component.hasOwnProperty("name") && !selecting;
-    }
-);
-
-createContextMenuOption(
-    "Edit delay",
-    "timer",
-    "E",
-    function() {
-        const component = findComponentByPos(...contextMenu.getPos());
-        dialog.editDelay(component);
-    },
-    function() {
-        const component = findComponentByPos(...contextMenu.getPos());
-        return component && component.properties.hasOwnProperty("delay") && !selecting;
+        const port = findPortByPos(...contextMenu.getPos());
+        return port;
     }
 );
 
@@ -203,21 +189,6 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
-    "Edit component",
-    "mode_edit",
-    "E",
-    function() {
-        dialog.editCustom(
-            findComponentByPos(...contextMenu.getPos())
-        );
-    },
-    function() {
-        const component = findComponentByPos(...contextMenu.getPos());
-        return component && component.constructor == Custom && !selecting;
-    }
-);
-
-createContextMenuOption(
     "Open",
     "open_in_new",
     "Shift+O",
@@ -257,6 +228,20 @@ createContextMenuOption(
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
         return component && component.rotate && !selecting;
+    }
+);
+
+createContextMenuOption(
+    "View connections",
+    "compare_arrows",
+    "",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        dialog.connections(component);
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return component && !selecting;
     }
 );
 

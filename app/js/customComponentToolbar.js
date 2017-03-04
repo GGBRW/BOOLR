@@ -1,7 +1,7 @@
 const customComponentToolbar = document.getElementById("customComponentToolbar");
 
 customComponentToolbar.querySelector(".close").onmouseup = function() {
-    path.splice(-1);
+    const component = path.splice(-1)[0].component;
 
     const data = path.slice(-1)[0];
     components = data.components;
@@ -10,6 +10,8 @@ customComponentToolbar.querySelector(".close").onmouseup = function() {
     redoStack = data.redoStack;
     offset = data.offset;
     zoom = zoomAnimation = data.zoom;
+
+    component.create();
 
     customComponentToolbar.querySelector("#name").innerHTML = path.slice(1).map(a => a.name).join(" > ");
 

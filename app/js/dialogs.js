@@ -72,21 +72,35 @@ dialog.welcome = function(component) {
 }
 
 dialog.createBoard = function() {
+    dialog.show();
+    dialog.name.innerHTML = "Create save file";
 
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 120px'>save<i>";
+    dialog.container.innerHTML += "<p>This board doesn't have a save file yet. Want to create one?</p>";
+
+    dialog.container.appendChild(document.createTextNode("Name: "));
+    const name = document.createElement("input");
+    dialog.container.appendChild(name);
+    setTimeout(() => name.focus(),10);
+
+    dialog.addOption("Cancel");
+    dialog.addOption("OK",  () => {
+        createSaveFile(name.value);
+    });
 }
 
 dialog.editBoard = function(save) {
     dialog.show();
     dialog.name.innerHTML = "Edit board";
 
-    dialog.container.appendChild(document.createTextNode("Board name"));
+    dialog.container.appendChild(document.createTextNode("Board name: "));
     const boardName = document.createElement("input");
     boardName.value = save.name;
     dialog.container.appendChild(boardName);
     setTimeout(() => boardName.focus(),10);
     dialog.container.appendChild(document.createElement("br"));
 
-    dialog.container.appendChild(document.createTextNode("File name"));
+    dialog.container.appendChild(document.createTextNode("File name: "));
     const fileName = document.createElement("input");
     fileName.value = save.fileName.slice(0,save.fileName.indexOf(".board"));
     dialog.container.appendChild(fileName);
@@ -148,6 +162,109 @@ dialog.openBoard = function() {
 
 dialog.connectToServer = function() {
 
+}
+
+dialog.connections = function(component) {
+    dialog.show();
+    dialog.name.innerHTML = "Connections";
+
+    const input = document.createElement("ul");
+    for(let i = 0; i < component.input.length; ++i) {
+        const wire = component.input[i].connection;
+        wire && (function getInputs(wire) {
+            if(wire.from) {
+                const li = document.createElement("li");
+                li.innerHTML = wire.from.component.name;
+                input.appendChild(li);
+            }
+            for(let i = 0; i < wire.input.length; ++i) {
+                getInputs(wire.input[i]);
+            }
+        })(wire);
+    }
+
+    const output = document.createElement("ul");
+    for(let i = 0; i < component.output.length; ++i) {
+        const wire = component.output[i].connection;
+        wire && (function getOutputs(wire) {
+            if(wire.to) {
+                const li = document.createElement("li");
+                li.innerHTML = wire.to.component.name;
+                output.appendChild(li);
+            }
+            for(let i = 0; i < wire.output.length; ++i) {
+                getOutputs(wire.output[i]);
+            }
+        })(wire);
+    }
+
+    const connections = input.children.length + output.children.length;
+    dialog.container.innerHTML += `${component.name} has ${connections} connection${connections == 1 ? "" : "s"}. <br><br>`;
+
+    if(input.children.length > 0) {
+        dialog.container.innerHTML += `${input.children.length} connection${input.children.length == 1 ? "" : "s"} from:`;
+        dialog.container.appendChild(input);
+    }
+
+    if(output.children.length > 0) {
+        dialog.container.innerHTML += `${output.children.length} connection${output.children.length == 1 ? "" : "s"} to:`;
+        dialog.container.appendChild(output);
+    }
+
+    dialog.addOption("Close");
+}
+
+dialog.truthTable = function(type) {
+    dialog.show();
+    dialog.name.innerHTML = type.name + " gate";
+
+    const component = new type();
+
+    dialog.container.innerHTML += "<span style='font-size: 50px; padding: 50px'>" + component.icon.text + "</span><br>";
+    dialog.container.innerHTML += "<p>Truth table:</p>";
+
+    // Create truth table
+    const table = document.createElement("table");
+    table.className = "truthtable";
+    dialog.container.appendChild(table);
+
+    const length = Math.pow(2,component.input.length);
+
+    const tr = document.createElement("tr");
+    const inputTh = document.createElement("th");
+    inputTh.innerHTML = "Input";
+    inputTh.colSpan = component.input.length;
+    tr.appendChild(inputTh);
+    const outputTh = document.createElement("th");
+    outputTh.innerHTML = "Output";
+    outputTh.colSpan = component.output.length;
+    tr.appendChild(outputTh);
+    table.appendChild(tr);
+
+
+    for(let i = 0; i < length; ++i) {
+        const tr = document.createElement("tr");
+        const input = ("0".repeat(component.input.length) + i.toString(2)).slice(-component.input.length);
+        for(let i = 0; i < input.length; ++i) {
+            component.input[i].value = +input[i];
+        }
+        component.update();
+
+        for(let i = 0; i < input.length; ++i) {
+            const td = document.createElement("td");
+            td.innerHTML = input[i];
+            tr.appendChild(td);
+        }
+        for(let i = 0; i < component.output.length; ++i) {
+            const td = document.createElement("td");
+            td.innerHTML = component.output[i].value;
+            tr.appendChild(td);
+        }
+
+        table.appendChild(tr);
+    }
+
+    dialog.addOption("Close");
 }
 
 dialog.settings = function(component) {
@@ -220,46 +337,46 @@ dialog.localStorageError = function() {
     dialog.addOption("OK");
 }
 
-dialog.edit = function(component) {
-    if(!component) return;
-    dialog.show();
-    dialog.name.innerHTML = "Edit";
-
-    const properties = ["name",...Object.keys(component.properties)];
-    const inputs = [];
-
-    // Name
-    const name = document.createElement("input");
-    inputs.push(name);
-    name.value = component.name;
-
-    dialog.container.appendChild(document.createTextNode("Name:"));
-    dialog.container.appendChild(name);
-    dialog.container.appendChild(document.createElement("br"));
-
-    for(let i in component.properties) {
-        const input = document.createElement("input");
-        inputs.push(input);
-        input.value = component.properties[i];
-
-        dialog.container.appendChild(document.createTextNode(i.slice(0,1).toUpperCase() + i.slice(1) + ":"));
-        dialog.container.appendChild(input);
-
-        if(i == "duration" || i == "delay") {
-            dialog.container.appendChild(document.createTextNode("ms"));
-        } else if(i == "frequency") {
-            dialog.container.appendChild(document.createTextNode("Hz"));
-        }
-        dialog.container.appendChild(document.createElement("br"));
-    }
-
-    dialog.addOption("Cancel");
-    dialog.addOption("OK",  () => {
-        for(let i in component.properties) {
-            component.properties[i] = inputs[Object.keys(component.properties).indexOf(i) + 1].value;
-        }
-    });
-}
+// dialog.edit = function(component) {
+//     if(!component) return;
+//     dialog.show();
+//     dialog.name.innerHTML = "Edit";
+//
+//     const properties = ["name",...Object.keys(component.properties)];
+//     const inputs = [];
+//
+//     // Name
+//     const name = document.createElement("input");
+//     inputs.push(name);
+//     name.value = component.name;
+//
+//     dialog.container.appendChild(document.createTextNode("Name:"));
+//     dialog.container.appendChild(name);
+//     dialog.container.appendChild(document.createElement("br"));
+//
+//     for(let i in component.properties) {
+//         const input = document.createElement("input");
+//         inputs.push(input);
+//         input.value = component.properties[i];
+//
+//         dialog.container.appendChild(document.createTextNode(i.slice(0,1).toUpperCase() + i.slice(1) + ":"));
+//         dialog.container.appendChild(input);
+//
+//         if(i == "duration" || i == "delay") {
+//             dialog.container.appendChild(document.createTextNode("ms"));
+//         } else if(i == "frequency") {
+//             dialog.container.appendChild(document.createTextNode("Hz"));
+//         }
+//         dialog.container.appendChild(document.createElement("br"));
+//     }
+//
+//     dialog.addOption("Cancel");
+//     dialog.addOption("OK",  () => {
+//         for(let i in component.properties) {
+//             component.properties[i] = inputs[Object.keys(component.properties).indexOf(i) + 1].value;
+//         }
+//     });
+// }
 
 dialog.editName = function(component) {
     if(!component) return;
@@ -444,10 +561,6 @@ dialog.editCustom = function(component) {
     });
 }
 
-dialog.editComponent = function(component) {
-
-}
-
 dialog.savedCustomComponents = function() {
     dialog.show();
     dialog.name.innerHTML = "Saved components";
@@ -455,16 +568,14 @@ dialog.savedCustomComponents = function() {
     const list = document.createElement("ul");
     list.style.listStyle = "none";
     list.style.margin = 0;
+    list.style.padding = 0;
 
     for(let i = 0; i < savedCustomComponents.length; ++i) {
         const component = savedCustomComponents[i];
 
-        const listItem = document.createElement("li");
-        listItem.innerHTML = component.name;
-        listItem.style.padding = 10;
-        listItem.style.borderBottom = "2px solid rgba(255,255,255,.1)";
-
-        listItem.onclick = function() {
+        const li = document.createElement("li");
+        li.innerHTML = component.name;
+        li.onclick = function() {
             select(
                 class {
                     constructor() {
@@ -478,7 +589,38 @@ dialog.savedCustomComponents = function() {
             );
             dialog.hide();
         }
-        list.appendChild(listItem);
+
+        // Remove board button
+        const removeBtn = document.createElement("i");
+        removeBtn.className = "material-icons";
+        removeBtn.title = "Remove component";
+        removeBtn.innerHTML = "delete";
+        removeBtn.onclick = function(e) {
+            dialog.confirm(
+                "Are you sure you want to delete " + this.parentNode.save.name + "?",
+                () => {
+                    fs.unlink(savesFolder + save.fileName, (err) => console.log(err));
+                    const index = saves.indexOf(save);
+                    if(index > -1) saves.splice(index,1);
+                    openBoardMenu.onopen();
+                }
+            );
+            e.stopPropagation();
+        }
+        li.appendChild(removeBtn);
+
+        // Edit board button
+        const editBtn = document.createElement("i");
+        editBtn.className = "material-icons";
+        editBtn.title = "Edit component";
+        editBtn.innerHTML = "edit";
+        editBtn.onclick = function(e) {
+            dialog.editBoard(save);
+            e.stopPropagation();
+        }
+        li.appendChild(editBtn);
+
+        list.appendChild(li);
     }
     dialog.container.appendChild(list);
 

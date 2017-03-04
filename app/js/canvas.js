@@ -217,8 +217,6 @@ var dragging;
 var selecting;
 var connecting;
 
-window.onbeforeunload = setLocalStorage;
-
 // window.onfocus = function() {
 //     let data;
 //     if(localStorage.pws) data = JSON.parse(localStorage.pws);
@@ -389,8 +387,7 @@ c.onmousedown = function(e) {
                 } else if(found = findPortByPos()) {
                     const port = found;
                     if(port.type == "output") {
-                        if(port.component.constructor == Merger) connecting = new CompressedWire();
-                        else connecting = new Wire();
+                        connecting = new Wire();
                         connecting.from = port;
                         connecting.pos.push({
                             x: mouse.grid.x,
@@ -762,12 +759,6 @@ c.onmousemove = function(e) {
             );
 
             if(to && to.type == "input") {
-                if(connecting.constructor == CompressedWire && to.component.constructor == Splitter) {
-                    connect(connecting.from,to,connecting, true);
-                    wires.push(connecting);
-                    return;
-                }
-
                 connecting.to = to;
                 wires.push(connecting);
 
@@ -834,7 +825,7 @@ c.onmouseup = function(e) {
 
     if(e.which == 1) {
         if(selecting && !selecting.components && !dragging) {
-            if(selecting.w < .5 && selecting.h < .5) {
+            if(Math.abs(selecting.w) < .5 && Math.abs(selecting.h) < .5) {
                 //selecting = null;
                 return;
             } else {

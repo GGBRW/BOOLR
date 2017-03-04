@@ -58,6 +58,17 @@
     color: #ddd;
 }
 
+#dialog input.error {
+    box-shadow: 0 2px 0 0 #500;
+    color: red;
+}
+
+#dialog .errormsg {
+    opacity: 0;
+    transition: opacity .5s;
+    color: #f00;
+}
+
 #dialog .container button {
     background: rgba(255,255,255,.2);
     border: none;
@@ -77,8 +88,49 @@
 }
 
 #dialog li {
+    font-family: "Ubuntu";
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
     text-align: left;
-    padding: 5px;
+    padding: 12px;
+}
+
+#dialog li:hover {
+    background: rgba(255,255,255,.1);
+}
+
+#dialog li .material-icons {
+    position: relative;
+    top: -3px;
+    float: right;
+    cursor: pointer;
+    margin-left: 15px;
+    color: #ddd;
+}
+
+#dialog .container .truthtable {
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+#dialog .container .truthtable th {
+    font-family: "Ubuntu", Arial;
+    font-weight: 400;
+    color: #111;
+    background: #ddd;
+    border-collapse: collapse;
+    border: 2px solid #ddd;
+    padding: 8px 16px;
+}
+
+#dialog .container .truthtable td {
+    border: 2px solid #ddd;
+    text-align: center;
+    padding: 8px 16px;
+    border-collapse: collapse;
+    font-size: 18px;
+    color: #ddd;
 }
 
 #dialog .options {

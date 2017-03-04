@@ -26,6 +26,8 @@ function readSaveFiles() {
 }
 
 function clearBoard() {
+    openedSaveFile && save();
+
     zoom = zoomAnimation = 100;
     offset = { x: 0, y: 0 };
     variables = [];
@@ -94,6 +96,8 @@ function createFileName(name) {
 }
 
 function createSaveFile(name) {
+    if(!name || name.length == 0) name = "New board";
+
     // Create safe file name
     const filename = createFileName(name);
 
@@ -122,6 +126,8 @@ function createSaveFile(name) {
 }
 
 function save() {
+    if(!openedSaveFile) return dialog.createBoard();
+
     const save = {};
     save.name = openedSaveFile.name;
 
@@ -136,4 +142,6 @@ function save() {
         "utf-8",
         (err,data) => err && console.log(err)
     );
+
+    toolbar.message("Saved changes to " + openedSaveFile.fileName);
 }

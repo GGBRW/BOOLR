@@ -129,7 +129,7 @@ openBoardMenu.onopen = function() {
                     fs.unlink(savesFolder + save.fileName, (err) => console.log(err));
                     const index = saves.indexOf(save);
                     if(index > -1) saves.splice(index,1);
-                    list.removeChild(li);
+                    openBoardMenu.onopen();
                 }
             );
             e.stopPropagation();

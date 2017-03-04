@@ -1,7 +1,7 @@
 .tutorial {
     position: fixed;
     top: 0;
-    left: -30%;
+    left: -500px;
     height: 100%;
     width: 500px;
     background: #ddd;
@@ -49,6 +49,10 @@
     width: 250px;
     opacity: .7;
     border-radius: 5px;
+}
+
+.tutorial .sections div code {
+    font-family: "Ubuntu Mono", Monospaced;
 }
 
 .tutorial .sections .material-icons {

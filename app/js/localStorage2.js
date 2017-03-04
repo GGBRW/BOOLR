@@ -33,7 +33,7 @@ function setLocalStorage() {
     data.settings = settings;
     data.tips = tipsData;
 
-    data.savedCustomComponents = stringify(savedCustomComponents);
+    //data.savedCustomComponents = stringify(savedCustomComponents);
 
     try {
         localStorage.pwsData = JSON.stringify(data);
@@ -79,9 +79,9 @@ function getLocalStorage() {
         }
     }
 
-    if(data.savedCustomComponents) {
-        savedCustomComponents = parse(data.savedCustomComponents).components;
-    }
+    // if(data.savedCustomComponents) {
+    //     savedCustomComponents = parse(data.savedCustomComponents).components;
+    // }
 
     if(data.settings) {
         settings = data.settings;

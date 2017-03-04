@@ -21,7 +21,7 @@ function add(
     if(!findPortByPos(x,y) && !findWireByPos(x,y) || force) {
         components.push(component);
 
-        if(component.constructor == Custom) {
+        if(component.constructor == Custom && component.input.length + component.output.length == 0) {
             component.open();
         }
 
@@ -147,7 +147,7 @@ function addSelection(
 Removes component from the board
 @param {object} component
  */
-function removeComponent(component,undoable = false,sendToSocket = true) {
+function removeComponent(component, undoable = false, sendToSocket = true) {
     if(!component) return;
 
     const wiresOld = [...wires];
@@ -158,7 +158,7 @@ function removeComponent(component,undoable = false,sendToSocket = true) {
         // Remove connections
         const wire = component.input[i].connection;
         if(wire) {
-            const removed = removeWire(wire);
+            const removed = removeWire(wire,false,false);
             removedWires.push(...removed);
         }
     }
@@ -167,24 +167,23 @@ function removeComponent(component,undoable = false,sendToSocket = true) {
         // Remove connections
         const wire = component.output[i].connection;
         if(wire) {
-            const removed = removeWire(wire);
+            const removed = removeWire(wire,false,false);
             removedWires.push(...removed);
         }
     }
 
     delete component.delay;
 
-    const index = components.indexOf(component);
-
-    const wireIndexes = removedWires.map(i => wiresOld.indexOf(i));
+    const wireIDs = removedWires.map(i => i.id);
 
     if(socket && sendToSocket) {
         socket.send(JSON.stringify({
             type: "remove",
-            data: JSON.stringify([[index],wireIndexes])
+            data: JSON.stringify([component.id,wireIDs])
         }));
     }
 
+    const index = components.indexOf(component);
     index > -1 && components.splice(index,1);
 
     if(undoable) {
@@ -216,7 +215,9 @@ function removeComponent(component,undoable = false,sendToSocket = true) {
     };
 }
 
-function removeWire(wire, undoable = false) {
+function removeWire(wire, undoable = false, sendToSocket = true) {
+    if(!wire) return;
+
     const removedWires = [wire];
 
     const from = wire.from;
@@ -280,6 +281,14 @@ function removeWire(wire, undoable = false) {
 
             redoStack.push(removeWire.bind(redoCaller,...arguments));
         });
+    }
+
+    const wireIDs = removedWires.map(i => i.id);
+    if(socket && sendToSocket) {
+        socket.send(JSON.stringify({
+            type: "remove",
+            data: JSON.stringify([-1,wireIDs])
+        }));
     }
 
     return removedWires;
@@ -370,7 +379,7 @@ function connect(from, to, wire, undoable = false, sendToSocket = true) {
         const toPortIndex = to.component.input.indexOf(to);
         socket.send(JSON.stringify({
             type: "connect",
-            data: JSON.stringify([fromIndex,fromPortIndex,toIndex,toPortIndex])
+            data: JSON.stringify([stringify([],[wire]),fromIndex,fromPortIndex,toIndex,toPortIndex])
         }));
     }
 }
@@ -423,13 +432,83 @@ function connectWires(wire1, wire2, undoable = false) {
 }
 
 /*
+ Changes the size of component and fixes the ports
+ @param {object} component
+ @param {number} width
+ @param {number} height
+*/
+function changeSize(component,width = component.width, height = component.height, undoable = false, sendToSocket = true) {
+    const ports = component.input.concat(component.output);
+    if(2 * (height + width) < ports.length) return;
+
+    const oldPortsPos = ports.map(port => Object.assign({},port.pos));
+
+    for(let i = 0; i < ports.length; ++i) {
+        const port = ports[i];
+        if((port.pos.side % 2 == 1 && port.pos.pos > height - 1) ||
+            (port.pos.side % 2 == 0 && port.pos.pos > width - 1)) {
+
+            let side = port.pos.side % 2 ? 2 : 1;
+            let pos;
+            if(port.pos.side == 0 || port.pos.side == 3) pos = 0;
+            else if(port.pos.side == 1) pos = width - 1;
+            else if(port.pos.side == 2) pos = height - 1;
+
+            const dir = port.pos.side == 0 || port.pos.side == 3 ? 1 : -1;
+
+            while(findPortByComponent(component,side,pos)) {
+                pos += dir;
+                if(pos < 0) {
+                    side = (4 + --side) % 2;
+                    if(side % 2 == 1) pos = height - 1;
+                    else pos = width - 1;
+                } else if(side % 2 == 0 && pos > width - 1 || side % 2 == 1 && pos > height - 1) {
+                    side = ++side % 4;
+                    pos = 0;
+                }
+            }
+
+            port.pos.side = side;
+            port.pos.pos = pos;
+        }
+    }
+
+    const oldHeight = component.height;
+    const oldWidth = component.width;
+
+    component.height = height;
+    component.width = width;
+
+    if(undoable) {
+        if(this != redoCaller) redoStack = [];
+
+        undoStack.push(() => {
+            component.height = oldHeight;
+            component.width = oldWidth;
+
+            for(let i = 0; i < ports.length; ++i) {
+                ports[i].pos = oldPortsPos[i];
+            }
+
+            redoStack.push(changeSize.bind(redoCaller,...arguments));
+        });
+    }
+}
+
+/*
  Moves component
  @param {object} component
  @param {number} x
  @param {number} y
  @param value
  */
-function moveComponent(component, x = component.pos.x, y = component.pos.y, undoable = false) {
+function moveComponent(
+    component,
+    x = component.pos.x,
+    y = component.pos.y,
+    undoable = false,
+    sendToSocket = true
+) {
     const oldPos = Object.assign(
         {},
         dragging && dragging.component == component ? dragging.pos : component.pos
@@ -448,6 +527,20 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
             if(undoable) {
                 oldInputWirePos.push([...wire.pos]);
             }
+
+            const pos = wire.pos.slice(-1)[0];
+            pos.x = component.pos.x;
+            pos.y = component.pos.y;
+            const portPos = component.input[i].pos;
+
+            const angle = Math.PI / 2 * portPos.side;
+            pos.x += Math.sin(angle);
+            pos.y += Math.cos(angle);
+            if(portPos.side == 1) pos.x += (component.width - 1);
+            else if(portPos.side == 2) pos.y += (component.height - 1);
+
+            if(portPos.side % 2 == 0) pos.x += portPos.pos;
+            else pos.y -= portPos.pos;
 
             let dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
             let dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
@@ -490,6 +583,20 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
             if(undoable) {
                 oldOutputWirePos.push([...wire.pos]);
             }
+
+            const pos = wire.pos[0];
+            pos.x = component.pos.x;
+            pos.y = component.pos.y;
+            const portPos = component.output[i].pos;
+
+            const angle = Math.PI / 2 * portPos.side;
+            pos.x += Math.sin(angle);
+            pos.y += Math.cos(angle);
+            if(portPos.side == 1) pos.x += (component.width - 1);
+            else if(portPos.side == 2) pos.y += (component.height - 1);
+
+            if(portPos.side % 2 == 0) pos.x += portPos.pos;
+            else pos.y -= portPos.pos;
 
             let dx = wire.pos[0].x - wire.pos[1].x;
             let dy = wire.pos[0].y - wire.pos[1].y;
@@ -552,6 +659,13 @@ function moveComponent(component, x = component.pos.x, y = component.pos.y, undo
 
             redoStack.push(moveComponent.bind(redoCaller,...arguments));
         });
+    }
+
+    if(socket && sendToSocket) {
+        socket.send(JSON.stringify({
+            type: "move",
+            data: JSON.stringify([component.id,x,y])
+        }));
     }
 }
 
@@ -816,7 +930,7 @@ function moveSelection(
  @param value
  */
 function edit(object, property, value, undoable = false) {
-    if(object.hasOwnProperty(property)) {
+    if(object.hasOwnProperty(property) && typeof value == typeof object[property]) {
         const oldValue = object[property];
         object[property] = value;
 
@@ -849,15 +963,33 @@ function findComponentByPos(x = mouse.  grid.x, y = mouse.grid.y) {
 }
 
 /*
-Finds and return component by name
+ Finds and returns component by id
+ If no component is found, it returns undefined
+ @param {number} id
+ @return {object} component
+ */
+function findComponentByID(id) {
+    return components.find(component => component.id == id);
+}
+
+/*
+Finds and returns component by name
 If no component is found, it returns undefined
 @param {string} name
 @return {object} component
 */
 function findComponentByName(name) {
-    for(let i = 0; i < components.length; ++i) {
-        if(name == components[i].name) return components[i];
-    }
+    return components.find(component => component.name == name);
+}
+
+/*
+ Finds and returns wire by id
+ If no wire is found, it returns undefined
+ @param {string} name
+ @return {object} component
+ */
+function findWireByID(id) {
+    return wires.find(wire => wire.id == id);
 }
 
 /*
@@ -1083,6 +1215,10 @@ function cloneComponent(component, dx = 0, dy = 0) {
         y: component.pos.y + dy
     };
     clone.name = component.name;
+    if(clone.name.includes(clone.constructor.name + "#")) {
+        clone.name = clone.constructor.name + "#" + components.filter(a => a.constructor == clone.constructor).length;
+    }
+
     clone.width = component.width;
     clone.height = component.height;
     clone.rotation = component.rotation;
@@ -1697,9 +1833,16 @@ class Input extends Component {
         this.value = 0;
     }
 
-    onmousedown() {
+    onmousedown(sendToSocket = true) {
         this.value = 1 - this.value;
         this.update(true);
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "mousedown",
+                data: this.id
+            }));
+        }
     }
 
     function() {
@@ -1727,9 +1870,16 @@ class TimerStart extends Component {
         this.value = 0;
     }
 
-    onmousedown() {
+    onmousedown(sendToSocket = true) {
         this.value = 1 - this.value;
         this.update(true);
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "mousedown",
+                data: this.id
+            }));
+        }
     }
 
     update() {
@@ -1822,14 +1972,28 @@ class Button extends Component {
         this.value = 0;
     }
 
-    onmousedown() {
+    onmousedown(sendToSocket = true) {
         this.value = 1;
         this.update();
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "mousedown",
+                data: this.id
+            }));
+        }
     }
 
-    onmouseup() {
+    onmouseup(sendToSocket = true) {
         this.value = 0;
         this.update();
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "mouseup",
+                data: this.id
+            }));
+        }
     }
 
     function() {
@@ -2744,12 +2908,6 @@ class DecimalToBinary extends Component {
     }
 }
 
-let savedCustomComponents = [];
-function saveCustomComponent(component) {
-    savedCustomComponents.push(component);
-    toolbar.message("Saved component " + component.name);
-}
-
 class Custom extends Component {
     constructor(
         name,
@@ -2771,6 +2929,9 @@ class Custom extends Component {
     }
 
     update() {
+        // Highlight
+        if(settings.showComponentUpdates) this.highlight(250);
+
         this.function();
     }
 
@@ -2934,7 +3095,14 @@ class Custom extends Component {
             zoom
         });
 
+        Selected = Input;
+
         customComponentToolbar.show();
+    }
+
+    highlight(duration = 500) {
+        this.outline = 1;
+        setTimeout(() => this.outline = 0, duration)
     }
 
     draw() {
@@ -2954,10 +3122,10 @@ class Custom extends Component {
         ctx.lineWidth = zoom / 12 | 0;
         ctx.beginPath();
         ctx.rect(
-            x - zoom / 2 - zoom / 24,
-            y - zoom / 2 - zoom / 24,
-            this.width * zoom + zoom / 24,
-            this.height * zoom + zoom / 24
+            x - zoom / 2,
+            y - zoom / 2,
+            this.width * zoom,
+            this.height * zoom
         );
         ctx.stroke();
         ctx.fill();
@@ -3260,75 +3428,6 @@ class Wire {
             );
             ctx.fill();
         }
-    }
-}
-
-class CompressedWire {
-    constructor(
-        pos = [],
-        intersections = [],
-        color = [0,0,0],
-        from,
-        to
-    ) {
-        this.id = generateId();
-        this.pos = pos;
-        this.intersections = intersections;
-
-        this.from = from;
-        this.to = to;
-        this.value = 0;
-
-        this.color = color;
-    }
-
-    update(value) {
-        this.value = value;
-
-        if(this.to) {
-            this.to.value = value;
-            updateQueue.push(this.to.component.update.bind(this.to.component));
-        }
-    }
-
-    draw() {
-        const pos = this.pos;
-
-        if(zoom > 50) {
-            ctx.lineCap = "round";
-        }
-
-
-        let color;
-        if(this.value == 1) {
-            color = this.color;
-        } else {
-            color = this.color.map(n => (n + 255 + 255 + 255) / 4 | 0);
-        }
-        ctx.strokeStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
-
-        ctx.lineWidth = zoom / 4;
-
-        ctx.beginPath();
-        ctx.lineTo(
-            (pos[0].x - offset.x) * zoom,
-            -(pos[0].y - offset.y) * zoom
-        );
-        for(let i = 1; i < pos.length - 1; ++i) {
-            if(i + 1 < pos.length
-                && pos[i].x - pos[i - 1].x == pos[i + 1].x - pos[i].x
-                && pos[i].y - pos[i - 1].y == pos[i + 1].y - pos[i].y) continue;
-
-            ctx.lineTo(
-                (pos[i].x - offset.x) * zoom,
-                -(pos[i].y - offset.y) * zoom
-            );
-        }
-        ctx.lineTo(
-            (pos[pos.length - 1].x - offset.x) * zoom,
-            -(pos[pos.length - 1].y - offset.y) * zoom
-        );
-        ctx.stroke();
     }
 }
 

@@ -31,10 +31,10 @@ function connectToSocket(url) {
     socket.onmessage = function(e) {
         const msg = JSON.parse(e.data);
 
+        const data = JSON.parse(msg.data);
         switch(msg.type) {
             case "board":
-                var data = msg.data;
-                const parsed = parse(data);
+                var parsed = parse(data);
 
                 components = [];
                 wires = [];
@@ -51,7 +51,7 @@ function connectToSocket(url) {
                 break;
             case "add":
                 try {
-                    const parsed = parse(msg.data);
+                    var parsed = parse(msg.data);
                     components.push(...parsed.components);
                     wires.push(...parsed.wires);
                 } catch(e) {
@@ -59,22 +59,44 @@ function connectToSocket(url) {
                 }
                 break;
             case "remove":
-                var data = JSON.parse(msg.data);
+                var component = findComponentByID(data[0]);
+                removeComponent(component,false,false);
 
-                const componentIndex = data[0];
-                if(componentIndex > -1) components.splice(componentIndex,1);
-
-                const wireIndexes = data[1];
-                for(let i = 0; i < wireIndexes.length; ++i) {
-                    if(wireIndexes[i] > -1) wires.splice(wireIndexes[i],1);
+                for(let i = 0; i < data[1].length; ++i) {
+                    var wire = findWireByID(data[1][i]);
+                    removeWire(wire);
                 }
+
                 break;
             case "connect":
-                var data = JSON.parse(msg.data);
+                const wireData = data[0][1][0];
+                var wire = findWireByID(wireData[6]);
+                if(!wire) {
+                    wire = parse(data[0]).wires[0];
+                    if(wire) wires.push(wire);
+                }
 
-                const from = components[data[0]].output[data[1]];
-                const to = components[data[2]].input[data[3]];
-                connect(from,to,new Wire());
+                var from = components[data[1]].output[data[2]];
+                var to = components[data[3]].input[data[4]];
+                connect(from,to,wire,false,false);
+                break;
+            case "move":
+                var component = findComponentByID(+data[0]);
+                moveComponent(
+                    component,
+                    +data[1],
+                    +data[2],
+                    false,
+                    false
+                );
+                break;
+            case "mousedown":
+                var component = findComponentByID(+msg.data);
+                component.onmousedown && component.onmousedown(false);
+                break;
+            case "mouseup":
+                var component = findComponentByID(+msg.data);
+                component.onmouseup && component.onmouseup(false);
                 break;
         }
     }

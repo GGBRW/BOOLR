@@ -48,25 +48,25 @@ c.onkeydown = function(e) {
             selecting = null;
             break;
         case 49: // 1
-            document.getElementsByClassName("slot")[0].onmousedown();
+            document.getElementsByClassName("slot")[0].onmousedown({which:1});
             break;
         case 50: // 2
-            document.getElementsByClassName("slot")[1].onmousedown();
+            document.getElementsByClassName("slot")[1].onmousedown({which:1});
             break;
         case 51: // 3
-            document.getElementsByClassName("slot")[2].onmousedown();
+            document.getElementsByClassName("slot")[2].onmousedown({which:1});
             break;
         case 52: // 4
-            document.getElementsByClassName("slot")[3].onmousedown();
+            document.getElementsByClassName("slot")[3].onmousedown({which:1});
             break;
         case 53: // 5
-            document.getElementsByClassName("slot")[4].onmousedown();
+            document.getElementsByClassName("slot")[4].onmousedown({which:1});
             break;
         case 54: // 6
-            document.getElementsByClassName("slot")[5].onmousedown();
+            document.getElementsByClassName("slot")[5].onmousedown({which:1});
             break;
         case 55: // 7
-            document.getElementsByClassName("slot")[6].onmousedown();
+            document.getElementsByClassName("slot")[6].onmousedown({which:1});
             break;
         case 56: // 8
             break;
@@ -107,7 +107,7 @@ c.onkeydown = function(e) {
                     }
                 )
             } else if(found = findComponentByPos()) {
-                dialog.editName(found);
+                dialog.editComponent(found);
             }
             return false;
             break;
@@ -140,16 +140,10 @@ c.onkeydown = function(e) {
             }
             break;
         case 82: // R
-            if(e.ctrlKey && e.shiftKey) {
-                popup.confirm.show(
-                    'Clear localStorage',
-                    'Are you sure you want to clear all local stored data?',
-                    () => { localStorage.pwsData = ''; window.onbeforeunload = undefined; location.reload() }
-                );
-            } else if(e.shiftKey) {
-                const component = findComponentByPos(...contextMenu.getPos());
+            if(e.shiftKey) {
+                const component = findComponentByPos();
                 if(component.constructor == Custom) {
-                    savedCustomComponents.push(component);
+                    saveCustomComponent(component);
                 }
             } else {
                 var component = findComponentByPos();
@@ -160,7 +154,7 @@ c.onkeydown = function(e) {
             if(e.ctrlKey && e.shiftKey) {
                 dialog.settings();
             } else if(e.ctrlKey) {
-                dialog.save();
+                save();
             } else if(e.shiftKey) {
                 waypointsMenu.hide();
 

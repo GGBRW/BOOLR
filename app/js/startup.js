@@ -3,6 +3,7 @@
 setTimeout(() => {
     // parse localstorage
     getLocalStorage(localStorage.pwsData);
+    getCustomComponents();
 
     readSaveFiles();
     updateDebugInfo();
@@ -10,5 +11,5 @@ setTimeout(() => {
     draw();
 
     loading.style.display = "none";
-    mainMenu.show();
+    mainMenu.hide();
 });
