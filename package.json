@@ -1,5 +1,15 @@
 {
+  "build": {
+    "appId": "com.ggbrw.boolr",
+    "mac": {
+      "category": "public.app-category.simulator"
+    }
+  },
+  "scripts": {
+    "pack": "build --dir",
+    "dist": "build"
+  },
   "devDependencies": {
-    "electron-builder": "^14.5.3"
+    "electron-packager": "^8.5.2"
   }
 }
