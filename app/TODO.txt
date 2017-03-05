@@ -7,3 +7,5 @@ delay goede richting
 klipbord geen selectie
 closures
 server changeSize
+keys controleren
+tutorial v<0.5
