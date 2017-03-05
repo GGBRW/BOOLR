@@ -1,15 +1,9 @@
 server!
+server connect menu
 pinnetjes omwisselen
 kruispunten weergeven
 [contextmenu positie]
-variabelen localstorage/onbekende
 delay goede richting
 klipbord geen selectie
-geen clone bij parse
-console 'help'
 closures
-changeHeight/Width ports
-delay undefined
-custom update
 server changeSize
-saves naam

@@ -11,5 +11,5 @@ setTimeout(() => {
     draw();
 
     loading.style.display = "none";
-    mainMenu.hide();
+    mainMenu.show();
 });

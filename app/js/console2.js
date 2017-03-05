@@ -67,7 +67,7 @@ boolrConsole.onkeydown = function(e) {
         try {
             const output = document.createElement("div");
             output.className = "output";
-            output.innerHTML = inputHandler(focusedInput.input.value);
+            output.innerHTML = inputHandler(focusedInput.input.value) || "";
             container.insertBefore(output, focusedInput);
         } catch(e) {
             this.error(e);
@@ -75,6 +75,7 @@ boolrConsole.onkeydown = function(e) {
 
         focusedInput.input.value = "";
         container.scrollTop = container.scrollHeight;
+        historyIndex = 0;
     } else if(e.which == 38) {
         if(historyIndex > -boolrConsole.history.length) {
             focusedInput.input.value = boolrConsole.history.slice(--historyIndex)[0];
@@ -118,9 +119,18 @@ boolrConsole.onkeydown = function(e) {
     }
 }
 
-let variables = [];
+const commands = ["set","get","variables","remove","edit","findComponent","pause"];
 
-const commands = ["set","get","remove","edit","findComponent","pause"];
+boolrConsole.help = function() {
+    this.log("<b>set [name] [value]</b>: sets a variable");
+    this.log("<b>get [name]</b>: returns value of a variable");
+    this.log("<b>variables</b>: return list of all variables");
+    this.log("<b>remove ([name] | [id] | [x] [y])</b>: removes component");
+    this.log("<b>edit ([name] | [id] | [x] [y])</b>: edits property of component");
+    this.log("<b>findComponent ([name] | [id] | [x] [y])</b>: finds component");
+    this.log("<b>start</b>: starts simulation");
+    this.log("<b>pause</b>: pauses simulation");
+}
 
 function inputHandler(input) {
     input = input.split(" ");
@@ -129,23 +139,23 @@ function inputHandler(input) {
 
     switch(command) {
         case "set":
-            var name = (args[0].match(/[a-zA-Z'`´_-]+/g) || []) == args[0] ? args[0] : null;
-            if(!name) throw "Invalid variable name";
-            var value = args[1];
-            if(!value) throw "No value given for variable " + name;
-
-            variables[name] = value;
-            return value;
+            return setVariable(args[0],args[1]);
             break;
         case "get":
-            var name = (args[0].match(/[a-zA-Z'`´_-]+/g) || []) == args[0] ? args[0] : null;
-            if(!name) throw "Invalid variable name";
-            return variables[name];
+            return getVariable(args[0]);
+            break;
+        case "variables":
+            for(let i in variables) {
+                boolrConsole.log(i + ": " + variables[i]);
+            }
             break;
         case "remove":
-            if(args.length == 1) {
+            if(args.length == 1 && isNaN(args[0])) {
                 var component = findComponentByName(args[0]);
                 if(!component) return "Component " + args[0] + " not found";
+            } else if(args.length == 1) {
+                var component = findComponentByID(+args[0]);
+                if(!component) return "Component with ID " + args[0] + " not found";
             } else if(args.length > 1) {
                 var x = args[0] == "~" ? mouse.grid.x : +args[0];
                 var y = args[1] == "~" ? mouse.grid.y : +args[1];
@@ -156,13 +166,18 @@ function inputHandler(input) {
             return "Removed component " + component.name;
             break;
         case "edit":
-            if(!isNaN(args[0]) || args[0] == "~") {
+            if((!isNaN(args[0]) || args[0] == "~") && (!isNaN(args[1]) || args[1] == "~")) {
                 var x = args[0] == "~" ? mouse.grid.x : +args[0];
                 var y = args[1] == "~" ? mouse.grid.y : +args[1];
                 var component = findComponentByPos(x, y);
                 if(!component) return "No component found at " + x + "," + y;
 
                 edit(component,args[2],args[3],true);
+            } else if(!isNaN(args[0])) {
+                var component = findComponentByID(+args[0]);
+                if(!component) return "Component with ID " + args[0] + " not found";
+
+                edit(component,args[1],args[2],true);
             } else if(args.length > 1) {
                 var component = findComponentByName(args[0]);
                 if(!component) return "Component " + args[0] + " not found";
@@ -171,10 +186,14 @@ function inputHandler(input) {
             }
             break;
         case "findComponent":
-            if(args.length == 1) {
+            if(args.length == 1 && isNaN(args[0])) {
                 var component = findComponentByName(args[0]);
                 if(!component) return "Component " + args[0] + " not found";
                 else return "Component " + args[0] + " found at " + component.pos.x + "," + component.pos.y;
+            } else if(args.length == 1) {
+                var component = findComponentByID(+args[0]);
+                if(!component) return "Component with ID " + args[0] + " not found";
+                else return "Component with ID " + args[0] + " found at " + component.pos.x + "," + component.pos.y;
             } else if(args.length > 1) {
                 var x = args[0] == "~" ? mouse.grid.x : +args[0];
                 var y = args[1] == "~" ? mouse.grid.y : +args[1];
@@ -194,6 +213,12 @@ function inputHandler(input) {
             pauseSimulation = true;
             document.querySelector("#pause").innerHTML = "pause";
             return "Simulation paused";
+            break;
+        case "help":
+            boolrConsole.help();
+            break;
+        case "?":
+            boolrConsole.help();
             break;
         default:
             throw "Command not found: " + command;

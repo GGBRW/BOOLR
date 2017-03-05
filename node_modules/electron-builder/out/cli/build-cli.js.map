@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "build-cli.js",
+  "sourceRoot": "",
+  "sources": [
+    "../../src/cli/build-cli.ts"
+  ],
+  "names": [],
+  "mappings": ";;;;AACA,AAAO,AAAE,AAAK,AAAc,AAAM,AAAY;;;;;;AAC9C,AAAO,AAAE,AAAiB,AAAE,AAAM,AAAmC;;;;;;AACrE,AAAO,AAAE,AAAW,AAAE,AAAM,AAAc;;;;;;AAC1C,AAAO,AAAE,AAAQ,AAAE,AAAM,AAAY;;;;AACrC,AAAO,AAAK,AAAI,AAAM,AAAM;;;;AAC5B,AAAO,AAAE,AAAG,AAAE,AAAK,AAAE,AAAK,AAAE,AAAI,AAAE,AAAM,AAAO;;;;;;AAC/C,AAAO,AAAc,AAAM,AAAiB;;;;;;AAC5C,AAAO,AAAE,AAAI,AAAE,AAAM,AAA+B;;;;;;AACpD,AAAO,AAAI,AAAM,AAAO;;;;;;;;AAExB,AAAE,AAAC,IAAC,AAAC,AAAI,oCAAI,AAAO,QAAC,AAAG,IAAC,AAAkB,sBAAI,AAAI,AAAC,MAAC,AAAC;AACpD,AAAQ,kDAAC,AAAI,MAAC,AAAI,KAAC,AAAS,WAAE,AAAI,MAAE,AAAI,MAAE,AAAc,AAAC,AAAC,iBACvD,AAAI,KAAC,AAAE;AACN,AAAE,AAAC,YAAC,AAAE,GAAC,AAAO,YAAK,AAAwB,AAAC,0BAAC,AAAC;AAC5C,AAAM,AACR;AAAC;AAED,cAAM,AAAQ,WAAG,AAAc,yDAAC,EAAC,AAAG,KAAE,AAAE,AAAC,AAAC;AAC1C,AAAE,AAAC,YAAC,AAAQ,SAAC,AAAM,UAAI,AAAI,AAAC,MAAC,AAAC;AAC5B,AAAQ,qBAAC,AAAM;AACb,AAAO,AAAE,6CAAoB,AAAG,mCAAC,AAAQ,SAAC,AAAM,OAAC,AAAO,AAAC,WAAG,AAAK,qCAAC,AAAK,AAAC,SAAG,AAAK,qCAAC,AAAQ,SAAC,AAAM,OAAC,AAAM,AAAC,iBAAU,AAAI,oCAAC,AAAmC,AAAC,oCAAY,AACxK,AAAC,AACJ;AAHkB;AAGjB,AACH;AAAC,AAAC,OACD,AAAK,MAAC,AAAC,KAAI,AAAI,AAAC,yDAAyB,AAAC,CAAE,AAAC,AAAC,AACnD;AAAC;AAED,AAAK,AAAa,yCAAC,AAAW,AAAE,uDAAC,AAAI,AAAC,AAAC,MACpC,AAAK,AAAC,AAAiB,AAAC",
+  "sourcesContent": [
+    "#! /usr/bin/env node\nimport { build, CliOptions } from \"../builder\"\nimport { printErrorAndExit } from \"electron-builder-util/out/promise\"\nimport { createYargs } from \"./cliOptions\"\nimport { readJson } from \"fs-extra-p\"\nimport * as path from \"path\"\nimport { dim, reset, green, cyan } from \"chalk\"\nimport updateNotifier from \"update-notifier\"\nimport { warn } from \"electron-builder-util/out/log\"\nimport isCi from \"is-ci\"\n\nif (!isCi && process.env.NO_UPDATE_NOTIFIER == null) {\n  readJson(path.join(__dirname, \"..\", \"..\", \"package.json\"))\n    .then(it => {\n      if (it.version === \"0.0.0-semantic-release\") {\n        return\n      }\n\n      const notifier = updateNotifier({pkg: it})\n      if (notifier.update != null) {\n        notifier.notify({\n          message: `Update available ${dim(notifier.update.current)}${reset(\" → \")}${green(notifier.update.latest)} \\nRun ${cyan(\"npm i electron-builder --save-dev\")} to update`\n        })\n      }\n    })\n    .catch(e => warn(`Cannot check updates: ${e}`))\n}\n\nbuild(<CliOptions>(createYargs().argv))\n  .catch(printErrorAndExit)"
+  ]
+}

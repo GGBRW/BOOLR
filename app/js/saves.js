@@ -30,7 +30,10 @@ function clearBoard() {
 
     zoom = zoomAnimation = 100;
     offset = { x: 0, y: 0 };
-    variables = [];
+
+    variables = {};
+    variableReferences = {};
+
     path = [];
 
     chat.hide();
@@ -58,9 +61,12 @@ function openSaveFile(save) {
     if(!Array.isArray(saveFile)) {
         clearBoard();
 
-        offset.x = saveFile.offset.x;
-        offset.y = saveFile.offset.y;
-        zoom = zoomAnimation = saveFile.zoom;
+        offset.x = saveFile.offset.x || 0;
+        offset.y = saveFile.offset.y || 0;
+        zoom = zoomAnimation = saveFile.zoom || 100;
+
+        variables = saveFile.variables || {};
+        variableReferences = saveFile.variableReferences || {};
 
         const parsed = parse(saveFile.data);
 
@@ -80,6 +86,7 @@ function openSaveFile(save) {
     }
 
     openedSaveFile = save;
+    document.title = save.name + " - BOOLR";
 }
 
 function createFileName(name) {
@@ -107,6 +114,9 @@ function createSaveFile(name) {
     save.offset = offset;
     save.zoom = zoom;
 
+    save.variables = variables;
+    save.variableReferences = variableReferences;
+
     save.data = stringify(components,wires);
 
     fs.writeFileSync(
@@ -123,6 +133,7 @@ function createSaveFile(name) {
     });
 
     openedSaveFile = saves.slice(-1)[0];
+    document.title = save.name + " - BOOLR";
 }
 
 function save() {
@@ -133,6 +144,9 @@ function save() {
 
     save.offset = offset;
     save.zoom = zoom;
+
+    save.variables = variables;
+    save.variableReferences = variableReferences;
 
     save.data = stringify(components,wires);
 

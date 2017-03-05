@@ -141,8 +141,9 @@ dialog.update = function(component) {
     dialog.container.innerHTML += "<p>What's new:</p>";
     dialog.container.innerHTML +=
         "<ul style='width: 200px;'>" +
-        "<li>Componenten in componenten openen</li>" +
-        "<li>Dubbel klik om component te openen</li>" +
+        "<li>Tutorial</li>" +
+        "<li>New main menu</li>" +
+        "<li>New edit menu</li>" +
         "</ul>";
     dialog.addOption("Close");
 }
@@ -423,46 +424,6 @@ dialog.colorPicker = function(callback = a => a) {
     }
 
     dialog.addOption("Cancel");
-}
-
-dialog.editDelay = function(component,callback) {
-    if(!component) return;
-    dialog.show();
-    dialog.name.innerHTML = "Edit delay";
-    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>access_time<i>";
-    dialog.container.innerHTML += `<p>Enter a new delay for component <i>${component.name}</i></p>`;
-    const input = document.createElement("input");
-    input.style.width = 100;
-    dialog.container.appendChild(input);
-    setTimeout(() => input.focus(),10);
-    dialog.container.appendChild(
-        document.createTextNode("ms")
-    );
-
-    dialog.addOption("Cancel");
-    dialog.addOption("OK",  () => {
-        let str = input.value;
-
-        const vars = str.match(/[a-zA-Z'`´_-]+/g) || [];
-
-        str = str.replace(
-            /[a-zA-Z'`´_-]+/g,
-            "variables['$&'].value"
-        );
-
-        const value = eval(str);
-        if(isNaN(value)) return;
-
-        component.properties.delay = value;
-        callback && callback();
-
-        for(let i = 0; i < vars.length; ++i) {
-            variables[vars[i]].updates.push(() => {
-                component.properties.delay = eval(str);
-            });
-        }
-    }
-    );
 }
 
 dialog.editPort = function(port) {

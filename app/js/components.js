@@ -1048,7 +1048,7 @@ function findPortByComponent(component,side,pos) {
  @param {number} y
  @return {object} port
  */
-function findPortByPos(x = mouse.grid.x, y = mouse.grid.y,type) {
+function findPortByPos(x = mouse.grid.x, y = mouse.grid.y) {
     if(findComponentByPos()) return;
     for(let i = 0; i < 4; ++i) {
         const component = findComponentByPos(
@@ -1070,6 +1070,22 @@ function findPortByPos(x = mouse.grid.x, y = mouse.grid.y,type) {
         }
     }
 }
+
+/*
+ Finds and returns a port by ID
+ If no port is found, it returns undefined
+ @param {number} id,
+ @return {object} port
+ */
+function findPortByID(id) {
+    for(let i = 0; i < components.length; ++i) {
+        const found = components[i].input.find(port => port.id == id) ||
+                      components[i].output.find(port => port.id == id);
+        if(found) return found;
+    }
+}
+
+
 
 /*
  Finds all components inside a selection

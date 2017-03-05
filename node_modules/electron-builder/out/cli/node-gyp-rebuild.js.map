@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "node-gyp-rebuild.js",
+  "sourceRoot": "",
+  "sources": [
+    "../../src/cli/node-gyp-rebuild.ts"
+  ],
+  "names": [],
+  "mappings": ";;;;;;;;;oEAmBA,AAAK;AACH,cAAM,AAAU,aAAG,AAAO,QAAC,AAAG,AAAE;AAChC,cAAM,AAAM,SAAG,MAAM,AAAU,8DAAC,AAAU,AAAC;AAC3C,AAAG,AAAC,uEAAgC,AAAI,KAAC,AAAQ,YAAI,AAAI,KAAC,AAAI,IAAE,AAAC;AACjE,8EAAW,AAAO,QAAC,AAAQ,aAAK,AAAO,UAAG,AAAc,iBAAG,AAAU,YAAE,CAAC,AAAS,AAAC;AAChF,AAAG,iBAAE,AAAS,wCAAC,MAAM,AAAkB,sEAAC,AAAM,QAAE,AAAU,AAAC,cAAE,AAAI,KAAC,AAAQ,UAAE,AAAI,KAAC,AAAI,MAAE,AAAI,AAAC,AAC7F,AAAC,AACJ;AAHsF,SAA9E,AAAI;AAGX;;;;;;;;;AAxBD,AAAO,AAAE,AAAI,AAAE,AAAM,AAAuB;;;;;;AAC5C,AAAO,AAAE,AAAiB,AAAE,AAAM,AAAmC;;;;;;AACrE,AAAO,AAAK,AAAM,AAAO;;;;;;AACzB,AAAO,AAAE,AAAkB,AAAE,AAAU,AAAE,AAAM,AAAyB;;;;;;AACxE,AAAO,AAAE,AAAG,AAAE,AAAM,AAA+B;;;;;;AACnD,AAAO,AAAE,AAAS,AAAE,AAAM,AAAS;;;;;;AAEnC,MAAM,AAAI,yCACP,AAAM,OAAC,AAAU;AAChB,AAAO,aAAE,CAAC,AAAO,SAAE,AAAQ,UAAE,AAAO,AAAC;AACrC,AAAO,aAAE,AAAO,QAAC,AAAQ,AAC1B,AAAC;AAHkB,CADJ,AAAK,EAKpB,AAAM,OAAC,AAAM;AACZ,AAAO,aAAE,CAAC,AAAM,QAAE,AAAK,OAAE,AAAQ,AAAC;AAClC,AAAO,aAAE,AAAO,QAAC,AAAI,AACtB,AAAC;AAHc,GAGb,AAAI;;AAWT,AAAI,AAAE,OACH,AAAK,AAAC,AAAiB,AAAC",
+  "sourcesContent": [
+    "#! /usr/bin/env node\n\nimport { exec } from \"electron-builder-util\"\nimport { printErrorAndExit } from \"electron-builder-util/out/promise\"\nimport yargs from \"yargs\"\nimport { getElectronVersion, loadConfig } from \"../util/readPackageJson\"\nimport { log } from \"electron-builder-util/out/log\"\nimport { getGypEnv } from \"../yarn\"\n\nconst args: any = yargs\n  .option(\"platform\", {\n    choices: [\"linux\", \"darwin\", \"win32\"],\n    default: process.platform,\n  })\n  .option(\"arch\", {\n    choices: [\"ia32\", \"x64\", \"armv7l\"],\n    default: process.arch,\n  }).argv\n\nasync function main() {\n  const projectDir = process.cwd()\n  const config = await loadConfig(projectDir)\n  log(`Execute node-gyp rebuild for ${args.platform}:${args.arch}`)\n  await exec(process.platform === \"win32\" ? \"node-gyp.cmd\" : \"node-gyp\", [\"rebuild\"], {\n    env: getGypEnv(await getElectronVersion(config, projectDir), args.platform, args.arch, true),\n  })\n}\n\nmain()\n  .catch(printErrorAndExit)"
+  ]
+}

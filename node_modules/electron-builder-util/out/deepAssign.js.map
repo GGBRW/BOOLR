@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "deepAssign.js",
+  "sourceRoot": "",
+  "sources": [
+    "../src/deepAssign.ts"
+  ],
+  "names": [],
+  "mappings": ";;;;;;AAAA,kBAAkB,AAAM;AACtB,AAAE,AAAC,QAAC,AAAK,MAAC,AAAO,QAAC,AAAC,AAAC,AAAC,IAAC,AAAC;AACrB,AAAM,eAAC,AAAK,AACd;AAAC;AAED,UAAM,AAAI,OAAG,OAAO,AAAC;AACrB,AAAM,WAAC,AAAI,SAAK,AAAQ,YAAI,AAAI,SAAK,AAAU,AACjD;AAAC;AAED,mBAAmB,AAAO,IAAE,AAAS,MAAE,AAAW;AAChD,UAAM,AAAK,QAAG,AAAI,KAAC,AAAG,AAAC;AACvB,AAAiE;AACjE,AAAE,AAAC,QAAC,AAAK,UAAK,AAAS,AAAC,WAAC,AAAC;AACxB,AAAM,AACR;AAAC;AAED,UAAM,AAAS,YAAG,AAAE,GAAC,AAAG,AAAC;AACzB,AAAE,AAAC,QAAC,AAAS,aAAI,AAAI,QAAI,AAAK,UAAK,AAAI,QAAI,CAAC,AAAQ,SAAC,AAAS,AAAC,cAAI,CAAC,AAAQ,SAAC,AAAK,AAAC,AAAC,QAAC,AAAC;AACpF,AAAE,WAAC,AAAG,AAAC,OAAG,AAAK,AACjB;AAAC,AACD,AAAI,WAAC,AAAC;AACJ,AAAE,WAAC,AAAG,AAAC,OAAG,AAAM,OAAC,AAAS,WAAE,AAAK,AAAC,AACpC;AAAC,AACH;AAAC;AAED,gBAAgB,AAAO,IAAE,AAAS;AAChC,AAAE,AAAC,QAAC,AAAE,OAAK,AAAI,AAAC,MAAC,AAAC;AAChB,AAAG,AAAC,aAAC,MAAM,AAAG,OAAI,AAAM,OAAC,AAAmB,oBAAC,AAAI,AAAC,AAAC,OAAC,AAAC;AACnD,AAAS,sBAAC,AAAE,IAAE,AAAI,MAAE,AAAG,AAAC,AAC1B;AAAC,AACH;AAAC;AACD,AAAM,WAAC,AAAE,AACX;AAAC,AAED,AAAM;oBAAqB,AAAW,AAAE;;AAAG,AAAmB;;;AAC5D,AAAG,AAAC,SAAC,MAAM,AAAC,KAAI,AAAO,AAAC,SAAC,AAAC;AACxB,AAAE,AAAC,YAAC,AAAC,KAAI,AAAI,AAAC,MAAC,AAAC;AACd,AAAM,mBAAC,AAAM,QAAE,AAAC,AAAC,AACnB;AAAC,AACH;AAAC;AACD,AAAM,WAAC,AAAM,AACf;AAAC",
+  "sourcesContent": [
+    "function isObject(x: any) {\n  if (Array.isArray(x)) {\n    return false\n  }\n\n  const type = typeof x\n  return type === \"object\" || type === \"function\"\n}\n\nfunction assignKey(to: any, from: any, key: string) {\n  const value = from[key]\n  // https://github.com/electron-userland/electron-builder/pull/562\n  if (value === undefined) {\n    return\n  }\n\n  const prevValue = to[key]\n  if (prevValue == null || value === null || !isObject(prevValue) || !isObject(value)) {\n    to[key] = value\n  }\n  else {\n    to[key] = assign(prevValue, value)\n  }\n}\n\nfunction assign(to: any, from: any) {\n  if (to !== from) {\n    for (const key of Object.getOwnPropertyNames(from)) {\n      assignKey(to, from, key)\n    }\n  }\n  return to\n}\n\nexport function deepAssign(target: any, ...objects: Array<any>) {\n  for (const o of objects) {\n    if (o != null) {\n      assign(target, o)\n    }\n  }\n  return target\n}"
+  ]
+}

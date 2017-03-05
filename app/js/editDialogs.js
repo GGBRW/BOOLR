@@ -215,4 +215,50 @@
             }
         });
     }
+
+    dialog.editDelay = function(component,callback) {
+        if(!component) return;
+        dialog.show();
+        dialog.name.innerHTML = "Edit delay";
+        dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>access_time<i>";
+        dialog.container.innerHTML += `<p>Enter a delay time in ms for component <i>${component.name}</i></p>`;
+
+
+        const input = createInput(
+            component.properties, "delay", component.properties.delay || "",
+            delay => !isNaN(parseVariableInput(delay)),
+            "Enter a positive delay time in milliseconds",
+            function() {
+                component.properties.delay = parseVariableInput(this.value);
+                createVariableReference(this.value,component,["properties","delay"]);
+            }
+        );
+        setTimeout(() => input.focus(),10);
+        dialog.container.removeChild(dialog.container.children[dialog.container.children.length - 1]);
+        dialog.container.appendChild(document.createTextNode("ms"));
+
+        const errormsg = document.createElement("p");
+        errormsg.className = "errormsg";
+        errormsg.innerHTML = ".";
+        errormsg.hide = null;
+        errormsg.show = function(text) {
+            clearTimeout(this.hide);
+            this.innerHTML = text;
+            this.style.opacity = 1;
+            this.hide = setTimeout(() => this.style.opacity = 0, 2500);
+        }
+        dialog.container.appendChild(errormsg);
+
+        dialog.addOption("Cancel");
+        dialog.addOption("OK",  function() {
+            if(input.valid(input.value)) {
+                input.apply();
+                callback && callback();
+            } else {
+                input.className = "error";
+                errormsg.show(input.errormsg);
+                this.onmouseup = () => this.onmouseup = dialog.hide;
+            }
+        });
+    }
 })();

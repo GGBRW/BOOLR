@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "install-app-deps.js",
+  "sourceRoot": "",
+  "sources": [
+    "../../src/cli/install-app-deps.ts"
+  ],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;oEASA,AAAK;AACH,cAAM,AAAI,yCACP,AAAM,OAAC,AAAU;AAChB,AAAO,qBAAE,CAAC,AAAO,SAAE,AAAQ,UAAE,AAAO,AAAC;AACrC,AAAO,qBAAE,AAAO,QAAC,AAAQ,AAC1B,AAAC;AAHkB,SADJ,AAAK,EAKpB,AAAM,OAAC,AAAM;AACZ,AAAO,qBAAE,CAAC,AAAM,QAAE,AAAK,OAAE,AAAK,AAAC;AAC/B,AAAO,qBAAE,AAAO,QAAC,AAAI,AACtB,AAAC;AAHc,WAIf,AAAI;AAEP,cAAM,AAAU,aAAG,AAAO,QAAC,AAAG,AAAE;AAChC,cAAM,AAAM,SAAG,CAAC,MAAM,AAAU,8DAAC,AAAU,AAAC,AAAC,gBAAI,AAAE;AACnD,cAAM,AAAO,UAAkB,MAAM,AAAe,gDAAC,AAAG,2FAC3B,AAAU,2EAAM,AAAM,OAAC,AAAW;AAAE,AAAE,mBAAI,AAAG,GAAC,AAAG,AAAC,AAAC;SAAvC,AAAG,CAA1C,AAA0B,CAD6B,EAEvD,AAAkB,sEAAC,AAAM,QAAE,AAAU,AAAC,AACvC,AAAC;AAEF,AAAsG;AACtG,cAAM,AAAgB,8CAAC,AAAM,QAAE,AAAO,QAAC,AAAC,AAAC,IAAE,AAAO,QAAC,AAAC,AAAC,IAAE,AAAI,KAAC,AAAQ,UAAE,AAAI,KAAC,AAAI,MAAE,AAAO,QAAC,AAAC,AAAC,OAAK,AAAU,AAAC,AAC7G;AAAC;;;;;;;;;AA3BD,AAAO,AAAE,AAA0B,AAAE,AAAG,AAAE,AAAM,AAAuB;;;;;;AACvE,AAAO,AAAE,AAAiB,AAAE,AAAM,AAAmC;;;;;;AACrE,AAAO,AAAK,AAAM,AAAO;;;;;;AACzB,AAAO,AAAE,AAAkB,AAAE,AAAU,AAAE,AAAM,AAAyB;;;;;;AACxE,AAAO,AAAE,AAAgB,AAAE,AAAM,AAAS;;;;;;AAyB1C,AAAI,AAAE,OACH,AAAK,AAAC,AAAiB,AAAC",
+  "sourcesContent": [
+    "#! /usr/bin/env node\n\nimport BluebirdPromise from \"bluebird-lst\"\nimport { computeDefaultAppDirectory, use } from \"electron-builder-util\"\nimport { printErrorAndExit } from \"electron-builder-util/out/promise\"\nimport yargs from \"yargs\"\nimport { getElectronVersion, loadConfig } from \"../util/readPackageJson\"\nimport { installOrRebuild } from \"../yarn\"\n\nasync function main() {\n  const args: any = yargs\n    .option(\"platform\", {\n      choices: [\"linux\", \"darwin\", \"win32\"],\n      default: process.platform,\n    })\n    .option(\"arch\", {\n      choices: [\"ia32\", \"x64\", \"all\"],\n      default: process.arch,\n    })\n    .argv\n\n  const projectDir = process.cwd()\n  const config = (await loadConfig(projectDir)) || {}\n  const results: Array<string> = await BluebirdPromise.all([\n    computeDefaultAppDirectory(projectDir, use(config.directories, it => it!.app)),\n    getElectronVersion(config, projectDir)\n  ])\n\n  // if two package.json — force full install (user wants to install/update app deps in addition to dev)\n  await installOrRebuild(config, results[0], results[1], args.platform, args.arch, results[0] !== projectDir)\n}\n\nmain()\n  .catch(printErrorAndExit)"
+  ]
+}

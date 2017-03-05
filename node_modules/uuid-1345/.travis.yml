@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - stable
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - iojs
+  - iojs-v1.0.4
+before_install:
+  - npm install -g gulp
+install:
+  - npm install
+script:
+  - gulp test
+after_script:
+  - node benchmark 25 100000 50 100

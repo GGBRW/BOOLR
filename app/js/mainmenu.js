@@ -97,6 +97,11 @@ const newBoardMenu = document.querySelector(".main-menu .new-board");
 const openBoardMenu = document.querySelector(".main-menu .open-board");
 const settingsMenu = document.querySelector(".main-menu .settings");
 
+newBoardMenu.onopen = function() {
+    this.querySelector("#boardname").value = "";
+    this.querySelector("#filename").innerHTML = "This board will be saved as new-board.board";
+}
+
 openBoardMenu.onopen = function() {
     const list = document.querySelector(".open-board ul");
     list.innerHTML = "";
