@@ -256,6 +256,8 @@ window.onerror = function(msg,url,line) {
     );
 
     boolrConsole.error(msg + "@" + url + ":" + line);
+
+    dragging = connecting = selecting = null;
 }
 
 c.onfocus = () => {
@@ -681,7 +683,7 @@ c.onmousemove = function(e) {
                     gridPos.x += Math.sin(angle);
                     gridPos.y += Math.cos(angle);
                     if(pos.side == 1) gridPos.x += (component.width - 1);
-                    else if(pos.side == 2) gridPos.y += (component.height - 1);
+                    else if(pos.side == 2) gridPos.y -= (component.height - 1);
 
                     if(pos.side % 2 == 0) gridPos.x += pos.pos;
                     else gridPos.y -= pos.pos;
@@ -1240,7 +1242,7 @@ c.onmousewheel = function(e) {
 
     zoomAnimation = Math.min(
         Math.max(
-            zoomAnimation - zoom / 8 * (e.deltaY > 0 ? .5 : -1),
+            zoomAnimation - zoom / 8 * ((e.deltaX || e.deltaY) > 0 ? .5 : -1),
             2),
         300
     );

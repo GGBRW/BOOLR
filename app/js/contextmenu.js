@@ -1,3 +1,5 @@
+// This is the rewritten version of contextmenu2.js. This file isn't used anymore
+
 const contextMenu = document.getElementById("contextMenu");
 contextMenu.pos = {};
 

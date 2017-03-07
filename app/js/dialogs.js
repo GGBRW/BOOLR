@@ -162,7 +162,39 @@ dialog.openBoard = function() {
 }
 
 dialog.connectToServer = function() {
+    dialog.show();
+    dialog.name.innerHTML = "Connect to server";
 
+    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>dns<i>";
+
+    dialog.container.innerHTML += "<p>There are no public servers available.</p>";
+
+    dialog.container.appendChild(document.createTextNode("Server URL: "));
+    const url = document.createElement("input");
+    dialog.container.appendChild(url);
+    setTimeout(() => url.focus(),10);
+    dialog.container.appendChild(document.createElement("br"));
+
+    const msg = document.createElement("p");
+    msg.show = function(text) {
+        this.innerHTML = text;
+        this.style.opacity = 1;
+    }
+    dialog.container.appendChild(msg);
+
+    dialog.addOption("Cancel");
+    dialog.addOption("Connect", function() {
+        msg.show("Connecting...");
+        connectToSocket(url.value, connected => {
+            if(connected) {
+                dialog.hide()
+            } else {
+                msg.className = "errormsg";
+                msg.show("Could not connect to '" + url.value + "'");
+            }
+        });
+        this.onmouseup = () => undefined;
+    });
 }
 
 dialog.connections = function(component) {
@@ -565,17 +597,6 @@ dialog.savedCustomComponents = function() {
             e.stopPropagation();
         }
         li.appendChild(removeBtn);
-
-        // Edit board button
-        const editBtn = document.createElement("i");
-        editBtn.className = "material-icons";
-        editBtn.title = "Edit component";
-        editBtn.innerHTML = "edit";
-        editBtn.onclick = function(e) {
-            dialog.editBoard(save);
-            e.stopPropagation();
-        }
-        li.appendChild(editBtn);
 
         list.appendChild(li);
     }

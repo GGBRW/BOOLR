@@ -1,3 +1,5 @@
+// This is the rewritten version of localstorage2.js. This file isn't used anymore
+
 function stringify(data) {
     let stringified = [];
 

@@ -1,15 +1,11 @@
 {
-  "build": {
-    "appId": "com.ggbrw.boolr",
-    "mac": {
-      "category": "public.app-category.simulator"
-    }
+  "name": "BOOLR",
+  "description": "A digital logic simulator",
+  "version": "0.1.301",
+  "author": {
+    "name": "Gees Brouwer",
+    "email": "gees@ggbrw.nl",
+    "url": "http://ggbrw.nl"
   },
-  "scripts": {
-    "pack": "build --dir",
-    "dist": "build"
-  },
-  "devDependencies": {
-    "electron-packager": "^8.5.2"
-  }
+  "main": "main.js"
 }

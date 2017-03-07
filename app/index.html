@@ -78,9 +78,9 @@
             <div class="sub open-board">
                 <h1>Open board</h1>
                 <ul></ul>
-                <button onclick="require('child_process').exec('xdg-open ../saves')">Open saves folder</button>
-                <button>Browse...</button>
-                <button>Connect to a BOOLR server</button>
+                <p>To open boards, paste a .board file in the saves folder</p>
+                <button onclick="require('child_process').exec('xdg-open ' + __dirname + '/saves')">Open saves folder</button>
+                <button onclick="dialog.connectToServer()">Connect to a BOOLR server</button>
             </div>
 
             <button onclick="settingsMenu.toggle()"><i class="material-icons">settings</i>SETTINGS</button>
@@ -238,7 +238,6 @@
                 <li onclick="select(Output)">Output</li>
                 <li onclick="select(Button)">Button</li>
                 <li onclick="select(Constant)">Constant</li>
-                <li onclick="select(Key)">Key</li>
                 <li onclick="select(Delay)">Delay</li>
                 <li onclick="select(Clock)">Clock</li>
                 <li onclick="select(LED)">LED</li>
@@ -246,10 +245,6 @@
                 <li onclick="select(Debug)">Debug</li>
                 <li onclick="select(Beep)">Beep</li>
                 <li onclick="select(Counter)">Counter</li>
-                <li onclick="select(Merger)">Merger</li>
-                <li onclick="select(Splitter)">Splitter</li>
-                <li onclick="select(D2B)">D2B Converter</li>
-                <li onclick="select(BinaryToDecimal)">B2D Converter</li>
                 <li onclick="select(TimerStart)">TimerStart</li>
                 <li onclick="select(TimerEnd)">TimerEnd</li>
             </ul>
@@ -288,13 +283,13 @@
 
         <!-- Menu in bottom right corner -->
         <ul id="menu">
-            <li onmousedown="window.open(location.href)"><i class="material-icons">add</i>New board <span>Ctrl+N</span></li>
-            <li onmousedown="dialog.openBoard()"><i class="material-icons">folder</i>Open board<span>Ctrl+O</span></li>
-            <li onmousedown="dialog.save()"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
+            <li onmousedown="mainMenu.show(); newBoardMenu.show()"><i class="material-icons">add</i>New board <span>Ctrl+N</span></li>
+            <li onmousedown="mainMenu.show(); openBoardMenu.show()"><i class="material-icons">folder</i>Open board<span>Ctrl+O</span></li>
+            <li onmousedown="save(true)"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
             <li onmousedown="boolrConsole.show()"><i class="material-icons" >featured_play_list</i>Open console<span>Shift+T</span></li>
             <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>Settings<span>Ctrl+Shift+S</span></li>
             <li onmousedown="tutorial.show()"><i class="material-icons">help</i>Open tutorial<span>F1</span></li>
-            <li onmousedown="mainMenu.show(); setTimeout(clearBoard,1000)"><i class="material-icons" >exit_to_app</i>Quit<span>Alt+F4</span></li>
+            <li onmousedown="mainMenu.show();"><i class="material-icons" >exit_to_app</i>Quit</li>
 
             <script>
                 const menu = document.getElementById("menu");

@@ -41,6 +41,7 @@ function getVariable(name) {
 }
 
 function parseVariableInput(str) {
+    str = str + "";
     const vars = str.match(/[a-zA-Z'`´_-]+/g) || [];
     str = str.replace(
         /[a-zA-Z'`´_-]+/g,

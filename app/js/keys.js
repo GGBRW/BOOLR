@@ -111,25 +111,14 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
-        case 73:
-            if(e.ctrlKey && e.shiftKey) {
-                popup.info.show();
-            }
-            break;
         case 79: // O
-            // if(components.length) {
-            //     popup.confirm.show(
-            //         "Open file",
-            //         "Are you sure you want to open another project? If you don't want to lose your work, press 'cancel' and save this project.",
-            //         () => document.getElementById("open_file").click()
-            //     );
-            // } else document.getElementById("open_file").click();
-
             if(e.ctrlKey) {
-                dialog.openBoard();
+                mainMenu.show();
+                setTimeout(clearBoard,1000);
+                openBoardMenu.show();
             } else if(e.shiftKey) {
-                const component = findComponentByPos(...contextMenu.getPos());
-                component.open && component.open();
+                const component = findComponentByPos();
+                component && component.open && component.open();
             }
             return false;
             break;
@@ -137,16 +126,18 @@ c.onkeydown = function(e) {
             if(e.ctrlKey) {
                 pauseSimulation = !pauseSimulation;
                 document.querySelector("#pause").innerHTML = pauseSimulation ? "play_arrow" : "pause";
+                pauseSimulation && toolbar.message("Paused simulation");
+                !pauseSimulation && toolbar.message("Started simulation");
             }
             break;
         case 82: // R
             if(e.shiftKey) {
                 const component = findComponentByPos();
-                if(component.constructor == Custom) {
+                if(component && component.constructor == Custom) {
                     saveCustomComponent(component);
                 }
             } else {
-                var component = findComponentByPos();
+                const component = findComponentByPos();
                 component && component.rotate && component.rotate();
             }
             break;
@@ -154,7 +145,7 @@ c.onkeydown = function(e) {
             if(e.ctrlKey && e.shiftKey) {
                 dialog.settings();
             } else if(e.ctrlKey) {
-                save();
+                save(true);
             } else if(e.shiftKey) {
                 waypointsMenu.hide();
 
@@ -185,7 +176,7 @@ c.onkeydown = function(e) {
             }
             // gotoWaypoint(waypoints.length - 1);
             break;
-        case 89:
+        case 89: // Y
             if(e.ctrlKey) {
                 redo();
             }
@@ -214,11 +205,8 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
-        case 116:
-            location.reload(); // TODO: remove
-            break;
         case 93: // Context menu
-            contextMenu.show({ x: mouse.screen.x, y: mouse.screen.y });
+            contextMenu.show();
             break;
     }
 
@@ -232,13 +220,9 @@ c.onblur = function() {
 }
 
 // Window key bindings
-let inputKeys = {};
-for(let i = 96; i <= 105; ++i) inputKeys[i] = [];
 window.onkeydown = function(e) {
     if(e.which >= 96 && e.which <= 105) {
-        for(let i = 0; i < inputKeys[e.which].length; ++i) {
-            inputKeys[e.which][i].update(1);
-        }
+
     } else if(e.which == 27) {
         menu.hide();
     }
@@ -246,8 +230,6 @@ window.onkeydown = function(e) {
 
 window.onkeyup = function(e) {
     if(e.which >= 96 && e.which <= 105) {
-        for(let i = 0; i < inputKeys[e.which].length; ++i) {
-            inputKeys[e.which][i].update(0);
-        }
+
     }
 }

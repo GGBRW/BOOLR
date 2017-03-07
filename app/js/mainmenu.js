@@ -1,6 +1,7 @@
 const mainMenu = document.querySelector(".main-menu");
 
 mainMenu.show = function() {
+    openedSaveFile && save();
     this.style.display = "block";
 
     setTimeout(() => {
@@ -19,6 +20,7 @@ mainMenu.show = function() {
     }
 
     setTimeout(() => loading.style.display = "none");
+    setTimeout(clearBoard,1000);
 }
 
 mainMenu.hide = function() {
@@ -36,6 +38,10 @@ mainMenu.hide = function() {
     setTimeout(() => {
         this.style.display = "none";
         c.focus();
+
+        if(!localStorage.pwsData) {
+            dialog.welcome();
+        }
     }, 500);
 }
 
@@ -59,10 +65,9 @@ for(let i of sub) {
             mainMenu.style.transform = `translateY(${height}px)`;
         },10);
 
-        for(let j of sub) i != j && j.hide();
+        setTimeout(() => this.querySelector("input") && this.querySelector("input") .focus(), 10);
 
-        const input = this.querySelector("input");
-        input && input.focus();
+        for(let j of sub) i != j && j.hide();
     }
 
     i.hide = function() {
@@ -70,6 +75,8 @@ for(let i of sub) {
         this.style.transform = "translateY(-50px)";
         mainMenu.style.transform = "translateY(0px)";
         setTimeout(() => this.style.display = "none", 500);
+
+        i.onclose && i.onclose();
     }
 
     i.toggle = function() {
@@ -100,10 +107,14 @@ const settingsMenu = document.querySelector(".main-menu .settings");
 newBoardMenu.onopen = function() {
     this.querySelector("#boardname").value = "";
     this.querySelector("#filename").innerHTML = "This board will be saved as new-board.board";
+    this.querySelector("#filename").style.opacity = 1;
+
+    setTimeout(() => this.querySelector("#boardname").focus(), 10);
 }
 
 openBoardMenu.onopen = function() {
     const list = document.querySelector(".open-board ul");
+
     list.innerHTML = "";
     readSaveFiles();
 

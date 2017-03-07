@@ -62,6 +62,11 @@ canvas {
 }
 
 @font-face {
+    font-family: "Ubuntu Mono";
+    src: url(../fonts/UbuntuMono-Regular.ttf);
+}
+
+@font-face {
     font-family: "Monospaced";
     src: url(../fonts/Monospace.ttf);
 }

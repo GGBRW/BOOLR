@@ -11,7 +11,7 @@ function createWindow () {
     window = new BrowserWindow({
         width: 1200,
         height: 800,
-        icon: __dirname + '/icon.png',
+        icon: __dirname + '../build/icon.png',
         show: false
     });
 

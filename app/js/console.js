@@ -1,3 +1,5 @@
+// This is the rewritten version of console2.js. This file isn't used anymore
+
 const Console = document.querySelector("#console");
 Console.input = document.querySelector("#console #input");
 Console.messages = document.querySelector("#console #messages");

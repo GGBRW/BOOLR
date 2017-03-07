@@ -48,7 +48,7 @@
         );
         const width = createInput(
             component, "width", component.width,
-            width => 2 * (+width + component.height) >= component.input.length + component.output.length,
+            width => width > 0 && 2 * (+width + component.height) >= component.input.length + component.output.length,
             "The component must be wider for the ports to fit",
             function() {
                 changeSize(component,+this.value,undefined,true);
@@ -56,10 +56,14 @@
         );
         const height = createInput(
             component, "height", component.height,
-            height => 2 * (+height + component.width) >= component.input.length + component.output.length,
+            height => {
+                height = parseVariableInput(height);
+                if(isNaN(height)) return false;
+                return height > 0 && 2 * (+height + component.width) >= component.input.length + component.output.length
+            },
             "The component must be higher for the ports to fit",
             function() {
-                changeSize(component,undefined, +this.value, true);
+                changeSize(component,undefined, parseVariableInput(+this.value), true);
             }
         );
 
@@ -70,11 +74,12 @@
         if(component.properties.hasOwnProperty("delay")) {
             inputs.push(
                 createInput(
-                    component.properties, "delay", component.properties.delay,
-                    delay => +delay > 0,
+                    component.properties, "delay", component.properties.delay || "",
+                    delay => !isNaN(parseVariableInput(delay)),
                     "Enter a positive delay time in milliseconds",
                     function() {
-                        component.properties.delay = +this.value;
+                        component.properties.delay = parseVariableInput(this.value);
+                        createVariableReference(this.value,component,["properties","delay"]);
                     }
                 )
             );
@@ -168,7 +173,7 @@
             side => +side >= 0 && +side <= 3,
             "Enter the number of a side, a number between 0 and 3",
             function() {
-                port.pos.side = +this.value;
+                movePort(port,+this.value,port.pos.pos);
             }
         );
 
@@ -177,7 +182,7 @@
             pos => side.valid(side.value) && +pos >= 0 && +pos < (+side.value % 2 == 0 ? port.component.width: port.component.height) && !findPortByComponent(port.component,+side.value,+pos),
             "Enter a (free) position for the port, a number between 0 and the width/height of the component",
             function() {
-                port.pos.pos = +this.value;
+                movePort(port,port.pos.side,+this.value);
             }
         );
 
@@ -249,7 +254,12 @@
         }
         dialog.container.appendChild(errormsg);
 
-        dialog.addOption("Cancel");
+        dialog.addOption("Cancel", function() {
+            if(!component.properties.delay) {
+                component.properties.delay = 1000;
+                callback && callback();
+            }
+        });
         dialog.addOption("OK",  function() {
             if(input.valid(input.value)) {
                 input.apply();

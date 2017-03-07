@@ -21,7 +21,7 @@ function add(
     if(!findPortByPos(x,y) && !findWireByPos(x,y) || force) {
         components.push(component);
 
-        if(component.constructor == Custom && component.input.length + component.output.length == 0) {
+        if(undoable && component.constructor == Custom && component.input.length + component.output.length == 0) {
             component.open();
         }
 
@@ -443,6 +443,12 @@ function changeSize(component,width = component.width, height = component.height
 
     const oldPortsPos = ports.map(port => Object.assign({},port.pos));
 
+    const oldHeight = component.height;
+    const oldWidth = component.width;
+
+    component.height = height;
+    component.width = width;
+
     for(let i = 0; i < ports.length; ++i) {
         const port = ports[i];
         if((port.pos.side % 2 == 1 && port.pos.pos > height - 1) ||
@@ -468,16 +474,9 @@ function changeSize(component,width = component.width, height = component.height
                 }
             }
 
-            port.pos.side = side;
-            port.pos.pos = pos;
+            movePort(port,side,pos);
         }
     }
-
-    const oldHeight = component.height;
-    const oldWidth = component.width;
-
-    component.height = height;
-    component.width = width;
 
     if(undoable) {
         if(this != redoCaller) redoStack = [];
@@ -684,6 +683,21 @@ function movePort(port, side = port.pos.side, pos = port.pos.pos, undoable = fal
         oldWirePos = [...wire.pos];
 
         if(port.type == "input") {
+
+            const pos = wire.pos.slice(-1)[0];
+            pos.x = port.component.pos.x;
+            pos.y = port.component.pos.y;
+            const portPos = port.pos;
+
+            const angle = Math.PI / 2 * portPos.side;
+            pos.x += Math.sin(angle);
+            pos.y += Math.cos(angle);
+            if(portPos.side == 1) pos.x += (port.component.width - 1);
+            else if(portPos.side == 2) pos.y -= (port.component.height - 1);
+
+            if(portPos.side % 2 == 0) pos.x += portPos.pos;
+            else pos.y -= portPos.pos;
+
             const dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
             const dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
 
@@ -719,6 +733,20 @@ function movePort(port, side = port.pos.side, pos = port.pos.pos, undoable = fal
                 vertical();
             }
         } else {
+            const pos = wire.pos[0];
+            pos.x = port.component.pos.x;
+            pos.y = port.component.pos.y;
+            const portPos = port.pos;
+
+            const angle = Math.PI / 2 * portPos.side;
+            pos.x += Math.sin(angle);
+            pos.y += Math.cos(angle);
+            if(portPos.side == 1) pos.x += (port.component.width - 1);
+            else if(portPos.side == 2) pos.y -= (port.component.height - 1);
+
+            if(portPos.side % 2 == 0) pos.x += portPos.pos;
+            else pos.y -= portPos.pos;
+
             const dx = wire.pos[0].x - wire.pos[1].x;
             const dy = wire.pos[0].y - wire.pos[1].y;
 
@@ -2019,19 +2047,9 @@ class Button extends Component {
 
 class Constant extends Component {
     constructor(name,pos,value = 0) {
-        super(name,pos,2,1,{ type: "icon", text: "block" });
+        super(name,pos,2,1,{ type: "value" });
         this.addOutputPort({ side: 1, pos: 0 });
-        this.value = value;
-
-        setTimeout(() => {
-            popup.prompt.show(
-                "Enter value",
-                "Enter the value of the constant port",
-                value => {
-                    this.value = +!!(+value);
-                }
-            );
-        }, 100);
+        this.value = 1;
     }
 
     function() {
@@ -2304,19 +2322,19 @@ class Clock extends Component {
     }
 }
 
-class Key extends Component {
-    constructor(name,pos) {
-        super(name,pos,2,1,{ type: "icon", text: "keyboard" });
-        this.addOutputPort({ side: 1, pos: 0 });
-        this.value = 0;
-
-        // TODO
-    }
-
-    function() {
-        this.output[0].value = this.value;
-    }
-}
+// class Key extends Component {
+//     constructor(name,pos) {
+//         super(name,pos,2,1,{ type: "icon", text: "keyboard" });
+//         this.addOutputPort({ side: 1, pos: 0 });
+//         this.value = 0;
+//
+//         // TODO
+//     }
+//
+//     function() {
+//         this.output[0].value = this.value;
+//     }
+// }
 
 class Debug extends Component {
     constructor(name,pos) {
@@ -2328,6 +2346,7 @@ class Debug extends Component {
     function() {
         this.input[0].value = this.value;
         notifications.push(this.name + ": " + this.value);
+        boolrConsole.log(this.name + ": " + this.value);
     }
 }
 
@@ -2825,104 +2844,104 @@ class Display extends Component {
     }
 }
 
-class Merger extends Component {
-    constructor(name,pos,bits = 8) {
-        super(name,pos,4,bits,{ type: "icon", text: "call_merge" });
-        this.value = 0;
+// class Merger extends Component {
+//     constructor(name,pos,bits = 8) {
+//         super(name,pos,4,bits,{ type: "icon", text: "call_merge" });
+//         this.value = 0;
+//
+//         for(let i = 0; i < bits; ++i) {
+//             this.addInputPort({ side: 3, pos: this.height - 1 - i },Math.pow(2,i) + "");
+//         }
+//
+//         this.addOutputPort({ side: 1, pos: Math.floor((this.height - 1) / 2)  });
+//     }
+//
+//     update() {
+//         // Highlight
+//         if(settings.showComponentUpdates) this.highlight(250);
+//
+//         // Update output ports
+//         this.function();
+//
+//         const port = this.output[0];
+//         if(port.connection) {
+//             port.value = this.value;
+//
+//             const wire = port.connection;
+//             updateQueue.push(wire.update.bind(wire,this.value));
+//         }
+//     }
+//
+//     function() {
+//         let value = "";
+//         for(let i = 0; i < this.input.length; ++i) {
+//             if(this.input[i].value == 1) {
+//                 value = "1" + value;
+//             } else {
+//                 value = "0" + value;
+//             }
+//         }
+//
+//         this.value = parseInt(value,2);
+//     }
+// }
+//
+// class Splitter extends Component {
+//     constructor(name,pos,bits = 8) {
+//         super(name,pos,4,bits,{ type: "icon", text: "call_split" });
+//         this.value = 0;
+//
+//         for(let i = 0; i < bits; ++i) {
+//             this.addOutputPort({ side: 1, pos: this.height - 1 - i },Math.pow(2,i) + "");
+//         }
+//
+//         this.addInputPort({ side: 3, pos: Math.floor((this.height - 1) / 2)  });
+//     }
+//
+//     function() {
+//         const values = this.input[0].value.toString(2).split("").map(n => +n).reverse();
+//         for(let i = 0; i < this.output.length; ++i) {
+//             this.output[i].value = values[i] || 0;
+//         }
+//     }
+// }
 
-        for(let i = 0; i < bits; ++i) {
-            this.addInputPort({ side: 3, pos: this.height - 1 - i },Math.pow(2,i) + "");
-        }
-
-        this.addOutputPort({ side: 1, pos: Math.floor((this.height - 1) / 2)  });
-    }
-
-    update() {
-        // Highlight
-        if(settings.showComponentUpdates) this.highlight(250);
-
-        // Update output ports
-        this.function();
-
-        const port = this.output[0];
-        if(port.connection) {
-            port.value = this.value;
-
-            const wire = port.connection;
-            updateQueue.push(wire.update.bind(wire,this.value));
-        }
-    }
-
-    function() {
-        let value = "";
-        for(let i = 0; i < this.input.length; ++i) {
-            if(this.input[i].value == 1) {
-                value = "1" + value;
-            } else {
-                value = "0" + value;
-            }
-        }
-
-        this.value = parseInt(value,2);
-    }
-}
-
-class Splitter extends Component {
-    constructor(name,pos,bits = 8) {
-        super(name,pos,4,bits,{ type: "icon", text: "call_split" });
-        this.value = 0;
-
-        for(let i = 0; i < bits; ++i) {
-            this.addOutputPort({ side: 1, pos: this.height - 1 - i },Math.pow(2,i) + "");
-        }
-
-        this.addInputPort({ side: 3, pos: Math.floor((this.height - 1) / 2)  });
-    }
-
-    function() {
-        const values = this.input[0].value.toString(2).split("").map(n => +n).reverse();
-        for(let i = 0; i < this.output.length; ++i) {
-            this.output[i].value = values[i] || 0;
-        }
-    }
-}
-
-class BinaryToDecimal extends Component {
-    constructor(name,pos) {
-        super(name,pos,4,8,{ type: "value" });
-        this.value = 0;
-
-        for(let i = 0; i < 8; ++i) {
-            this.addInputPort({ side: 3, pos: i },Math.pow(2,i) + "");
-        }
-    }
-
-    function() {
-        let value = 0;
-        for(let i = 0; i < this.input.length; ++i) {
-            if(this.input[i].value == 1) {
-                value = value + Math.pow(2,i);
-            }
-        }
-
-        this.value = value;
-    }
-}
-
-class DecimalToBinary extends Component {
-    constructor(name,pos) {
-        super(name,pos,4,8,{ type: "value" });
-        this.value = 0;
-
-        for(let i = 0; i < 8; ++i) {
-            this.addOutputPort({ side: 3, pos: i }, Math.pow(2,i) + "");
-        }
-    }
-
-    function() {
-
-    }
-}
+// class BinaryToDecimal extends Component {
+//     constructor(name,pos) {
+//         super(name,pos,4,8,{ type: "value" });
+//         this.value = 0;
+//
+//         for(let i = 0; i < 8; ++i) {
+//             this.addInputPort({ side: 3, pos: i },Math.pow(2,i) + "");
+//         }
+//     }
+//
+//     function() {
+//         let value = 0;
+//         for(let i = 0; i < this.input.length; ++i) {
+//             if(this.input[i].value == 1) {
+//                 value = value + Math.pow(2,i);
+//             }
+//         }
+//
+//         this.value = value;
+//     }
+// }
+//
+// class DecimalToBinary extends Component {
+//     constructor(name,pos) {
+//         super(name,pos,4,8,{ type: "value" });
+//         this.value = 0;
+//
+//         for(let i = 0; i < 8; ++i) {
+//             this.addOutputPort({ side: 3, pos: i }, Math.pow(2,i) + "");
+//         }
+//     }
+//
+//     function() {
+//
+//     }
+// }
 
 class Custom extends Component {
     constructor(

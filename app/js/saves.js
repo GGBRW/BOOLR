@@ -1,5 +1,5 @@
 const fs = require("fs");
-const savesFolder = "../saves/";
+const savesFolder = __dirname + "/../saves/";
 
 let saves = [];
 
@@ -14,8 +14,16 @@ function readSaveFiles() {
         const found = saves.find(save => save.fileName == file);
         if(found) return updatedSaves.push(found);
 
+        function getName(file) {
+            try {
+                return JSON.parse(fs.readFileSync(savesFolder + file, "utf-8")).name
+            } catch(e) {
+                return false;
+            }
+        }
+
         updatedSaves.push({
-            name: JSON.parse(fs.readFileSync(savesFolder + file, "utf-8")).name || file,
+            name: getName(file) || file,
             fileSize: fs.statSync(savesFolder + file).size,
             fileName: file,
             location: savesFolder + file
@@ -26,10 +34,12 @@ function readSaveFiles() {
 }
 
 function clearBoard() {
-    openedSaveFile && save();
+    setLocalStorage();
+
+    openedSaveFile = undefined;
 
     zoom = zoomAnimation = 100;
-    offset = { x: 0, y: 0 };
+    offset = {x: 0, y: 0};
 
     variables = {};
     variableReferences = {};
@@ -42,7 +52,6 @@ function clearBoard() {
     waypointsMenu.hide();
     hoverBalloon.hide();
     customComponentToolbar.hide();
-    dialog.hide();
     notifications.innerHTML = "";
 
     components = [];
@@ -50,10 +59,8 @@ function clearBoard() {
 
     redoStack = [];
     undoStack = [];
-}
 
-function save() {
-    
+    setTimeout(() => newBoardMenu.onopen());
 }
 
 function openSaveFile(save) {
@@ -78,7 +85,7 @@ function openSaveFile(save) {
         clearBoard();
 
         const parsed = parse(saveFile);
-
+        console.log(parsed);
         addSelection(
             parsed.components,
             parsed.wires
@@ -136,26 +143,32 @@ function createSaveFile(name) {
     document.title = save.name + " - BOOLR";
 }
 
-function save() {
-    if(!openedSaveFile) return dialog.createBoard();
+function save(msg = false) {
+    toolbar.message("Saving...");
+        setTimeout(() => {
+        if(!components || components.length == 0) return;
+        if(!openedSaveFile) return dialog.createBoard();
 
-    const save = {};
-    save.name = openedSaveFile.name;
+        const save = {};
+        save.name = openedSaveFile.name;
 
-    save.offset = offset;
-    save.zoom = zoom;
+        save.offset = offset;
+        save.zoom = zoom;
 
-    save.variables = variables;
-    save.variableReferences = variableReferences;
+        save.variables = variables;
+        save.variableReferences = variableReferences;
 
-    save.data = stringify(components,wires);
+        save.data = stringify(components,wires);
 
-    fs.writeFile(
-        savesFolder + openedSaveFile.fileName,
-        JSON.stringify(save),
-        "utf-8",
-        (err,data) => err && console.log(err)
-    );
+        fs.writeFile(
+            savesFolder + openedSaveFile.fileName,
+            JSON.stringify(save),
+            "utf-8",
+            (err,data) => err && console.log(err)
+        );
 
-    toolbar.message("Saved changes to " + openedSaveFile.fileName);
+        if(msg) {
+            toolbar.message("Saved changes to " + openedSaveFile.fileName);
+        }
+    });
 }

@@ -1,31 +1,32 @@
 var socket;
 
-function connectToSocket(url) {
+function connectToSocket(url, callback) {
     try {
         socket = new WebSocket(url);
     } catch(e) {
-        return;
+        callback && callback(false);
+        return false;
     }
 
     socket.onopen = function() {
         components = [];
         notifications.push("Connected to " + url);
 
-        document.title = "BOOLR | Server Project";
+        callback && callback(true);
     }
 
     socket.onclose = function() {
         notifications.push("Connection closed", "error");
         socket = null;
 
-        document.title = "BOOLR | Sandbox Mode";
+        callback && callback(false);
     }
 
     socket.onerror = function(err) {
         notifications.push("Connection error: " + err, "error");
         socket = null;
 
-        document.title = "BOOLR | Sandbox Mode";
+        callback && callback(false);
     }
 
     socket.onmessage = function(e) {
