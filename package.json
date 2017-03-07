@@ -7,5 +7,5 @@
     "email": "gees@ggbrw.nl",
     "url": "http://ggbrw.nl"
   },
-  "main": "main.js"
+  "main": "app/main.js"
 }
