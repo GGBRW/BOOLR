@@ -47,12 +47,12 @@ const changeZoom = (dz) => {
 
 let framerate = 60, lastFrame = new Date;
 function draw() {
-    // Scherm leegmaken
+    // Clear the screen
     // ctx.clearRect(0, 0, c.width, c.height);
     ctx.fillStyle = "#fff";
     ctx.fillRect(0,0,c.width,c.height);
 
-    // Roosterpunten tekenen
+    // Draw grid points
     if(zoom > 24) {
         ctx.fillStyle = "rgba(200,200,200," + Math.min(1, zoom / 100) + ")";
         for(let i = (-offset.x * zoom) % zoom; i < c.width; i = i + zoom) {
@@ -61,42 +61,6 @@ function draw() {
             }
         }
     }
-
-    // Componenten tekenen
-    // visibleComponents = 0;
-    // for(let i = 0, len = components.length; i < len; ++i) {
-    //     const component = components[i];
-    //     if(Array.isArray(component.pos)) {
-    //         let visible = false;
-    //         for(let pos of component.pos) {
-    //             const x = (pos.x - offset.x) * zoom;
-    //             const y = -(pos.y - offset.y) * zoom;
-    //             if(
-    //                 x + zoom - zoom / 2 >= 0 &&
-    //                 x - zoom / 2 <= c.width &&
-    //                 y + zoom - zoom / 2 >= 0 &&
-    //                 y - zoom / 2 <= c.height
-    //             ) {
-    //                 ++visibleComponents;
-    //                 visible = true;
-    //                 break;
-    //             }
-    //         }
-    //         visible && component.draw();
-    //     } else {
-    //         const x = (component.pos.x - offset.x) * zoom;
-    //         const y = -(component.pos.y - offset.y) * zoom;
-    //         if(
-    //             x + zoom * component.width - zoom / 2 >= 0 &&
-    //             x - zoom / 2 <= c.width &&
-    //             y + zoom * component.height - zoom / 2 >= 0 &&
-    //             y - zoom / 2 <= c.height
-    //         ) {
-    //             ++visibleComponents;
-    //             component.draw();
-    //         }
-    //     }
-    // }
 
     // For nice rounded edges
     if(zoom > 50) {
