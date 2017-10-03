@@ -1089,7 +1089,7 @@ function findPortByPos(x = mouse.grid.x, y = mouse.grid.y) {
             let pos;
             if(side % 2 == 0) {
                 pos = x - component.pos.x;
-            } else {
+            }  else {
                 pos = component.pos.y - y;
             }
 
