@@ -220,6 +220,10 @@ function inputHandler(input) {
         case "?":
             boolrConsole.help();
             break;
+        case "openDevTools":
+            require('electron').remote.getCurrentWindow().webContents.openDevTools();
+            return "Opened Developer Tools";
+            break;
         default:
             throw "Command not found: " + command;
             break;
