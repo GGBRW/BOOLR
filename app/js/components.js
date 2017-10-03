@@ -1137,12 +1137,12 @@ function findComponentsInSelection(
     const result = [];
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
-        if(component.pos.x + (component.width || 0) - .5 > x &&
-           component.pos.x - .5 < x2 &&
-           component.pos.y + (component.height || 0) - .5 > y &&
-           component.pos.y - .5 < y2) {
-            result.push(component);
-        }
+         if(x < component.pos.x + (component.width || 0) - .5 &&
+           x2 > component.pos.x - .5 && 
+           y2 > component.pos.y - (component.height || 0) + .5 &&
+           y < component.pos.y +.5) {
+             result.push(component);
+         }
     }
     return result;
 }
