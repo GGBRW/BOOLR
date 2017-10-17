@@ -2,10 +2,16 @@
   "name": "BOOLR",
   "description": "A digital logic simulator",
   "version": "0.1.301",
+  "scripts": {
+    "start": "electron ."
+  },
   "author": {
     "name": "Gees Brouwer",
     "email": "gees@ggbrw.nl",
     "url": "http://ggbrw.nl"
   },
-  "main": "app/main.js"
+  "main": "app/main.js",
+  "dependencies": {
+    "electron": "^1.7.9"
+  }
 }
