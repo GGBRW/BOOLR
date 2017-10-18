@@ -8,7 +8,7 @@ let openedSaveFile;
 // Read save files from "saves" folder
 function readSaveFiles() {
     const updatedSaves = [];
-    const files = fs.readdirSync(savesFolder);
+    const files = fs.readdirSync(savesFolder).filter(file => /\.board$/.test(file));
 
     files.forEach(file => {
         const found = saves.find(save => save.fileName == file);
