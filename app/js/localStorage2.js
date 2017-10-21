@@ -97,7 +97,8 @@ const constructors = {
     Input,Output,NOT,AND,OR,XOR,
     Button,Constant,Delay,Clock,Debug,
     Beep,Counter,LED,Display,
-    Custom, TimerStart, TimerEnd
+    Custom, TimerStart, TimerEnd,
+    ROM
 };
 
 /*
