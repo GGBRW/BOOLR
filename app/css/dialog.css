@@ -63,6 +63,36 @@
     color: red;
 }
 
+#dialog textarea {
+    font-family: Monospaced;
+    font-size: 15px;
+    background: rgba(255,255,255,0);
+    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
+    border: none;
+    outline: none;
+    margin: 8 8 0 8px;
+    padding: 2px;
+    color: #ddd;
+}
+
+#dialog textarea.error {
+    box-shadow: 0 2px 0 0 #500;
+    color: red;
+}
+
+#dialog select {
+    font-family: Monospaced;
+    font-size: 15px;
+    background: rgba(255,255,255,0);
+    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
+    border: none;
+    outline: none;
+    margin: 8 8 0 8px;
+    padding: 2px;
+    color: #ddd;
+    width: 20%;
+}
+
 #dialog .errormsg {
     opacity: 0;
     transition: opacity .5s;
