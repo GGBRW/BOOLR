@@ -115,6 +115,8 @@
 
 #dialog ul {
     margin-left: 10%;
+    height: 400px;
+    overflow: auto;
 }
 
 #dialog li {
