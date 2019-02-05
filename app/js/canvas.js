@@ -235,6 +235,198 @@ c.onmouseleave = () => { scrollAnimation.animate = true; connecting = null };
 c.onmouseenter = e => { e.which > 0 && (scrollAnimation.animate = false) };
 
 let wheel_click = false;
+
+
+
+
+//TOUCH SUPPORT
+
+c.lastTouch = null
+c.moved = false
+c.kontext = false
+c.kontextOPEN = false
+c.standardClick = false
+c.oncable = false
+c.zooming = false
+c.zoomingd = null
+c.fingers = 0
+
+c.ontouchstart = (ev) => {
+    if (ev.touches.length == 2 || ev.changedTouches.length == 2) {
+        c.fingers = 2
+        let dx = ev.touches["0"].screenX - ev.touches["1"].screenX
+        let dy = ev.touches["0"].screenY - ev.touches["1"].screenY
+        c.zoomingd = Math.round(Math.sqrt((dx*dx)+(dy*dy)))
+        c.zooming = true
+        c.standardClick = false
+    }else{
+
+        let ex = ev.changedTouches["0"].screenX
+        let ey = ev.changedTouches["0"].screenY
+        mouse.grid.x = Math.round(ex / zoom + offset.x)
+        mouse.grid.y = Math.round(-ey / zoom + offset.y)
+
+        let comp = findComponentByPos()
+        let type = ""
+        try {
+            if (comp.constructor) {
+                type = comp.constructor.name
+            }
+        }catch (err) {
+
+        }
+
+        if (findPortByPos() ||     findWireByPos() || (type == "Button") || (ev.ctrlKey == true && findComponentByPos())) {
+            c.oncable = true
+            c.onmousedown({x: ex,
+                           y: ey,
+                           which: 1,
+                           ctrlKey: ev.ctrlKey})
+            c.standardClick = false
+        }else{
+            c.standardClick = true
+        }
+    }
+    c.lastTouch = ev
+}
+
+c.ontouchmove = (ev) => {
+    if (c.zooming) {
+        let dx = ev.touches["0"].screenX - ev.touches["1"].screenX
+        let dy = ev.touches["0"].screenY - ev.touches["1"].screenY
+        let zoomingdnew = Math.round(Math.sqrt((dx*dx)+(dy*dy)))
+        let ex,ey,ex1,ey1
+        if(ev.changedTouches.length == 2) {
+            ex = ev.changedTouches["0"].screenX
+            ey = ev.changedTouches["0"].screenY
+            ex1 = ev.changedTouches["1"].screenX
+            ey1 = ev.changedTouches["1"].screenY
+        }else{
+            ex = ev.touches["0"].screenX
+            ey = ev.touches["0"].screenY
+            ex1 = ev.touches["1"].screenX
+            ey1 = ev.touches["1"].screenY
+        }
+        mouse.grid.x = Math.round(((ex+ex1)/2) / zoom + offset.x)
+        mouse.grid.y = Math.round(-((ey+ey1)/2) / zoom + offset.y)
+        mouse.screen.x = (ex+ex1)/2
+        mouse.screen.y = (ey+ey1)/2
+
+        zoomAnimation += (zoomingdnew - c.zoomingd)/4.5
+        //changeZoom((zoomingdnew > c.zoomingd) ? 1.25 : -1.25)
+        c.zoomingd = zoomingdnew
+        ev.preventDefault()
+    }else if (c.fingers == 1) {
+
+    }else if (c.kontextOPEN) {
+        c.standardClick = true
+    }else if (!c.oncable) {
+        c.standardClick = false
+        c.moved = true
+    
+        let ex = ev.changedTouches["0"].screenX
+        let ey = ev.changedTouches["0"].screenY
+    
+        let oldX,oldY
+
+        if (c.kontext) {
+            oldX = c.lastTouch.x
+            oldY = c.lastTouch.y
+        }else{
+            oldX = c.lastTouch.changedTouches["0"].screenX
+            oldY = c.lastTouch.changedTouches["0"].screenY
+        }
+    
+        c.onmousemove({movementX: ex - oldX,
+            movementY: ey - oldY,
+            x: ex,
+            y: ey,
+            which: 2})
+    }else{
+        let ex = ev.changedTouches["0"].screenX
+        let ey = ev.changedTouches["0"].screenY
+    
+        let oldX,oldY
+
+        if (c.kontext) {
+            oldX = c.lastTouch.x
+            oldY = c.lastTouch.y
+        }else{
+            oldX = c.lastTouch.changedTouches["0"].screenX
+            oldY = c.lastTouch.changedTouches["0"].screenY
+        }
+        c.onmousemove({movementX: ex - oldX,
+            movementY: ey - oldY,
+            x: ex,
+            y: ey,
+            which: 1})
+    }
+
+    c.kontext = false
+    c.lastTouch = ev
+}
+    
+c.oncontextmenu = (ev) => {
+    c.standardClick = false
+    c.kontext = true
+    c.oncable = false
+    c.lastTouch = ev
+}
+
+
+c.ontouchend = (ev) => {
+    let ex = ev.changedTouches["0"].screenX
+    let ey = ev.changedTouches["0"].screenY
+    let oldX, oldY
+    if (c.kontext) {
+        oldX = c.lastTouch.x
+        oldY = c.lastTouch.y
+    }else{
+        oldX = c.lastTouch.changedTouches["0"].screenX
+        oldY = c.lastTouch.changedTouches["0"].screenY
+    }
+
+    if (c.standardClick) {
+        c.onmousedown({x: ex,
+                       y: ey,
+                       which: 1})
+        c.kontextOPEN = false
+    }
+
+    if (c.kontext) {
+        if (!c.moved) {
+            c.onmousedown({x: ex,
+                           y: ey,
+                           which: 3})
+            c.kontextOPEN = true
+        }
+    }
+
+    if (c.moved) {
+        
+    }
+
+    if (c.oncable) {
+        c.onmouseup({x: ex,
+                     y: ey,
+                     which: 1})
+    }
+
+    c.fingers -= 1
+    c.zooming = false
+    c.oncable = false
+    c.moved = false
+    c.standardClick = false
+    c.kontext = false
+    c.lastTouch = ev
+    ev.preventDefault()
+}
+///TOUCH SUPPORT
+
+
+
+
+
 c.onmousedown = function(e) {
     c.focus();
 
