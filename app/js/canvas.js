@@ -250,6 +250,7 @@ c.oncable = false
 c.zooming = false
 c.zoomingd = null
 c.fingers = 0
+c.shift = false
 
 c.ontouchstart = (ev) => {
     if (ev.touches.length == 2 || ev.changedTouches.length == 2) {
@@ -276,7 +277,14 @@ c.ontouchstart = (ev) => {
 
         }
 
-        if (findPortByPos() ||     findWireByPos() || (type == "Button") || (ev.ctrlKey == true && findComponentByPos())) {
+        if (ev.shiftKey) {
+            c.shift = true
+            c.onmousedown({x: ex,
+                           y: ey,
+                           which: 1,
+                           shiftKey: true})
+            c.standardClick = false
+        } else if (findPortByPos() ||     findWireByPos() || (type == "Button") || (ev.ctrlKey == true && findComponentByPos())) {
             c.oncable = true
             c.onmousedown({x: ex,
                            y: ey,
@@ -318,7 +326,32 @@ c.ontouchmove = (ev) => {
         ev.preventDefault()
     }else if (c.fingers == 1) {
 
-    }else if (c.kontextOPEN) {
+    }else if (c.shift) {
+        let ex = ev.changedTouches["0"].screenX
+        let ey = ev.changedTouches["0"].screenY
+    
+        let oldX,oldY
+
+        if (c.kontext) {
+            oldX = c.lastTouch.x
+            oldY = c.lastTouch.y
+        }else{
+            oldX = c.lastTouch.changedTouches["0"].screenX
+            oldY = c.lastTouch.changedTouches["0"].screenY
+        }
+
+        mouse.grid.x = Math.round(ex / zoom + offset.x)
+        mouse.grid.y = Math.round(-ey / zoom + offset.y)
+        mouse.screen.x = ex
+        mouse.screen.y = ey
+
+        c.onmousemove({movementX: ex - oldX,
+                       movementY: ey - oldY,
+                       x: ex,
+                       y: ey,
+                       which: 1,
+                       shiftKey: true})
+    } else if (c.kontextOPEN) {
         c.standardClick = true
     }else if (!c.oncable) {
         c.standardClick = false
@@ -393,6 +426,13 @@ c.ontouchend = (ev) => {
         c.kontextOPEN = false
     }
 
+    if (c.shift) {
+        c.onmouseup({x: ex,
+                     y: ey,
+                     which: 1,
+                     shiftKey: true}) 
+    }
+
     if (c.kontext) {
         if (!c.moved) {
             c.onmousedown({x: ex,
@@ -412,6 +452,7 @@ c.ontouchend = (ev) => {
                      which: 1})
     }
 
+    c.shift = false
     c.fingers -= 1
     c.zooming = false
     c.oncable = false
