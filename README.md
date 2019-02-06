@@ -18,12 +18,12 @@ npm start
 
 #### "Building" it for daily use
 
-```bash
+```
 
 	Step 1: Download the newest release of the original BOOLR
-		for your system at https://github.com/GGBRW/boolr/releases/latest
+		for your system at [https://github.com/GGBRW/boolr/releases/latest](https://github.com/GGBRW/boolr/releases/latest)
 
-	Step 2: Download canvas.js at https://github.com/dreamerplays/boolr/releases/latest
+	Step 2: Download canvas.js at [https://github.com/dreamerplays/boolr/releases/latest](https://github.com/dreamerplays/boolr/releases/latest)
 
 	Step 3: Extract the BOOLR release to wherever you like it to be
 
