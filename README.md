@@ -1,4 +1,4 @@
-# BOOLR
+# BOOLR TOUCH
 A digital logic simulator  
 Download BOOLR: http://boolr.me
 
@@ -13,3 +13,8 @@ npm install
 # Run in development
 npm start
 ```
+
+#### "Building" it for daily use
+
+#### Step 1: #### Download the newest release of the original BOOLR
+
