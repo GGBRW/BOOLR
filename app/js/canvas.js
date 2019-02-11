@@ -284,18 +284,23 @@ c.ontouchstart = (ev) => {
                            which: 1,
                            shiftKey: true})
             c.standardClick = false
-        } else if (findPortByPos() ||     findWireByPos() || (type == "Button") || (ev.ctrlKey == true && findComponentByPos())) {
+        } else if (findPortByPos() || findWireByPos() || (type == "Button") || (ev.ctrlKey == true && findComponentByPos())) {
             c.oncable = true
             c.onmousedown({x: ex,
-                           y: ey,
-                           which: 1,
-                           ctrlKey: ev.ctrlKey})
+                y: ey,
+                which: 1,
+                ctrlKey: ev.ctrlKey})
+            
             c.standardClick = false
         }else{
             c.standardClick = true
         }
     }
     c.lastTouch = ev
+}
+
+document.getElementById("contextMenu").onmouseup = () => {
+    c.kontextOPEN = false
 }
 
 c.ontouchmove = (ev) => {
@@ -376,6 +381,7 @@ c.ontouchmove = (ev) => {
             y: ey,
             which: 2})
     }else{
+        
         let ex = ev.changedTouches["0"].screenX
         let ey = ev.changedTouches["0"].screenY
     
