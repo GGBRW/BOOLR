@@ -1138,7 +1138,7 @@ function findComponentsInSelection(
     for(let i = 0; i < components.length; ++i) {
         const component = components[i];
          if(x < component.pos.x + (component.width || 0) - .5 &&
-           x2 > component.pos.x - .5 && 
+           x2 > component.pos.x - .5 &&
            y2 > component.pos.y - (component.height || 0) + .5 &&
            y < component.pos.y +.5) {
              result.push(component);
@@ -1985,6 +1985,21 @@ class AND extends Component {
     }
 }
 
+class NAND extends Component {
+    constructor(name, pos) {
+        super (name, pos, 2, 2, {type: "char", text: "!&"});
+        this.addInputPort({side: 3, pos: 1});
+        this.addInputPort({side: 3, pos: 0});
+        this.addOutputPort({side: 1, pos: 0});
+        this.function = () => {
+            if (this.input[0].value & this.input[1].value == 1)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
+        }
+    }
+}
+
 class OR extends Component {
     constructor(name,pos) {
         super(name,pos,2,2,{ type: "char", text: "|" });
@@ -1997,6 +2012,21 @@ class OR extends Component {
     }
 }
 
+class NOR extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2,{ type: "char", text: "!|" });
+        this.addInputPort({ side: 3, pos: 1 });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.addOutputPort({ side: 1, pos: 0 });
+        this.function = function() {
+            if (this.input[0].value | this.input[1].value)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
+        }
+    }
+}
+
 class XOR extends Component {
     constructor(name,pos) {
         super(name,pos,2,2,{ type: "char", text: "^" });
@@ -2005,6 +2035,21 @@ class XOR extends Component {
         this.addOutputPort({ side: 1, pos: 0 });
         this.function = function() {
             this.output[0].value = this.input[0].value ^ this.input[1].value;
+        }
+    }
+}
+
+class XNOR extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2,{ type: "char", text: "!^" });
+        this.addInputPort({ side: 3, pos: 1 });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.addOutputPort({ side: 1, pos: 0 });
+        this.function = function() {
+            if (this.input[0].value ^ this.input[1].value)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
         }
     }
 }
