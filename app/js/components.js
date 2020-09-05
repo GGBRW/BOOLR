@@ -2046,8 +2046,9 @@ class Button extends Component {
 }
 
 class Constant extends Component {
-    constructor(name,pos,value = 0) {
+    constructor(name, pos, properies, value = 0) {
         super(name,pos,2,1,{ type: "value" });
+        this.properies = properies;
         this.addOutputPort({ side: 1, pos: 0 });
         this.value = 1;
     }
@@ -2378,10 +2379,11 @@ class Counter extends Component {
 }
 
 class LED extends Component {
-    constructor(name,pos,color = [100,0,0]) {
+    constructor(name, pos, properties, color = [100,0,0]) {
         super(name,pos,1,1,{ type: "value" });
         this.addInputPort({ side: 3, pos: 0 });
         this.value = 0;
+        this.properties = properties;
 
         this.color = color;
     }
@@ -2549,8 +2551,9 @@ class LED extends Component {
 } 
 
 class LEDArray extends Component {
-    constructor(name,pos,color = [100,0,0]) {
+    constructor(name, pos, properties, color = [100,0,0]) {
         super(name,pos,8,8,{ type: "value" });
+        this.properties = properties;
 
         this.CE = 0;
         this.WE = 1;
@@ -2570,8 +2573,10 @@ class LEDArray extends Component {
             this.addInputPort({ side: 2, pos: x }, x.toString());
         }
         this.value = 0;
-        this.values = [];
-        this.values_buffer = [];
+        if (!this.properties.values) {
+            this.properties.values = [];
+            this.properties.values_buffer = [];
+        }
 
         this.color = color;
     }
@@ -2584,11 +2589,11 @@ class LEDArray extends Component {
         if (this.input[this.WE].value) {
             let address_line = parseInt(this.input[this.ADDR2].value.toString() + this.input[this.ADDR1].value.toString()+ this.input[this.ADDR0].value.toString(), 2);
             for (let x = 0; x < this.width; x++) {
-                this.values_buffer[address_line * this.width + x] = this.input[this.DATA + x].value;
+                this.properties.values_buffer[address_line * this.width + x] = this.input[this.DATA + x].value;
             }
         }
         if (this.input[this.PUSH].value) {
-            this.values = this.values_buffer.slice();
+            this.properties.values = this.properties.values_buffer.slice();
         }
     }
 
@@ -2621,7 +2626,7 @@ class LEDArray extends Component {
             for (let y_ = 0; y_ < this.height; y_++) {
                 ctx.shadowBlur = 0;
                 let color;
-                if(this.values[y_ * this.width + x_] == 1 && this.input[this.CE].value == 1) {
+                if(this.properties.values[y_ * this.width + x_] == 1 && this.input[this.CE].value == 1) {
                     color = this.color.map(n => Math.min((n * 2), 255) | 0);
 
                     if(zoom > 20) ctx.shadowBlur = zoom / 3;
