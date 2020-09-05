@@ -2546,6 +2546,214 @@ class LED extends Component {
             }
         }
     }
+} 
+
+class LEDArray extends Component {
+    constructor(name,pos,color = [100,0,0]) {
+        super(name,pos,8,8,{ type: "value" });
+
+        this.CE = 0;
+        this.WE = 1;
+        this.PUSH = 2;
+        this.ADDR0 = 3;
+        this.ADDR1 = 4;
+        this.ADDR2 = 5;
+        this.DATA = 6;
+
+        this.addInputPort({ side: 3, pos: this.CE }, 'CE');
+        this.addInputPort({ side: 3, pos: this.WE }, 'WE');
+        this.addInputPort({ side: 3, pos: this.PUSH }, 'PUSH');
+        this.addInputPort({ side: 3, pos: this.ADDR0 }, 'ADDR 0');
+        this.addInputPort({ side: 3, pos: this.ADDR1 }, 'ADDR 1');
+        this.addInputPort({ side: 3, pos: this.ADDR2 }, 'ADDR 2');
+        for (let x = 0; x < this.width; x++) {
+            this.addInputPort({ side: 2, pos: x }, x.toString());
+        }
+        this.value = 0;
+        this.values = [];
+        this.values_buffer = [];
+
+        this.color = color;
+    }
+
+    function() {
+        if (!this.input[this.CE].value) {
+            return;
+        }
+
+        if (this.input[this.WE].value) {
+            let address_line = parseInt(this.input[this.ADDR2].value.toString() + this.input[this.ADDR1].value.toString()+ this.input[this.ADDR0].value.toString(), 2);
+            for (let x = 0; x < this.width; x++) {
+                this.values_buffer[address_line * this.width + x] = this.input[this.DATA + x].value;
+            }
+        }
+        if (this.input[this.PUSH].value) {
+            this.values = this.values_buffer.slice();
+        }
+    }
+
+    draw() {
+        const x = (this.pos.x - offset.x) * zoom;
+        const y = -(this.pos.y - offset.y) * zoom;
+
+        if(!(
+                x + this.width * zoom + zoom / 2 >= 0 &&
+                x - zoom * 1.5 <= c.width &&
+                y + this.height * zoom + zoom / 2 >= 0 &&
+                y - zoom * 1.5 <= c.height
+            )) return;
+
+        // Draw the frame of the component
+        ctx.fillStyle = "#111";
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = zoom / 12 | 0;
+        ctx.beginPath();
+        ctx.rect(
+            x - zoom / 2,
+            y - zoom / 2,
+            this.width * zoom,
+            this.height * zoom
+        );
+        ctx.fill();
+        ctx.stroke();
+
+        for (let x_ = 0; x_ < this.width; x_++) {
+            for (let y_ = 0; y_ < this.height; y_++) {
+                ctx.shadowBlur = 0;
+                let color;
+                if(this.values[y_ * this.width + x_] == 1 && this.input[this.CE].value == 1) {
+                    color = this.color.map(n => Math.min((n * 2), 255) | 0);
+
+                    if(zoom > 20) ctx.shadowBlur = zoom / 3;
+                    ctx.shadowColor = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
+                } else {
+                    color = this.color.map(n => Math.min((n / 2), 255) | 0);
+                }
+                ctx.fillStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
+
+                ctx.beginPath();
+                const margin = 0.025;
+                ctx.rect(
+                    x - zoom / 2 + (x_ + margin) * zoom,
+                    y - zoom / 2 + (y_ + margin) * zoom,
+                    zoom * (1 - margin * 2),
+                    zoom * (1 - margin * 2)
+                );
+                ctx.fill();
+            }
+        }
+
+        ctx.shadowBlur = 0;
+
+
+        // Draw input pins
+        for(let i = 0; i < this.input.length; ++i) {
+            const screen = {x, y};
+            const pos = this.input[i].pos;
+
+            const angle = Math.PI / 2 * pos.side;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
+
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
+
+            ctx.beginPath();
+            ctx.moveTo(
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
+            );
+            ctx.lineTo(
+                screen.x,
+                screen.y
+            );
+            ctx.lineWidth = zoom / 8;
+            ctx.stroke();
+
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8 - zoom / 20,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.lineWidth = zoom / 10;
+                ctx.fillStyle = "#fff";
+                ctx.stroke();
+                ctx.fill();
+            }
+
+            if(zoom > 30) {
+                const name = this.input[i].name;
+                if(name) {
+                    ctx.fillStyle = "#888";
+                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.fillText(
+                        name,
+                        screen.x - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? screen.y + zoom / 4 : screen.y - zoom / 4)
+                    );
+                }
+            }
+        }
+
+        // Draw output pins
+        for(let i = 0; i < this.output.length; ++i) {
+            const screen = {x, y};
+            const pos = this.output[i].pos;
+
+            const angle = Math.PI / 2 * pos.side;
+            screen.x += Math.sin(angle) * zoom;
+            screen.y -= Math.cos(angle) * zoom;
+            if(pos.side == 1) screen.x += (this.width - 1) * zoom;
+            else if(pos.side == 2) screen.y += (this.height - 1) * zoom;
+
+            if(pos.side % 2 == 0) screen.x += pos.pos * zoom;
+            else screen.y += pos.pos * zoom;
+
+            ctx.beginPath();
+            ctx.moveTo(
+                screen.x - Math.sin(angle) / 2 * zoom,
+                screen.y + Math.cos(angle) / 2 * zoom
+            );
+            ctx.lineTo(
+                screen.x,
+                screen.y
+            );
+            ctx.lineWidth = zoom / 8;
+            ctx.stroke();
+
+            if(zoom > 10) {
+                ctx.beginPath();
+                ctx.arc(
+                    screen.x,
+                    screen.y,
+                    zoom / 8,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = "#111";
+                ctx.fill();
+            }
+
+            if(zoom > 30) {
+                const name = this.output[i].name;
+                if(name) {
+                    ctx.fillStyle = "#888";
+                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.fillText(
+                        name,
+                        screen.x - ctx.measureText(name).width / 2,
+                        (pos.side == 2 ? screen.y + zoom / 4 : screen.y - zoom / 4)
+                    );
+                }
+            }
+        }
+    }
 }
 
 class Display extends Component {
