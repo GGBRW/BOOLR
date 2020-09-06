@@ -2553,7 +2553,7 @@ class LED extends Component {
 class LEDArray extends Component {
     constructor(name, pos, properties, color = [100,0,0]) {
         super(name,pos,8,8,{ type: "value" });
-        this.properties = properties;
+        this.properties = properties || {};
 
         this.CE = 0;
         this.WE = 1;
