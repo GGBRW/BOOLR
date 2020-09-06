@@ -3385,8 +3385,12 @@ class Wire {
         this.color = color;
     }
 
-    update(value,from) {
-        let initial_value = value;
+    getNewValue() {
+        // check value of inputs and outpus if value of this wire would be zero
+        // in this way we can ensure no self-powering or loop powering
+        let value = 0;
+        let old_value = this.value;
+        this.value = 0;
 
         if(this.from && this.from.value == 1) {
             value = 1;
@@ -3394,7 +3398,36 @@ class Wire {
 
         for (let i = 0; i < this.input.length; ++i) {
             const inp = this.input[i];
-            value = Math.max(value, inp.value);
+            if (inp.value == 1) {
+                if (inp.getNewValue) {
+                    value = Math.max(value, inp.getNewValue());
+                } else {
+                    value = inp.value;
+                }
+            }
+        }
+
+        for (let i = 0; i < this.output.length; ++i) {
+            const inp = this.output[i];
+            if (inp.value == 1) {
+                if (inp.getNewValue) {
+                    value = Math.max(value, inp.getNewValue());
+                } else {
+                    value = inp.value;
+                }
+            }
+        }
+
+        this.value = old_value;
+
+        return value;
+    }
+
+    update(value,from) {
+        let initial_value = value;
+
+        if (value == 0 && this.value == 1) {
+             value = this.getNewValue();
         }
 
         if(this.value == value && initial_value == value) return;
