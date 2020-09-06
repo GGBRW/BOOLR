@@ -3390,6 +3390,11 @@ class Wire {
             value = 1;
         }
 
+        for (let i = 0; i < this.input.length; ++i) {
+            const inp = this.input[i];
+            value = Math.max(value, inp.value);
+        }
+
         if(this.value == value && initial_value == value) return;
         
         this.value = value;
