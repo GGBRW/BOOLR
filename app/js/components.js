@@ -2046,9 +2046,8 @@ class Button extends Component {
 }
 
 class Constant extends Component {
-    constructor(name, pos, properies, value = 0) {
+    constructor(name, pos, properties, value = 0) {
         super(name,pos,2,1,{ type: "value" });
-        this.properies = properies;
         this.addOutputPort({ side: 1, pos: 0 });
         this.value = 1;
     }
