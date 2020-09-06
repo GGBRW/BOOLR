@@ -254,6 +254,8 @@ function removeWire(wire, undoable = false, sendToSocket = true) {
             if(!wire.output[i].from) {
                 const removed = removeWire(wire.output[i]);
                 removedWires.push(...removed);
+            } else {
+                wire.output[i].update(0, this);
             }
         }
     }
@@ -3381,42 +3383,30 @@ class Wire {
         this.color = color;
     }
 
-    updateValue(value = 0,from) {
-        if(value == 1) {
-            value = 1;
-        } else if(this.from && this.from.value == 1) {
-            value = 1;
-        } else if(this.input.find(wire => wire != from && wire.value == 1)) {
-            const input = this.input.map(wire => wire.value);
-
-            for(let i = 0; i < this.input.length; ++i) {
-                if(this.input[i].input.includes(this)) {
-                    input[i] = this.input[i].updateValue(value,this);
-                }
-            }
-
-            if(input.indexOf(1) > -1) {
-                value = 1;
-            } else {
-                value = 0;
-            }
-        } else {
-            value = 0;
-        }
-
-        return value;
-    }
-
     update(value,from) {
-        if(this.input.length > 0) {
-            value = this.updateValue(value, from);
+        let initial_value = value;
+
+        if(this.from && this.from.value == 1) {
+            value = 1;
         }
 
-        if(this.value == value) return;
+        if(this.value == value && initial_value == value) return;
+        
         this.value = value;
+
+        if (initial_value != value) {
+            from = null;
+        }
 
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
+            if(wire != from) {
+                wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
+            }
+        }
+
+        for(let i = 0; i < this.input.length; ++i) {
+            const wire = this.input[i];
             if(wire != from) {
                 wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
             }
