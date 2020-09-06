@@ -248,14 +248,16 @@ function removeWire(wire, undoable = false, sendToSocket = true) {
     }
 
     for(let i = 0; i < wire.output.length; ++i) {
-        const index = wire.output[i].input.indexOf(wire);
-        if(index > -1) {
-            wire.output[i].input.splice(index,1);
-            if(!wire.output[i].from) {
-                const removed = removeWire(wire.output[i]);
-                removedWires.push(...removed);
-            } else {
-                wire.output[i].update(0, this);
+        if (wire.output[i]) {
+            const index = wire.output[i].input.indexOf(wire);
+            if(index > -1) {
+                wire.output[i].input.splice(index,1);
+                if(!wire.output[i].from) {
+                    const removed = removeWire(wire.output[i]);
+                    removedWires.push(...removed);
+                } else {
+                    wire.output[i].update(0, this);
+                }
             }
         }
     }
