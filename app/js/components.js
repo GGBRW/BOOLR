@@ -3400,14 +3400,14 @@ class Wire {
 
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
-            if(wire != from) {
+            if(wire != from && wire.value != this.value) {
                 wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
             }
         }
 
         for(let i = 0; i < this.input.length; ++i) {
             const wire = this.input[i];
-            if(wire != from) {
+            if(wire != from && wire.value != this.value) {
                 wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
             }
         }
