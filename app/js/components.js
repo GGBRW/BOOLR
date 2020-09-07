@@ -2386,10 +2386,25 @@ class FlipFlop extends Component {
         this.ready_to_toggle = this.properties.ready || 1;
     }
 
+    onmousedown(sendToSocket = true) {
+        this.value = 1 - this.value;
+        this.ready_to_toggle = this.input[0].value == 0;
+        this.properties.data = this.value;
+        this.properties.ready = this.ready_to_toggle;
+        this.update(true);
+
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({
+                type: "mousedown",
+                data: this.id
+            }));
+        }
+    }
+
     function() {
         if(this.ready_to_toggle && this.input[0].value == 1) {
             this.ready_to_toggle = 0;
-            this.value = +(!this.value);
+            this.value = 1 - this.value;
             this.output[0].value = this.value;
             this.properties.data = this.value;
         }
