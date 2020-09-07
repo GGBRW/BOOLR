@@ -98,7 +98,7 @@ const constructors = {
     Button,Constant,Delay,Clock,Debug,
     Beep,Counter,LED,Display,
     Custom, TimerStart, TimerEnd,
-    ROM
+    ROM, FlipFlop
 };
 
 /*
@@ -248,7 +248,7 @@ function parse(data) {
             }
         }
 
-        const component = new constructors[constructor]();
+        const component = new constructors[constructor](data.name, data.pos, data.properties);
 
         if(constructor == "Custom") {
             const parsed = parse(JSON.stringify(data.componentData));
@@ -260,17 +260,21 @@ function parse(data) {
 
         const input = data.input;
         for(let i = 0; i < component.input.length; ++i) {
-            component.input[i].name = input[i].name;
-            component.input[i].value = input[i].value;
-            component.input[i].pos = input[i].pos;
+            if (input[i]) {
+                component.input[i].name = input[i].name;
+                component.input[i].value = input[i].value;
+                component.input[i].pos = input[i].pos;
+	    }
         }
         delete data.input;
 
         const output = data.output;
         for(let i = 0; i < component.output.length; ++i) {
-            component.output[i].name = output[i].name;
-            component.output[i].value = output[i].value;
-            component.output[i].pos = output[i].pos;
+            if (output[i]) {
+                component.output[i].name = output[i].name;
+                component.output[i].value = output[i].value;
+                component.output[i].pos = output[i].pos;
+	    }
         }
         delete data.output;
 
