@@ -2391,6 +2391,7 @@ class FlipFlop extends Component {
         this.ready_to_toggle = this.input[0].value == 0;
         this.properties.data = this.value;
         this.properties.ready = this.ready_to_toggle;
+        this.output[0].value = this.value;
         this.update(true);
 
         if(socket && sendToSocket) {
