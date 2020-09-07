@@ -2381,6 +2381,7 @@ class FlipFlop extends Component {
     constructor(name,pos, properties) {
         super(name,pos,2,1,{ type: "value" });
         this.addInputPort({ side: 3, pos: 0 });
+        this.addOutputPort({ side: 1, pos: 0 });
         this.value = this.properties.data || 0;
         this.ready_to_toggle = this.properties.ready || 1;
     }
@@ -2389,6 +2390,7 @@ class FlipFlop extends Component {
         if(this.ready_to_toggle && this.input[0].value == 1) {
             this.ready_to_toggle = 0;
             this.value = +(!this.value);
+            this.output[0].value = this.value;
             this.properties.data = this.value;
         }
 
