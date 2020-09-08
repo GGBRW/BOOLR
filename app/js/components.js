@@ -3438,6 +3438,11 @@ class Wire {
             from = null;
         }
 
+        if(this.to && this.to.value != this.value) {
+            this.to.value = this.value;
+            this.to.component && updateQueue.push(this.to.component.update.bind(this.to.component));
+        }
+
         for(let i = 0; i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire && wire != from) {
@@ -3462,11 +3467,6 @@ class Wire {
                     wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));
                 }
             }
-        }
-
-        if(this.to && this.to.value != this.value) {
-            this.to.value = this.value;
-            this.to.component && updateQueue.push(this.to.component.update.bind(this.to.component));
         }
     }
 
