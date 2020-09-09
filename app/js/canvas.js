@@ -343,13 +343,6 @@ c.onmousedown = function(e) {
                     } else {
                         component.update();
                     }
-                } else if(found = findWireByPos()) {
-                    connecting = new Wire();
-                    connecting.input.push(found);
-                    connecting.pos.push({
-                        x: mouse.grid.x,
-                        y: mouse.grid.y
-                    });
                 } else if(found = findPortByPos()) {
                     const port = found;
                     if(port.type == "output") {
@@ -360,6 +353,13 @@ c.onmousedown = function(e) {
                             y: mouse.grid.y
                         });
                     }
+                } else if(found = findWireByPos()) {
+                    connecting = new Wire();
+                    connecting.input.push(found);
+                    connecting.pos.push({
+                        x: mouse.grid.x,
+                        y: mouse.grid.y
+                    });
                 } else {
                     const component = new Selected();
                     add(
