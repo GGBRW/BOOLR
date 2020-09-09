@@ -137,7 +137,6 @@ function stringify(components = [], wires = [], selection) {
 
         data.input = [];
         for(let i = 0; i < component.input.length; ++i) {
-            console.log(component.input[i]);
             data.input[i] = {
                 id: component.input[i].id,
                 name: component.input[i].name,
