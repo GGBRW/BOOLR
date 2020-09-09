@@ -1367,30 +1367,38 @@ function cloneComponent(component, dx = 0, dy = 0) {
         clone.width = component.width;
 
         for(let i = 0; i < component.input.length; ++i) {
-            clone.input[i].name = component.input[i].name;
-            clone.input[i].value = component.input[i].value;
-            clone.input[i].pos = Object.assign({},component.input[i].pos);
+            if (component.input[i]) {
+                clone.input[i].name = component.input[i].name;
+                clone.input[i].value = component.input[i].value;
+                clone.input[i].pos = Object.assign({},component.input[i].pos);
+            }
         }
 
         for(let i = 0; i < component.output.length; ++i) {
-            clone.output[i].name = component.output[i].name;
-            clone.output[i].value = component.output[i].value;
-            clone.output[i].pos = Object.assign({},component.output[i].pos);
+            if (component.output[i]) {
+                clone.output[i].name = component.output[i].name;
+                clone.output[i].value = component.output[i].value;
+                clone.output[i].pos = Object.assign({},component.output[i].pos);
+            }
         }
     } else {
         clone.input = [];
         for(let i = 0; i < component.input.length; ++i) {
-            const port = clone.addInputPort();
-            port.name = component.input[i].name;
-            port.value = component.input[i].value;
-            port.pos = Object.assign({},component.input[i].pos);
+            if (component.input[i]) {
+                const port = clone.addInputPort();
+                port.name = component.input[i].name;
+                port.value = component.input[i].value;
+                port.pos = Object.assign({},component.input[i].pos);
+            }
         }
         clone.output = [];
         for(let i = 0; i < component.output.length; ++i) {
-            const port = clone.addOutputPort();
-            port.name = component.output[i].name;
-            port.value = component.output[i].value;
-            port.pos = Object.assign({},component.output[i].pos);
+            if (component.output[i]) {
+                const port = clone.addOutputPort();
+                port.name = component.output[i].name;
+                port.value = component.output[i].value;
+                port.pos = Object.assign({},component.output[i].pos);
+            }
         }
     }
     return clone;
