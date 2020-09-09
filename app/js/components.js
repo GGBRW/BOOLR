@@ -2055,6 +2055,7 @@ class TimerStart extends Component {
         console.time();
         timerStart = new Date;
 
+        this.updateInputPorts();
         this.function();
 
         this.output[0].value = this.value;
@@ -2082,6 +2083,7 @@ class TimerEnd extends Component {
         console.timeEnd();
         boolrConsole.log(this.name + ": " + (new Date - timerStart) + " ms");
 
+        this.updateInputPorts();
         this.function();
 
         this.input[0].value == 1 && (this.value = 1);
@@ -2205,6 +2207,7 @@ class Delay extends Component {
         if(settings.showComponentUpdates) this.highlight(250);
 
         this.lastUpdate = new Date;
+        this.updateInputPorts();
 
         const value = this.input[0].value;
         setTimeout(() => updateQueue.push(
@@ -2704,7 +2707,7 @@ class Display extends Component {
     }
 
     update() {
-
+        this.updateInputPorts();
     }
 
     draw() {
@@ -2996,6 +2999,7 @@ class Display extends Component {
 //         if(settings.showComponentUpdates) this.highlight(250);
 //
 //         // Update output ports
+//         this.updateInputPorts();
 //         this.function();
 //
 //         const port = this.output[0];
@@ -3128,6 +3132,7 @@ class Custom extends Component {
     update() {
         // Highlight
         if(settings.showComponentUpdates) this.highlight(250);
+        this.updateInputPorts();
 
         this.function();
     }
