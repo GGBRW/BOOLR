@@ -457,18 +457,26 @@ c.onmousedown = function(e) {
                     component.pos.y += dy / 2.5;
 
                     for(let i = 0; i < component.input.length; ++i) {
-                        const wire = component.input[i].connection;
-                        if(wire) {
-                            wire.pos.slice(-1)[0].x += dx / 2.5;
-                            wire.pos.slice(-1)[0].y += dy / 2.5;
+                        const cons = component.input[i].connection;
+                        if (cons) {
+                            for (let wire of cons) {
+                                if(wire) {
+                                    wire.pos.slice(-1)[0].x += dx / 2.5;
+                                    wire.pos.slice(-1)[0].y += dy / 2.5;
+                                }
+                            }
                         }
                     }
 
                     for(let i = 0; i < component.output.length; ++i) {
-                        const wire = component.output[i].connection;
-                        if(wire) {
-                            wire.pos[0].x += dx / 2.5;
-                            wire.pos[0].y += dy / 2.5;
+                        const cons = component.output[i].connection;
+                        if (cons) {
+                            for (let wire of cons) {
+                                if(wire) {
+                                    wire.pos[0].x += dx / 2.5;
+                                    wire.pos[0].y += dy / 2.5;
+                                }
+                            }
                         }
                     }
 
@@ -483,18 +491,26 @@ c.onmousedown = function(e) {
                         component.pos.y = Math.round(component.pos.y);
 
                         for(let i = 0; i < component.input.length; ++i) {
-                            const wire = component.input[i].connection;
-                            if(wire) {
-                                wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
-                                wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y)
+                            const cons = component.input[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire) {
+                                        wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                        wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y)
+                                    }
+                                }
                             }
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
-                            const wire = component.output[i].connection;
-                            if(wire) {
-                                wire.pos[0].x = Math.round(wire.pos[0].x);
-                                wire.pos[0].y = Math.round(wire.pos[0].y)
+                            const cons = component.output[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire) {
+                                        wire.pos[0].x = Math.round(wire.pos[0].x);
+                                        wire.pos[0].y = Math.round(wire.pos[0].y)
+                                    }
+                                }
                             }
                         }
 
@@ -555,18 +571,26 @@ c.onmousemove = function(e) {
                     component.pos.y += dy;
 
                     for(let i = 0; i < component.input.length; ++i) {
-                        const wire = component.input[i].connection
-                        if(wire && !wires.includes(wire)) {
-                            wire.pos.slice(-1)[0].x += dx;
-                            wire.pos.slice(-1)[0].y += dy;
+                        const cons = component.input[i].connection;
+                        if (cons) {
+                            for (let wire of cons) {
+                                if(wire && !wires.includes(wire)) {
+                                    wire.pos.slice(-1)[0].x += dx;
+                                    wire.pos.slice(-1)[0].y += dy;
+                                }
+                            }
                         }
                     }
 
                     for(let i = 0; i < component.output.length; ++i) {
-                        const wire = component.output[i].connection
-                        if(wire && !wires.includes(wire)) {
-                            wire.pos[0].x += dx;
-                            wire.pos[0].y += dy;
+                        const cons = component.output[i].connection;
+                        if (cons) {
+                            for (let wire of cons) {
+                                if(wire && !wires.includes(wire)) {
+                                    wire.pos[0].x += dx;
+                                    wire.pos[0].y += dy;
+                                }
+                            }
                         }
                     }
                 }
@@ -600,18 +624,26 @@ c.onmousemove = function(e) {
 
                 // Then, all the wires to and from the component need to be fixed...
                 for(let i = 0; i < component.input.length; ++i) {
-                    const wire = component.input[i].connection;
-                    if(wire) {
-                        wire.pos.slice(-1)[0].x += dx;
-                        wire.pos.slice(-1)[0].y += dy;
+                    const cons = component.input[i].connection;
+                    if (cons) {
+                        for (let wire of cons) {
+                            if(wire) {
+                                wire.pos.slice(-1)[0].x += dx;
+                                wire.pos.slice(-1)[0].y += dy;
+                            }
+                        }
                     }
                 }
 
                 for(let i = 0; i < component.output.length; ++i) {
-                    const wire = component.output[i].connection;
-                    if(wire) {
-                        wire.pos[0].x += dx;
-                        wire.pos[0].y += dy;
+                    const cons = component.output[i].connection;
+                    if (cons) {
+                        for (let wire of cons) {
+                            if(wire) {
+                                wire.pos[0].x += dx;
+                                wire.pos[0].y += dy;
+                            }
+                        }
                     }
                 }
             } else if(dragging.port) {
@@ -652,12 +684,14 @@ c.onmousemove = function(e) {
                     if(pos.side % 2 == 0) gridPos.x += pos.pos;
                     else gridPos.y -= pos.pos;
 
-                    if(port.type == "input") {
-                        port.connection.pos.slice(-1)[0].x = gridPos.x;
-                        port.connection.pos.slice(-1)[0].y = gridPos.y;
-                    } else {
-                        port.connection.pos[0].x = gridPos.x;
-                        port.connection.pos[0].y = gridPos.y;
+                    for (let wire of port.connection) {
+                        if(port.type == "input") {
+                            wire.pos.slice(-1)[0].x = gridPos.x;
+                            wire.pos.slice(-1)[0].y = gridPos.y;
+                        } else {
+                            wire.pos[0].x = gridPos.x;
+                            wire.pos[0].y = gridPos.y;
+                        }
                     }
                 }
             }
@@ -847,18 +881,26 @@ c.onmouseup = function(e) {
                         component.pos.y += dy / 2.5;
 
                         for(let i = 0; i < component.input.length; ++i) {
-                            const wire = component.input[i].connection
-                            if(wire && !wires.includes(wire)) {
-                                wire.pos.slice(-1)[0].x += dx / 2.5;
-                                wire.pos.slice(-1)[0].y += dy / 2.5;
+                            const cons = component.input[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire && !wires.includes(wire)) {
+                                        wire.pos.slice(-1)[0].x += dx / 2.5;
+                                        wire.pos.slice(-1)[0].y += dy / 2.5;
+                                    }
+                                }
                             }
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
-                            const wire = component.output[i].connection
-                            if(wire && !wires.includes(wire)) {
-                                wire.pos[0].x += dx / 2.5;
-                                wire.pos[0].y += dy / 2.5;
+                            const cons = component.output[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire && !wires.includes(wire)) {
+                                        wire.pos[0].x += dx / 2.5;
+                                        wire.pos[0].y += dy / 2.5;
+                                    }
+                                }
                             }
                         }
                     }
@@ -896,18 +938,26 @@ c.onmouseup = function(e) {
                             component.pos.y = Math.round(component.pos.y);
 
                             for(let i = 0; i < component.input.length; ++i) {
-                                const wire = component.input[i].connection
-                                if(wire && !wires.includes(wire)) {
-                                    wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
-                                    wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                const cons = component.input[i].connection;
+                                if (cons) {
+                                    for (let wire of cons) {
+                                        if(wire && !wires.includes(wire)) {
+                                            wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                            wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                        }
+                                    }
                                 }
                             }
 
                             for(let i = 0; i < component.output.length; ++i) {
-                                const wire = component.output[i].connection
-                                if(wire && !wires.includes(wire)) {
-                                    wire.pos[0].x = Math.round(wire.pos[0].x);
-                                    wire.pos[0].y = Math.round(wire.pos[0].y);
+                                const cons = component.output[i].connection;
+                                if (cons) {
+                                    for (let wire of cons) {
+                                        if(wire && !wires.includes(wire)) {
+                                            wire.pos[0].x = Math.round(wire.pos[0].x);
+                                            wire.pos[0].y = Math.round(wire.pos[0].y);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -963,18 +1013,26 @@ c.onmouseup = function(e) {
                         component.pos.y += dy / 2.5;
 
                         for(let i = 0; i < component.input.length; ++i) {
-                            const wire = component.input[i].connection;
-                            if(wire) {
-                                wire.pos.slice(-1)[0].x += dx / 2.5;
-                                wire.pos.slice(-1)[0].y += dy / 2.5;
+                            const cons = component.input[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire) {
+                                        wire.pos.slice(-1)[0].x += dx / 2.5;
+                                        wire.pos.slice(-1)[0].y += dy / 2.5;
+                                    }
+                                }
                             }
                         }
 
                         for(let i = 0; i < component.output.length; ++i) {
-                            const wire = component.output[i].connection;
-                            if(wire) {
-                                wire.pos[0].x += dx / 2.5;
-                                wire.pos[0].y += dy / 2.5;
+                            const cons = component.output[i].connection;
+                            if (cons) {
+                                for (let wire of cons) {
+                                    if(wire) {
+                                        wire.pos[0].x += dx / 2.5;
+                                        wire.pos[0].y += dy / 2.5;
+                                    }
+                                }
                             }
                         }
 
@@ -989,18 +1047,26 @@ c.onmouseup = function(e) {
                             component.pos.y = Math.round(component.pos.y);
 
                             for(let i = 0; i < component.input.length; ++i) {
-                                const wire = component.input[i].connection;
-                                if(wire) {
-                                    wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
-                                    wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                const cons = component.input[i].connection;
+                                if (cons) {
+                                    for (let wire of cons) {
+                                        if(wire) {
+                                            wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                            wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                        }
+                                    }
                                 }
                             }
 
                             for(let i = 0; i < component.output.length; ++i) {
-                                const wire = component.output[i].connection;
-                                if(wire) {
-                                    wire.pos[0].x = Math.round(wire.pos[0].x);
-                                    wire.pos[0].y = Math.round(wire.pos[0].y);
+                                const cons = component.output[i].connection;
+                                if (cons) {
+                                    for (let wire of cons) {
+                                        if(wire) {
+                                            wire.pos[0].x = Math.round(wire.pos[0].x);
+                                            wire.pos[0].y = Math.round(wire.pos[0].y);
+                                        }
+                                    }
                                 }
                             }
 
@@ -1033,14 +1099,18 @@ c.onmouseup = function(e) {
                         }
                     }
 
-                    const wire = port.connection;
-                    if(wire) {
-                        if(port.type == "input") {
-                            wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
-                            wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
-                        } else {
-                            wire.pos[0].x = Math.round(wire.pos[0].x);
-                            wire.pos[0].y = Math.round(wire.pos[0].y);
+                    const cons = port.connection;
+                    if (cons) {
+                        for (let wire of cons) {
+                            if(wire) {
+                                if(port.type == "input") {
+                                    wire.pos.slice(-1)[0].x = Math.round(wire.pos.slice(-1)[0].x);
+                                    wire.pos.slice(-1)[0].y = Math.round(wire.pos.slice(-1)[0].y);
+                                } else {
+                                    wire.pos[0].x = Math.round(wire.pos[0].x);
+                                    wire.pos[0].y = Math.round(wire.pos[0].y);
+                                }
+                            }
                         }
                     }
 
@@ -1092,11 +1162,13 @@ c.onmouseup = function(e) {
                 if(wires.length > 1) {
                     const wire1PosIndex = wires[0].pos.findIndex(pos => pos.x == mouse.grid.x && pos.y == mouse.grid.y);
                     if(wire1PosIndex) {
-                        const wire1Dx = wires[0].pos[wire1PosIndex].x - wires[0].pos[wire1PosIndex + 1].x;
-                        if (wire1Dx != 0) {
-                            const tmp = wires[0];
-                            wires[0] = wires[1];
-                            wires[1] = tmp;
+                        if (wires[0].pos[wire1PosIndex]) {
+                            const wire1Dx = wires[0].pos[wire1PosIndex].x - wires[0].pos[wire1PosIndex + 1].x;
+                            if (wire1Dx != 0) {
+                                const tmp = wires[0];
+                                wires[0] = wires[1];
+                                wires[1] = tmp;
+                            }
                         }
                     }
 
@@ -1109,7 +1181,6 @@ c.onmouseup = function(e) {
                     // TODO: meer dan 2
                     if(wires.length > 2) dialog.warning(wires.length + " wires found. Please don't. Get out (menuutje voor Teun)");
                     if(wires[0].input.includes(wires[1]) && wires[0].output.includes(wires[1])) {
-                        console.log(1);
                         const inputIndex = wires[0].input.indexOf(wires[1]);
                         if(inputIndex > -1) wires[0].input.splice(inputIndex,1);
                         const outputIndex = wires[1].output.indexOf(wires[0]);
@@ -1120,7 +1191,6 @@ c.onmouseup = function(e) {
                             intersection.type = 1;
                         }
                     } else if(wires[1].input.includes(wires[0])) {
-                        console.log(2);
                         const inputIndex = wires[1].input.indexOf(wires[0]);
                         if(inputIndex > -1) wires[1].input.splice(inputIndex,1);
                         const outputIndex = wires[0].output.indexOf(wires[1]);
@@ -1133,7 +1203,6 @@ c.onmouseup = function(e) {
                             intersection.type = 2;
                         }
                     } else if(wires[1].output.includes(wires[0])) {
-                        console.log(3);
                         const inputIndex = wires[0].input.indexOf(wires[1]);
                         if(inputIndex > -1) wires[0].input.splice(inputIndex,1);
                         const outputIndex = wires[1].output.indexOf(wires[0]);
@@ -1144,7 +1213,6 @@ c.onmouseup = function(e) {
                             wires[1].intersections.splice(intersection,1);
                         }
                     } else {
-                        console.log(4);
                         connectWires(wires[0],wires[1]);
                         connectWires(wires[1],wires[0]);
 

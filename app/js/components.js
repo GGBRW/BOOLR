@@ -71,10 +71,20 @@ function addSelection(
         //connect(wire.from,wire.to,wire);
 
         if(wire.to) {
-            wire.to.connection = wire;
+            if (!wire.to.connection) {
+                wire.to.connection = [];
+            }
+            if (wire.to.connection.indexOf(wire) == -1) {
+                wire.to.connection.push(wire);
+            }
         }
         if(wire.from) {
-            wire.from.connection = wire;
+            if (!wire.from.connection) {
+                wire.from.connection = [];
+            }
+            if (wire.from.connection.indexOf(wire) == -1) {
+                wire.from.connection.push(wire);
+            }
 
             const component = wire.from.component;
             updateQueue.unshift(component.update.bind(component));
@@ -156,19 +166,29 @@ function removeComponent(component, undoable = false, sendToSocket = true) {
 
     for(let i = 0; i < component.input.length; ++i) {
         // Remove connections
-        const wire = component.input[i].connection;
-        if(wire) {
-            const removed = removeWire(wire,false,false);
-            removedWires.push(...removed);
+        const cons = component.input[i].connection;
+        if (cons) {
+            while (cons.length) {
+                let wire = cons[0];
+                if(wire) {
+                    const removed = removeWire(wire,false,false);
+                    removedWires.push(...removed);
+                }
+            }
         }
     }
 
     for(let i = 0; i < component.output.length; ++i) {
         // Remove connections
-        const wire = component.output[i].connection;
-        if(wire) {
-            const removed = removeWire(wire,false,false);
-            removedWires.push(...removed);
+        const cons = component.output[i].connection;
+        if (cons) {
+            while (cons.length) {
+                let wire = cons[0];
+                if(wire) {
+                    const removed = removeWire(wire,false,false);
+                    removedWires.push(...removed);
+                }
+            }
         }
     }
 
@@ -194,6 +214,9 @@ function removeComponent(component, undoable = false, sendToSocket = true) {
             for(let i = 0; i < removedWires.length; ++i) {
                 const wire = removedWires[i];
                 connect(wire.from,wire.to,wire);
+                if (wire.to && wire.to.component && wire.to.component.update) {
+                    wire.to.component.update()
+                }
                 for(let i = 0; i < wire.input.length; ++i) {
                     connectWires(wire.input[i],wire);
                 }
@@ -224,17 +247,19 @@ function removeWire(wire, undoable = false, sendToSocket = true) {
     const to = wire.to;
 
     if(from) {
-        delete from.connection;
+        const index = from.connection.indexOf(wire);
+        if (index != -1) {
+            from.connection.splice(index, 1);
+        }
     }
 
     if(to) {
-        delete to.connection;
-        to.value = 0;
+        const index = to.connection.indexOf(wire);
+        if (index != -1) {
+            to.connection.splice(index, 1);
+        }
         to.component.update();
     }
-
-    //delete wire.from;
-    //delete wire.to;
 
     for(let i = 0; i < wire.input.length; ++i) {
         const index = wire.input[i].output.indexOf(wire);
@@ -272,6 +297,9 @@ function removeWire(wire, undoable = false, sendToSocket = true) {
             for(let i = 0; i < removedWires.length; ++i) {
                 const wire = removedWires[i];
                 connect(wire.from,wire.to,wire);
+                if (wire.to && wire.to.component && wire.to.component.update) {
+                    wire.to.component.update();
+                }
                 for(let i = 0; i < wire.input.length; ++i) {
                     connectWires(wire.input[i],wire);
                 }
@@ -324,6 +352,9 @@ function removeSelection(components, wires, undoable = false) {
             for(let i = 0; i < removedWires.length; ++i) {
                 const wire = removedWires[i];
                 connect(wire.from,wire.to,wire);
+                if (wire.to && wire.to.component && wire.to.component.update) {
+                    wire.to.component.update()
+                }
                 for(let i = 0; i < wire.input.length; ++i) {
                     connectWires(wire.input[i],wire);
                 }
@@ -331,6 +362,7 @@ function removeSelection(components, wires, undoable = false) {
                 for(let i = 0; i < wire.output.length; ++i) {
                     connectWires(wire,wire.output[i]);
                 }
+                wires.push(wire);
             }
 
             redoStack.push(removeSelection.bind(redoCaller,...arguments));
@@ -352,11 +384,21 @@ Connects two components with a wire
  */
 function connect(from, to, wire, undoable = false, sendToSocket = true) {
     if(to) {
-        to.connection = wire;
+        if (!to.connection) {
+            to.connection = [];
+        }
+        if (to.connection.indexOf(wire) == -1) {
+            to.connection.push(wire);
+        }
         wire.to = to;
     }
     if(from) {
-        from.connection = wire;
+        if (!from.connection) {
+            from.connection = [];
+        }
+        if (from.connection.indexOf(wire) == -1) {
+            from.connection.push(wire);
+        }
         wire.from = from;
 
         updateQueue.push(from.component.update.bind(from.component));
@@ -525,116 +567,125 @@ function moveComponent(
 
     let oldInputWirePos = [];
     for(let i = 0; i < component.input.length; ++i) {
-        const wire = component.input[i].connection;
-        if(wire) {
-            if(undoable) {
-                oldInputWirePos.push([...wire.pos]);
-            }
-
-            const pos = wire.pos.slice(-1)[0];
-            pos.x = component.pos.x;
-            pos.y = component.pos.y;
-            const portPos = component.input[i].pos;
-
-            const angle = Math.PI / 2 * portPos.side;
-            pos.x += Math.sin(angle);
-            pos.y += Math.cos(angle);
-            if(portPos.side == 1) pos.x += (component.width - 1);
-            else if(portPos.side == 2) pos.y += (component.height - 1);
-
-            if(portPos.side % 2 == 0) pos.x += portPos.pos;
-            else pos.y -= portPos.pos;
-
-            let dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
-            let dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
-
-            const index = wire.pos.findIndex(
-                (pos,i) => i < wire.pos.length - 1 && pos.x == wire.pos.slice(-1)[0].x && pos.y == wire.pos.slice(-1)[0].y
-            );
-
-            if(index > -1) {
-                wire.pos.splice(index + 1,wire.pos.length);
-                continue;
-            }
-
-            while(Math.abs(dx) + Math.abs(dy) > 0) {
-                let sdx = 0;
-                let sdy = 0;
-                if(Math.abs(dx) > Math.abs(dy)) {
-                    sdx = Math.sign(dx);
-                } else {
-                    sdy = Math.sign(dy);
-                }
-
-                wire.pos.splice(
-                    wire.pos.length - 1, 0,
-                    {
-                        x: wire.pos.slice(-2)[0].x + sdx,
-                        y: wire.pos.slice(-2)[0].y + sdy
+        const cons = component.input[i].connection;
+        if (cons) {
+            for (let wire of cons) {
+                if(wire) {
+                    if(undoable) {
+                        oldInputWirePos.push([...wire.pos]);
                     }
-                );
-                dx = dx - sdx;
-                dy = dy - sdy;
+
+                    const pos = wire.pos.slice(-1)[0];
+                    pos.x = component.pos.x;
+                    pos.y = component.pos.y;
+                    const portPos = component.input[i].pos;
+
+                    const angle = Math.PI / 2 * portPos.side;
+                    pos.x += Math.sin(angle);
+                    pos.y += Math.cos(angle);
+                    if(portPos.side == 1) pos.x += (component.width - 1);
+                    else if(portPos.side == 2) pos.y += (component.height - 1);
+
+                    if(portPos.side % 2 == 0) pos.x += portPos.pos;
+                    else pos.y -= portPos.pos;
+
+                    let dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
+                    let dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
+
+                    const index = wire.pos.findIndex(
+                        (pos,i) => i < wire.pos.length - 1 && pos.x == wire.pos.slice(-1)[0].x && pos.y == wire.pos.slice(-1)[0].y
+                    );
+
+                    if(index > -1) {
+                        wire.pos.splice(index + 1,wire.pos.length);
+                        continue;
+                    }
+
+                    while(Math.abs(dx) + Math.abs(dy) > 0) {
+                        let sdx = 0;
+                        let sdy = 0;
+                        if(Math.abs(dx) > Math.abs(dy)) {
+                            sdx = Math.sign(dx);
+                        } else {
+                            sdy = Math.sign(dy);
+                        }
+
+                        wire.pos.splice(
+                            wire.pos.length - 1, 0,
+                            {
+                                x: wire.pos.slice(-2)[0].x + sdx,
+                                y: wire.pos.slice(-2)[0].y + sdy
+                            }
+                        );
+                        dx = dx - sdx;
+                        dy = dy - sdy;
+                    }
+                }
             }
         }
     }
 
     let oldOutputWirePos = [];
     for(let i = 0; i < component.output.length; ++i) {
-        const wire = component.output[i].connection;
-        if(wire) {
-            if(undoable) {
-                oldOutputWirePos.push([...wire.pos]);
-            }
-
-            const pos = wire.pos[0];
-            pos.x = component.pos.x;
-            pos.y = component.pos.y;
-            const portPos = component.output[i].pos;
-
-            const angle = Math.PI / 2 * portPos.side;
-            pos.x += Math.sin(angle);
-            pos.y += Math.cos(angle);
-            if(portPos.side == 1) pos.x += (component.width - 1);
-            else if(portPos.side == 2) pos.y += (component.height - 1);
-
-            if(portPos.side % 2 == 0) pos.x += portPos.pos;
-            else pos.y -= portPos.pos;
-
-            let dx = wire.pos[0].x - wire.pos[1].x;
-            let dy = wire.pos[0].y - wire.pos[1].y;
-
-            const index = wire.pos.findIndex(
-                (pos,i) => i > 0 && pos.x == wire.pos[0].x && pos.y == wire.pos[0].y
-            );
-
-            if(index > -1) {
-                wire.pos.splice(1,index);
-                continue;
-            }
-
-            while(Math.abs(dx) + Math.abs(dy) > 0) {
-                let sdx = 0;
-                let sdy = 0;
-                if(Math.abs(dx) > Math.abs(dy)) {
-                    sdx = Math.sign(dx);
-                } else {
-                    sdy = Math.sign(dy);
-                }
-
-                wire.pos.splice(
-                    1, 0,
-                    {
-                        x: wire.pos[1].x + sdx,
-                        y: wire.pos[1].y + sdy
+        const cons = component.output[i].connection;
+        if (cons) {
+            for (let wire of cons) {
+                if(wire) {
+                    if(undoable) {
+                        oldOutputWirePos.push([...wire.pos]);
                     }
-                );
-                dx = dx - sdx;
-                dy = dy - sdy;
+
+                    const pos = wire.pos[0];
+                    pos.x = component.pos.x;
+                    pos.y = component.pos.y;
+                    const portPos = component.output[i].pos;
+
+                    const angle = Math.PI / 2 * portPos.side;
+                    pos.x += Math.sin(angle);
+                    pos.y += Math.cos(angle);
+                    if(portPos.side == 1) pos.x += (component.width - 1);
+                    else if(portPos.side == 2) pos.y += (component.height - 1);
+
+                    if(portPos.side % 2 == 0) pos.x += portPos.pos;
+                    else pos.y -= portPos.pos;
+
+                    let dx = wire.pos[0].x - wire.pos[1].x;
+                    let dy = wire.pos[0].y - wire.pos[1].y;
+
+                    const index = wire.pos.findIndex(
+                        (pos,i) => i > 0 && pos.x == wire.pos[0].x && pos.y == wire.pos[0].y
+                    );
+
+                    if(index > -1) {
+                        wire.pos.splice(1,index);
+                        continue;
+                    }
+
+                    while(Math.abs(dx) + Math.abs(dy) > 0) {
+                        let sdx = 0;
+                        let sdy = 0;
+                        if(Math.abs(dx) > Math.abs(dy)) {
+                            sdx = Math.sign(dx);
+                        } else {
+                            sdy = Math.sign(dy);
+                        }
+
+                        wire.pos.splice(
+                            1, 0,
+                            {
+                                x: wire.pos[1].x + sdx,
+                                y: wire.pos[1].y + sdy
+                            }
+                        );
+                        dx = dx - sdx;
+                        dy = dy - sdy;
+                    }
+                }
             }
         }
     }
 
+    // TODO: fix undo stack oldInputWirePos/oldOutputWirePos and in other places
     if(undoable) {
         if(this != redoCaller) redoStack = [];
 
@@ -642,21 +693,33 @@ function moveComponent(
             component.pos.x = oldPos.x;
             component.pos.y = oldPos.y;
 
+            let j = 0;
             for(let i = 0; i < component.input.length; ++i) {
-                const wire = component.input[i].connection;
-                if(wire) {
-                    wire.pos = oldInputWirePos[i];
-                    wire.pos.slice(-1)[0].x -= dx;
-                    wire.pos.slice(-1)[0].y -= dy;
+                const cons = component.input[i].connection;
+                if (cons) {
+                    for (let wire of cons) {
+                        if(wire) {
+                            wire.pos = oldInputWirePos[j];
+                            wire.pos.slice(-1)[0].x -= dx;
+                            wire.pos.slice(-1)[0].y -= dy;
+                            j++;
+                        }
+                    }
                 }
             }
 
+            j = 0;
             for(let i = 0; i < component.output.length; ++i) {
-                const wire = component.output[i].connection;
-                if(wire) {
-                    wire.pos = oldOutputWirePos[i];
-                    wire.pos[0].x -= dx;
-                    wire.pos[0].y -= dy;
+                const cons = component.output[i].connection;
+                if (cons) {
+                    for (let wire of cons) {
+                        if(wire) {
+                            wire.pos = oldOutputWirePos[j];
+                            wire.pos[0].x -= dx;
+                            wire.pos[0].y -= dy;
+                            j++;
+                        }
+                    }
                 }
             }
 
@@ -681,119 +744,123 @@ function movePort(port, side = port.pos.side, pos = port.pos.pos, undoable = fal
     port.pos.side = side;
     port.pos.pos = pos;
 
-    const wire = port.connection;
-    let oldWirePos;
-    if(wire) {
-        oldWirePos = [...wire.pos];
+    const cons = port.connection;
+    let oldWirePos = [];
+    if (cons) {
+        for (let wire of cons) {
+            if(wire) {
+                oldWirePos.push([...wire.pos]);
 
-        if(port.type == "input") {
+                if(port.type == "input") {
 
-            const pos = wire.pos.slice(-1)[0];
-            pos.x = port.component.pos.x;
-            pos.y = port.component.pos.y;
-            const portPos = port.pos;
+                    const pos = wire.pos.slice(-1)[0];
+                    pos.x = port.component.pos.x;
+                    pos.y = port.component.pos.y;
+                    const portPos = port.pos;
 
-            const angle = Math.PI / 2 * portPos.side;
-            pos.x += Math.sin(angle);
-            pos.y += Math.cos(angle);
-            if(portPos.side == 1) pos.x += (port.component.width - 1);
-            else if(portPos.side == 2) pos.y -= (port.component.height - 1);
+                    const angle = Math.PI / 2 * portPos.side;
+                    pos.x += Math.sin(angle);
+                    pos.y += Math.cos(angle);
+                    if(portPos.side == 1) pos.x += (port.component.width - 1);
+                    else if(portPos.side == 2) pos.y -= (port.component.height - 1);
 
-            if(portPos.side % 2 == 0) pos.x += portPos.pos;
-            else pos.y -= portPos.pos;
+                    if(portPos.side % 2 == 0) pos.x += portPos.pos;
+                    else pos.y -= portPos.pos;
 
-            const dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
-            const dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
+                    const dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
+                    const dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
 
-            const vertical = () => {
-                const x = wire.pos.slice(-2)[0].x;
-                const y = wire.pos.slice(-2)[0].y + Math.sign(dy);
+                    const vertical = () => {
+                        const x = wire.pos.slice(-2)[0].x;
+                        const y = wire.pos.slice(-2)[0].y + Math.sign(dy);
 
-                for(let i = 0; i < Math.abs(dy); ++i) {
-                    wire.pos.splice(
-                        wire.pos.length - 1, 0,
-                        { x,y }
-                    );
-                }
-            }
+                        for(let i = 0; i < Math.abs(dy); ++i) {
+                            wire.pos.splice(
+                                wire.pos.length - 1, 0,
+                                { x,y }
+                            );
+                        }
+                    }
 
-            const horizontal = () => {
-                const x = wire.pos.slice(-2)[0].x + Math.sign(dx);
-                const y = wire.pos.slice(-2)[0].y;
+                    const horizontal = () => {
+                        const x = wire.pos.slice(-2)[0].x + Math.sign(dx);
+                        const y = wire.pos.slice(-2)[0].y;
 
-                for(let i = 0; i < Math.abs(dx); ++i) {
-                    wire.pos.splice(
-                        wire.pos.length - 1, 0,
-                        { x,y }
-                    );
-                }
-            }
+                        for(let i = 0; i < Math.abs(dx); ++i) {
+                            wire.pos.splice(
+                                wire.pos.length - 1, 0,
+                                { x,y }
+                            );
+                        }
+                    }
 
-            if(port.pos.side % 2 == 0) {
-                vertical();
-                horizontal();
-            } else {
-                horizontal();
-                vertical();
-            }
-        } else {
-            const pos = wire.pos[0];
-            pos.x = port.component.pos.x;
-            pos.y = port.component.pos.y;
-            const portPos = port.pos;
-
-            const angle = Math.PI / 2 * portPos.side;
-            pos.x += Math.sin(angle);
-            pos.y += Math.cos(angle);
-            if(portPos.side == 1) pos.x += (port.component.width - 1);
-            else if(portPos.side == 2) pos.y -= (port.component.height - 1);
-
-            if(portPos.side % 2 == 0) pos.x += portPos.pos;
-            else pos.y -= portPos.pos;
-
-            const dx = wire.pos[0].x - wire.pos[1].x;
-            const dy = wire.pos[0].y - wire.pos[1].y;
-
-            const vertical = () => {
-                for(let i = 0; i < Math.abs(dy); ++i) {
-                    const x = wire.pos[1].x;
-                    const y = wire.pos[1].y + Math.sign(dy);
-
-                    const index = wire.pos.findIndex(pos => pos.x == x && pos.y == y);
-                    if(index > -1) {
-                        wire.pos.splice(0,index);
+                    if(port.pos.side % 2 == 0) {
+                        vertical();
+                        horizontal();
                     } else {
-                        wire.pos.splice(
-                            1, 0,
-                            {x, y}
-                        );
+                        horizontal();
+                        vertical();
+                    }
+                } else {
+                    const pos = wire.pos[0];
+                    pos.x = port.component.pos.x;
+                    pos.y = port.component.pos.y;
+                    const portPos = port.pos;
+
+                    const angle = Math.PI / 2 * portPos.side;
+                    pos.x += Math.sin(angle);
+                    pos.y += Math.cos(angle);
+                    if(portPos.side == 1) pos.x += (port.component.width - 1);
+                    else if(portPos.side == 2) pos.y -= (port.component.height - 1);
+
+                    if(portPos.side % 2 == 0) pos.x += portPos.pos;
+                    else pos.y -= portPos.pos;
+
+                    const dx = wire.pos[0].x - wire.pos[1].x;
+                    const dy = wire.pos[0].y - wire.pos[1].y;
+
+                    const vertical = () => {
+                        for(let i = 0; i < Math.abs(dy); ++i) {
+                            const x = wire.pos[1].x;
+                            const y = wire.pos[1].y + Math.sign(dy);
+
+                            const index = wire.pos.findIndex(pos => pos.x == x && pos.y == y);
+                            if(index > -1) {
+                                wire.pos.splice(0,index);
+                            } else {
+                                wire.pos.splice(
+                                    1, 0,
+                                    {x, y}
+                                );
+                            }
+                        }
+                    }
+
+                    const horizontal = () => {
+                        for(let i = 0; i < Math.abs(dx); ++i) {
+                            const x = wire.pos[1].x + Math.sign(dx);
+                            const y = wire.pos[1].y;
+
+                            const index = wire.pos.findIndex(pos => pos.x == x && pos.y == y);
+                            if(index > -1) {
+                                wire.pos.splice(0,index);
+                            } else {
+                                wire.pos.splice(
+                                    1, 0,
+                                    {x, y}
+                                );
+                            }
+                        }
+                    }
+
+                    if(port.pos.side % 2 == 0) {
+                        vertical();
+                        horizontal();
+                    } else {
+                        horizontal();
+                        vertical();
                     }
                 }
-            }
-
-            const horizontal = () => {
-                for(let i = 0; i < Math.abs(dx); ++i) {
-                    const x = wire.pos[1].x + Math.sign(dx);
-                    const y = wire.pos[1].y;
-
-                    const index = wire.pos.findIndex(pos => pos.x == x && pos.y == y);
-                    if(index > -1) {
-                        wire.pos.splice(0,index);
-                    } else {
-                        wire.pos.splice(
-                            1, 0,
-                            {x, y}
-                        );
-                    }
-                }
-            }
-
-            if(port.pos.side % 2 == 0) {
-                vertical();
-                horizontal();
-            } else {
-                horizontal();
-                vertical();
             }
         }
     }
@@ -805,28 +872,35 @@ function movePort(port, side = port.pos.side, pos = port.pos.pos, undoable = fal
             port.pos.side = oldPos.side;
             port.pos.pos = oldPos.pos;
 
-            if(port.connection) {
-                port.connection.pos = oldWirePos;
+            let j = 0;
+            let cons = port.connection;
+            if (cons) {
+                for (let wire of cons) {
+                    if(wire) {
+                        wire.pos = oldWirePos[j];
+                        j++;
 
-                const component = port.component;
-                const pos = port.pos;
-                const gridPos = Object.assign({}, component.pos);
+                        const component = port.component;
+                        const pos = port.pos;
+                        const gridPos = Object.assign({}, component.pos);
 
-                const angle = Math.PI / 2 * pos.side;
-                gridPos.x += Math.sin(angle);
-                gridPos.y += Math.cos(angle);
-                if(pos.side == 1) gridPos.x += (component.width - 1);
-                else if(pos.side == 2) gridPos.y += (component.height - 1);
+                        const angle = Math.PI / 2 * pos.side;
+                        gridPos.x += Math.sin(angle);
+                        gridPos.y += Math.cos(angle);
+                        if(pos.side == 1) gridPos.x += (component.width - 1);
+                        else if(pos.side == 2) gridPos.y += (component.height - 1);
 
-                if(pos.side % 2 == 0) gridPos.x += pos.pos;
-                else gridPos.y -= pos.pos;
+                        if(pos.side % 2 == 0) gridPos.x += pos.pos;
+                        else gridPos.y -= pos.pos;
 
-                if(port.type == "input") {
-                    port.connection.pos.slice(-1)[0].x = gridPos.x;
-                    port.connection.pos.slice(-1)[0].y = gridPos.y;
-                } else {
-                    port.connection.pos[0].x = gridPos.x;
-                    port.connection.pos[0].y = gridPos.y;
+                        if(port.type == "input") {
+                            wire.pos.slice(-1)[0].x = gridPos.x;
+                            wire.pos.slice(-1)[0].y = gridPos.y;
+                        } else {
+                            wire.pos[0].x = gridPos.x;
+                            port.connection.pos[0].y = gridPos.y;
+                        }
+                    }
                 }
             }
 
@@ -847,79 +921,87 @@ function moveSelection(
         component.pos.y += dy;
 
         for(let i = 0; i < component.input.length; ++i) {
-            const wire = component.input[i].connection;
-            if(wire && !wires.includes(wire)) {
-                wire.pos.slice(-1)[0].x += dx;
-                wire.pos.slice(-1)[0].y += dy;
-                let wdx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
-                let wdy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
+            const cons = component.input[i].connection;
+            if (cons) {
+                for (let wire of cons) {
+                    if(wire && !wires.includes(wire)) {
+                        wire.pos.slice(-1)[0].x += dx;
+                        wire.pos.slice(-1)[0].y += dy;
+                        let wdx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
+                        let wdy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
 
-                const index = wire.pos.findIndex(
-                    (pos,i) => i < wire.pos.length - 1 && pos.x == wire.pos.slice(-1)[0].x && pos.y == wire.pos.slice(-1)[0].y
-                );
+                        const index = wire.pos.findIndex(
+                            (pos,i) => i < wire.pos.length - 1 && pos.x == wire.pos.slice(-1)[0].x && pos.y == wire.pos.slice(-1)[0].y
+                        );
 
-                if(index > -1) {
-                    wire.pos.splice(index + 1,wire.pos.length);
-                    continue;
-                }
-
-                while(Math.abs(wdx) + Math.abs(wdy) > 0) {
-                    let sdx = 0;
-                    let sdy = 0;
-                    if(Math.abs(wdx) > Math.abs(wdy)) {
-                        sdx = Math.sign(wdx);
-                    } else {
-                        sdy = Math.sign(wdy);
-                    }
-
-                    wire.pos.splice(
-                        wire.pos.length - 1, 0,
-                        {
-                            x: wire.pos.slice(-2)[0].x + sdx,
-                            y: wire.pos.slice(-2)[0].y + sdy
+                        if(index > -1) {
+                            wire.pos.splice(index + 1,wire.pos.length);
+                            continue;
                         }
-                    );
-                    wdx = wdx - sdx;
-                    wdy = wdy - sdy;
+
+                        while(Math.abs(wdx) + Math.abs(wdy) > 0) {
+                            let sdx = 0;
+                            let sdy = 0;
+                            if(Math.abs(wdx) > Math.abs(wdy)) {
+                                sdx = Math.sign(wdx);
+                            } else {
+                                sdy = Math.sign(wdy);
+                            }
+
+                            wire.pos.splice(
+                                wire.pos.length - 1, 0,
+                                {
+                                    x: wire.pos.slice(-2)[0].x + sdx,
+                                    y: wire.pos.slice(-2)[0].y + sdy
+                                }
+                            );
+                            wdx = wdx - sdx;
+                            wdy = wdy - sdy;
+                        }
+                    }
                 }
             }
         }
 
         for(let i = 0; i < component.output.length; ++i) {
-            const wire = component.output[i].connection;
-            if(wire && !wires.includes(wire)) {
-                wire.pos[0].x += dx;
-                wire.pos[0].y += dy;
-                let wdx = wire.pos[0].x - wire.pos[1].x;
-                let wdy = wire.pos[0].y - wire.pos[1].y;
+            const cons = component.output[i].connection;
+            if (cons) {
+                for (let wire of cons) {
+                    if(wire && !wires.includes(wire)) {
+                        wire.pos[0].x += dx;
+                        wire.pos[0].y += dy;
+                        let wdx = wire.pos[0].x - wire.pos[1].x;
+                        let wdy = wire.pos[0].y - wire.pos[1].y;
 
-                const index = wire.pos.findIndex(
-                    (pos,i) => i > 0 && pos.x == wire.pos[0].x && pos.y == wire.pos[0].y
-                );
+                        const index = wire.pos.findIndex(
+                            (pos,i) => i > 0 && pos.x == wire.pos[0].x && pos.y == wire.pos[0].y
+                        );
 
-                if(index > -1) {
-                    wire.pos.splice(1,index);
-                    continue;
-                }
-
-                while(Math.abs(wdx) + Math.abs(wdy) > 0) {
-                    let sdx = 0;
-                    let sdy = 0;
-                    if(Math.abs(wdx) > Math.abs(wdy)) {
-                        sdx = Math.sign(wdx);
-                    } else {
-                        sdy = Math.sign(wdy);
-                    }
-
-                    wire.pos.splice(
-                        1, 0,
-                        {
-                            x: wire.pos[1].x + sdx,
-                            y: wire.pos[1].y + sdy
+                        if(index > -1) {
+                            wire.pos.splice(1,index);
+                            continue;
                         }
-                    );
-                    wdx = wdx - sdx;
-                    wdy = wdy - sdy;
+
+                        while(Math.abs(wdx) + Math.abs(wdy) > 0) {
+                            let sdx = 0;
+                            let sdy = 0;
+                            if(Math.abs(wdx) > Math.abs(wdy)) {
+                                sdx = Math.sign(wdx);
+                            } else {
+                                sdy = Math.sign(wdy);
+                            }
+
+                            wire.pos.splice(
+                                1, 0,
+                                {
+                                    x: wire.pos[1].x + sdx,
+                                    y: wire.pos[1].y + sdy
+                                }
+                            );
+                            wdx = wdx - sdx;
+                            wdy = wdy - sdy;
+                        }
+                    }
                 }
             }
         }
@@ -1381,11 +1463,21 @@ function cloneSelection(components = [], wires = [], dx = 0, dy = 0) {
         // );
 
         if(toPort) {
-            toPort.connection = clonedWire;
+            if (!toPort.connection) {
+                toPort.connection = [];
+            }
+            if (toPort.connection.indexOf(clonedWire) == -1) {
+                toPort.connection.push(clonedWire);
+            }
             clonedWire.to = toPort;
         }
         if(fromPort) {
-            fromPort.connection = clonedWire;
+            if (!fromPort.connection) {
+                fromPort.connection = [];
+            }
+            if (fromPort.connection.indexOf(clonedWire) == -1) {
+                fromPort.connection.push(clonedWire);
+            }
             clonedWire.from = fromPort;
 
             const component = fromPort.component;
@@ -1506,6 +1598,9 @@ function componentize(
             for(let i = 0; i < removed.wires.length; ++i) {
                 const wire = removed.wires[i];
                 connect(wire.from,wire.to,wire);
+                if (wire.to && wire.to.component && wire.to.component.update) {
+                    wire.to.component.update()
+                }
                 for(let i = 0; i < wire.input.length; ++i) {
                     connectWires(wire.input[i],wire);
                 }
@@ -1570,6 +1665,8 @@ class Component {
         // Highlight
         if(settings.showComponentUpdates) this.highlight(250);
 
+        this.updateInputPorts();
+
         // Update output ports
         this.function();
 
@@ -1584,18 +1681,42 @@ class Component {
             //     port.connection.update(port.value);
             // }
 
-            const index = wires.indexOf(port.connection);
-            if(index == -1) {
-                wires.push(port.connection);
-                values.push(port.value);
-            } else if(values[index] < port.value) {
-                values[index] = port.value;
+            let cons = port.connection;
+            if (cons) {
+                for (let wire of cons) {
+                    const index = wires.indexOf(wire);
+                    if(index == -1) {
+                        wires.push(wire);
+                        values.push(port.value);
+                    } else if(values[index] < port.value) {
+                        values[index] = port.value;
+                    }
+                }
             }
         }
 
         for(let i = 0; i < wires.length; ++i) {
             //wires[i].update(values[i]);
             updateQueue.push(wires[i].update.bind(wires[i],values[i]));
+        }
+    }
+
+    updateInputPorts() {
+        for(let i = 0; i < this.input.length; ++i) {
+            let cons = this.input[i].connection;
+
+            let value = 0;
+
+            if (cons) {
+                for (let wire of cons) {
+                    if (wire.value == 1) {
+                        value = 1;
+                        break;
+                    }
+                }
+            }
+
+            this.input[i].value = value;
         }
     }
 
@@ -1834,13 +1955,13 @@ class Component {
     rotate() {
         // TODO: solution for input/output
         for(let i = 0; i < this.input.length; ++i) {
-            if(this.input[i].connection) {
+            if(this.input[i].connection && this.input[i].connection.length) {
                 return;
             }
         }
 
         for(let i = 0; i < this.output.length; ++i) {
-            if(this.output[i].connection) {
+            if(this.output[i].connection && this.output[i].connection.length) {
                 return;
             }
         }
@@ -1937,7 +2058,12 @@ class TimerStart extends Component {
         this.function();
 
         this.output[0].value = this.value;
-        this.output[0].connection && this.output[0].connection.update(this.value);
+        let cons = this.output[0].connection;
+        if (cons) {
+            for (let wire of cons) {
+                wire.update(this.value);
+            }
+        }
     }
 
     function() {
@@ -2084,7 +2210,12 @@ class Delay extends Component {
         setTimeout(() => updateQueue.push(
             () => {
                 this.output[0].value = value;
-                this.output[0].connection && this.output[0].connection.update(value);
+                let cons = this.output[0].connection;
+                if (cons) {
+                    for (let wire of cons) {
+                        wire.update(value);
+                    }
+                }
             }
         ), this.properties.delay);
     }
@@ -3009,8 +3140,14 @@ class Custom extends Component {
         // If an input/output port is removed, remove the corresponding port
         for(let i = 0; i < this.input.length; ++i) {
             if(!input.includes(this.input[i].inputPort)) {
-                if(this.input[i].connection) {
-                    removeWire(this.input[i].connection);
+                let cons = this.input[i].connection;
+                if(cons) {
+                    while (cons.length) {
+                        let wire = cons[0];
+                        if (wire) {
+                            removeWire(wire);
+                        }
+                    }
                 }
                 this.input.splice(i,1);
                 --i;
@@ -3018,8 +3155,14 @@ class Custom extends Component {
         }
         for(let i = 0; i < this.output.length; ++i) {
             if(!output.includes(this.output[i].outputPort)) {
-                if(this.output[i].connection) {
-                    removeWire(this.output[i].connection);
+                let cons = this.output[i].connection;
+                if(cons) {
+                    while (cons.length) {
+                        let wire = cons[0];
+                        if (wire) {
+                            removeWire(wire);
+                        }
+                    }
                 }
                 this.output.splice(i,1);
                 --i;
@@ -3069,7 +3212,14 @@ class Custom extends Component {
 
                     const value = this.input[0].value;
                     this.port.value = value;
-                    this.port.connection && this.port.connection.update(value);
+                    let cons = this.port.connection;
+                    if(cons) {
+                        for (let wire of cons) {
+                            if (wire) {
+                                wire.update(value)
+                            }
+                        }
+                    }
                 }
             } else {
                 port.name = output[i].name;
