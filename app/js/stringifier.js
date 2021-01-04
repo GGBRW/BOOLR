@@ -87,11 +87,13 @@ function parse_old(string,dx,dy,select) {
 
         const from = result[connection[0]];
         const to = result[connection[1]];
-        const wire = result[connection[2]];
+        const cons = result[connection[2]];
 
-        wire.from = from;
-        wire.to = to;
-        connect(from,to,wire);
+        for (let wire of cons) {
+            wire.from = from;
+            wire.to = to;
+            connect(from,to,wire);
+        }
     }
 
     if(select) {
