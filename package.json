@@ -1,17 +1,34 @@
 {
   "name": "BOOLR",
   "description": "A digital logic simulator",
-  "version": "0.1.301",
+  "version": "0.1.4",
+  "build": {
+    "appId": "BOOLR",
+    "extraResources": [
+        {
+            "from": "data",
+            "to": "data"
+        },
+		{
+            "from": "saves",
+            "to": "saves"
+        }
+    ]
+  },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "author": {
-    "name": "Gees Brouwer",
-    "email": "gees@ggbrw.nl",
-    "url": "http://ggbrw.nl"
+    "name": "Christophe GERARD",
+    "email": "christophe.gerard8@gmail.com"
   },
   "main": "app/main.js",
+  "devDependencies": {
+    "electron": "^4.1.1",
+    "electron-builder": "^22.10.5"
+  },
   "dependencies": {
-    "electron": "^1.7.9"
+    "asar": "^3.0.3"
   }
 }

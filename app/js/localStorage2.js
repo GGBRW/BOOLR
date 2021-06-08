@@ -465,5 +465,5 @@ function readFile(input) {
     }
 
     reader.readAsText(input.files[0]);
-    dialog.hide();
+    //dialog.hide();
 }

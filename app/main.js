@@ -2,7 +2,6 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
-//app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
 
 let window;
@@ -11,7 +10,7 @@ function createWindow () {
     window = new BrowserWindow({
         width: 1200,
         height: 800,
-        icon: __dirname + '../build/icon.png',
+        icon: __dirname + "../img/favicon.png",
         show: false
     });
 

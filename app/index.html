@@ -16,11 +16,22 @@
     <body>
         <!-- If this file is opened by something else than Electron, stop loading -->
         <script>
-            if(!(window && window.process && window.process.type)) {
+           if(!(window && window.process && window.process.type)) {
                 document.write("Open BOOLR by opening the BOOLR executable.");
                 document.body.style.background = "white";
                 window.stop();
             }
+			
+			function getCommandLine() {
+			   switch (process.platform) { 
+				  case 'darwin' : return 'open ';
+				  case 'win32' : return 'start ';
+				  case 'win64' : return 'start ';
+				  default : return 'xdg-open ';
+			   }
+			}
+			
+			var exec = require('child_process').exec;
         </script>
 
         <script src="js/saves.js"></script>
@@ -30,7 +41,7 @@
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
         <!-- Version number -->
-        <script>const VERSION = "1.0.3"</script>
+        <script>const VERSION = "1.0.4"</script>
 
         <canvas id="canvas" tabindex="1"></canvas>
 
@@ -79,7 +90,8 @@
                 <h1>Open board</h1>
                 <ul></ul>
                 <p>To open boards, paste a .board file in the saves folder</p>
-                <button onclick="require('child_process').exec('xdg-open ' + __dirname + '/../saves')">Open saves folder</button>
+                <!--button onclick="require('child_process').exec('xdg-open ' + __dirname + '/../saves')">Open saves folder</button!-->
+                <button onclick="exec(getCommandLine() + __dirname + '/../saves')">Open saves folder</button>
                 <button onclick="dialog.connectToServer()">Connect to a BOOLR server</button>
             </div>
 
