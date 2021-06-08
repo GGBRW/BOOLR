@@ -1,15 +1,21 @@
 # BOOLR
-A digital logic simulator  
-Download BOOLR: http://boolr.me
+A digital logic simulator - [UPDATED]
 
 #### Running in development
 
-Either npm or yarn can be used to fetch Electron as dependency and run scripts.
+The most useful tools to dev is yarn, install yarn with npm 
 
 ```bash
+# Install Yarn
+npm install -g yarn
+
 # Fetch dependencies
-npm install
+yarn
 
 # Run in development
-npm start
+yarn start
+
+# Build app
+yarn dist (it will take data from data forder for custom components and saves folder for saved board).
 ```
+
