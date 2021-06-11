@@ -27,7 +27,7 @@ Before build do this :
 - In savedCustomComponents.js line 21 : /../data to /../../data
 
 ```bash
-yarn dist (it will take data from data forder for custom components and saves folder for saved board).
+yarn dist (it will take data from data folder for custom components and saves folder for saved board).
 ```
 
 After you make a build, don't forget to reverse the action to make saves function work again in development.
