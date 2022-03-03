@@ -3040,6 +3040,34 @@ class DLatch extends Component {
     }
 }
 
+class SRLatch extends Component {
+    constructor(name,pos, properties) {
+        super(name,pos,2,2,{ type: "value" });
+        this.value = this.properties.value || 0;
+
+        this.SET = 0;
+        this.RESET = 1;
+        this.VAL = 0;
+        this.NOT_VAL = 1;
+        this.addInputPort({ side: 3, pos: 0 }, 'S');
+        this.addInputPort({ side: 3, pos: 1 }, 'R');
+        this.addOutputPort({ side: 1, pos: 0 }, 'Q');
+        this.addOutputPort({ side: 1, pos: 1 }, '~Q');
+    }
+
+    function() {
+        if (this.input[this.SET].value) {
+            this.value = 1;
+        }
+        if (this.input[this.RESET].value) {
+            this.value = 0;
+        }
+        this.properties.value = this.value;
+        this.output[this.VAL].value = +this.value;
+        this.output[this.NOT_VAL].value = 1 - this.value;
+    }
+}
+
 class Custom extends Component {
     constructor(
         name,
