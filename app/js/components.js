@@ -1985,6 +1985,21 @@ class AND extends Component {
     }
 }
 
+class NAND extends Component {
+    constructor(name, pos) {
+        super (name, pos, 2, 2, {type: "char", text: "!&"});
+        this.addInputPort({side: 3, pos: 1});
+        this.addInputPort({side: 3, pos: 0});
+        this.addOutputPort({side: 1, pos: 0});
+        this.function = () => {
+            if (this.input[0].value & this.input[1].value == 1)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
+        }
+    }
+}
+
 class OR extends Component {
     constructor(name,pos) {
         super(name,pos,2,2,{ type: "char", text: "|" });
@@ -1997,6 +2012,21 @@ class OR extends Component {
     }
 }
 
+class NOR extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2,{ type: "char", text: "!|" });
+        this.addInputPort({ side: 3, pos: 1 });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.addOutputPort({ side: 1, pos: 0 });
+        this.function = function() {
+            if (this.input[0].value | this.input[1].value)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
+        }
+    }
+}
+
 class XOR extends Component {
     constructor(name,pos) {
         super(name,pos,2,2,{ type: "char", text: "^" });
@@ -2005,6 +2035,21 @@ class XOR extends Component {
         this.addOutputPort({ side: 1, pos: 0 });
         this.function = function() {
             this.output[0].value = this.input[0].value ^ this.input[1].value;
+        }
+    }
+}
+
+class XNOR extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2,{ type: "char", text: "!^" });
+        this.addInputPort({ side: 3, pos: 1 });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.addOutputPort({ side: 1, pos: 0 });
+        this.function = function() {
+            if (this.input[0].value ^ this.input[1].value)
+                this.output[0].value = 0;
+            else
+                this.output[0].value = 1;
         }
     }
 }
@@ -2967,6 +3012,31 @@ class ROM extends Component {
                 this.output[i].value = (content & (1 << i)) > 0 ? 1 : 0;
             }
         }
+    }
+}
+
+class DLatch extends Component {
+    constructor(name,pos, properties) {
+        super(name,pos,2,2,{ type: "value" });
+        this.value = this.properties.value || 0;
+
+        this.DATA = 0;
+        this.ENABLE = 1;
+        this.VAL = 0;
+        this.NOT_VAL = 1;
+        this.addInputPort({ side: 3, pos: 0 }, 'D');
+        this.addInputPort({ side: 3, pos: 1 }, 'E');
+        this.addOutputPort({ side: 1, pos: 0 }, 'Q');
+        this.addOutputPort({ side: 1, pos: 1 }, '~Q');
+    }
+
+    function() {
+        if (this.input[this.ENABLE].value) {
+            this.value = this.input[this.DATA].value || 0;
+        }
+        this.properties.value = this.value;
+        this.output[this.VAL].value = +this.value;
+        this.output[this.NOT_VAL].value = 1 - this.value;
     }
 }
 
