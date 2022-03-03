@@ -11,7 +11,11 @@ function createWindow () {
         width: 1200,
         height: 800,
         icon: __dirname + "../img/favicon.png",
-        show: false
+        show: false,
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false 
+		}
     });
 
     window.loadURL(url.format({
