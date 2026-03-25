@@ -1,6 +1,6 @@
 # BOOLR
 A digital logic simulator  
-Download BOOLR: http://boolr.me
+[Download BOOLR](https://ggbrw.github.io)
 
 #### Running in development
 
