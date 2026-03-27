@@ -372,11 +372,21 @@ function parse(data) {
         }
 
         if(wire.to) {
-            wire.to.connection = wire;
+            if (!wire.to.connection) {
+                wire.to.connection = [];
+            }
+            if (wire.to.connection.indexOf(wire) == -1) {
+                wire.to.connection.push(wire);
+            }
         }
 
         if(wire.from) {
-            wire.from.connection = wire;
+            if (!wire.from.connection) {
+                wire.from.connection = [];
+            }
+            if (wire.from.connection.indexOf(wire) == -1) {
+                wire.from.connection.push(wire);
+            }
         }
     }
 

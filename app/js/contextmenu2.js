@@ -300,7 +300,7 @@ createContextMenuOption(
     "Delete",
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
-        removeComponent(component);
+        removeComponent(component, true);
     },
     function() {
         const component = findComponentByPos(...contextMenu.getPos());
@@ -313,7 +313,7 @@ createContextMenuOption(
     "delete",
     "Delete",
     function() {
-        removeSelection(selecting.components,selecting.wires);
+        removeSelection(selecting.components,selecting.wires, true);
     },
     function() {
         return selecting;

@@ -203,32 +203,42 @@ dialog.connections = function(component) {
 
     const input = document.createElement("ul");
     for(let i = 0; i < component.input.length; ++i) {
-        const wire = component.input[i].connection;
-        wire && (function getInputs(wire) {
-            if(wire.from) {
-                const li = document.createElement("li");
-                li.innerHTML = wire.from.component.name;
-                input.appendChild(li);
+        const cons = component.input[i].connection;
+
+        if (cons) {
+            for (let wire of cons) {
+                wire && (function getInputs(wire) {
+                    if(wire.from) {
+                        const li = document.createElement("li");
+                        li.innerHTML = wire.from.component.name;
+                        input.appendChild(li);
+                    }
+                    for(let i = 0; i < wire.input.length; ++i) {
+                        getInputs(wire.input[i]);
+                    }
+                })(wire);
             }
-            for(let i = 0; i < wire.input.length; ++i) {
-                getInputs(wire.input[i]);
-            }
-        })(wire);
+        }
     }
 
     const output = document.createElement("ul");
     for(let i = 0; i < component.output.length; ++i) {
-        const wire = component.output[i].connection;
-        wire && (function getOutputs(wire) {
-            if(wire.to) {
-                const li = document.createElement("li");
-                li.innerHTML = wire.to.component.name;
-                output.appendChild(li);
+        const cons = component.output[i].connection;
+
+        if (cons) {
+            for (let wire of cons) {
+                wire && (function getOutputs(wire) {
+                    if(wire.to) {
+                        const li = document.createElement("li");
+                        li.innerHTML = wire.to.component.name;
+                        output.appendChild(li);
+                    }
+                    for(let i = 0; i < wire.output.length; ++i) {
+                        getOutputs(wire.output[i]);
+                    }
+                })(wire);
             }
-            for(let i = 0; i < wire.output.length; ++i) {
-                getOutputs(wire.output[i]);
-            }
-        })(wire);
+        }
     }
 
     const connections = input.children.length + output.children.length;
@@ -490,10 +500,20 @@ dialog.editPort = function(port) {
     dialog.container.appendChild(position);
 
     const deleteConnection = document.createElement("button");
-    deleteConnection.innerHTML = "Delete connection";
+    if (port.connection && port.connection.length > 1) { 
+        deleteConnection.innerHTML = "Delete connections";
+    } else {
+        console.log(port.connection)
+        deleteConnection.innerHTML = "Delete connection";
+    }
     deleteConnection.style.background = "#600";
     deleteConnection.onclick = () => {
-        removeWire(port.connection);
+        if (port.connection) {
+            while (port.connection.length) {
+                let wire = port.connection[0];
+                removeWire(wire);
+            }
+        }
     }
     dialog.container.appendChild(deleteConnection);
 

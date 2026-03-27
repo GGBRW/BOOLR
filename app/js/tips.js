@@ -13,18 +13,18 @@ for(let i in tips) {
             this.style.opacity = .9;
 
             (function animate() {
-                tips[i].style.left =
+                tips[i].style.left = 20;/*
                     Math.max(
                         Math.min(
                             mouse.screen.x - tips[i].clientWidth / 2,
                             c.width - tips[i].clientWidth),
                         0
-                    );
-                tips[i].style.top =
+                    );*/
+                tips[i].style.top = 20; /*
                     Math.max(
                         mouse.screen.y - tips[i].clientHeight - 20,
                         0
-                    );
+                    );*/
 
                 if(tips[i].style.display == "block") requestAnimationFrame(animate);
             })();
