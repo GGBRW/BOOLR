@@ -3493,4 +3493,29 @@ class Wire {
     }
 }
 
+class DLatch extends Component {
+    constructor(name,pos, properties) {
+        super(name,pos,2,2,{ type: "value" });
+        this.value = this.properties.value || 0;
+
+        this.DATA = 0;
+        this.ENABLE = 1;
+        this.VAL = 0;
+        this.NOT_VAL = 1;
+        this.addInputPort({ side: 3, pos: 0 }, 'D');
+        this.addInputPort({ side: 3, pos: 1 }, 'E');
+        this.addOutputPort({ side: 1, pos: 0 }, 'Q');
+        this.addOutputPort({ side: 1, pos: 1 }, '~Q');
+    }
+
+    function() {
+        if (this.input[this.ENABLE].value) {
+            this.value = this.input[this.DATA].value || 0;
+        }
+        this.properties.value = this.value;
+        this.output[this.VAL].value = +this.value;
+        this.output[this.NOT_VAL].value = 1 - this.value;
+    }
+}
+
 let Selected = Input;
