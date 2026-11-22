@@ -47,3 +47,56 @@ for (const [width, height] of [
       }
     });
   }
+
+test('home footer credits the developer and links name and icon to the repository', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.locator('body')).toHaveAttribute('data-reeo-ready', 'true');
+  const credit = page.locator('.reeo-credit');
+  await expect(credit).toBeVisible();
+  const link = credit.locator('a.reeo-credit-link');
+  await expect(link).toContainText('Developer');
+  await expect(link).toContainText('Abdou-da0wew');
+  await expect(link).toHaveAttribute('href', 'https://github.com/abdou-da0wew/REEO');
+  await expect(link).toHaveAttribute('target', '_blank');
+  expect((await link.getAttribute('rel')) ?? '').toContain('noopener');
+  await expect(link.locator('.reeo-credit-icon')).toBeVisible();
+  const box = await link.boundingBox();
+  expect(box && box.x >= 0 && box.x + box.width <= 390 && box.y + box.height <= 844).toBe(true);
+  // Name and icon share the one anchor, so either click reaches the repository.
+  await page.evaluate(`mainMenu.style.display='none'`);
+  await expect(credit).toBeHidden();
+  await page.evaluate(`mainMenu.style.display='block'`);
+  await expect(credit).toBeVisible();
+  await page.evaluate(`window.reeoI18n.setLocale('ar')`);
+  await expect(link).toContainText('المطوّر');
+  await expect(link).toContainText('Abdou-da0wew');
+  // Short landscape home screens still show the credit without covering actions.
+  await page.setViewportSize({ width: 844, height: 390 });
+  await expect(credit).toBeVisible();
+  const footerTop = (await credit.boundingBox())?.y ?? 0;
+  const lastAction = await page.locator('.main-menu > button').nth(2).boundingBox();
+  expect(lastAction && footerTop > lastAction.y + lastAction.height).toBe(true);
+});
+
+test('home action rows keep the original icon divider at every width', async ({ page }) => {
+  for (const [width, height, left] of [
+    [1366, 768, '70px'],
+    [390, 844, '66px'],
+  ] as const) {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    await expect(page.locator('body')).toHaveAttribute('data-reeo-ready', 'true');
+    const divider = await page
+      .locator('.main-menu > button')
+      .first()
+      .evaluate((button) => {
+        const style = getComputedStyle(button, '::after');
+        return { width: style.borderLeftWidth, color: style.borderLeftColor, left: style.left };
+      });
+    expect(divider.width).toBe('3px');
+    expect(divider.left).toBe(left);
+  }
+});

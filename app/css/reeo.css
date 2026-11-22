@@ -740,6 +740,9 @@ textarea {
   min-height: 30px;
 }
 .reeo-touch-tools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 44px;
   min-height: 44px;
   padding-inline: 7px;
@@ -954,7 +957,7 @@ textarea {
 }
 @media (max-height: 480px) {
   .main-menu > h1.reeo-wordmark {
-    margin: 72px 0 8px;
+    margin: 72px auto 8px;
   }
   .main-menu > h1.reeo-wordmark img {
     width: 210px;
@@ -1490,4 +1493,110 @@ body[data-reeo-screen='home'] #reeo-toast-stack {
 .reeo-editor-header .reeo-language-menu button:hover,
 .reeo-editor-header .reeo-language-menu button[aria-selected='true'] {
   background: #222;
+}
+@media (max-width: 600px) {
+  .reeo-editor-header .reeo-touch-tools {
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+@media (pointer: coarse) {
+  #toolbar > .slot,
+  .reeo-touch-tools button {
+    touch-action: manipulation;
+  }
+}
+/* Home-screen developer credit: deliberately small, reusing the menu's existing dark palette. */
+.reeo-credit {
+  display: none;
+  position: fixed;
+  z-index: 120;
+  inset-inline: 0;
+  bottom: max(6px, env(safe-area-inset-bottom));
+  justify-content: center;
+  pointer-events: none;
+  font:
+    11px 'Alan Sans',
+    Arial,
+    sans-serif;
+  color: #777;
+}
+body[data-reeo-screen='home'] .reeo-credit {
+  display: flex;
+}
+body:has(.main-menu.has-submenu) .reeo-credit {
+  visibility: hidden;
+}
+.reeo-credit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  color: inherit;
+  text-decoration: none;
+  pointer-events: auto;
+}
+.reeo-credit-link:hover,
+.reeo-credit-link:focus-visible {
+  color: #ddd;
+}
+.reeo-credit-icon {
+  width: 13px;
+  height: 13px;
+  background: currentColor;
+  mask: url('/icons/phosphor/github-logo.svg') center / contain no-repeat;
+}
+/* Restore the original icon/label rule on home-screen actions. The masked
+   Phosphor glyph replaces the Material glyph, so the divider is drawn on the
+   button itself; positioning matches the original 40px Material icon. */
+.main-menu > button::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  left: 70px;
+  width: 0;
+  height: 34px;
+  transform: translateY(-50%);
+  border-left: 3px solid #888;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  .main-menu > button::after {
+    left: 66px;
+    height: 30px;
+  }
+}
+/* Release notes scroll inside the dialog so the Close action never covers an item. */
+#dialog.reeo-whats-new[style*='display: block'] {
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden;
+}
+#dialog.reeo-whats-new > h1 {
+  flex: 0 0 auto;
+}
+#dialog.reeo-whats-new .container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+#dialog.reeo-whats-new .options {
+  position: static;
+  flex: 0 0 auto;
+  padding-block: 12px;
+}
+@media (max-height: 480px) {
+  #dialog.reeo-whats-new h1 {
+    padding-block: 12px;
+  }
+  #dialog.reeo-whats-new .reeo-release-version {
+    margin-bottom: 8px;
+  }
+  #dialog.reeo-whats-new li {
+    padding-block: 3px;
+  }
 }

@@ -1,3 +1,4 @@
+import { setGhost, toggleGhost, fitGhost } from './ghosts';
 import { basics, componentGuides, recipes } from './help-content';
 import type { Copy, Recipe } from './help-content';
 import { checkCircuit } from './diagnostics';
@@ -178,6 +179,7 @@ function render() {
         field(labels.expected, item.expected),
         button(labels.pin, () => {
           activeRecipe = item;
+          setGhost(item.id);
           step = 0;
           renderDock();
           closeHelp();
@@ -215,6 +217,15 @@ function renderDock() {
     node('strong', `${text(recipe.title)} · ${step + 1}/${recipe.steps.length}`),
     node('p', text(activeStep)),
   );
+  const ghost = button(['Hide ghost', 'إخفاء المخطط', 'اخفي الرسم'], () => {
+    const visible = toggleGhost();
+    ghost.textContent = text(
+      visible
+        ? ['Hide ghost', 'إخفاء المخطط', 'اخفي الرسم']
+        : ['Show ghost', 'إظهار المخطط', 'ورّي الرسم'],
+    );
+  });
+  dock.append(ghost, button(['Fit guide', 'احتواء المخطط', 'اعرض الرسم كله'], fitGhost));
   const actions = node('div');
   const previous = button(labels.previous, () => {
     step--;
@@ -224,13 +235,18 @@ function renderDock() {
   actions.append(
     previous,
     button(step === recipe.steps.length - 1 ? labels.finish : labels.next, () => {
-      if (step === recipe.steps.length - 1) dock.hidden = true;
-      else {
+      if (step === recipe.steps.length - 1) {
+        dock.hidden = true;
+        setGhost(undefined);
+      } else {
         step++;
         renderDock();
       }
     }),
-    button(labels.close, () => (dock.hidden = true)),
+    button(labels.close, () => {
+      dock.hidden = true;
+      setGhost(undefined);
+    }),
   );
   dock.append(actions);
 }

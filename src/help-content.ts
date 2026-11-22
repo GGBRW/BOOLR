@@ -653,6 +653,11 @@ export const recipes: readonly Recipe[] = [
 ];
 export const basics: readonly Copy[] = [
   [
+    'Touch: tap Add to choose a part, then tap empty grid to place. Drag pins to wire. Use Move, Pan or Select for one-finger drags. Two fingers pan and pinch without placing parts. Double-tap opens editable components; hold to open the context menu. Hold Button components to keep their signal high. Trackpad scroll pans, pinch or Ctrl+wheel zooms; Fit circuit brings your parts into view.',
+    'باللمس: اضغط إضافة لاختيار مكوّن ثم مكان فارغ لوضعه. اسحب بين المنافذ للتوصيل. استخدم تحريك أو سحب اللوحة أو تحديد بإصبع واحد. إصبعان للسحب والتكبير دون إضافة مكوّنات. انقر مرتين لفتح المكوّنات القابلة للتحرير واضغط مطولًا لقائمة السياق. أبقِ إصبعك على الزر لإبقاء الإشارة مرتفعة. لوحة اللمس للسحب والقرص أو Ctrl مع العجلة للتكبير، واحتواء الدائرة يعيدها للعرض.',
+    'باللمس: دوس ضيف مكوّن واختاره وبعدها دوس مكان فاضي عشان تحطّه. اسحب بين النقط للتوصيل. حرّك أو اسحب اللوحة أو حدّد بإصبع واحد. بإصبعين اسحب وكبّر من غير ما تحط مكوّنات. دوستين بيفتحوا المكوّن لو بيدعم الفتح، وضغطة مطوّلة بتفتح القائمة. خليك دايس على الزر عشان الإشارة تفضل عالية. التاتش باد بيسحب والقرص أو Ctrl مع العجلة بيكبّر، واعرض الدايرة كلها بيرجعك للمكوّنات.',
+  ],
+  [
     'Start with one input and one visible output. A complete path is source → optional gates → sink. White pins receive; black pins send. A touching-looking wire is not proof of connection: verify the sink changes.',
     'ابدأ بمدخل واحد وخرج مرئي. المسار الكامل: مصدر ثم بوابات اختيارية ثم مراقب. المنافذ البيضاء تستقبل والسوداء ترسل. تلامس شكل السلك لا يثبت الاتصال؛ تحقق من تغير الخرج.',
     'ابدأ بمدخل واحد وخرج تشوفه. المسار الكامل: مصدر وبعده بوابات لو محتاج وبعدها مراقب. النقط البيضا بتستقبل والسودا بتبعت. شكل السلك إنه لامس مش دليل كفاية؛ اتأكد إن الخرج بيتغيّر.',

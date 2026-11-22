@@ -11,10 +11,14 @@ test('What’s new lives in navigation and has a compact release dialog', async 
   await page.locator('#reeo-whats-new').click();
   await expect(page.locator('#dialog')).toBeVisible();
   await expect(page.locator('#dialog h1')).toHaveText("What's new");
-  await expect(page.locator('#dialog li')).toHaveCount(5);
+  await expect(page.locator('#dialog li')).toHaveCount(7);
+  await expect(page.locator('#dialog')).toContainText('Pinch, pan, double-tap');
+  await expect(page.locator('#dialog')).toContainText('Faint circuit ghosts');
   const r = await page.locator('#dialog').boundingBox();
   expect(r?.width).toBeLessThanOrEqual(420);
-  expect(r?.height).toBeLessThan(440);
+  expect(r?.height).toBeLessThan(520);
+  const viewport = page.viewportSize();
+  expect(r && viewport && r.y >= 0 && r.y + r.height <= viewport.height).toBe(true);
   await page.mouse.click(8, 8);
   await expect(page.locator('#dialog')).toBeHidden();
   await page.locator('#menuopen').click();
