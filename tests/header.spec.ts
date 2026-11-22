@@ -47,3 +47,30 @@ for (const [width, height] of [
       }
     });
   }
+
+test('home footer credits the developer and links name and icon to the repository', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.locator('body')).toHaveAttribute('data-reeo-ready', 'true');
+  const credit = page.locator('.reeo-credit');
+  await expect(credit).toBeVisible();
+  const link = credit.locator('a.reeo-credit-link');
+  await expect(link).toContainText('Developer');
+  await expect(link).toContainText('Abdou-da0wew');
+  await expect(link).toHaveAttribute('href', 'https://github.com/abdou-da0wew/REEO');
+  await expect(link).toHaveAttribute('target', '_blank');
+  expect((await link.getAttribute('rel')) ?? '').toContain('noopener');
+  await expect(link.locator('.reeo-credit-icon')).toBeVisible();
+  const box = await link.boundingBox();
+  expect(box && box.x >= 0 && box.x + box.width <= 390 && box.y + box.height <= 844).toBe(true);
+  // Name and icon share the one anchor, so either click reaches the repository.
+  await page.evaluate(`mainMenu.style.display='none'`);
+  await expect(credit).toBeHidden();
+  await page.evaluate(`mainMenu.style.display='block'`);
+  await expect(credit).toBeVisible();
+  await page.evaluate(`window.reeoI18n.setLocale('ar')`);
+  await expect(link).toContainText('المطوّر');
+  await expect(link).toContainText('Abdou-da0wew');
+});
