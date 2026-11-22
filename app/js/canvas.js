@@ -69,6 +69,8 @@ function draw() {
         ctx.lineJoin = "miter";
     }
 
+    window.reeoDrawGhost?.(ctx);
+
     // Draw wires
     ctx.lineWidth = zoom < 20 ? 1 : Math.round(zoom / 8);
 

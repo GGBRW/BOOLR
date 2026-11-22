@@ -31,6 +31,14 @@ test('full guide searches all components and pins a recipe without modifying the
   await page.locator('#reeo-guide-dock').getByRole('button', { name: 'Next step' }).click();
   await expect(page.locator('#reeo-guide-dock')).toContainText('2/3');
   expect(await page.evaluate('components.length')).toBe(0);
+  const ghostView = await page.locator('#canvas').screenshot();
+  await page.getByRole('button', { name: 'Hide ghost', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Show ghost', exact: true })).toBeVisible();
+  const cleanView = await page.locator('#canvas').screenshot();
+  expect(ghostView.equals(cleanView)).toBe(false);
+  await page.getByRole('button', { name: 'Show ghost', exact: true }).click();
+  await page.getByRole('button', { name: 'Fit guide', exact: true }).click();
+  expect(await page.evaluate('components.length')).toBe(0);
 });
 test('diagnostics explain a real unwired gate and locate it without changing wiring', async ({
   page,

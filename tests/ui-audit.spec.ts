@@ -172,3 +172,65 @@ test('navigation opens above its button, resumes the board, and tutorial arrows 
   await expect(page.locator('.main-menu')).toBeHidden();
   expect(await page.evaluate('components.length')).toBe(1);
 });
+
+test('two-finger pinch and trackpad gestures change the view without placing components', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await start(page);
+  const session = await page.context().newCDPSession(page);
+  const before = await page.evaluate('zoom');
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ x: 400, y: 400, id: 1 }],
+  });
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [
+      { x: 400, y: 400, id: 1 },
+      { x: 600, y: 400, id: 2 },
+    ],
+  });
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchMove',
+    touchPoints: [
+      { x: 300, y: 420, id: 1 },
+      { x: 700, y: 420, id: 2 },
+    ],
+  });
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  expect(await page.evaluate('zoom')).toBeCloseTo(before * 2);
+  expect(await page.evaluate('components.length')).toBe(0);
+  const offsetBefore = await page.evaluate('offset.x');
+  await page
+    .locator('#canvas')
+    .dispatchEvent('wheel', { deltaX: 25, deltaY: 15, clientX: 500, clientY: 400 });
+  expect(await page.evaluate('offset.x')).not.toBe(offsetBefore);
+  await page
+    .locator('#canvas')
+    .dispatchEvent('wheel', { deltaY: -20, ctrlKey: true, clientX: 500, clientY: 400 });
+  expect(await page.evaluate('zoom')).toBeGreaterThan(before * 2);
+});
+
+test('touch double tap invokes double click, and hold opens a context menu', async ({ page }) => {
+  await page.setViewportSize({ width: 800, height: 1000 });
+  await start(page);
+  await page.evaluate(
+    `window.touchDoubleClicks=0;canvas.addEventListener('dblclick',()=>window.touchDoubleClicks++)`,
+  );
+  const session = await page.context().newCDPSession(page);
+  for (let i = 0; i < 2; i++) {
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x: 450, y: 400, id: 1 }],
+    });
+    await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  }
+  expect(await page.evaluate('window.touchDoubleClicks')).toBe(1);
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ x: 450, y: 400, id: 1 }],
+  });
+  await expect(page.locator('#contextMenu')).toBeVisible({ timeout: 2000 });
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+});

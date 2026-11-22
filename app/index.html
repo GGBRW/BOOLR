@@ -6,6 +6,15 @@
         <meta name="theme-color" content="#111111">
         <meta name="description" content="REEO: the original digital logic playground, renewed for browsers, desktops, and touchscreens.">
         <title>REEO</title>
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="REEO — Digital logic. Limitless curiosity.">
+        <meta property="og:description" content="Build, connect and simulate digital circuits in your browser.">
+        <meta property="og:image" content="/brand/reeo-og.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="REEO written in original circuit-built lettering on the editor grid.">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="/brand/reeo-og.png">
 
         <link rel="icon" type="image/svg+xml" href="/brand/reeo-mark.svg"/>
         <link rel="apple-touch-icon" href="/brand/reeo-icon.png">
@@ -35,6 +44,8 @@
             <button data-touch-tool="move" aria-pressed="false" data-i18n="move">Move</button>
             <button data-touch-tool="pan" aria-pressed="false" data-i18n="pan">Pan</button>
             <button data-touch-tool="select" aria-pressed="false" data-i18n="select">Select</button>
+            <button id="reeo-add" title="Add component" aria-label="Add component"><span class="material-icons" aria-hidden="true">add</span></button>
+            <button id="reeo-fit" title="Fit circuit" aria-label="Fit circuit"><span class="material-icons" aria-hidden="true">zoom_out_map</span></button>
             <button id="reeo-zoom-out" aria-label="Zoom out">−</button>
             <button id="reeo-zoom-in" aria-label="Zoom in">+</button>
         </div>
@@ -109,6 +120,14 @@
             <button id="reeo-resume" style="display:none" onclick="mainMenu.hide()"><i class="material-icons">arrow_back</i><span>Resume board</span></button>
         </div>
         <script vite-ignore src="js/mainmenu.js"></script>
+
+        <!-- Small home-screen credit. Both the name and icon are one link to the repository. -->
+        <div class="reeo-credit">
+            <a class="reeo-credit-link" href="https://github.com/abdou-da0wew/REEO" target="_blank" rel="noopener noreferrer">
+                <span><span data-i18n="developer">Developer</span>:</span><span dir="ltr">Abdou-da0wew</span>
+                <span class="reeo-credit-icon" aria-hidden="true"></span>
+            </a>
+        </div>
 
         <!-- Tutorial -->
         <div class="tutorial">

@@ -1,3 +1,4 @@
+import { drawGhost } from './ghosts';
 import { installLanguagePicker } from './language-picker';
 import { installOverlays } from './overlays';
 import { installHelp, openHelp } from './help';
@@ -20,6 +21,7 @@ declare let components: Component[];
 declare let wires: unknown[];
 declare let offset: Point;
 declare let zoom: number;
+declare let zoomAnimation: number;
 declare const mouse: { screen: Point };
 declare let variables: Record<string, number | string>;
 declare let variableReferences: Record<string, unknown[]>;
@@ -184,6 +186,27 @@ document.addEventListener('DOMContentLoaded', () => {
     .querySelector('#reeo-import')
     ?.addEventListener('click', () => window.reeo.importBoard());
   document.querySelector('#reeo-help')?.addEventListener('click', showGuide);
+  document.getElementById('reeo-add')?.addEventListener('click', () => {
+    document
+      .querySelector<HTMLElement>('#toolbar > .slot')
+      ?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 }));
+  });
+  document.getElementById('reeo-fit')?.addEventListener('click', () => {
+    const parts = components as (Component & { width: number; height: number })[];
+    if (!parts.length) return;
+    const left = Math.min(...parts.map((p) => p.pos.x)) - 2;
+    const right = Math.max(...parts.map((p) => p.pos.x + p.width)) + 2;
+    const top = Math.max(...parts.map((p) => p.pos.y)) + 2;
+    const bottom = Math.min(...parts.map((p) => p.pos.y - p.height)) - 2;
+    zoom = Math.max(
+      2,
+      Math.min(100, (innerWidth - 32) / (right - left), (innerHeight - 240) / (top - bottom)),
+    );
+    zoomAnimation = zoom;
+    zoom = zoomAnimation;
+    offset.x = (left + right) / 2 - innerWidth / (2 * zoom);
+    offset.y = (top + bottom) / 2 + (innerHeight + 60) / (2 * zoom);
+  });
   const zoomView = (delta: number) => {
     mouse.screen.x = innerWidth / 2;
     mouse.screen.y = innerHeight / 2;
@@ -237,3 +260,5 @@ installHelp();
 
 installLanguagePicker();
 installOverlays();
+
+window.reeoDrawGhost = drawGhost;

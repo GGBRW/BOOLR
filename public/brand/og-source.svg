@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><rect x="19" y="19" width="2" height="2" fill="#333"/></pattern><style>@font-face{font-family:Circuit;src:url('./REEOCircuitDisplay.ttf')}@font-face{font-family:Alan;src:url('../fonts/alan-sans/AlanSans-Variable.ttf')}</style></defs>
+<rect width="1200" height="630" fill="#111"/><rect width="1200" height="630" fill="url(#grid)"/>
+<path d="M0 315H128m944 0h128" fill="none" stroke="#555" stroke-width="4"/>
+<text x="600" y="380" text-anchor="middle" font-family="Circuit" font-size="270" fill="#ddd">REEO</text>
+<text x="600" y="500" text-anchor="middle" font-family="Alan,sans-serif" font-size="32" fill="#ddd">Digital logic. Limitless curiosity.</text>
+<text x="600" y="548" text-anchor="middle" font-family="Alan,sans-serif" font-size="20" fill="#888">BUILD · CONNECT · SIMULATE</text>
+</svg>
