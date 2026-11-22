@@ -29,6 +29,8 @@ sizes.
 ## Files
 
 - `REEOCircuitDisplay.ttf` — the installable font.
+- `reeo-r-mark.svg` — the transparent circuit R with signal-green pin tips,
+  placed inline before live `EEO` in the home wordmark.
 - `font-specimen.html` — live specimen, character sets, language samples and
   technical details. Open it through the dev server:
   `http://localhost:5173/brand/font-specimen.html`.

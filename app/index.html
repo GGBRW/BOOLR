@@ -18,6 +18,7 @@
 
         <link rel="icon" type="image/svg+xml" href="/brand/reeo-mark.svg"/>
         <link rel="apple-touch-icon" href="/brand/reeo-icon.png">
+        <link rel="preload" href="/brand/REEOCircuitDisplay.ttf" as="font" type="font/ttf" crossorigin>
         <link rel="stylesheet" href="css/mainmenu.css">
         <link rel="stylesheet" href="css/tutorial.css">
         <link rel="stylesheet" href="css/dialog.css">
@@ -60,7 +61,10 @@
 
         <!-- Main menu -->
         <div class="main-menu">
-            <h1 class="reeo-wordmark"><img src="/brand/reeo-wordmark.svg" alt="REEO"></h1>
+            <h1 class="reeo-wordmark" aria-label="REEO">
+                <img class="reeo-wordmark-r" src="/brand/reeo-r-mark.svg" alt="" aria-hidden="true">
+                <span class="reeo-wordmark-letters" aria-hidden="true">EEO</span>
+            </h1>
             <span class="version"></span>
 
             <div class="loading">LOADING...</div>
