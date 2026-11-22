@@ -30,3 +30,48 @@ test('type specimen serves the shipped font and exposes its features', async ({ 
     ),
   ).toBe(0);
 });
+
+test('home wordmark joins the circuit R to live REEO Circuit Display type', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+
+  const wordmark = page.locator('.reeo-wordmark');
+  const letters = page.locator('.reeo-wordmark-letters');
+  const mark = page.locator('.reeo-wordmark-r');
+
+  await expect(wordmark).toHaveAttribute('aria-label', 'REEO');
+  await expect(letters).toHaveText('EEO');
+  await expect(letters).toHaveCSS('font-family', /REEO Circuit Display/);
+  await expect(mark).toHaveAttribute('src', '/brand/reeo-r-mark.svg');
+
+  const rendered = await page.evaluate(() => {
+    const font = [...document.fonts].find((face) => face.family === 'REEO Circuit Display');
+    const heading = document.querySelector<HTMLElement>('.reeo-wordmark');
+    const markBox = document
+      .querySelector<HTMLElement>('.reeo-wordmark-r')
+      ?.getBoundingClientRect();
+    const lettersBox = document
+      .querySelector<HTMLElement>('.reeo-wordmark-letters')
+      ?.getBoundingClientRect();
+    if (!heading || !markBox || !lettersBox) return null;
+    const fontSize = parseFloat(getComputedStyle(heading).fontSize);
+    return {
+      fontStatus: font?.status,
+      fontSize,
+      markHeight: markBox.height,
+      gap: lettersBox.left - markBox.right,
+    };
+  });
+
+  expect(rendered).not.toBeNull();
+  expect(rendered?.fontStatus).toBe('loaded');
+  expect(rendered?.markHeight).toBeCloseTo((rendered?.fontSize ?? 0) * 0.7, 0);
+  expect(Math.abs(rendered?.gap ?? 99)).toBeLessThan(0.01);
+
+  await page.setViewportSize({ width: 320, height: 568 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    ),
+  ).toBe(0);
+});

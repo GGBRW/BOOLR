@@ -9,9 +9,12 @@
 The circuit-R is an open signal path: an R-shaped conductor, input terminals, and an output terminal. Signal green adds life to the original monochrome interface without replacing its palette. The R remains recognizable without color.
 
 - `public/brand/reeo-mark.svg`: scalable application mark.
-- `public/brand/reeo-wordmark.svg`: canonical circuit mark with an outlined Righteous wordmark, shared with the app.
+- `public/brand/reeo-r-mark.svg`: transparent circuit R with signal-green pins; used inline, on the text baseline, in the home wordmark.
+- `public/brand/reeo-wordmark.svg`: standalone circuit mark plus outlined Righteous lettering, kept for exports that cannot use the live typeface.
 - `public/brand/reeo-icon.png`: 512px raster application icon.
 - `public/brand/reeo-icon.ico`: Windows multi-size icon.
+
+The home wordmark is a lockup, not an image of a wordmark: the circuit R sits immediately before live `EEO` set in REEO Circuit Display (`public/brand/REEOCircuitDisplay.ttf`). Cap heights and baselines are matched so the R reads as the first letter. If the typeface is unavailable, the same lockup falls back to Righteous so the name remains legible.
 
 ## Palette and typography
 
@@ -22,6 +25,6 @@ The circuit-R is an open signal path: an R-shaped conductor, input terminals, an
 | Signal / restrained identity accent | `#B8E986`           |
 | Canvas                              | original white grid |
 
-Retain the existing Righteous wordmark typography, Ubuntu UI, monospaced circuit/console labels, gate symbols, and Material icon font. Arabic uses system Arabic fallbacks (Tahoma/Arial where present). Keep the circuit geometry, formulae, gate symbols, and technical identifiers left-to-right, even inside an RTL interface.
+The home wordmark uses REEO Circuit Display for `EEO` and the circuit-R glyph for the first letter; Righteous remains only as its fallback and in the standalone export. Retain the Ubuntu UI, monospaced circuit/console labels, gate symbols, and Material icon font. Arabic uses system Arabic fallbacks (Tahoma/Arial where present). Keep the circuit geometry, formulae, gate symbols, and technical identifiers left-to-right, even inside an RTL interface.
 
 Keep at least one terminal-dot diameter of clear space around the mark. Do not stretch it, obscure terminals, or recolor the original circuit editor just to match the logo. The identity should renew the product, not erase its recognizable interface or its original authors' credit.

@@ -20,14 +20,30 @@ select,
 canvas {
   touch-action: none;
 }
+/* The R is the circuit mark; the rest is set in REEO Circuit Display. */
 .reeo-wordmark {
   display: inline-flex !important;
-  align-items: center;
-  gap: 28px;
+  align-items: baseline;
+  gap: 0;
+  font-family: 'REEO Circuit Display', 'Righteous', sans-serif;
+  font-size: min(188px, 25.6vw);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
 }
-.reeo-wordmark img {
-  width: 100px;
-  height: 100px;
+.reeo-wordmark-r {
+  display: block;
+  flex: none;
+  width: auto;
+  height: 0.7em;
+  margin: 0;
+}
+.reeo-wordmark-letters {
+  display: block;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1;
 }
 .reeo-platform-bar {
   position: fixed;
@@ -213,11 +229,8 @@ canvas {
     margin: 110px 0 28px;
   }
   .reeo-wordmark {
-    gap: 14px;
-  }
-  .reeo-wordmark img {
-    width: 52px;
-    height: 52px;
+    gap: 0;
+    font-size: min(103px, 25.9vw);
   }
   .main-menu .version {
     font-size: 12px;
@@ -417,21 +430,6 @@ canvas {
     padding-bottom: 20px;
   }
 }
-/* One outlined wordmark (the original Righteous face) is used everywhere. */
-.main-menu > h1.reeo-wordmark {
-  vertical-align: middle;
-}
-.reeo-wordmark img {
-  width: min(530px, 72vw);
-  height: auto;
-  display: block;
-}
-@media (max-width: 600px) {
-  .reeo-wordmark img {
-    width: min(290px, 73vw);
-    height: auto;
-  }
-}
 .main-menu .new-board #filename {
   position: relative;
   height: auto;
@@ -455,7 +453,9 @@ canvas {
 .main-menu > h1.reeo-wordmark {
   display: flex !important;
   width: max-content;
-  font-size: 0;
+  font-family: 'REEO Circuit Display', 'Righteous', sans-serif;
+  font-size: min(188px, 25.6vw);
+  font-weight: 400;
   line-height: 1;
   margin: 64px auto 12px;
 }
@@ -476,11 +476,20 @@ canvas[data-tool='pan'][data-dragging='true'] {
 }
 @media (max-width: 600px) {
   .main-menu > h1.reeo-wordmark {
+    font-size: min(103px, 25.9vw);
     margin: 105px auto 10px;
   }
   .main-menu > .version {
     margin-bottom: 24px;
   }
+}
+
+@font-face {
+  font-family: 'REEO Circuit Display';
+  src: url('/brand/REEOCircuitDisplay.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -957,10 +966,8 @@ textarea {
 }
 @media (max-height: 480px) {
   .main-menu > h1.reeo-wordmark {
+    font-size: 74px;
     margin: 72px auto 8px;
-  }
-  .main-menu > h1.reeo-wordmark img {
-    width: 210px;
   }
   .main-menu > .version {
     margin-block: 0;
