@@ -10,8 +10,9 @@ REEO wordmark. Requires fontTools and skia-pathops.
 
 from __future__ import annotations
 
-import math
+import datetime
 import io
+import math
 from pathlib import Path
 
 import pathops
@@ -37,6 +38,9 @@ XBASE = HALF
 DESC_TOP = DESCENDER + HALF
 
 KAPPA = 0.5522847498307936
+
+# Fixed head timestamps keep builds reproducible while avoiding the 1970 default.
+FONT_EPOCH = int(datetime.datetime(2026, 11, 21, tzinfo=datetime.UTC).timestamp()) + 2082844800
 
 
 def _arc_cubics(cx, cy, rx, ry, start, end):
@@ -1889,6 +1893,8 @@ def build():
     font.setupGlyf(glyphs)
     font.setupHorizontalMetrics(metrics)
     font.setupHead(fontRevision=2.0, lowestRecPPEM=8, flags=3)
+    font.font["head"].created = FONT_EPOCH
+    font.font["head"].modified = FONT_EPOCH
     font.setupHorizontalHeader(
         ascent=ASCENDER, descent=DESCENDER, lineGap=0,
         caretSlopeRise=1, caretSlopeRun=0, caretOffset=0,
