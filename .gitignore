@@ -16,3 +16,5 @@ ios/
 ios-build/
 
 .venv/
+__pycache__/
+*.pyc
