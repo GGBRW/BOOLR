@@ -177,6 +177,26 @@ export const legacyMessages: ReadonlyArray<readonly [string, string, string]> = 
     'REEO بيستخدم التخزين المحلي لحفظ الحافظة والإعدادات وحاجات تانية.',
   ],
   ["What's new", 'الجديد', 'إيه الجديد'],
+  [
+    'Pinch, pan, double-tap and long-press on touch screens',
+    'قرص بإصبعين وتحريك اللوحة ونقر مزدوج وضغط مطوّل على شاشات اللمس',
+    'قرصة بإصبعين وتحريك اللوحة ودبل كليك وضغط مطوّل على شاشات اللمس',
+  ],
+  [
+    'Faint circuit ghosts while following a guide',
+    'مخططات شبحية خفيفة أثناء اتباع دليل',
+    'مخططات شبحية خفيفة وإنت بتتبع دليل',
+  ],
+  [
+    'Zoom controls and one-tap Fit circuit',
+    'أزرار تكبير وملاءمة الدائرة بلمسة واحدة',
+    'زرار تكبير وملاءمة الدايرة بلمسة واحدة',
+  ],
+  [
+    'New REEO circuit lettering and share card',
+    'حروف REEO الدائرية الجديدة وبطاقة مشاركة',
+    'حروف REEO الجديدة على شكل دواير وكارت مشاركة',
+  ],
   ['On-grid circuit symbols', 'رموز الدوائر على الشبكة', 'رموز الدواير على الشبكة'],
   [
     'Searchable component guide and worked circuits',

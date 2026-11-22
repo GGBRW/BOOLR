@@ -73,4 +73,30 @@ test('home footer credits the developer and links name and icon to the repositor
   await page.evaluate(`window.reeoI18n.setLocale('ar')`);
   await expect(link).toContainText('المطوّر');
   await expect(link).toContainText('Abdou-da0wew');
+  // Short landscape home screens still show the credit without covering actions.
+  await page.setViewportSize({ width: 844, height: 390 });
+  await expect(credit).toBeVisible();
+  const footerTop = (await credit.boundingBox())?.y ?? 0;
+  const lastAction = await page.locator('.main-menu > button').nth(2).boundingBox();
+  expect(lastAction && footerTop > lastAction.y + lastAction.height).toBe(true);
+});
+
+test('home action rows keep the original icon divider at every width', async ({ page }) => {
+  for (const [width, height, left] of [
+    [1366, 768, '70px'],
+    [390, 844, '66px'],
+  ] as const) {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    await expect(page.locator('body')).toHaveAttribute('data-reeo-ready', 'true');
+    const divider = await page
+      .locator('.main-menu > button')
+      .first()
+      .evaluate((button) => {
+        const style = getComputedStyle(button, '::after');
+        return { width: style.borderLeftWidth, color: style.borderLeftColor, left: style.left };
+      });
+    expect(divider.width).toBe('3px');
+    expect(divider.left).toBe(left);
+  }
 });
