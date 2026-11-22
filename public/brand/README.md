@@ -12,7 +12,7 @@ three wordmark letters.
 | -------------------------- | ---------------------------------------------------------------------------------------- |
 | Family / style             | REEO Circuit Display, Regular 400                                                        |
 | Glyphs / mapped codepoints | 359 / 344                                                                                |
-| Coverage                   | Latin-1 Supplement, Latin Extended-A, General Punctuation, currency, fractions           |
+| Coverage                   | Latin-1 Supplement, Latin Extended-A, General Punctuation, currency, math, fractions     |
 | Figures                    | Tabular, 620 units                                                                       |
 | OpenType                   | `kern` (GPOS, 161 pairs), `ss01` (slashed zero)                                          |
 | UPM                        | 1000; cap 700, x-height 500, ascender 880, descender −240                                |
