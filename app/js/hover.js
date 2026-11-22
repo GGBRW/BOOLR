@@ -38,6 +38,7 @@ hoverBalloon.show = function(component) {
 
     this.style.display = "block";
     setTimeout(() => {
+        if(this.dataset.overlayClosed === "true") return;
         this.style.opacity = 1;
         this.style.transform = "translateY(20px)";
     },10);
@@ -65,7 +66,7 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
             if(i > 0 && i < 5) {
                 toolbartip.innerHTML += "<br><span style='font-size: 10px; color: #555'>Right click for details</span>";
             }
-            toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
+            toolbartip.style.left = (this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2) + "px";
         } else {
             toolbartip.style.display = "block";
             toolbartip.innerHTML = this.getAttribute("tooltip")
@@ -73,10 +74,11 @@ for(let i = 0; i < document.getElementsByClassName("slot").length; ++i) {
                 toolbartip.innerHTML += "<br><span style='font-size: 10px; color: #555'>Right click for details</span>";
             }
             setTimeout(() => {
+                if(toolbartip.dataset.overlayClosed === "true") return;
                 toolbartip.style.opacity = 1;
                 toolbartip.style.transform = "translateY(20px)";
             }, 1);
-            toolbartip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2;
+            toolbartip.style.left = (this.getBoundingClientRect().left + this.clientWidth / 2 - toolbartip.clientWidth / 2) + "px";
             setTimeout(() => toolbartip.style.transition = "transform .2s, opacity .2s, left .2s", 100);
         }
     }
@@ -114,17 +116,18 @@ for(let i = 0; i < document.querySelectorAll("#credits button").length; ++i) {
 
         if(creditstip.style.display == "block") {
             creditstip.innerHTML = this.getAttribute("tooltip");
-            creditstip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - creditstip.clientWidth / 2;
+            creditstip.style.left = (this.getBoundingClientRect().left + this.clientWidth / 2 - creditstip.clientWidth / 2) + "px";
         } else {
             setTimeout(() => {
                 if(this.hover) {
+                    if(creditstip.dataset.overlayClosed === "true") return;
                     creditstip.style.display = "block";
                     creditstip.innerHTML = this.getAttribute("tooltip");
                     setTimeout(() => {
                         creditstip.style.opacity = 1;
                         creditstip.style.transform = "translateY(20px)";
                     }, 1);
-                    creditstip.style.left = this.getBoundingClientRect().left + this.clientWidth / 2 - creditstip.clientWidth / 2;
+                    creditstip.style.left = (this.getBoundingClientRect().left + this.clientWidth / 2 - creditstip.clientWidth / 2) + "px";
                     setTimeout(() => creditstip.style.transition = "transform .2s, opacity .2s, left .2s", 100);
                 }
             }, 200);

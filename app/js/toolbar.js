@@ -1,6 +1,6 @@
 function select(Component) {
     Selected = Component;
-    toolbar.message(`Selected ${Component.name} ${"gate"}`);
+    toolbar.message(`Selected ${(Component.name || "Custom")} ${"gate"}`);
     document.getElementById("list").style.display = "none";
 }
 
@@ -11,17 +11,20 @@ toolbar.message = function(msg,type) {
 
     const toast = document.getElementById("toast");
     toast.style.display = "block";
-    toast.innerHTML = msg;
+    const content = document.createElement('template');
+    content.innerHTML = msg;
+    toast.textContent = content.content.textContent;
     if(type == "warning") {
         toast.innerHTML = "<span class='material-icons' style='opacity: .5'>warning</span>" + toast.innerHTML;
     } else if(type == "action") {
         toast.innerHTML += "<button onclick='undo()' style='font-family: Ubuntu'><span class='material-icons'>undo</span>Undo</button>";
     }
 
-    toast.style.marginLeft = -toast.clientWidth / 2 + "px";
+    toast.classList.add("is-visible");
     toast.style.opacity = 1;
     hideToolbarMessage = setTimeout(() => {
         toast.style.opacity = 0;
+        toast.classList.remove("is-visible");
     },3000);
 }
 
@@ -30,6 +33,7 @@ const list = document.getElementById("list");
 list.show = function() {
     list.style.display = "block";
     setTimeout(() => {
+        if(list.dataset.overlayClosed === "true") return;
         list.style.opacity = 1;
         list.style.transform = "scale(1)";
     },1);
@@ -38,7 +42,7 @@ list.hide = function() {
     list.style.opacity = 0;
     list.style.transform = "scale(.5) translateX(-63px) translateY(150px)";
     c.focus();
-    setTimeout(() => list.style.display = "none",200);
+    setTimeout(() => { if(list.style.opacity === "0") list.style.display = "none"; },200);
 }
 
 document.getElementsByClassName("slot")[0].onmousedown = function() {

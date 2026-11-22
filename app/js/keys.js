@@ -158,7 +158,7 @@ c.onkeydown = function(e) {
             break;
         case 84: // T
             if(e.shiftKey) {
-                boolrConsole.show();
+                reeoConsole.show();
             } else {
                 chat.show();
                 chat.focus();

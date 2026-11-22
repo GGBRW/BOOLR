@@ -5,22 +5,22 @@ let ticksPerSecond = 0;
 
 let pauseSimulation = false;
 let updates;
+let simulationSaturated = false;
 
 
 function tick() {
     const start = new Date;
     updates = 0;
 
-    while(updateQueue.length > 0 && updates < 10000 && !pauseSimulation) {
-        updateQueue.splice(0,1)[0]();
-        ++updates;
-    }
+    const result = window.reeoTick(updateQueue, pauseSimulation);
+    updates = result.updates;
+    simulationSaturated = result.saturated;
 
     ticksPerSecond = 1000 / (new Date - lastTick);
     lastTick = new Date;
 }
 
-setInterval(tick);
+setInterval(tick, 16);
 
 
 // 500ms : 1:39

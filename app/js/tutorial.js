@@ -1,83 +1,41 @@
-const tutorial = document.querySelector(".tutorial");
-
-tutorial.sections = tutorial.querySelectorAll(".sections div");
+const tutorial = document.querySelector('.tutorial');
+tutorial.sections = tutorial.querySelectorAll('.sections > div');
 tutorial.sectionIndex = 0;
-
-tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
-
-tutorial.nextBtn = tutorial.querySelector(".next");
-tutorial.nextBtn.onclick = function() {
-    const previousSection = tutorial.sections[tutorial.sectionIndex];
-    previousSection.style.opacity = 0;
-    previousSection.style.transform = "translateX(-500px)";
-
-    ++tutorial.sectionIndex;
-
-    const nextSection = tutorial.sections[tutorial.sectionIndex]
-    nextSection.style.opacity = 1;
-    nextSection.style.transform = "translateX(0px)";
-
-    tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
-
-    tutorial.previousBtn.disabled = false;
-    if(tutorial.sectionIndex >= tutorial.sections.length - 1) {
-        this.disabled = true;
-    }
-}
-
-tutorial.previousBtn = tutorial.querySelector(".previous");
-tutorial.previousBtn.onclick = function() {
-    const previousSection = tutorial.sections[tutorial.sectionIndex];
-    previousSection.style.opacity = 0;
-    previousSection.style.transform = "translateX(500px)";
-
-    --tutorial.sectionIndex;
-
-    const nextSection = tutorial.sections[tutorial.sectionIndex]
-    nextSection.style.opacity = 1;
-    nextSection.style.transform = "translateX(0px)";
-
-    tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
-
-    tutorial.nextBtn.disabled = false;
-    if(tutorial.sectionIndex < 1) {
-        this.disabled = true;
-    }
-}
-
+tutorial.nextBtn = tutorial.querySelector('.next');
+tutorial.previousBtn = tutorial.querySelector('.previous');
+tutorial.renderSection = function() {
+    this.sections.forEach((section, index) => {
+        const current = index === this.sectionIndex;
+        section.classList.toggle('is-current', current);
+        section.hidden = !current;
+        section.setAttribute('aria-hidden', String(!current));
+    });
+    this.previousBtn.disabled = this.sectionIndex === 0;
+    this.nextBtn.disabled = this.sectionIndex === this.sections.length - 1;
+    this.querySelector('.index').textContent = `${this.sectionIndex + 1}/${this.sections.length}`;
+    this.querySelector('.sections').scrollTop = 0;
+};
+tutorial.nextBtn.onclick = () => {
+    tutorial.sectionIndex = Math.min(tutorial.sections.length - 1, tutorial.sectionIndex + 1);
+    tutorial.renderSection();
+};
+tutorial.previousBtn.onclick = () => {
+    tutorial.sectionIndex = Math.max(0, tutorial.sectionIndex - 1);
+    tutorial.renderSection();
+};
 tutorial.show = function() {
-    this.style.display = "block";
-    setTimeout(() => {
-        this.style.opacity = 1;
-        this.style.left = 0;
-    }, 10);
-}
-
+    this.style.display = 'block';
+    this.style.opacity = 1;
+    this.style.left = '0px';
+    this.renderSection();
+};
 tutorial.hide = function() {
+    this.style.display = 'none';
     this.style.opacity = 0;
-    this.style.left = "-30%";
-    setTimeout(() => {
-        this.style.display = "none";
-
-        for(let i of this.sections) {
-            i.style.opacity = 0;
-            i.style.transform = "translateX(500px)";
-        }
-
-        const nextSection = this.sections[0];
-        nextSection.style.opacity = 1;
-        nextSection.style.transform = "translateX(0px)";
-
-        this.sectionIndex = 0;
-        tutorial.previousBtn.disabled = true;
-        tutorial.querySelector(".index").innerHTML = (tutorial.sectionIndex + 1) + "/" + tutorial.sections.length;
-    }, 200);
-}
-
+    this.sectionIndex = 0;
+    this.renderSection();
+};
 tutorial.toggle = function() {
-    if(this.style.display != "block") {
-        this.show();
-    } else {
-        this.hide();
-    }
-}
+    this.style.display === 'block' ? this.hide() : this.show();
+};
+tutorial.renderSection();

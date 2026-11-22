@@ -1,45 +1,47 @@
-const boolrConsole = document.querySelector(".console");
-const container = boolrConsole.querySelector(".container");
+const reeoConsole = document.querySelector(".console");
+const container = reeoConsole.querySelector(".container");
 const focusedInput = container.querySelector(".focused-input");
 focusedInput.input = focusedInput.querySelector("input");
 
-boolrConsole.history = [];
+reeoConsole.history = [];
 let historyIndex = 0;
 
-boolrConsole.show = function() {
+reeoConsole.show = function() {
     this.style.display = "block";
     setTimeout(() => {
+        if(this.dataset.overlayClosed === "true") return;
         this.style.opacity = 1;
         this.style.transform = "scale(1)";
         focusedInput.input.focus();
     }, 10);
 }
 
-boolrConsole.hide = function() {
+reeoConsole.hide = function() {
     this.style.opacity = 0;
     this.style.transform = "scale(.9) translateX(-63px) translateY(150px)";
     setTimeout(() => {
+        if(this.style.opacity !== "0") return;
         this.style.display = "none";
         c.focus();
     }, 200);
 }
 
-boolrConsole.toggleFullscreen = function() {
+reeoConsole.toggleFullscreen = function() {
     this.fullscreen = !this.fullscreen;
 
-    this.style.height = this.fullscreen ? innerHeight - 40 : "460px";
-    this.style.width = this.fullscreen ? innerWidth - 40 : "360px";
+    this.style.height = this.fullscreen ? (innerHeight - 40) + "px" : "460px";
+    this.style.width = this.fullscreen ? (innerWidth - 40) + "px" : "360px";
 
     focusedInput.input.focus();
 }
 
-boolrConsole.clear = function() {
+reeoConsole.clear = function() {
     container.innerHTML = "";
     container.appendChild(focusedInput);
     focusedInput.input.focus();
 }
 
-boolrConsole.log = function(msg) {
+reeoConsole.log = function(msg) {
     const log = document.createElement("div");
     log.className = "log";
     log.innerHTML = msg;
@@ -47,7 +49,7 @@ boolrConsole.log = function(msg) {
     container.scrollTop = container.scrollHeight;
 }
 
-boolrConsole.error = function(msg) {
+reeoConsole.error = function(msg) {
     const log = document.createElement("div");
     log.className = "error";
     log.innerHTML = msg;
@@ -55,14 +57,14 @@ boolrConsole.error = function(msg) {
     container.scrollTop = container.scrollHeight;
 }
 
-boolrConsole.onkeydown = function(e) {
+reeoConsole.onkeydown = function(e) {
     if(e.which == 13) { // Enter key
         const input = document.createElement("div");
         input.className = "input";
         input.innerHTML = focusedInput.input.value;
         container.insertBefore(input, focusedInput);
 
-        boolrConsole.history.push(focusedInput.input.value);
+        reeoConsole.history.push(focusedInput.input.value);
 
         try {
             const output = document.createElement("div");
@@ -77,8 +79,8 @@ boolrConsole.onkeydown = function(e) {
         container.scrollTop = container.scrollHeight;
         historyIndex = 0;
     } else if(e.which == 38) {
-        if(historyIndex > -boolrConsole.history.length) {
-            focusedInput.input.value = boolrConsole.history.slice(--historyIndex)[0];
+        if(historyIndex > -reeoConsole.history.length) {
+            focusedInput.input.value = reeoConsole.history.slice(--historyIndex)[0];
         }
 
         // Move caret to the end
@@ -88,7 +90,7 @@ boolrConsole.onkeydown = function(e) {
             historyIndex = 0;
             focusedInput.input.value = "";
         } else if(historyIndex < -1) {
-            focusedInput.input.value = boolrConsole.history.slice(++historyIndex)[0];
+            focusedInput.input.value = reeoConsole.history.slice(++historyIndex)[0];
         }
 
         // Move caret to the end
@@ -121,7 +123,7 @@ boolrConsole.onkeydown = function(e) {
 
 const commands = ["set","get","variables","remove","edit","findComponent","pause"];
 
-boolrConsole.help = function() {
+reeoConsole.help = function() {
     this.log("<b>set [name] [value]</b>: sets a variable");
     this.log("<b>get [name]</b>: returns value of a variable");
     this.log("<b>variables</b>: return list of all variables");
@@ -146,7 +148,7 @@ function inputHandler(input) {
             break;
         case "variables":
             for(let i in variables) {
-                boolrConsole.log(i + ": " + variables[i]);
+                reeoConsole.log(i + ": " + variables[i]);
             }
             break;
         case "remove":
@@ -215,10 +217,10 @@ function inputHandler(input) {
             return "Simulation paused";
             break;
         case "help":
-            boolrConsole.help();
+            reeoConsole.help();
             break;
         case "?":
-            boolrConsole.help();
+            reeoConsole.help();
             break;
         case "openDevTools":
             require('electron').remote.getCurrentWindow().webContents.openDevTools();

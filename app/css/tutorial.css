@@ -6,7 +6,7 @@
     width: 500px;
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #111;
     text-align: center;
@@ -52,7 +52,7 @@
 }
 
 .tutorial .sections div code {
-    font-family: "Ubuntu Mono", Monospaced;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
 }
 
 .tutorial .sections .material-icons {

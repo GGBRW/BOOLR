@@ -88,7 +88,7 @@ canvas {
     padding: 16px;
     outline: none;
     border-radius: 0 5px 5px 0;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #aaa;
 
@@ -114,7 +114,7 @@ canvas {
 
 #notifications li {
     background: #ddd;
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #111;
     padding: 16px;
@@ -164,7 +164,7 @@ canvas {
 }
 
 #version {
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     -padding-left: 30px;
     height: 33px;
@@ -205,7 +205,7 @@ canvas {
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     color: #ddd;
     border-radius: 5px;
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     list-style: none;
     padding: 0;
@@ -251,7 +251,7 @@ canvas {
     right: 0;
     background: #111;
     opacity: .95;
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 14px;
     -font-weight: 600;
     color: #ddd;
@@ -275,7 +275,7 @@ canvas {
     left: 0;
     background: #ddd;
     opacity: .95;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     -font-weight: 600;
     color: #111;
@@ -291,7 +291,7 @@ canvas {
     top: 100px;
     left: 100px;
     background: #ddd;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #333;
     padding: 5px;
@@ -425,7 +425,7 @@ canvas {
     max-height: 300px;
     overflow: auto;
     border-radius: 5px;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #ddd;
 
@@ -470,7 +470,7 @@ canvas {
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
     border-radius: 5px;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     max-width: 250px;
     padding: 10px;
     opacity: 0;
@@ -484,7 +484,7 @@ canvas {
     position: fixed;
     left: 0;
     background: #111;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 14px;
     color: #888;
     padding: 8px;
@@ -526,7 +526,7 @@ canvas {
     position: fixed;
     top: 0;
     left: 50%;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 16px;
     display: none;
 }
@@ -542,7 +542,7 @@ canvas {
     background: rgba(16,16,16,.5);
     text-align: center;
     padding-top: 20%;
-    font-family: "Roboto Condensed";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 30px;
     color: #fff;
 }

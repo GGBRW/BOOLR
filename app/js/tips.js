@@ -1,71 +1,61 @@
 const tips = {
-    dragging: document.querySelector(".tip#dragging"),
-    connecting_ctrl: document.querySelector(".tip#connecting_ctrl"),
-    connecting_shift: document.querySelector(".tip#connecting_shift"),
-    waypoints: document.querySelector(".tip#waypoints")
+    dragging: document.querySelector('.tip#dragging'),
+    connecting_ctrl: document.querySelector('.tip#connecting_ctrl'),
+    connecting_shift: document.querySelector('.tip#connecting_shift'),
+    waypoints: document.querySelector('.tip#waypoints')
+};
+const tipStack = document.createElement('section');
+tipStack.id = 'reeo-toast-stack';
+tipStack.setAttribute('aria-label', 'Tips and notifications');
+tipStack.setAttribute('aria-live', 'polite');
+tipStack.setAttribute('aria-relevant', 'additions text');
+document.body.appendChild(tipStack);
+tipStack.appendChild(document.getElementById('toast'));
+
+for(const tip of Object.values(tips)) {
+    tipStack.appendChild(tip);
+    const close = document.createElement('button');
+    close.className = 'reeo-tip-close material-icons';
+    close.textContent = 'close';
+    close.setAttribute('aria-label', 'Dismiss tip');
+    close.onclick = () => tip.hide();
+    tip.appendChild(close);
+    let timer;
+    const dismissLater = () => { clearTimeout(timer); timer = setTimeout(() => tip.hide(), 8000); };
+    tip.show = function() {
+        if(this.style.display === 'block') return;
+        this.disabled = true;
+        this.style.display = 'block';
+        this.style.opacity = '1';
+        this.classList.add('is-visible');
+        dismissLater();
+    };
+    tip.hide = function() {
+        clearTimeout(timer);
+        this.classList.remove('is-visible');
+        this.style.display = 'none';
+        this.style.opacity = '0';
+    };
+    tip.onmouseenter = () => clearTimeout(timer);
+    tip.onmouseleave = dismissLater;
+    tip.onfocusin = () => clearTimeout(timer);
+    tip.onfocusout = dismissLater;
+    tip.onkeydown = event => { if(event.key === 'Escape') tip.hide(); };
 }
-
-for(let i in tips) {
-    tips[i].show = function() {
-        if(this.style.display == "block") return;
-        this.style.display = "block";
-        setTimeout(() => {
-            this.style.opacity = .9;
-
-            (function animate() {
-                tips[i].style.left =
-                    Math.max(
-                        Math.min(
-                            mouse.screen.x - tips[i].clientWidth / 2,
-                            c.width - tips[i].clientWidth),
-                        0
-                    );
-                tips[i].style.top =
-                    Math.max(
-                        mouse.screen.y - tips[i].clientHeight - 20,
-                        0
-                    );
-
-                if(tips[i].style.display == "block") requestAnimationFrame(animate);
-            })();
-
-            this.disabled = true;
-        });
-
-        setTimeout(() => {
-            this.hide();
-        }, 5000);
-    }
-
-    tips[i].hide = function() {
-        if(this.style.display == "none") return;
-        this.style.opacity = 0;
-        setTimeout(() => {
-            this.style.display = "none";
-        }, 500);
-    }
-}
-
-setInterval(function() {
-    if(!tips.dragging.disabled && dragging) {
-        tips.dragging.show();
-    }
-
+setInterval(() => {
+    if(!tips.dragging.disabled && dragging) tips.dragging.show();
     if(connecting) {
         if(!tips.connecting_ctrl.disabled &&
-           mouse.screen.x < 100 || mouse.screen.x > c.width - 100 ||
-           mouse.screen.y < 100 || mouse.screen.y > c.height - 100) {
+           (mouse.screen.x < 100 || mouse.screen.x > c.width - 100 ||
+            mouse.screen.y < 100 || mouse.screen.y > c.height - 100)) {
             tips.connecting_ctrl.show();
         } else if(!tips.connecting_shift.disabled) {
-            const x = connecting.pos.slice(-8).map(n => n.x);
-            const y = connecting.pos.slice(-8).map(n => n.y);
-            if(x.join("") == x[0].toString().repeat(8) || y.join("") == y[0].toString().repeat(8)) {
-                 tips.connecting_shift.show();
+            const positions = connecting.pos.slice(-8);
+            if(positions.length === 8 &&
+               (positions.every(p => p.x === positions[0].x) || positions.every(p => p.y === positions[0].y))) {
+                tips.connecting_shift.show();
             }
         }
     }
-
-    if(!tips.waypoints.disabled && Math.random() < .01) {
-        tips.waypoints.show();
-    }
+    if(!tips.waypoints.disabled && Math.random() < .01) tips.waypoints.show();
 }, 500);

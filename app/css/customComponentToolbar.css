@@ -45,7 +45,7 @@
 #customComponentToolbar #name {
     position: relative;
     top: 15px;
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     color: #ddd;
 }
@@ -70,7 +70,7 @@
 
 #customComponentToolbar .menu li {
     padding: 8px;
-    font-family: "Ubuntu", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     text-align: left;
     cursor: pointer;

@@ -4,7 +4,7 @@ let variableReferences = {};
 function setVariable(name,value) {
     name = (name.match(/[a-zA-Z'`´_-]+/g) || []) == name ? name : null;
     if(!name) throw "Invalid variable name";
-    if(!value) throw "No value given for variable " + name;
+    if(value === undefined || value === null || value === "") throw "No value given for variable " + name;
 
     variables[name] = +value || value;
 
@@ -43,12 +43,13 @@ function getVariable(name) {
 function parseVariableInput(str) {
     str = str + "";
     const vars = str.match(/[a-zA-Z'`´_-]+/g) || [];
-    str = str.replace(
-        /[a-zA-Z'`´_-]+/g,
-        "variables['$&']"
-    );
+    let value;
+    try {
+        value = window.reeoExpression(str, variables);
+    } catch (error) {
+        return;
+    }
 
-    const value = eval(str);
     if(isNaN(value)) return;
 
     return value;
