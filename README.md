@@ -25,7 +25,7 @@ Bun is the package manager, development runtime, script runner, and unit-test ru
 ## What's new
 
 - **Circuit and UI icons:** vector gate/component symbols, Phosphor interface icons, and bottom-right dismissible tip toasts.
-- **REEO identity:** original circuit-R mark, wordmark, application icons, and brand guide.
+- **REEO identity:** original circuit-R mark, wordmark, application icons, brand guide, and the REEO Circuit Display typeface.
 - **Browser version:** Vite static build; Vercel is the default configured hosting target.
 - **Desktop retained:** modern Electron with a typed main/preload, sandboxed renderer, context isolation, and no renderer access to Node or the OS filesystem.
 - **Mobile targets:** Capacitor Android/iOS configuration and manual CI builds, sharing the same interface.
@@ -48,6 +48,16 @@ On a touchscreen, use the small top-left controls to move components or pan with
 
 **Your boards are stored on this device, in this browser profile/app.** Clearing browser/app data removes them. Export backups before switching devices or uninstalling. Existing files in an old BOOLR `saves/` folder are not automatically migrated: import those `.board` files explicitly. Private browsing and storage quotas may prevent persistence.
 
+## Type
+
+**REEO Circuit Display** is an original monoline display typeface cut from the R in the wordmark: one 56-unit stroke, round caps, and port stubs at the joints. It is a real installable TTF, not an expanded logo font.
+
+- 359 glyphs and 344 mapped codepoints: complete Latin-1 and Latin Extended-A, plus typographic quotes, dashes, daggers, ellipsis, euro and minus.
+- Tabular figures, 161 kern pairs, a real `.notdef`, and `ss01` for a slashed zero.
+- Metrics: 1000 upm, cap 700, x-height 500, ascender 880, descender −240.
+- Live specimen: `/brand/font-specimen.html`. Source: `scripts/circuit-font.py`. Verification: `python3 scripts/verify-font.py` (or `bun run font:verify`).
+- License: GPL-3.0-only, the same license as the repository.
+
 ## Commands
 
 | Command                | Purpose                                              |
@@ -58,6 +68,8 @@ On a touchscreen, use the small top-left controls to move components or pan with
 | `bun run typecheck`    | Strict web and desktop type checking                 |
 | `bun run test`         | Bun unit tests for the production TypeScript modules |
 | `bun run test:e2e`     | Playwright integration/responsive/touch tests        |
+| `bun run font:build`   | Rebuild `REEOCircuitDisplay.ttf` (fontTools)         |
+| `bun run font:verify`  | Check coverage, tables and features; run OTS         |
 | `bun run lint`         | Oxlint and Biome, no formatting                      |
 | `bun run format`       | Format with Prettier only                            |
 | `bun run check`        | Types, both linters, formatting, and unit tests      |

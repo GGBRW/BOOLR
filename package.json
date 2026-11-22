@@ -38,7 +38,9 @@
     "mobile:add:ios": "cap add ios",
     "mobile:assets": "bun scripts/native-assets.ts",
     "build:vercel": "bun run build:web && bun run verify:web",
-    "verify:web": "bun scripts/verify-web.ts"
+    "verify:web": "bun scripts/verify-web.ts",
+    "font:build": "python3 scripts/circuit-font.py",
+    "font:verify": "python3 scripts/verify-font.py"
   },
   "dependencies": {
     "@capacitor/core": "^8.6.2",

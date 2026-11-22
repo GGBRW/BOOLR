@@ -132,7 +132,7 @@ dialog.update = function() {
     version.setAttribute("data-no-i18n", "");
     version.textContent = "REEO v" + VERSION;
     const changes = document.createElement("ul");
-    for(const text of ["Pinch, pan, double-tap and long-press on touch screens", "Faint circuit ghosts while following a guide", "Zoom controls and one-tap Fit circuit", "New REEO circuit lettering and share card", "Searchable component guide and worked circuits", "On-grid circuit symbols", "Arabic and Egyptian Arabic"]) {
+    for(const text of ["Pinch, pan, double-tap and long-press on touch screens", "Faint circuit ghosts while following a guide", "Zoom controls and one-tap Fit circuit", "New REEO circuit typeface and share card", "Searchable component guide and worked circuits", "On-grid circuit symbols", "Arabic and Egyptian Arabic"]) {
         const item = document.createElement("li");
         item.textContent = text;
         changes.appendChild(item);

@@ -193,9 +193,9 @@ export const legacyMessages: ReadonlyArray<readonly [string, string, string]> = 
     'زرار تكبير وملاءمة الدايرة بلمسة واحدة',
   ],
   [
-    'New REEO circuit lettering and share card',
-    'حروف REEO الدائرية الجديدة وبطاقة مشاركة',
-    'حروف REEO الجديدة على شكل دواير وكارت مشاركة',
+    'New REEO circuit typeface and share card',
+    'خط REEO الدائري الجديد وبطاقة مشاركة',
+    'خط REEO الجديد على شكل دواير وكارت مشاركة',
   ],
   ['On-grid circuit symbols', 'رموز الدوائر على الشبكة', 'رموز الدواير على الشبكة'],
   [
