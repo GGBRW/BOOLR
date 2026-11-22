@@ -133,7 +133,7 @@ function stringify(components = [], wires = [], selection) {
 
         data.properties = component.properties;
 
-        if(component.value) data.value = component.value;
+        if(Object.prototype.hasOwnProperty.call(component,"value")) data.value = component.value;
 
         data.input = [];
         for(let i = 0; i < component.input.length; ++i) {
@@ -226,6 +226,7 @@ function parse(data) {
     }
 
     if(!Array.isArray(data)) throw new Error("Board data not valid");
+    window.reeoValidateCircuit(data);
 
     const components = data[0] || [];
     const wires = data[1] || [];
@@ -259,6 +260,8 @@ function parse(data) {
         }
 
         const input = data.input;
+        while(component.input.length < input.length) component.addInputPort();
+        component.input.length = input.length;
         for(let i = 0; i < component.input.length; ++i) {
             component.input[i].name = input[i].name;
             component.input[i].value = input[i].value;
@@ -267,6 +270,8 @@ function parse(data) {
         delete data.input;
 
         const output = data.output;
+        while(component.output.length < output.length) component.addOutputPort();
+        component.output.length = output.length;
         for(let i = 0; i < component.output.length; ++i) {
             component.output[i].name = output[i].name;
             component.output[i].value = output[i].value;
@@ -380,6 +385,14 @@ function parse(data) {
         }
     }
 
+    // Settle combinational sources after reconstructing every port and wire.
+    for(const component of components) {
+        if(component.output.length && !(component instanceof Clock) && !(component instanceof Delay)) {
+            updateQueue.push(() => component.update());
+        }
+        if(component instanceof Counter) component.previousHigh = component.input[0].value == 1;
+    }
+
     if(selection) {
         selection = {
             x: selection[0],
@@ -408,7 +421,7 @@ function saveBoard(
 ) {
     // let data = stringify(components_,wires_);
     //
-    // document.title = "BOOLR | " + name;
+    // document.title = "REEO | " + name;
     //
     // // Export data as .board file
     // const a = document.createElement("a");
@@ -417,7 +430,7 @@ function saveBoard(
     // a.setAttribute('download', name + ".board");
     // a.click();
 
-    name = name || "BOOLR-save-" + new Date().toLocaleString();
+    name = name || "REEO-save-" + new Date().toLocaleString();
 
     const data = stringify(components,wires);
     const csvData = new Blob([data], { type: "text/csv" });
@@ -431,39 +444,11 @@ function saveBoard(
 }
 
 function openFile() {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".board";
-    input.click();
-    input.onchange = e => readFile(e.target);
+    window.reeo.importBoard();
 }
 
 function readFile(input) {
-    const name = input.files[0] && input.files[0].name.replace(".board","");
-    document.title = "BOOLR | " + name;
-
-    const reader = new FileReader;
-    reader.onload = function() {
-        const data = reader.result;
-        // try {
-        // TODO: dit is lelijk!
-        const parsed = parse(data);
-        const clone = cloneSelection(parsed.components || [],parsed.wires || []);
-
-        components = [];
-        wires = [];
-        redoStack = [];
-        undoStack = [];
-
-        addSelection(
-            clone.components,
-            clone.wires
-        );
-        // } catch(e) {
-        //     throw new Error("Error reading save file");
-        // }
-    }
-
-    reader.readAsText(input.files[0]);
+    const file = input.files && input.files[0];
+    if (file) window.reeo.importFile(file);
     dialog.hide();
 }

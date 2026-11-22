@@ -60,6 +60,7 @@ waypointsMenu.show = function(
     }
 
     this.style.display = "block";
+    window.reeoPositionPopup(this, (x - offset.x) * zoom, -(y - offset.y) * zoom);
     setTimeout(() => this.style.opacity = .95, 1);
 }
 

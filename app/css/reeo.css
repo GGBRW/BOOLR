@@ -1,0 +1,1493 @@
+/* Additive improvements only: original canvas, menus, fonts, toolbar, and colors remain intact. */
+:root {
+  --reeo-accent: #ddd;
+}
+* {
+  box-sizing: border-box;
+}
+button:focus-visible,
+select:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--reeo-accent);
+  outline-offset: 4px;
+}
+button,
+select,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+canvas {
+  touch-action: none;
+}
+.reeo-wordmark {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 28px;
+}
+.reeo-wordmark img {
+  width: 100px;
+  height: 100px;
+}
+.reeo-platform-bar {
+  position: fixed;
+  inset-block-start: max(12px, env(safe-area-inset-top));
+  inset-inline-end: max(12px, env(safe-area-inset-right));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  z-index: 110;
+  font:
+    12px 'Alan Sans',
+    Arial,
+    sans-serif;
+  max-width: calc(100vw - 24px);
+}
+.reeo-platform-bar button,
+.reeo-platform-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background: #111;
+  color: #ddd;
+  cursor: pointer;
+}
+.reeo-platform-bar button:hover {
+  background: #292929;
+  border-color: #777;
+}
+.reeo-platform-bar .material-icons {
+  font-size: 19px;
+}
+.reeo-platform-bar select {
+  font: inherit;
+  background: #111;
+  color: #ddd;
+  border: 0;
+  max-width: 100px;
+  cursor: pointer;
+}
+.reeo-touch-tools {
+  display: none;
+  position: fixed;
+  z-index: 9;
+  inset-block-start: 64px;
+  inset-inline-start: 10px;
+  gap: 3px;
+  background: #111;
+  padding: 4px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px #0003;
+  font:
+    12px 'Alan Sans',
+    Arial,
+    sans-serif;
+}
+.reeo-touch-tools button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: #aaa;
+  padding: 10px 8px;
+  min-width: 36px;
+  min-height: 40px;
+  cursor: pointer;
+}
+.reeo-touch-tools button[aria-pressed='true'] {
+  background: #333;
+  color: var(--reeo-accent);
+}
+.reeo-guide {
+  padding-inline-start: 22px;
+  text-align: start;
+  line-height: 1.8;
+}
+.reeo-guide li {
+  padding: 6px 0;
+}
+#dialog {
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+}
+#dialog .container input {
+  max-width: 100%;
+}
+.main-menu .sub {
+  max-height: 70dvh;
+  overflow-y: auto;
+}
+.main-menu .sub p {
+  padding-inline: 16px;
+  line-height: 1.7;
+}
+.main-menu > button {
+  max-width: calc(100vw - 36px);
+  min-height: 50px;
+}
+#toolbar {
+  z-index: 10;
+  direction: ltr;
+}
+#toolbar #list {
+  max-height: min(65dvh, 600px);
+  overflow-y: auto;
+}
+#toolbar #toast {
+  max-width: calc(100vw - 24px);
+  white-space: normal;
+}
+#menu,
+#contextMenu {
+  max-width: calc(100vw - 20px);
+  max-height: 75dvh;
+  overflow-y: auto;
+}
+#contextMenu li,
+#menu li {
+  min-height: 40px;
+}
+#settings li {
+  min-height: 44px;
+}
+.tutorial {
+  max-width: calc(100vw - 20px);
+  max-height: calc(100dvh - 90px);
+  overflow: auto;
+}
+.tutorial img {
+  max-width: 100%;
+  height: auto;
+}
+[dir='rtl'] .main-menu,
+[dir='rtl'] #dialog,
+[dir='rtl'] .tutorial {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+[dir='rtl'] .reeo-wordmark,
+[dir='rtl'] #version,
+[dir='rtl'] .material-icons {
+  direction: ltr;
+}
+[dir='rtl'] #dialog .container,
+[dir='rtl'] .main-menu .sub {
+  text-align: start;
+}
+[dir='rtl'] .main-menu .sub h1,
+[dir='rtl'] .main-menu .new-board {
+  text-align: center;
+}
+@media (pointer: coarse), (max-width: 900px) {
+  .reeo-touch-tools {
+    display: flex;
+  }
+  #toolbar .slot {
+    min-height: 48px;
+  }
+  #toolbar #list li {
+    min-height: 44px;
+    padding-block: 12px;
+  }
+  #toolbar {
+    bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  .brbtns {
+    bottom: calc(62px + env(safe-area-inset-bottom));
+  }
+  .brbtn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+@media (max-width: 600px) {
+  .main-menu {
+    padding-bottom: 120px;
+  }
+  .main-menu > h1 {
+    font-size: clamp(68px, 19vw, 110px);
+    margin: 110px 0 28px;
+  }
+  .reeo-wordmark {
+    gap: 14px;
+  }
+  .reeo-wordmark img {
+    width: 52px;
+    height: 52px;
+  }
+  .main-menu .version {
+    font-size: 12px;
+  }
+  .main-menu > button {
+    padding: 20px 26px;
+    width: 310px;
+    font-size: 20px;
+    margin: 6px auto;
+  }
+  .main-menu > button .material-icons {
+    font-size: 32px;
+    top: -4px;
+  }
+  .main-menu .sub {
+    position: relative;
+    max-height: 65dvh;
+    padding-bottom: 20px;
+  }
+  .main-menu .sub h1 {
+    margin: 20px;
+    font-size: 25px;
+  }
+  .main-menu .sub p {
+    font-size: 13px;
+  }
+  .main-menu .sub button {
+    padding: 12px 16px;
+    margin: 6px;
+  }
+  .reeo-platform-bar {
+    inset-inline: 10px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  .reeo-platform-bar button {
+    padding: 8px 10px;
+  }
+  .reeo-platform-bar button > span:not(.material-icons) {
+    display: none;
+  }
+  #toolbar {
+    width: 336px;
+    margin-left: -168px;
+  }
+  #toolbar .slot {
+    width: 48px;
+  }
+  #version {
+    display: none;
+  }
+  #dialog {
+    width: calc(100vw - 24px);
+    left: 12px;
+    margin-left: 0;
+    padding-inline: 15px;
+  }
+  #dialog .container {
+    padding-inline: 5px;
+  }
+  #dialog h1 {
+    font-size: 26px;
+  }
+  #dialog .options button {
+    min-height: 44px;
+  }
+}
+@media (max-width: 350px) {
+  #toolbar {
+    width: 308px;
+    margin-left: -154px;
+  }
+  #toolbar .slot {
+    width: 44px;
+  }
+  .reeo-touch-tools {
+    font-size: 10px;
+    gap: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Interaction audit: visible controls have the same behavior on mouse, touch, and pen. */
+.reeo-touch-tools {
+  display: flex;
+}
+.main-menu {
+  padding-bottom: 32px;
+}
+.main-menu.has-submenu::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: #0009;
+  z-index: 1;
+}
+.main-menu .sub {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 120px);
+  transform: translate(-50%, -50%) !important;
+  padding: 10px 0 24px;
+  border-radius: 6px;
+  z-index: 2;
+  box-shadow: 0 16px 70px #0008;
+}
+.main-menu .sub::before {
+  display: none;
+}
+.main-menu .sub ul {
+  max-width: 100%;
+}
+#contextMenu,
+#waypointsMenu {
+  z-index: 120;
+  max-height: calc(100dvh - 16px);
+}
+#menu {
+  z-index: 120;
+}
+#dialog .reeo-brand-icon {
+  width: 88px;
+  height: 88px;
+  display: block;
+  margin: 12px auto 22px;
+}
+#version .reeo-brand-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-inline-end: 5px;
+}
+#version {
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+#version .brand-name {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+.tutorial {
+  display: none;
+  z-index: 130;
+  width: min(500px, calc(100vw - 16px));
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+.tutorial .sections {
+  position: absolute;
+  inset: 70px 0 90px;
+  height: auto;
+  overflow-y: auto;
+  padding: 12px 20px;
+}
+.tutorial .sections > div {
+  position: relative;
+  width: 100%;
+  display: none;
+  transform: none !important;
+  opacity: 1 !important;
+}
+.tutorial .sections > div.is-current {
+  display: block;
+}
+.tutorial .options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 80px;
+  background: #ddd;
+}
+.tutorial .options button {
+  margin: 0;
+  min-width: 48px;
+  min-height: 48px;
+}
+.tutorial .options .index {
+  position: static;
+}
+@media (max-width: 600px) {
+  #version {
+    display: none;
+  }
+  .main-menu .sub {
+    padding-bottom: 20px;
+  }
+}
+/* One outlined wordmark (the original Righteous face) is used everywhere. */
+.main-menu > h1.reeo-wordmark {
+  vertical-align: middle;
+}
+.reeo-wordmark img {
+  width: min(530px, 72vw);
+  height: auto;
+  display: block;
+}
+@media (max-width: 600px) {
+  .reeo-wordmark img {
+    width: min(290px, 73vw);
+    height: auto;
+  }
+}
+.main-menu .new-board #filename {
+  position: relative;
+  height: auto;
+  line-height: 1.5;
+  padding: 8px 12px;
+  max-width: calc(100% - 32px);
+  overflow-wrap: anywhere;
+}
+.main-menu .new-board #filename::before {
+  position: absolute;
+  top: -15px;
+}
+.main-menu .settings #settings {
+  width: auto;
+  max-width: 100%;
+}
+.main-menu .settings #settings button {
+  margin: 12px 0;
+}
+/* Keep the wordmark and version on deliberate rows at every viewport size. */
+.main-menu > h1.reeo-wordmark {
+  display: flex !important;
+  width: max-content;
+  font-size: 0;
+  line-height: 1;
+  margin: 64px auto 12px;
+}
+.main-menu > .version {
+  display: block;
+  margin: 0 auto 28px;
+  font-size: 12px;
+  color: #999;
+}
+canvas[data-tool='move'] {
+  cursor: move !important;
+}
+canvas[data-tool='pan'] {
+  cursor: grab !important;
+}
+canvas[data-tool='pan'][data-dragging='true'] {
+  cursor: grabbing !important;
+}
+@media (max-width: 600px) {
+  .main-menu > h1.reeo-wordmark {
+    margin: 105px auto 10px;
+  }
+  .main-menu > .version {
+    margin-bottom: 24px;
+  }
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* Unicode-restricted font: only Arabic glyphs use IBM Plex, including mixed text. */
+body {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+.reeo-ui-icon {
+  font-size: 0 !important;
+}
+.reeo-ui-icon::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: 24px;
+  vertical-align: middle;
+  background: currentColor;
+  mask: var(--reeo-icon) center / contain no-repeat;
+  -webkit-mask: var(--reeo-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+.reeo-circuit-icon {
+  width: 32px;
+  height: 26px;
+  vertical-align: middle;
+  pointer-events: none;
+}
+#toolbar > .slot {
+  padding-top: 12px;
+  color: #aaa;
+}
+#toolbar > .slot:hover {
+  color: #fff;
+}
+#list > li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#reeo-toast-stack {
+  position: fixed;
+  z-index: 40;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(76px, calc(env(safe-area-inset-bottom) + 76px));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: min(350px, calc(100vw - 32px));
+  max-height: calc(100dvh - 180px);
+  overflow: auto;
+  pointer-events: none;
+}
+#reeo-toast-stack .tip,
+#reeo-toast-stack #toast {
+  position: relative;
+  inset: auto !important;
+  margin: 0 !important;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 16px 48px 16px 16px;
+  border: 0;
+  border-radius: 5px;
+  background: #111;
+  color: #ddd;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: start;
+  white-space: normal;
+  pointer-events: auto;
+  animation: reeo-toast-in 0.2s ease-out;
+}
+#reeo-toast-stack #toast:not(.is-visible) {
+  display: none !important;
+}
+#reeo-toast-stack .tip::after {
+  display: none;
+}
+#reeo-toast-stack .tip > .material-icons:first-child {
+  color: #ddd;
+  margin-inline-end: 8px;
+}
+.reeo-tip-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #bbb;
+  cursor: pointer;
+}
+.reeo-tip-close:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: -4px;
+}
+@keyframes reeo-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #reeo-toast-stack .tip,
+  #reeo-toast-stack #toast {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Keep signal diagrams and code left-to-right even in an Arabic interface. */
+.reeo-circuit-icon {
+  direction: ltr;
+  flex-shrink: 0;
+}
+#dialog .container > .reeo-circuit-icon {
+  width: 100px;
+  height: 70px;
+  margin: 12px;
+}
+code,
+.key {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.console .container .input::before,
+.console .container .output::before,
+.console .container .error::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 4px;
+  background: currentColor;
+  mask: url('/icons/phosphor/caret-right.svg') center / contain no-repeat;
+}
+.console .container .error::before {
+  mask-image: url('/icons/phosphor/warning-circle.svg');
+}
+[dir='rtl'] .tutorial .previous::before,
+[dir='rtl'] .tutorial .next::before {
+  transform: scaleX(-1);
+}
+.main-menu .open-board li .reeo-board-name {
+  float: none;
+  padding: 0;
+  top: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+@font-face {
+  font-family: 'Alan Sans';
+  src: url('/fonts/alan-sans/AlanSans-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Measurable interaction dimensions; glyph size is independent of hit area. */
+:root {
+  --reeo-target: 44px;
+  --reeo-icon-size: 24px;
+  --reeo-view-width: 100vw;
+  --reeo-view-height: 100dvh;
+  --reeo-view-left: 0px;
+  --reeo-view-top: 0px;
+}
+button,
+[role='button'],
+select {
+  min-width: var(--reeo-target);
+  min-height: var(--reeo-target);
+}
+input:not([type='checkbox']):not([type='radio']),
+textarea {
+  min-height: var(--reeo-target);
+}
+.reeo-ui-icon::before {
+  font-size: var(--reeo-icon-size);
+}
+.reeo-platform-bar button,
+.reeo-platform-bar label {
+  min-height: 44px;
+}
+.reeo-platform-bar select {
+  min-height: 30px;
+}
+.reeo-touch-tools button {
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 7px;
+}
+.reeo-platform-bar,
+.reeo-touch-tools {
+  gap: 4px;
+}
+.close,
+.reeo-tip-close {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  top: 4px;
+  right: 4px;
+}
+.close:hover,
+.close:active {
+  transform: none;
+}
+#menu li,
+#contextMenu li,
+#waypointsMenu li,
+#list li,
+#customComponentToolbar .menu li {
+  min-height: 44px;
+  height: auto;
+  line-height: 24px;
+}
+#menu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+}
+#menu li .material-icons {
+  float: none;
+  margin: 0;
+}
+#menu li span {
+  margin-inline-start: auto;
+  padding-inline-start: 12px;
+  white-space: nowrap;
+}
+#menu,
+#contextMenu,
+#waypointsMenu {
+  margin: 0;
+}
+#dialog {
+  left: calc(var(--reeo-view-left) + var(--reeo-view-width) / 2) !important;
+  top: calc(var(--reeo-view-top) + var(--reeo-view-height) / 2) !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0;
+  width: min(440px, calc(var(--reeo-view-width) - 24px));
+  max-width: calc(var(--reeo-view-width) - 24px);
+  max-height: calc(var(--reeo-view-height) - 24px);
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+#dialog h1 {
+  padding: 20px 48px 16px;
+  overflow-wrap: anywhere;
+}
+#dialog .container {
+  padding: 0 20px 16px;
+  overflow-wrap: anywhere;
+}
+#dialog .container input,
+#dialog .container textarea {
+  max-width: calc(100% - 16px);
+}
+#dialog .options {
+  position: sticky;
+  bottom: 0;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  background: #111;
+  z-index: 1;
+}
+#dialog .options button {
+  margin: 0;
+  min-height: 44px;
+  padding: 10px 18px;
+}
+.main-menu .sub {
+  left: calc(var(--reeo-view-left) + var(--reeo-view-width) / 2);
+  top: calc(var(--reeo-view-top) + var(--reeo-view-height) / 2);
+  max-width: calc(var(--reeo-view-width) - 24px);
+  max-height: calc(var(--reeo-view-height) - 24px);
+}
+#toolbar #list,
+#toolbartip,
+#creditstip,
+#hoverBalloon,
+#componentInfo,
+#customComponentToolbar .menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: calc(var(--reeo-view-width) - 16px);
+  max-height: calc(var(--reeo-view-height) - 16px);
+  overflow: auto;
+  overflow-wrap: anywhere;
+  transform: none !important;
+  transition: opacity 0.15s;
+  z-index: 150;
+}
+#toolbar #list {
+  width: max-content;
+  min-width: 190px;
+  max-height: min(65dvh, 600px);
+}
+#toolbartip::after,
+#creditstip::after,
+#hoverBalloon::after,
+#componentInfo::after {
+  display: none;
+}
+.tutorial {
+  z-index: 140;
+  height: var(--reeo-view-height);
+  max-height: var(--reeo-view-height);
+  max-width: var(--reeo-view-width);
+  top: var(--reeo-view-top);
+  overscroll-behavior: contain;
+}
+.tutorial .sections {
+  height: calc(100% - 145px);
+}
+.tutorial h1 {
+  padding-inline: 48px;
+}
+.console {
+  z-index: 145;
+  max-width: calc(var(--reeo-view-width) - 16px);
+  max-height: calc(var(--reeo-view-height) - 16px);
+  left: calc(var(--reeo-view-left) + 8px);
+  bottom: auto;
+  top: calc(var(--reeo-view-top) + 8px);
+  padding: 16px;
+}
+.console .toolbar {
+  display: flex;
+  gap: 4px;
+}
+.console .toolbar button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+#customComponentToolbar {
+  top: 124px !important;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  width: min(350px, calc(100vw - 16px));
+  z-index: 125;
+}
+#customComponentToolbar .close {
+  left: 0;
+  right: auto;
+  top: 3px;
+  bottom: auto;
+}
+#customComponentToolbar .edit {
+  top: 3px;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+}
+#customComponentToolbar #name {
+  display: block;
+  padding-inline: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#reeo-toast-stack {
+  bottom: max(126px, calc(env(safe-area-inset-bottom) + 126px));
+}
+@media (min-width: 901px) {
+  #reeo-toast-stack {
+    bottom: 76px;
+  }
+}
+@media (max-width: 350px) {
+  .reeo-touch-tools {
+    inset-inline: 8px;
+    padding: 2px;
+    gap: 0;
+    justify-content: space-between;
+  }
+  .reeo-touch-tools button {
+    padding-inline: 3px;
+    font-size: 11px;
+  }
+  #toolbar {
+    width: 308px;
+    margin-left: -154px;
+  }
+  #toolbar .slot {
+    width: 44px;
+  }
+}
+@media (max-height: 480px) {
+  .main-menu > h1.reeo-wordmark {
+    margin: 72px 0 8px;
+  }
+  .main-menu > h1.reeo-wordmark img {
+    width: 210px;
+  }
+  .main-menu > .version {
+    margin-block: 0;
+  }
+  .main-menu > button {
+    padding-block: 8px;
+    margin-block: 3px;
+  }
+}
+.main-menu.has-submenu {
+  z-index: 180;
+  overflow: hidden;
+  transform: none !important;
+}
+.reeo-platform-bar label {
+  padding-block: 0;
+}
+.reeo-platform-bar select {
+  min-height: 44px;
+}
+#toolbartip span {
+  font-size: 12px !important;
+}
+.console .container {
+  height: calc(100% - 52px);
+}
+#contextMenu,
+#menu,
+#waypointsMenu,
+#toolbartip,
+#creditstip,
+#hoverBalloon,
+#componentInfo,
+#customComponentToolbar .menu {
+  width: max-content !important;
+}
+.console {
+  transform: none !important;
+}
+
+.reeo-help-panel {
+  position: fixed;
+  z-index: 1200;
+  inset: calc(var(--reeo-view-top) + 12px) auto auto calc(var(--reeo-view-left) + 12px);
+  width: calc(var(--reeo-view-width) - 24px);
+  height: calc(var(--reeo-view-height) - 24px);
+  max-width: 1100px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.reeo-help-panel[hidden],
+.reeo-guide-dock[hidden] {
+  display: none;
+}
+.reeo-help-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.reeo-help-panel h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+}
+.reeo-help-panel button,
+.reeo-guide-dock button,
+.reeo-smart-tip button:not(.reeo-tip-close) {
+  margin: 0;
+  min-width: 0;
+}
+.reeo-help-panel nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.reeo-help-panel nav button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 3px 0 0 #ddd;
+}
+.reeo-help-panel input[type='search'] {
+  width: 100%;
+  margin: 0 0 4px;
+  padding: 10px 2px;
+}
+.reeo-help-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.reeo-help-panel label input {
+  width: 24px;
+  height: 24px;
+}
+.reeo-help-results {
+  overflow: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+  line-height: 1.75;
+  padding: 4px;
+}
+.reeo-help-results > ol > li {
+  margin-bottom: 18px;
+}
+.reeo-help-card {
+  padding: 20px 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.reeo-help-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  color: inherit;
+  font-weight: 400;
+}
+.reeo-help-card h4 {
+  margin: 12px 0 4px;
+  font-size: 15px;
+}
+.reeo-help-card p {
+  margin: 0 0 12px;
+}
+.reeo-help-card li {
+  margin: 12px 0;
+}
+.reeo-help-card button {
+  margin: 8px 8px 0 0;
+}
+.reeo-component-help {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  color: #bbb;
+  border: 0;
+}
+.reeo-guide-dock {
+  position: fixed;
+  z-index: 160;
+  left: 12px;
+  bottom: 130px;
+  width: min(390px, calc(100vw - 24px));
+  max-height: calc(var(--reeo-view-height) - 150px);
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  padding: 14px;
+  line-height: 1.6;
+}
+.reeo-guide-dock p {
+  margin: 8px 0;
+}
+.reeo-guide-dock > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.reeo-smart-tip {
+  padding-top: 18px !important;
+}
+@media (max-width: 600px) {
+  .reeo-help-panel {
+    padding: 12px;
+    gap: 8px;
+  }
+  .reeo-help-panel header {
+    align-items: start;
+  }
+  .reeo-help-panel nav {
+    gap: 4px;
+  }
+  .reeo-help-panel nav button {
+    flex: 1 1 40%;
+    font-size: 13px;
+  }
+  .reeo-help-card {
+    padding: 16px 0;
+  }
+}
+.reeo-help-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1199;
+  background: rgba(136, 136, 136, 0.75);
+}
+.reeo-help-backdrop[hidden] {
+  display: none;
+}
+.reeo-help-panel button:focus-visible,
+.reeo-help-panel input:focus-visible,
+.reeo-guide-dock button:focus-visible,
+.reeo-smart-tip button:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: 4px;
+}
+.reeo-help-panel input[type='checkbox'] {
+  accent-color: #ddd;
+}
+.reeo-help-panel input[type='search']::-webkit-search-cancel-button {
+  filter: grayscale(1);
+}
+
+/* One responsive header aligns editor tools with project actions. */
+.reeo-editor-header {
+  position: fixed;
+  z-index: 110;
+  inset-block-start: max(12px, env(safe-area-inset-top));
+  inset-inline-start: max(12px, env(safe-area-inset-left));
+  inset-inline-end: max(12px, env(safe-area-inset-right));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 12px;
+  pointer-events: none;
+}
+.reeo-editor-header .reeo-touch-tools,
+.reeo-editor-header .reeo-platform-bar {
+  position: static;
+  inset: auto;
+  max-width: 100%;
+  pointer-events: auto;
+}
+.reeo-editor-header .reeo-touch-tools {
+  order: 1;
+  padding: 4px;
+}
+.reeo-editor-header .reeo-platform-bar {
+  order: 2;
+  margin-inline-start: auto;
+  justify-content: flex-end;
+}
+.reeo-editor-header .reeo-platform-bar button,
+.reeo-editor-header .reeo-platform-bar label {
+  min-height: 52px;
+}
+@media (max-width: 350px) {
+  .reeo-editor-header .reeo-touch-tools {
+    width: 100%;
+  }
+}
+
+/* Compact learning/release dialogs, using the original dialog treatment. */
+.reeo-help-panel {
+  inset: auto;
+  left: calc(var(--reeo-view-left) + var(--reeo-view-width) / 2);
+  top: calc(var(--reeo-view-top) + var(--reeo-view-height) / 2);
+  transform: translate(-50%, -50%);
+  width: min(760px, calc(var(--reeo-view-width) - 24px));
+  height: min(660px, calc(var(--reeo-view-height) - 32px));
+  max-width: none;
+  padding: 20px;
+  gap: 12px;
+}
+.reeo-help-panel h2 {
+  padding: 0;
+  font-size: 24px;
+}
+.reeo-help-panel header button {
+  flex-shrink: 0;
+}
+.reeo-help-results {
+  line-height: 1.65;
+}
+.reeo-help-card {
+  padding-block: 16px;
+}
+.reeo-help-card h3 {
+  margin-bottom: 12px;
+}
+.reeo-help-card h4 {
+  margin-top: 12px;
+}
+.reeo-help-card p {
+  margin-bottom: 8px;
+}
+.reeo-editor-header #reeo-help {
+  width: 52px;
+  padding: 0;
+  justify-content: center;
+}
+.reeo-editor-header #reeo-help .material-icons {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+#dialog.reeo-whats-new {
+  width: min(420px, calc(var(--reeo-view-width) - 24px));
+}
+#dialog.reeo-whats-new h1 {
+  padding-bottom: 4px;
+}
+#dialog.reeo-whats-new .reeo-release-version {
+  margin: 0 0 16px;
+  color: #888;
+}
+#dialog.reeo-whats-new .container {
+  padding-bottom: 0;
+}
+#dialog.reeo-whats-new ul {
+  margin: 0;
+  padding-inline-start: 20px;
+  text-align: start;
+}
+#dialog.reeo-whats-new li {
+  width: auto;
+  margin: 0;
+  padding: 6px 0;
+  cursor: default;
+}
+#dialog.reeo-whats-new li:hover {
+  background: transparent;
+}
+#dialog.reeo-whats-new .options {
+  padding-block: 16px;
+}
+@media (max-width: 600px) {
+  .reeo-help-panel {
+    padding: 16px;
+    gap: 10px;
+  }
+  .reeo-help-panel h2 {
+    font-size: 22px;
+  }
+  .reeo-help-panel header {
+    align-items: center;
+    gap: 12px;
+  }
+  .reeo-help-panel nav button {
+    padding: 8px;
+  }
+}
+
+#dialog .reeo-color-palette {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  gap: 12px;
+  margin-block: 16px 4px;
+}
+#dialog .container .reeo-color-swatch {
+  float: none;
+  display: block;
+  width: 100%;
+  height: 48px;
+  min-width: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #888;
+  border-radius: 0;
+}
+#dialog .container .reeo-color-swatch:hover {
+  box-shadow: inset 0 0 0 2px #fff;
+}
+#dialog .container .reeo-color-swatch:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: 3px;
+}
+
+/* Logical row layout: icon, label, then isolated shortcut in both directions. */
+#menu li,
+#contextMenu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  text-align: start;
+}
+#menu li > .material-icons,
+#contextMenu li > .material-icons {
+  position: static;
+  float: none;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
+}
+#menu li > .reeo-menu-label,
+#contextMenu li > .reeo-menu-label {
+  float: none;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  white-space: nowrap;
+}
+#menu li > .reeo-menu-key,
+#contextMenu li > .key {
+  float: none;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 8px;
+  line-height: 24px;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: 'Alan Sans', sans-serif;
+}
+#contextMenu li > .key:empty {
+  display: none;
+}
+#toolbar #list > li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  text-align: start;
+}
+#toolbar #list > li > .reeo-circuit-icon {
+  margin: 0;
+}
+#toolbar #list > li > .reeo-picker-label {
+  min-width: 0;
+}
+#toolbar #list > li > .reeo-component-help {
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.reeo-editor-header .reeo-platform-bar,
+.reeo-editor-header .reeo-touch-tools,
+.reeo-editor-header .reeo-platform-bar select {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+.reeo-editor-header .reeo-platform-bar select {
+  color-scheme: dark;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.reeo-language-menu {
+  position: fixed;
+  z-index: 150;
+  min-width: 140px;
+  padding: 4px 0;
+  background: #111;
+  color: #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+.reeo-language-menu[hidden] {
+  display: none;
+}
+.reeo-language-menu button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.reeo-language-menu button:hover,
+.reeo-language-menu button[aria-selected='true'] {
+  background: #222;
+}
+.reeo-language-menu button:focus-visible {
+  outline-offset: -3px;
+}
+[dir='rtl'] #toolbar #list > li {
+  direction: rtl;
+}
+#toolbar #list > li > .reeo-component-help {
+  border: 0;
+}
+.reeo-language-menu button {
+  text-align: match-parent;
+}
+
+/* Home is navigation, not the circuit editor: only language stays available. */
+body[data-reeo-screen='home'] .reeo-touch-tools,
+body[data-reeo-screen='home'] .reeo-platform-bar > button,
+body[data-reeo-screen='home'] #toolbar,
+body[data-reeo-screen='home'] .brbtns,
+body[data-reeo-screen='home'] #customComponentToolbar,
+body[data-reeo-screen='home'] .reeo-guide-dock,
+body[data-reeo-screen='home'] #reeo-toast-stack {
+  display: none !important;
+}
+.reeo-language-control {
+  position: relative;
+  pointer-events: auto;
+}
+.reeo-editor-header .reeo-language-control > label {
+  width: 100%;
+}
+.reeo-language-control:has(select[aria-expanded='true']) > label {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.reeo-language-control .reeo-language-menu {
+  position: absolute;
+  inset: 100% 0 auto;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #333;
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  box-shadow: none;
+  overflow: hidden;
+}
+.reeo-editor-header .reeo-language-menu button {
+  display: block;
+  min-height: 44px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #ddd;
+  text-align: match-parent;
+}
+.reeo-editor-header .reeo-language-menu button:hover,
+.reeo-editor-header .reeo-language-menu button[aria-selected='true'] {
+  background: #222;
+}

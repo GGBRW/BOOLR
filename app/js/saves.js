@@ -44,16 +44,18 @@ function clearBoard() {
     variables = {};
     variableReferences = {};
 
+    for(const component of (path[0]?.components || components)) component.dispose();
     path = [];
 
     chat.hide();
-    boolrConsole.hide();
+    reeoConsole.hide();
     contextMenu.hide();
     waypointsMenu.hide();
     hoverBalloon.hide();
     customComponentToolbar.hide();
     notifications.innerHTML = "";
 
+    updateQueue.length = 0;
     components = [];
     wires = [];
 
@@ -93,7 +95,7 @@ function openSaveFile(save) {
     }
 
     openedSaveFile = save;
-    document.title = save.name + " - BOOLR";
+    document.title = save.name + " - REEO";
 }
 
 function createFileName(name) {
@@ -140,13 +142,13 @@ function createSaveFile(name) {
     });
 
     openedSaveFile = saves.slice(-1)[0];
-    document.title = save.name + " - BOOLR";
+    document.title = save.name + " - REEO";
 }
 
 function save(msg = false) {
     toolbar.message("Saving...");
         setTimeout(() => {
-        if(!components || components.length == 0) return;
+        if(!components) return;
         if(!openedSaveFile) return dialog.createBoard();
 
         const save = {};
@@ -171,4 +173,9 @@ function save(msg = false) {
             toolbar.message("Saved changes to " + openedSaveFile.fileName);
         }
     });
+}
+
+function createNewBoard(name) {
+    clearBoard();
+    createSaveFile(name);
 }

@@ -1,8 +1,10 @@
+let showFirstRunWelcome = !localStorage.pwsData;
 const mainMenu = document.querySelector(".main-menu");
 
 mainMenu.show = function() {
     openedSaveFile && save();
     this.style.display = "block";
+    document.querySelector("#reeo-resume").style.display = openedSaveFile || components.length ? "block" : "none";
 
     setTimeout(() => {
         this.style.opacity = 1;
@@ -20,7 +22,7 @@ mainMenu.show = function() {
     }
 
     setTimeout(() => loading.style.display = "none");
-    setTimeout(clearBoard,1000);
+    // Opening navigation must not clear the circuit behind it.
 }
 
 mainMenu.hide = function() {
@@ -39,7 +41,8 @@ mainMenu.hide = function() {
         this.style.display = "none";
         c.focus();
 
-        if(!localStorage.pwsData) {
+        if(showFirstRunWelcome) {
+            showFirstRunWelcome = false;
             dialog.welcome();
         }
     }, 500);
@@ -56,26 +59,19 @@ for(let i of sub) {
     i.show = function() {
         i.onopen && i.onopen();
 
+        for(let j of sub) {
+            if (j !== this) j.hide();
+        }
         this.style.display = "block";
-        const height = Math.min(innerHeight - this.getBoundingClientRect().bottom, 0) - 100;
-
-        setTimeout(() => {
-            this.style.opacity = 1;
-            this.style.transform = "translateY(0px)";
-            mainMenu.style.transform = `translateY(${height}px)`;
-        },10);
-
-        setTimeout(() => this.querySelector("input") && this.querySelector("input") .focus(), 10);
-
-        for(let j of sub) i != j && j.hide();
+        this.style.opacity = 1;
+        mainMenu.classList.add("has-submenu");
+        setTimeout(() => this.querySelector("input")?.focus(), 10);
     }
 
     i.hide = function() {
         this.style.opacity = 0;
-        this.style.transform = "translateY(-50px)";
-        mainMenu.style.transform = "translateY(0px)";
-        setTimeout(() => this.style.display = "none", 500);
-
+        this.style.display = "none";
+        if (![...sub].some(panel => panel.style.display === "block")) mainMenu.classList.remove("has-submenu");
         i.onclose && i.onclose();
     }
 
@@ -131,7 +127,11 @@ openBoardMenu.onopen = function() {
         const li = document.createElement("li");
         li.save = save;
 
-        li.appendChild(document.createTextNode(`${save.name}`));
+        const nameLabel = document.createElement('span');
+        nameLabel.className = 'reeo-board-name';
+        nameLabel.setAttribute('data-no-i18n', '');
+        nameLabel.textContent = save.name;
+        li.appendChild(nameLabel);
 
         // Remove board button
         const removeBtn = document.createElement("i");
@@ -172,7 +172,9 @@ openBoardMenu.onopen = function() {
         li.appendChild(sizeSpan);
 
         const fileNameSpan = document.createElement("span");
-        fileNameSpan.innerHTML = `<span>${save.fileName}</span>`;
+        fileNameSpan.setAttribute('data-no-i18n', '');
+        fileNameSpan.dir = 'ltr';
+        fileNameSpan.textContent = save.fileName;
         li.appendChild(fileNameSpan);
 
         li.onclick = () => {

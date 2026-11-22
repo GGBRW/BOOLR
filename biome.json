@@ -1,0 +1,21 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
+  "formatter": {
+    "enabled": false
+  },
+  "assist": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "suspicious": {
+        "noExplicitAny": "error"
+      }
+    }
+  },
+  "files": {
+    "includes": ["src/**/*.ts", "electron/**/*.ts", "tests/**/*.ts", "*.ts", "scripts/**/*.ts"]
+  }
+}

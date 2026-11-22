@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=REEO
+Comment=Digital logic, limitless curiosity
+Icon=reeo
+Exec=reeo %U
+Terminal=false
+Categories=Education;Electronics;
+StartupWMClass=REEO

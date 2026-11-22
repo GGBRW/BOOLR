@@ -20,30 +20,13 @@ contextMenu.show = function(
         }
     }
 
-    // Show the context menu on the screen
-    // this.style.display = "block";
-    // this.x = Math.min(
-    //     x,
-    //     c.width / zoom + offset.x - (this.clientWidth + 1) / zoom
-    // );
-    // this.y = Math.max(
-    //     y - 1 / zoom,
-    //     -c.height / zoom + offset.y + this.clientHeight / zoom
-    // );
-
-    setTimeout(() => {
-        contextMenu.style.opacity = 1;
-        this.style.width = this.clientWidth + 1;
-    },10);
+    window.reeoPositionPopup(this, (x - offset.x) * zoom, -(y - offset.y) * zoom);
+    this.style.opacity = 1;
 }
 
 contextMenu.hide = function() {
     this.style.opacity = 0;
-    setTimeout(
-        () => contextMenu.style.display = "none",
-        200
-    );
-
+    this.style.display = "none";
     waypointsMenu.hide();
 }
 
@@ -60,8 +43,8 @@ function createContextMenuOption(text,icon,key,onclick,show) {
     const option = document.createElement("li");
     option.innerHTML =
         `<i class="material-icons">${icon}</i>` +
-        `<span>${text}</span>` +
-        `<span class="key">${key}</span>`;
+        `<span class="reeo-menu-label">${text}</span>` +
+        `<span class="key" dir="ltr">${key}</span>`;
     option.onclick = onclick;
     option.show = show;
     contextMenu.options.push(option);
@@ -333,3 +316,9 @@ createContextMenuOption(
     }
 );
 
+
+createContextMenuOption(
+    "Component help", "help_outline", "",
+    function() { const part = findComponentByPos(...contextMenu.getPos()); if(part) window.reeoHelp.open(part.constructor.name); },
+    function() { return !!findComponentByPos(...contextMenu.getPos()); }
+);

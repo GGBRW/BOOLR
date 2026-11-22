@@ -1,17 +1,63 @@
 {
-  "name": "BOOLR",
-  "description": "A digital logic simulator",
-  "version": "0.1.301",
+  "name": "reeo",
+  "productName": "REEO",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "REEO — digital logic, limitless curiosity. The original circuit playground, renewed.",
+  "license": "GPL-3.0-only",
+  "author": "REEO contributors; original BOOLR by Gees Brouwer",
+  "packageManager": "bun@1.4.5",
+  "engines": {
+    "bun": ">=1.3.0",
+    "node": ">=22.12.0"
+  },
+  "main": "electron-out/main.cjs",
   "scripts": {
-    "start": "electron ."
+    "dev": "bun --bun vite --host 0.0.0.0",
+    "start": "bun run dev",
+    "build": "bun run typecheck && bun --bun vite build",
+    "build:web": "bun run build",
+    "preview": "bun --bun vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.electron.json --noEmit",
+    "test": "bun test ./src",
+    "test:watch": "bun test --watch ./src",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "bun run lint:oxlint && bun run lint:biome",
+    "lint:oxlint": "oxlint src electron tests scripts *.ts",
+    "lint:biome": "biome lint src electron tests scripts *.ts",
+    "check": "bun run typecheck && bun run lint && bun run format:check && bun run test",
+    "desktop:compile": "bun build electron/main.ts --target=node --format=cjs --external=electron --outfile=electron-out/main.cjs && bun build electron/preload.ts --target=node --format=cjs --external=electron --outfile=electron-out/preload.cjs",
+    "desktop:dev": "bun run build && bun run desktop:compile && electron .",
+    "desktop:pack": "bun run build && bun run desktop:compile && electron-builder --publish never",
+    "mobile:android": "bun run build && cap sync android && bun run mobile:assets",
+    "mobile:ios": "bun run build && cap sync ios && bun run mobile:assets",
+    "mobile:add:android": "cap add android",
+    "mobile:add:ios": "cap add ios",
+    "mobile:assets": "bun scripts/native-assets.ts",
+    "build:vercel": "bun run build:web && bun run verify:web",
+    "verify:web": "bun scripts/verify-web.ts"
   },
-  "author": {
-    "name": "Gees Brouwer",
-    "email": "gees@ggbrw.nl",
-    "url": "http://ggbrw.nl"
-  },
-  "main": "app/main.js",
   "dependencies": {
-    "electron": "^1.7.9"
+    "@capacitor/core": "^8.6.2",
+    "@phosphor-icons/core": "^2.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/ios": "^8.6.2",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^24.0.0",
+    "electron": "^45.4.1",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.28.0",
+    "oxlint": "^1.94.0",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "@types/bun": "^1.3.0"
   }
 }

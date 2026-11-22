@@ -1,0 +1,24 @@
+appId: app.reeo.logic
+productName: REEO
+copyright: Copyright © REEO contributors; original BOOLR by Gees Brouwer
+artifactName: REEO-${version}-${os}-${arch}.${ext}
+directories:
+  output: releases
+files:
+  - dist/**/*
+  - electron-out/**/*
+  - public/brand/reeo-icon.png
+  - package.json
+asar: true
+npmRebuild: false
+linux:
+  target: [AppImage, deb]
+  category: Education
+  icon: public/brand/reeo-icon.png
+win:
+  target: [nsis]
+  icon: public/brand/reeo-icon.ico
+mac:
+  target: [dmg, zip]
+  category: public.app-category.education
+  icon: public/brand/reeo-icon.png

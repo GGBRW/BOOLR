@@ -32,7 +32,7 @@
     background: transparent;
     border: none;
     padding: 10px 10px 10px 2px;
-    font-family: "Ubuntu Mono", Monospaced;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     color: #ddd;
     outline: none;
@@ -46,7 +46,7 @@
 
 .console .container .input, .console .container .output {
     padding: 2px 5px;
-    font-family: "Ubuntu Mono", Monospaced;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     color: #ddd;
 }
@@ -72,7 +72,7 @@
 .console .container .log {
     background: rgba(255,255,255,.1);
     color: #ddd;
-    font-family: "Ubuntu", Monospaced;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     padding: 10px 10px 10px 15px;
     margin-top: 5px;
@@ -83,7 +83,7 @@
 .console .container .error {
     background: rgba(255,0,0,.1);
     color: red;
-    font-family: "Ubuntu", Monospaced;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 15px;
     padding: 10px 10px 10px 15px;
     margin-top: 5px;

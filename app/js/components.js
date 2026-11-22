@@ -19,6 +19,7 @@ function add(
     sendToSocket = true
 ) {
     if(!findPortByPos(x,y) && !findWireByPos(x,y) || force) {
+        component.revive();
         components.push(component);
 
         if(undoable && component.constructor == Custom && component.input.length + component.output.length == 0) {
@@ -64,6 +65,7 @@ function addSelection(
     undoable = false,
     sendToSocket = true
 ) {
+    for(const component of components) component.revive();
     window.components.push(...components);
 
     for(let i = 0; i < wires.length; ++i) {
@@ -172,7 +174,7 @@ function removeComponent(component, undoable = false, sendToSocket = true) {
         }
     }
 
-    delete component.delay;
+    component.dispose();
 
     const wireIDs = removedWires.map(i => i.id);
 
@@ -1562,7 +1564,33 @@ class Component {
         this.output = [];
     }
 
+    schedule(task, delay) {
+        const generation = this.timerGeneration || 0;
+        this.timers ||= new Set();
+        const timer = setTimeout(() => {
+            this.timers.delete(timer);
+            if(!this.disposed && (this.timerGeneration || 0) === generation) task();
+        }, Math.max(0, Number(delay) || 0));
+        this.timers.add(timer);
+    }
+
+    dispose() {
+        this.disposed = true;
+        this.timerGeneration = (this.timerGeneration || 0) + 1;
+        for(const timer of this.timers || []) clearTimeout(timer);
+        this.timers?.clear();
+        for(const component of this.components || []) component.dispose();
+    }
+
+    revive() {
+        const wasDisposed = this.disposed;
+        this.disposed = false;
+        for(const component of this.components || []) component.revive();
+        if(wasDisposed && this instanceof Clock) this.schedule(() => this.tick(), this.properties.delay);
+    }
+
     update() {
+        if(this.disposed) return;
         // Highlight
         if(settings.showComponentUpdates) this.highlight(250);
 
@@ -1619,15 +1647,7 @@ class Component {
         }
         ctx.fillStyle = "#fff";
         ctx.lineWidth = zoom / 12;
-        ctx.beginPath();
-        ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
-        );
-        zoom > 24 && ctx.fill();
-        ctx.stroke();
+        window.reeoDrawComponentBody(ctx, this, x, y, zoom);
 
         ctx.textBaseline = "middle";
 
@@ -1635,7 +1655,12 @@ class Component {
         if(this.icon && zoom > 3) {
             ctx.textAlign = "center";
 
-            if(this.icon.type == "icon") {
+            if(["NOT","AND","OR","XOR"].includes(this.constructor.name)) {
+                // Body is already the full gate silhouette.
+            } else if(this.icon.type !== "value" && window.reeoDrawComponentIcon(ctx, this.constructor.name,
+                x - zoom / 2, y - zoom / 2, this.width * zoom, this.height * zoom)) {
+                // Vector circuit symbol; value components keep their live numeric state.
+            } else if(this.icon.type == "icon") {
                 ctx.fillStyle = this.value ? "#aaa" : "#111";
                 ctx.font = zoom / 1.3 + "px Material-icons";
                 ctx.fillText(
@@ -1645,7 +1670,7 @@ class Component {
                 );
             } else if(this.icon.type == "char") {
                 ctx.fillStyle = this.value ? "#aaa" : "#111";
-                ctx.font = "normal normal normal " + zoom / 1.2 + "px Ubuntu";
+                ctx.font = "normal normal normal " + zoom / 1.2 + "px 'REEO Arabic', 'Alan Sans'";
                 ctx.fillText(
                     this.icon.text,
                     x + (this.width - 1) / 2 * zoom,
@@ -1653,7 +1678,7 @@ class Component {
                 );
             } else if(this.icon.type == "value") {
                 ctx.fillStyle = "#111";
-                ctx.font = "normal normal normal " + zoom / 1.3 + "px Monospaced";
+                ctx.font = "normal normal normal " + zoom / 1.3 + "px 'Alan Sans'";
                 ctx.fillText(
                     this.value,
                     x + (this.width - 1) / 2 * zoom,
@@ -1665,7 +1690,7 @@ class Component {
         // Draw the name of the component in the upper left corner
         if(this.name && zoom > 30) {
             ctx.textAlign = "left";
-            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.font = "italic normal normal " + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.name,
@@ -1677,7 +1702,7 @@ class Component {
         // If this component has a delay value, draw the delay value of the component in the bottom left corner
         if(this.properties.delay && zoom > 30) {
             ctx.textAlign = "left";
-            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.font = "italic normal normal " + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.properties.delay + " ms",
@@ -1731,7 +1756,7 @@ class Component {
                 const name = this.input[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -1784,7 +1809,7 @@ class Component {
                 const name = this.output[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -1927,6 +1952,7 @@ class TimerStart extends Component {
     }
 
     update() {
+        if(this.disposed) return;
         console.time();
         timerStart = new Date;
 
@@ -1949,8 +1975,9 @@ class TimerEnd extends Component {
     }
 
     update() {
+        if(this.disposed) return;
         console.timeEnd();
-        boolrConsole.log(this.name + ": " + (new Date - timerStart) + " ms");
+        reeoConsole.log(this.name + ": " + (new Date - timerStart) + " ms");
 
         this.function();
 
@@ -2046,10 +2073,10 @@ class Button extends Component {
 }
 
 class Constant extends Component {
-    constructor(name,pos,value = 0) {
+    constructor(name,pos,value = 1) {
         super(name,pos,2,1,{ type: "value" });
         this.addOutputPort({ side: 1, pos: 0 });
-        this.value = 1;
+        this.value = value ? 1 : 0;
     }
 
     function() {
@@ -2063,7 +2090,7 @@ class Delay extends Component {
         this.addInputPort({ side: 3, pos: 0 });
         this.addOutputPort({ side: 1, pos: 0 });
 
-        setTimeout(() => {
+        this.schedule(() => {
             if(!this.properties.hasOwnProperty("delay")) {
                 dialog.editDelay(this);
             }
@@ -2071,14 +2098,17 @@ class Delay extends Component {
     }
 
     update() {
+        if(this.disposed) return;
         // Highlight
         if(settings.showComponentUpdates) this.highlight(250);
 
         this.lastUpdate = new Date;
 
         const value = this.input[0].value;
-        setTimeout(() => updateQueue.push(
+        const generation = this.timerGeneration || 0;
+        this.schedule(() => updateQueue.push(
             () => {
+                if(this.disposed || (this.timerGeneration || 0) !== generation) return;
                 this.output[0].value = value;
                 this.output[0].connection && this.output[0].connection.update(value);
             }
@@ -2104,15 +2134,7 @@ class Delay extends Component {
         }
         ctx.fillStyle = "#fff";
         ctx.lineWidth = zoom / 12 | 0;
-        ctx.beginPath();
-        ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
-        );
-        zoom > 24 && ctx.fill();
-        ctx.stroke();
+        window.reeoDrawComponentBody(ctx, this, x, y, zoom);
 
         const dTime = new Date - this.lastUpdate;
         if(this.output[0].value == 0 && dTime > 0 && dTime < this.properties.delay) {
@@ -2132,7 +2154,12 @@ class Delay extends Component {
         if(this.icon && zoom > 3) {
             ctx.textAlign = "center";
 
-            if(this.icon.type == "icon") {
+            if(["NOT","AND","OR","XOR"].includes(this.constructor.name)) {
+                // Body is already the full gate silhouette.
+            } else if(this.icon.type !== "value" && window.reeoDrawComponentIcon(ctx, this.constructor.name,
+                x - zoom / 2, y - zoom / 2, this.width * zoom, this.height * zoom)) {
+                // Vector circuit symbol; value components keep their live numeric state.
+            } else if(this.icon.type == "icon") {
                 ctx.fillStyle = this.value ? "#aaa" : "#111";
                 ctx.font = zoom / 1.3 + "px Material-icons";
                 ctx.fillText(
@@ -2142,7 +2169,7 @@ class Delay extends Component {
                 );
             } else if(this.icon.type == "char") {
                 ctx.fillStyle = this.value ? "#aaa" : "#111";
-                ctx.font = "normal normal normal " + zoom / 1.2 + "px Ubuntu";
+                ctx.font = "normal normal normal " + zoom / 1.2 + "px 'REEO Arabic', 'Alan Sans'";
                 ctx.fillText(
                     this.icon.text,
                     x + (this.width - 1) / 2 * zoom,
@@ -2150,7 +2177,7 @@ class Delay extends Component {
                 );
             } else if(this.icon.type == "value") {
                 ctx.fillStyle = "#111";
-                ctx.font = "normal normal normal " + zoom / 1.3 + "px Monospaced";
+                ctx.font = "normal normal normal " + zoom / 1.3 + "px 'Alan Sans'";
                 ctx.fillText(
                     this.value,
                     x + (this.width - 1) / 2 * zoom,
@@ -2162,7 +2189,7 @@ class Delay extends Component {
         // Draw the name of the component in the upper left corner
         if(this.name && zoom > 30) {
             ctx.textAlign = "left";
-            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.font = "italic normal normal " + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.name,
@@ -2174,7 +2201,7 @@ class Delay extends Component {
         // Draw the delay value of the component in the bottom left corner
         if(this.properties.delay && zoom > 30) {
             ctx.textAlign = "left";
-            ctx.font = "italic normal normal " + zoom / 7 + "px Ubuntu";
+            ctx.font = "italic normal normal " + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillStyle = "#888";
             ctx.fillText(
                 this.properties.delay + " ms",
@@ -2228,7 +2255,7 @@ class Delay extends Component {
                 const name = this.input[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2281,7 +2308,7 @@ class Delay extends Component {
                 const name = this.output[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2299,7 +2326,7 @@ class Clock extends Component {
         this.addOutputPort({ side: 1, pos: 0 });
         this.value = 0;
 
-        setTimeout(() => {
+        this.schedule(() => {
             if(this.properties.hasOwnProperty("delay")) {
                 this.tick();
             } else {
@@ -2309,10 +2336,16 @@ class Clock extends Component {
     }
 
     tick() {
+        if(this.disposed) return;
         this.value = 1 - this.value;
         this.update();
-        this.properties.delay && setTimeout(
-            () => updateQueue.push(this.tick.bind(this)),
+        this.properties.delay && this.schedule(
+            () => {
+                const generation = this.timerGeneration || 0;
+                updateQueue.push(() => {
+                    if((this.timerGeneration || 0) === generation) this.tick();
+                });
+            },
             this.properties.delay
         );
     }
@@ -2344,9 +2377,9 @@ class Debug extends Component {
     }
 
     function() {
-        this.input[0].value = this.value;
+        this.value = this.input[0].value;
         notifications.push(this.name + ": " + this.value);
-        boolrConsole.log(this.name + ": " + this.value);
+        reeoConsole.log(this.name + ": " + this.value);
     }
 }
 
@@ -2373,7 +2406,9 @@ class Counter extends Component {
     }
 
     function() {
-        if(this.input[0].value == 1) ++this.value;
+        const high = this.input[0].value == 1;
+        if(high && !this.previousHigh) ++this.value;
+        this.previousHigh = high;
     }
 }
 
@@ -2405,15 +2440,7 @@ class LED extends Component {
         ctx.fillStyle = "#111";
         ctx.strokeStyle = "#111";
         ctx.lineWidth = zoom / 12 | 0;
-        ctx.beginPath();
-        ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
-        );
-        ctx.fill();
-        ctx.stroke();
+        window.reeoDrawComponentBody(ctx, this, x, y, zoom);
 
         let color;
         if(this.value == 1) {
@@ -2483,7 +2510,7 @@ class LED extends Component {
                 const name = this.input[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2536,7 +2563,7 @@ class LED extends Component {
                 const name = this.output[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2569,6 +2596,7 @@ class Display extends Component {
     }
 
     update() {
+        if(this.disposed) return;
 
     }
 
@@ -2587,15 +2615,7 @@ class Display extends Component {
         ctx.fillStyle = this.fillColor || "#111";
         ctx.strokeStyle = this.strokeColor || "#111";
         ctx.lineWidth = zoom / 12 | 0;
-        ctx.beginPath();
-        ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
-        );
-        ctx.fill();
-        ctx.stroke();
+        window.reeoDrawComponentBody(ctx, this, x, y, zoom);
 
         // Draw display segments
         x = x - zoom / 2;
@@ -2765,7 +2785,7 @@ class Display extends Component {
                 const name = this.input[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2818,7 +2838,7 @@ class Display extends Component {
                 const name = this.output[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x - ctx.measureText(name).width / 2,
@@ -2857,6 +2877,7 @@ class Display extends Component {
 //     }
 //
 //     update() {
+//         if(this.disposed) return;
 //         // Highlight
 //         if(settings.showComponentUpdates) this.highlight(250);
 //
@@ -2947,7 +2968,7 @@ class ROM extends Component {
     constructor(name,pos,data=[]) {
         super(name,pos,3,8,{ type: "char", text: "ROM" });
 
-        setTimeout(() => {
+        this.schedule(() => {
             if(!this.properties.hasOwnProperty("data") ||
                !this.properties.hasOwnProperty("addressWidth")) {
                 dialog.editRom(this);
@@ -2964,7 +2985,7 @@ class ROM extends Component {
         if (rom) {
             let content = this.properties.rom[addr];
             for (let i = 0; i < this.output.length; i++) {
-                this.output[i].value = (content & (1 << i)) > 0 ? 1 : 0;
+                this.output[i].value = (content >>> i) & 1;
             }
         }
     }
@@ -2991,6 +3012,7 @@ class Custom extends Component {
     }
 
     update() {
+        if(this.disposed) return;
         // Highlight
         if(settings.showComponentUpdates) this.highlight(250);
 
@@ -3182,15 +3204,7 @@ class Custom extends Component {
         ctx.fillStyle = "#111";
         ctx.strokeStyle = "#111";
         ctx.lineWidth = zoom / 12 | 0;
-        ctx.beginPath();
-        ctx.rect(
-            x - zoom / 2,
-            y - zoom / 2,
-            this.width * zoom,
-            this.height * zoom
-        );
-        ctx.stroke();
-        ctx.fill();
+        window.reeoDrawComponentBody(ctx, this, x, y, zoom);
 
         ctx.textBaseline = "middle";
         ctx.textAlign = "center";
@@ -3198,7 +3212,7 @@ class Custom extends Component {
         // Draw the name of the component
         if(this.name && zoom > 5) {
             ctx.fillStyle = "#888";
-            ctx.font = zoom / 3 + "px Ubuntu";
+            ctx.font = zoom / 3 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillText(
                 this.name,
                 x + (this.width - 1) / 2 * zoom,
@@ -3210,7 +3224,7 @@ class Custom extends Component {
         const description = this.properties.description;
         if(description && zoom > 30) {
             ctx.fillStyle = "#666";
-            ctx.font = zoom / 7 + "px Ubuntu";
+            ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
             ctx.fillText(
                 description,
                 x + (this.width - 1) / 2 * zoom,
@@ -3279,7 +3293,7 @@ class Custom extends Component {
                 const name = this.input[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x,
@@ -3332,7 +3346,7 @@ class Custom extends Component {
                 const name = this.output[i].name;
                 if(name) {
                     ctx.fillStyle = "#888";
-                    ctx.font = zoom / 7 + "px Ubuntu";
+                    ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
                     ctx.fillText(
                         name,
                         screen.x,
@@ -3412,10 +3426,10 @@ class Wire {
             value = this.updateValue(value, from);
         }
 
-        if(this.value == value) return;
+        const changed = this.value != value;
         this.value = value;
 
-        for(let i = 0; i < this.output.length; ++i) {
+        for(let i = 0; changed && i < this.output.length; ++i) {
             const wire = this.output[i];
             if(wire != from) {
                 wire.update && updateQueue.push(wire.update.bind(wire,this.value,this));

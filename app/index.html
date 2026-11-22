@@ -1,9 +1,14 @@
-<html>
+<!doctype html>
+<html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>BOOLR</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <meta name="theme-color" content="#111111">
+        <meta name="description" content="REEO: the original digital logic playground, renewed for browsers, desktops, and touchscreens.">
+        <title>REEO</title>
 
-        <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+        <link rel="icon" type="image/svg+xml" href="/brand/reeo-mark.svg"/>
+        <link rel="apple-touch-icon" href="/brand/reeo-icon.png">
         <link rel="stylesheet" href="css/mainmenu.css">
         <link rel="stylesheet" href="css/tutorial.css">
         <link rel="stylesheet" href="css/dialog.css">
@@ -12,39 +17,47 @@
         <link rel="stylesheet" href="css/customComponentToolbar.css">
         <link rel="stylesheet" href="css/console.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/reeo.css">
     </head>
     <body>
-        <!-- If this file is opened by something else than Electron, stop loading -->
-        <script>
-            if(!(window && window.process && window.process.type)) {
-                document.write("Open BOOLR by opening the BOOLR executable.");
-                document.body.style.background = "white";
-                window.stop();
-            }
-        </script>
+        <script vite-ignore src="js/saves.js"></script>
+        <script vite-ignore src="js/savedCustomComponents.js"></script>
 
-        <script src="js/saves.js"></script>
-        <script src="js/savedCustomComponents.js"></script>
-
+        <header class="reeo-editor-header">
+        <nav class="reeo-platform-bar" aria-label="REEO tools">
+            <label><span class="material-icons" aria-hidden="true">language</span><select id="reeo-language" aria-label="Language" data-no-i18n><option value="en">English</option><option value="ar">العربية</option><option value="arz">مصري</option></select></label>
+            <button id="reeo-import" title="Import board"><span class="material-icons" aria-hidden="true">file_upload</span><span data-i18n="import">Import board</span></button>
+            <button id="reeo-export" title="Export board"><span class="material-icons" aria-hidden="true">file_download</span><span data-i18n="export">Export board</span></button>
+            <button id="reeo-help" title="Quick guide" aria-label="Quick guide"><span class="material-icons" aria-hidden="true">help_outline</span></button>
+        </nav>
+        <div class="reeo-touch-tools" aria-label="Touch tools">
+            <button data-touch-tool="interact" aria-pressed="true" data-i18n="interact">Interact</button>
+            <button data-touch-tool="move" aria-pressed="false" data-i18n="move">Move</button>
+            <button data-touch-tool="pan" aria-pressed="false" data-i18n="pan">Pan</button>
+            <button data-touch-tool="select" aria-pressed="false" data-i18n="select">Select</button>
+            <button id="reeo-zoom-out" aria-label="Zoom out">−</button>
+            <button id="reeo-zoom-in" aria-label="Zoom in">+</button>
+        </div>
+        </header>
         <!-- Preload canvas fonts -->
         <div id="preload" style="font-family: Monospaced; position: absolute; top: -20px;">&nbsp;</div>
 
         <!-- Version number -->
-        <script>const VERSION = "1.0.3"</script>
+        <script>const VERSION = "2.0.0"</script>
 
         <canvas id="canvas" tabindex="1"></canvas>
 
         <!-- Main menu -->
         <div class="main-menu">
-            <h1>BOOLR</h1>
+            <h1 class="reeo-wordmark"><img src="/brand/reeo-wordmark.svg" alt="REEO"></h1>
             <span class="version"></span>
 
             <div class="loading">LOADING...</div>
-            <button onclick="event.ctrlKey ? this.parentNode.hide() : newBoardMenu.toggle()"><i class="material-icons">add</i>NEW BOARD</button>
+            <button disabled onclick="event.ctrlKey ? this.parentNode.hide() : newBoardMenu.toggle()"><i class="material-icons">add</i>NEW BOARD</button>
 
             <div class="sub new-board">
                 <h1>Create new board</h1>
-                <input id="boardname" placeholder="Board name">
+                <input id="boardname" dir="auto" placeholder="Board name">
                 <div id="filename">This board will be saved as new-board.board</div>
 
                 <script>
@@ -54,7 +67,7 @@
                         input.onfocus = () => filename.style.opacity = 1;
                         input.onblur = () => filename.style.opacity = 0;
 
-                        input.onkeydown = () => {setTimeout(
+                        input.oninput = () => {setTimeout(
                             () => {
                                 const name = createFileName(input.value);
 
@@ -68,22 +81,22 @@
                 </script>
 
                 <br><br>
-                <p style="color: rgba(0,0,0,.5)">Hint: hold the Ctrl-key while clicking the NEW BOARD button to go sandbox mode without creating a save file</p>
+                <p style="color: rgba(0,0,0,.5)">Tip: hold Ctrl while choosing NEW BOARD to start without a saved file.</p>
                 <button onclick="this.parentNode.hide(); this.parentNode.querySelector('input').value = ''">Cancel</button>
-                <button onclick="createSaveFile(document.querySelector('.new-board #boardname').value); this.parentNode.parentNode.hide()">Create</button>
+                <button onclick="createNewBoard(document.querySelector('.new-board #boardname').value); this.parentNode.parentNode.hide()">Create</button>
             </div>
 
-            <button onclick="openBoardMenu.toggle()"><i class="material-icons">folder</i>OPEN BOARD</button>
+            <button disabled onclick="openBoardMenu.toggle()"><i class="material-icons">folder</i>OPEN BOARD</button>
 
             <div class="sub open-board">
                 <h1>Open board</h1>
                 <ul></ul>
-                <p>To open boards, paste a .board file in the saves folder</p>
-                <button onclick="require('child_process').exec('xdg-open ' + __dirname + '/../saves')">Open saves folder</button>
-                <button onclick="dialog.connectToServer()">Connect to a BOOLR server</button>
+                <p>Boards are saved on this device. Import or export a .board file to move between devices.</p>
+                <button onclick="window.reeo.importBoard()">Import a .board file</button>
+                <button onclick="dialog.connectToServer()">Connect to a REEO server</button>
             </div>
 
-            <button onclick="settingsMenu.toggle()"><i class="material-icons">settings</i>SETTINGS</button>
+            <button disabled onclick="settingsMenu.toggle()"><i class="material-icons">settings</i>SETTINGS</button>
 
             <div class="sub settings">
                 <h1>Settings</h1>
@@ -92,16 +105,17 @@
                 <button onclick="this.parentNode.apply(); this.parentNode.hide()">OK</button>
             </div>
 
-            <button onclick="window.close()"><i class="material-icons">exit_to_app</i>QUIT</button>
+            <button id="reeo-quit" disabled onclick="window.reeo.quit()"><i class="material-icons">exit_to_app</i>QUIT</button>
+            <button id="reeo-resume" style="display:none" onclick="mainMenu.hide()"><i class="material-icons">arrow_back</i><span>Resume board</span></button>
         </div>
-        <script src="js/mainmenu.js"></script>
+        <script vite-ignore src="js/mainmenu.js"></script>
 
         <!-- Tutorial -->
         <div class="tutorial">
             <h1>Tutorial</h1>
             <div class="sections">
                 <div style="opacity: 1; transform: translateX(0px)">
-                    <p>Welcome to your first BOOLR board. Here you can create circuits with logic gates.</p>
+                    <p>Welcome to your first REEO board. Here you can create circuits with logic gates.</p>
                     <i class="material-icons">zoom_in</i>
                     <p>Scroll to zoom in/out</p>
                     <br>
@@ -112,7 +126,7 @@
                 <div>
                     <p>Now it's time to introduce you to logic gates.</p>
                     <p>See the I/O button on the toolbar? Click it and select 'Input'.</p>
-                    <img src="img/tutorial/0.png">
+                    <img data-tutorial-diagram="0" alt="">
                     <p>Now you have selected the input gate. To place it on the board, simply click somewhere with the left mouse button.</p>
                     <p>Click the input gate to toggle its value.</p>
                     <p>Let's give our input gate a name. Right click it, select "Edit", and enter a name.</p>
@@ -121,9 +135,9 @@
                 </div>
                 <div>
                     <p>Let's connect our input gate with other logic gates.</p>
-                    <p>Select the NOT gate (!) on the toolbar and give it a nice place on the board.</p>
+                    <p>Select the NOT gate (triangle symbol) on the toolbar and place it on the board.</p>
                     <p>Click the <i>output port</i> (black) of our input gate and move the mouse while holding the left mouse button to the <i>input port</i> (white) of our NOT gate.</p>
-                    <img src="img/tutorial/1.png">
+                    <img data-tutorial-diagram="1" alt="">
                     <p>Now the input gate is connected with the NOT gate and the NOT gate will invert the value of the input gate.</p>
                     <p>Tip: You can right click on a gate on the toolbar to see the truth table of that gate.</p>
                 </div>
@@ -131,7 +145,7 @@
                     <p>But we can't see what value the NOT gate outputs. To see this, we are going to connect our NOT gate with an output gate.</p>
                     <p>Select the output gate from the input/output list (I/O) on the toolbar and place it on the board.</p>
                     <p>Now, connect the NOT gate with it the same way we connected the input gate with the NOT gate</p>
-                    <img src="img/tutorial/2.png">
+                    <img data-tutorial-diagram="2" alt="">
                     <p>Congratulations! You have built your first circuit!</p>
                     <p>Tip: to view the connections of a gate, right click it and click 'View connections'</p>
                 </div>
@@ -139,7 +153,7 @@
                     <p>Imagine this circuit is so special you want another one.</p>
                     <p>To do this, we need to select it. Hold shift and and drag the mouse while holding the left mouse button to select the circuit.
                         Make sure every logic gate of your circuit is inside the selection box</p>
-                    <img src="img/tutorial/3.png">
+                    <img data-tutorial-diagram="3" alt="">
                     <p>When you have selected your circuit, a menu pops up. Click 'Copy' or hit Ctrl+C.</p>
                     <p>To paste the circuit, right click somewhere on the board and click 'Paste' or hit Ctrl+V</p>
                     <p>Moving a selection around works the same way as moving gates, drag it around with Ctrl+click and release to drop it, right click to cancel</p>
@@ -148,21 +162,21 @@
                 <div>
                     <p>If circuits are going to take up too much space, don't panic. The 'componentize function' will save you. </p>
                     <p>The 'componentize function' puts your circuit in a compact, nice little box. The input gates of your circuit are going to be its input ports, the output gates its output ports</p>
-                    <img src="img/tutorial/4.png">
+                    <img data-tutorial-diagram="4" alt="">
                     <p>To do this, select your circuit like the previous section and click 'Componentize'.</p>
                     <p>Double click your <i>custom component</i> to open it en view your circuit in its original state.</p>
                 </div>
                 <div>
                     <p>Press shift+T to open the console. You can use the command 'help' or '?' to see a list of available commands.</p>
                     <p>Use the arrow up and down key to navigate through earlier executed commands.</p>
-                    <img src="img/tutorial/6.png">
+                    <img data-tutorial-diagram="6" alt="">
                     <p>Press Ctrl+L to clear the console.</p>
                     <p>Use the tab key to autocomplete command names.</p>
                     <p>In commands that require a position as argument, you can use '~' for positions relative to the mouse position.</p>
                 </div>
                 <div>
                     <p>You can use the console to declare variables. For components with a specific numeric property like 'delay' on a clock, you can use that variable.</p>
-                    <img src="img/tutorial/7.png">
+                    <img data-tutorial-diagram="7" alt="">
                     <p>Usage: <code>'set example 200'</code> and <code>'get example'</code>. To use variables for components, enter for example <code>'2 * example - 50'</code> in the <i>edit</i> menu.
                         When you change the value of a variable by executing 'set example 500', the values of the components are automatically changed.</p>
                 </div>
@@ -190,17 +204,17 @@
                     <p></p>
                 </div>
             </div>
-            <button class="close material-icons" onclick="tutorial.hide()">close</button>
+            <button class="close material-icons" aria-label="Close" onclick="tutorial.hide()">close</button>
 
             <div class="options">
-                <button class="previous material-icons" disabled>keyboard_arrow_left</button>
+                <button class="previous material-icons" aria-label="Previous" disabled>keyboard_arrow_left</button>
                 <span class="index"></span>
-                <button class="next material-icons">keyboard_arrow_right</button>
+                <button class="next material-icons" aria-label="Next">keyboard_arrow_right</button>
             </div>
         </div>
 
         <!-- Chat -->
-        <input id="chat" spellcheck="false">
+        <input id="chat" dir="auto" spellcheck="false">
 
         <!-- Console -->
         <div class="console">
@@ -211,9 +225,9 @@
                 </div>
             </div>
             <div class="toolbar">
-                <button class="material-icons" onclick="boolrConsole.clear();" title="Clear console">delete</button>
-                <button class="material-icons" onclick="boolrConsole.toggleFullscreen();" title="Fullscreen">fullscreen</button>
-                <button class="material-icons" onclick="boolrConsole.hide()" title="Close console">exit_to_app</button>
+                <button class="material-icons" onclick="reeoConsole.clear();" title="Clear console">delete</button>
+                <button class="material-icons" onclick="reeoConsole.toggleFullscreen();" title="Fullscreen">fullscreen</button>
+                <button class="material-icons" onclick="reeoConsole.hide()" title="Close console">exit_to_app</button>
                 <button class="material-icons" title="Help">help</button>
             </div>
         </div>
@@ -234,20 +248,20 @@
             <div class="slot" tooltip="Saved components" onmousedown="dialog.savedCustomComponents()"><i class="material-icons">list</i></div>
 
             <ul id="list" tabindex="1" style="display: none">
-                <li onclick="select(Input)">Input</li>
-                <li onclick="select(Output)">Output</li>
-                <li onclick="select(Button)">Button</li>
-                <li onclick="select(Constant)">Constant</li>
-                <li onclick="select(Delay)">Delay</li>
-                <li onclick="select(Clock)">Clock</li>
-                <li onclick="select(LED)">LED</li>
-                <li onclick="select(Display)">Display</li>
-                <li onclick="select(Debug)">Debug</li>
-                <li onclick="select(Beep)">Beep</li>
-                <li onclick="select(Counter)">Counter</li>
-                <li onclick="select(TimerStart)">TimerStart</li>
-                <li onclick="select(TimerEnd)">TimerEnd</li>
-                <li onclick="select(ROM)">ROM</li>
+                <li onclick="select(Input)"><span class="reeo-picker-label">Input</span></li>
+                <li onclick="select(Output)"><span class="reeo-picker-label">Output</span></li>
+                <li onclick="select(Button)"><span class="reeo-picker-label">Button</span></li>
+                <li onclick="select(Constant)"><span class="reeo-picker-label">Constant</span></li>
+                <li onclick="select(Delay)"><span class="reeo-picker-label">Delay</span></li>
+                <li onclick="select(Clock)"><span class="reeo-picker-label">Clock</span></li>
+                <li onclick="select(LED)"><span class="reeo-picker-label">LED</span></li>
+                <li onclick="select(Display)"><span class="reeo-picker-label">Display</span></li>
+                <li onclick="select(Debug)"><span class="reeo-picker-label">Debug</span></li>
+                <li onclick="select(Beep)"><span class="reeo-picker-label">Beep</span></li>
+                <li onclick="select(Counter)"><span class="reeo-picker-label">Counter</span></li>
+                <li onclick="select(TimerStart)"><span class="reeo-picker-label">TimerStart</span></li>
+                <li onclick="select(TimerEnd)"><span class="reeo-picker-label">TimerEnd</span></li>
+                <li onclick="select(ROM)"><span class="reeo-picker-label">ROM</span></li>
             </ul>
         </div>
         <div id="toolbartip"></div>
@@ -258,14 +272,7 @@
                 <div class="container">expand_less</div>
             </button>
             <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
-            <button class="brbtn" id="version" title="Version" onclick="dialog.update()" tooltip="Version">
-                <i class="material-icons">memory</i>
-                BOOLR
-                <span class="version"></span>
-                <script>
-                    Array.from(document.getElementsByClassName("version")).forEach(el => el.innerHTML = "v" + VERSION);
-                </script>
-            </button>
+
         </div>
         <script>
             document.querySelector("#pause").onclick = function() {
@@ -284,29 +291,33 @@
 
         <!-- Menu in bottom right corner -->
         <ul id="menu">
-            <li onmousedown="mainMenu.show(); newBoardMenu.show()"><i class="material-icons">add</i>New board <span>Ctrl+N</span></li>
-            <li onmousedown="mainMenu.show(); openBoardMenu.show()"><i class="material-icons">folder</i>Open board<span>Ctrl+O</span></li>
-            <li onmousedown="save(true)"><i class="material-icons">save</i>Save board<span>Ctrl+S</span></li>
-            <li onmousedown="boolrConsole.show()"><i class="material-icons" >featured_play_list</i>Open console<span>Shift+T</span></li>
-            <li onmousedown="dialog.settings()"><i class="material-icons">settings</i>Settings<span>Ctrl+Shift+S</span></li>
-            <li onmousedown="tutorial.show()"><i class="material-icons">help</i>Open tutorial<span>F1</span></li>
-            <li onmousedown="mainMenu.show();"><i class="material-icons" >exit_to_app</i>Quit</li>
+            <li onmousedown="mainMenu.show(); newBoardMenu.show()"><i class="material-icons">add</i><span class="reeo-menu-label">New board</span><span class="reeo-menu-key" dir="ltr">Ctrl+N</span></li>
+            <li onmousedown="mainMenu.show(); openBoardMenu.show()"><i class="material-icons">folder</i><span class="reeo-menu-label">Open board</span><span class="reeo-menu-key" dir="ltr">Ctrl+O</span></li>
+            <li onmousedown="save(true)"><i class="material-icons">save</i><span class="reeo-menu-label">Save board</span><span class="reeo-menu-key" dir="ltr">Ctrl+S</span></li>
+            <li onmousedown="reeoConsole.show()"><i class="material-icons" >featured_play_list</i><span class="reeo-menu-label">Open console</span><span class="reeo-menu-key" dir="ltr">Shift+T</span></li>
+            <li onmousedown="dialog.settings()"><i class="material-icons">settings</i><span class="reeo-menu-label">Settings</span><span class="reeo-menu-key" dir="ltr">Ctrl+Shift+S</span></li>
+            <li onmousedown="tutorial.show()"><i class="material-icons">help</i><span class="reeo-menu-label">Open tutorial</span><span class="reeo-menu-key" dir="ltr">F1</span></li>
+            <li onmousedown="mainMenu.show();"><i class="material-icons" >home</i><span class="reeo-menu-label">Main menu</span></li>
+            <li id="reeo-whats-new" onmousedown="dialog.update()"><i class="material-icons">update</i><span class="reeo-menu-label">What's new</span><span class="version reeo-menu-key" dir="ltr"></span></li>
 
             <script>
                 const menu = document.getElementById("menu");
                 menu.style.opacity = "0";
+                Array.from(document.getElementsByClassName("version")).forEach(el => el.textContent = "v" + VERSION);
                 menu.onmousedown = () => setTimeout(menu.hide.bind(menu));
 
                 menu.show = function() {
+                    this.style.display = "block";
                     this.style.opacity = 1;
-                    this.style.bottom = 30;
+                    contextMenu.hide();
+                    this.style.bottom = (innerHeight - document.querySelector('.brbtns').getBoundingClientRect().top + 8) + "px";
 
                     document.querySelector("#menuopen .container").style.transform = "rotateZ(180deg)";
                 }
 
                 menu.hide = function() {
                     this.style.opacity = 0;
-                    this.style.bottom = -this.clientHeight - 100;
+                    this.style.bottom = (-this.clientHeight - 100) + "px";
 
                     document.querySelector("#menuopen .container").style.transform = "rotateZ(0deg)";
                 }
@@ -333,9 +344,9 @@
 
         <!-- Dialog -->
         <div id="over"></div>
-        <div id="dialog" tabindex="0">
-            <h1></h1>
-            <button class="close material-icons" onclick="this.parentNode.hide()">close</button>
+        <div id="dialog" tabindex="0" role="dialog" aria-modal="true" aria-labelledby="reeo-dialog-title">
+            <h1 id="reeo-dialog-title"></h1>
+            <button class="close material-icons" aria-label="Close" onclick="this.parentNode.hide()">close</button>
             <div class="container"></div>
             <div class="options"></div>
         </div>
@@ -360,7 +371,7 @@
             </script>
 
             <br>
-            <span style="text-decoration: underline">Connect to a BOOLR server</span>
+            <span style="text-decoration: underline">Connect to a REEO server</span>
         </div>
 
         <!-- Settings -->
@@ -406,7 +417,7 @@
         </div>
         <div class="tip" id="waypoints">
             <i class="material-icons">lightbulb_outline</i>
-            Press S to set a waypoint, press W to jump to a waypoint
+            Press Shift+S to set a waypoint, press Shift+W to jump to a waypoint
         </div>
 
         <!-- Hover balloon -->
@@ -428,33 +439,32 @@
         </div>
 
         <!-- Scripts -->
-        <script src="js/components.js"></script>
-        <script src="js/localStorage2.js"></script>
-        <script src="js/canvas.js"></script>
-        <script src="js/componentUpdates.js"></script>
-        <script src="js/undo.js"></script>
-        <script src="js/clipboard.js"></script>
-        <script src="js/keys.js"></script>
-        <script src="js/chat.js"></script>
-        <script src="js/variables.js"></script>
-        <script src="js/console2.js"></script>
-        <script src="js/notifications.js"></script>
-        <script src="js/toolbar.js"></script>
-        <script src="js/debug.js"></script>
-        <script src="js/audio.js"></script>
-        <script src="js/userList.js"></script>
-        <script src="js/contextmenu2.js"></script>
-        <script src="js/hover.js"></script>
-        <script src="js/customComponentToolbar.js"></script>
-        <script src="js/componentInfo.js"></script>
-        <script src="js/tips.js"></script>
-        <script src="js/tutorial.js"></script>
-        <script src="js/dialogs.js"></script>
-        <script src="js/editDialogs.js"></script>
-        <script src="js/stringifier.js"></script>
-        <script src="js/waypoints.js"></script>
-        <script src="js/socket.js"></script>
-        <script src="js/startup.js"></script>
+        <script vite-ignore src="js/components.js"></script>
+        <script vite-ignore src="js/localStorage2.js"></script>
+        <script vite-ignore src="js/canvas.js"></script>
+        <script vite-ignore src="js/componentUpdates.js"></script>
+        <script vite-ignore src="js/undo.js"></script>
+        <script vite-ignore src="js/clipboard.js"></script>
+        <script vite-ignore src="js/keys.js"></script>
+        <script vite-ignore src="js/chat.js"></script>
+        <script vite-ignore src="js/variables.js"></script>
+        <script vite-ignore src="js/console2.js"></script>
+        <script vite-ignore src="js/notifications.js"></script>
+        <script vite-ignore src="js/toolbar.js"></script>
+        <script vite-ignore src="js/debug.js"></script>
+        <script vite-ignore src="js/audio.js"></script>
+        <script vite-ignore src="js/userList.js"></script>
+        <script vite-ignore src="js/contextmenu2.js"></script>
+        <script vite-ignore src="js/hover.js"></script>
+        <script vite-ignore src="js/customComponentToolbar.js"></script>
+        <script vite-ignore src="js/componentInfo.js"></script>
+        <script vite-ignore src="js/tips.js"></script>
+        <script vite-ignore src="js/tutorial.js"></script>
+        <script vite-ignore src="js/dialogs.js"></script>
+        <script vite-ignore src="js/editDialogs.js"></script>
+        <script vite-ignore src="js/waypoints.js"></script>
+        <script vite-ignore src="js/socket.js"></script>
+        <script vite-ignore src="js/startup.js"></script>
 
         <script>
             window.onbeforeunload = function() {

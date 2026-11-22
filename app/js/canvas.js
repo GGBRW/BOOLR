@@ -88,13 +88,9 @@ function draw() {
 
     // Draw hover balloon
     if(hoverBalloon.display) {
-        if(Array.isArray(mouse.hover.pos)) {
-            hoverBalloon.style.top = mouse.screen.y - hoverBalloon.clientHeight - 35;
-            hoverBalloon.style.left = mouse.screen.x - hoverBalloon.clientWidth / 2;
-        } else {
-            hoverBalloon.style.top = (offset.y - mouse.hover.pos.y - .5) * zoom - hoverBalloon.clientHeight - 35;
-            hoverBalloon.style.left = (mouse.hover.pos.x - offset.x + mouse.hover.width / 2 - .5) * zoom - hoverBalloon.clientWidth / 2;
-        }
+        const hoverX = Array.isArray(mouse.hover.pos) ? mouse.screen.x : (mouse.hover.pos.x - offset.x + mouse.hover.width / 2 - .5) * zoom;
+        const hoverY = Array.isArray(mouse.hover.pos) ? mouse.screen.y : (offset.y - mouse.hover.pos.y - .5) * zoom;
+        window.reeoPositionPopup(hoverBalloon, hoverX - hoverBalloon.clientWidth / 2, hoverY - hoverBalloon.clientHeight - 15);
     }
 
     // Draw selections
@@ -121,15 +117,13 @@ function draw() {
     // Draw context menu
     if(document.getElementById("contextMenu").style.display != "none") {
         const contextMenu = document.getElementById("contextMenu");
-        contextMenu.style.left = (contextMenu.x - offset.x) * zoom;
-        contextMenu.style.top = -(contextMenu.y - offset.y) * zoom;
+        window.reeoPositionPopup(contextMenu, (contextMenu.x - offset.x) * zoom, -(contextMenu.y - offset.y) * zoom);
     }
 
     // Draw waypoints menu
     if(document.getElementById("waypointsMenu").style.display != "none") {
         const waypointsMenu = document.getElementById("waypointsMenu");
-        waypointsMenu.style.left = (waypointsMenu.x - offset.x) * zoom;
-        waypointsMenu.style.top = -(waypointsMenu.y - offset.y) * zoom;
+        window.reeoPositionPopup(waypointsMenu, (waypointsMenu.x - offset.x) * zoom, -(waypointsMenu.y - offset.y) * zoom);
     }
 
     // Scroll animatie
@@ -206,9 +200,9 @@ window.onresize = () => {
     c.height = window.innerHeight;
     c.width = window.innerWidth;
 
-    if(boolrConsole.fullscreen) {
-        boolrConsole.style.height = innerHeight - 40;
-        boolrConsole.style.width = innerWidth - 40;
+    if(reeoConsole.fullscreen) {
+        reeoConsole.style.height = (innerHeight - 40) + "px";
+        reeoConsole.style.width = (innerWidth - 40) + "px";
     }
 }
 
@@ -219,7 +213,7 @@ window.onerror = function(msg,url,line) {
         "error"
     );
 
-    boolrConsole.error(msg + "@" + url + ":" + line);
+    reeoConsole.error(msg + "@" + url + ":" + line);
 
     dragging = connecting = selecting = null;
 }

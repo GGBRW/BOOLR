@@ -1,0 +1,25 @@
+name: REEO checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - run: bun install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: bun run check
+      - run: bun run build:vercel
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:e2e
+        env:
+          PLAYWRIGHT_PRODUCTION: '1'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: REEO-web
+          path: dist

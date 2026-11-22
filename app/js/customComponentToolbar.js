@@ -61,7 +61,7 @@ customComponentToolbar.show = function() {
 }
 
 customComponentToolbar.hide = function() {
-    this.style.top = -50;
+    this.style.top = "-50px";
     setTimeout(() => {
         this.style.display = "none";
     }, 200);

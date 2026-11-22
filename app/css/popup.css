@@ -23,7 +23,7 @@
     text-align: center;
     background: #ddd;
     box-shadow: 0 0 20px rgba(0,0,0,.2);
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     padding: 10px;
     border-radius: 5px;
 
@@ -34,7 +34,7 @@
 }
 
 .popup h1 {
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 25px;
     font-weight: 400;
     padding-bottom: 20px;
@@ -47,7 +47,7 @@
     border: none;
     padding: 10px;
     min-width: 100px;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 16px;
     outline: none;
     cursor: pointer;
@@ -58,7 +58,7 @@
 }
 
 .popup ul {
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 16px;
     text-align: left;
 }
@@ -90,7 +90,7 @@
     background: #ccc;
     border: 1px solid #bbb;
     outline: none;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     color: #333;
 }
@@ -123,7 +123,7 @@
     background: #111;
     padding: 10px;
     color: #888;
-    font-family: "Inconsolata", Consolas;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
 }
 
@@ -135,7 +135,7 @@
 
 .popup table, .popup td, .popup th {
     border: 2px solid #bbb;
-    font-family: "Roboto", Arial;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 14px;
     text-align: center;
     padding: 10px;
@@ -219,7 +219,7 @@ input:checked + .slider:before {
     padding: 10px;
     margin: -2px;
     width: 100px;
-    font-family: Ubuntu;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     outline: none;
     cursor: pointer;
@@ -248,7 +248,7 @@ input:checked + .slider:before {
 }
 
 #openproject #local #upload_file p {
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     margin: 0;
     position: relative;
@@ -261,7 +261,7 @@ input:checked + .slider:before {
 }
 
 #openproject #server input {
-    font-family: "Inconsolata", Consolas;
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     width: 300px;
     margin: 10px;
@@ -272,7 +272,7 @@ input:checked + .slider:before {
 }
 
 #openproject #server button {
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 18px;
     margin: 10px;
     padding: 10px;
@@ -291,7 +291,7 @@ input:checked + .slider:before {
 
 #openproject #server li {
     padding: 10px;
-    font-family: "Ubuntu";
+    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
     font-size: 16px;
     text-align: left;
 }

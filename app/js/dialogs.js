@@ -5,6 +5,7 @@ dialog.container = document.querySelector("#dialog .container");
 dialog.options = document.querySelector("#dialog .options");
 
 dialog.show = function() {
+    this.classList.remove("reeo-whats-new");
     this.container.innerHTML = "";
     this.options.innerHTML = "";
     hoverBalloon.style.display = "none";
@@ -14,46 +15,35 @@ dialog.show = function() {
     setTimeout(() => overlay.style.opacity = .8, 10);
 
     dialog.style.display = "block";
-    setTimeout(() => {
-        dialog.focus();
-        dialog.style.opacity = 1;
-        dialog.style.transform = "scale(1)";
-        dialog.style.top = "16%";
-    },10);
+    dialog.style.opacity = 1;
+    dialog.style.transform = "scale(1)";
+    dialog.style.top = "16%";
+    overlay.style.opacity = .8;
+    dialog.focus();
 }
 
 dialog.hide = function() {
     overlay.style.opacity = 0;
     overlay.style.pointerEvents = "none";
-    setTimeout(() => {
-        if(overlay.style.opacity == "0") {
-            overlay.style.display = "none";
-        }
-    }, 500);
-
+    overlay.style.display = "none";
     dialog.style.opacity = 0;
-    dialog.style.top = "100%";
-    setTimeout(() => {
-        if(dialog.style.opacity == "0") {
-            dialog.style.display = "none";
-        }
-    }, 200);
-
+    dialog.style.display = "none";
     c.focus();
 }
 
 dialog.addOption = function(text,onclick) {
     const button = document.createElement("button");
     button.innerHTML = text;
-    button.onmousedown = onclick;
-    button.onmouseup = dialog.hide;
+    button.onclick = () => {
+        dialog.hide();
+        if (onclick) onclick();
+    };
     dialog.options.appendChild(button);
 }
 
 dialog.onkeydown = function(e) {
     if(e.which == 13) {         // Enter
-        dialog.options.children[dialog.options.children.length - 1].onmousedown();
-        dialog.options.children[dialog.options.children.length - 1].onmouseup();
+        if (e.target.tagName !== "BUTTON") dialog.options.lastElementChild?.click();
     } else if(e.which == 27) {  // Esc.
         this.hide();
     }
@@ -63,9 +53,9 @@ dialog.welcome = function(component) {
     dialog.show();
     dialog.name.innerHTML = "Welcome";
 
-    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 120px'>memory<i>";
-    dialog.container.innerHTML += "<p>Welcome to <span style='font-family: Righteous; font-size: 24px;'>BOOLR</span> !</p>";
-    dialog.container.innerHTML += "<p>If i'm right this is the first time you are using BOOLR.</p>";
+    dialog.container.innerHTML += "<img class='reeo-brand-icon' src='brand/reeo-mark.svg' alt='REEO'>";
+    dialog.container.innerHTML += "<p>Welcome to <span style='font-family: Righteous; font-size: 24px;'>REEO</span> !</p>";
+    dialog.container.innerHTML += "<p>If i'm right this is the first time you are using REEO.</p>";
     dialog.container.innerHTML += "<p>Need a tutorial to learn how everything works?</p>";
     dialog.addOption("Yes please!", () => tutorial.show());
     dialog.addOption("No, just start");
@@ -133,18 +123,21 @@ dialog.editBoard = function(save) {
     });
 }
 
-dialog.update = function(component) {
+dialog.update = function() {
     dialog.show();
-    dialog.name.innerHTML = "Update " + VERSION;
-
-    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>update<i>";
-    dialog.container.innerHTML += "<p>What's new:</p>";
-    dialog.container.innerHTML +=
-        "<ul style='width: 200px;'>" +
-        "<li>Tutorial</li>" +
-        "<li>New main menu</li>" +
-        "<li>New edit menu</li>" +
-        "</ul>";
+    dialog.classList.add("reeo-whats-new");
+    dialog.name.textContent = "What's new";
+    const version = document.createElement("p");
+    version.className = "reeo-release-version";
+    version.setAttribute("data-no-i18n", "");
+    version.textContent = "REEO v" + VERSION;
+    const changes = document.createElement("ul");
+    for(const text of ["On-grid circuit symbols", "Searchable component guide and worked circuits", "Contextual wiring checks", "Arabic and Egyptian Arabic", "Browser import and export"]) {
+        const item = document.createElement("li");
+        item.textContent = text;
+        changes.appendChild(item);
+    }
+    dialog.container.append(version, changes);
     dialog.addOption("Close");
 }
 
@@ -207,7 +200,8 @@ dialog.connections = function(component) {
         wire && (function getInputs(wire) {
             if(wire.from) {
                 const li = document.createElement("li");
-                li.innerHTML = wire.from.component.name;
+                li.textContent = wire.from.component.name;
+                li.setAttribute("data-no-i18n", "");
                 input.appendChild(li);
             }
             for(let i = 0; i < wire.input.length; ++i) {
@@ -222,7 +216,8 @@ dialog.connections = function(component) {
         wire && (function getOutputs(wire) {
             if(wire.to) {
                 const li = document.createElement("li");
-                li.innerHTML = wire.to.component.name;
+                li.textContent = wire.to.component.name;
+                li.setAttribute("data-no-i18n", "");
                 output.appendChild(li);
             }
             for(let i = 0; i < wire.output.length; ++i) {
@@ -253,7 +248,7 @@ dialog.truthTable = function(type) {
 
     const component = new type();
 
-    dialog.container.innerHTML += "<span style='font-size: 50px; padding: 50px'>" + component.icon.text + "</span><br>";
+    dialog.container.innerHTML += window.reeoCircuitSVG(type.name);
     dialog.container.innerHTML += "<p>Truth table:</p>";
 
     // Create truth table
@@ -364,7 +359,7 @@ dialog.localStorageError = function() {
     dialog.name.innerHTML = "localStorage not available";
     dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>warning<i>";
     dialog.container.innerHTML += "<p>Your browser doesn't allow this application to store data locally. " +
-        "BOOLR uses localStorage to store clipbord data, settings, etc. " +
+        "REEO uses localStorage to store clipbord data, settings, etc. " +
         "Either you have disabled localStorage in your browser's settings or your browser is too old.</p>";
 
     dialog.addOption("OK");
@@ -431,29 +426,31 @@ dialog.editName = function(component) {
 dialog.colorPicker = function(callback = a => a) {
     dialog.show();
     dialog.name.innerHTML = "Color Picker";
-    dialog.container.innerHTML += "<i class='material-icons' style='font-size: 60px'>color_lens<i>";
-    dialog.container.innerHTML += `<p>Pick a color:</p>`;
-
-    const el = document.createElement("div");
-    el.style.width = 70;
-    el.style.height = 50;
-    el.style.display = "inline-block";
-    el.style.margin = 10;
-    el.onclick = function() {
-        callback(this.style.background.match(/\d+/g).map(n => +n));
-        dialog.hide()
-    }
-
+    const prompt = document.createElement("p");
+    prompt.textContent = "Pick a color:";
+    const palette = document.createElement("div");
+    palette.className = "reeo-color-palette";
     const colors = [
-        "#f33","#37f","#5b5","#ff5",
-        "#f90","#60f","#0fc","#f0f",
-        "#222","#555","#888","#ddd"];
-    for(let i = 0; i < colors.length; ++i) {
-        const color = el.cloneNode();
-        color.style.background = colors[i];
-        color.onclick = el.onclick;
-        dialog.container.appendChild(color);
+        ["Red", "#f33"], ["Blue", "#37f"], ["Green", "#5b5"], ["Yellow", "#ff5"],
+        ["Orange", "#f90"], ["Purple", "#60f"], ["Cyan", "#0fc"], ["Magenta", "#f0f"],
+        ["Black", "#222"], ["Dark gray", "#555"], ["Gray", "#888"], ["Light gray", "#ddd"]
+    ];
+    for(const [name, hex] of colors) {
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = "reeo-color-swatch";
+        swatch.style.backgroundColor = hex;
+        swatch.setAttribute("aria-label", name);
+        swatch.title = name;
+        swatch.onclick = () => {
+            // Use the palette data, not a browser-dependent CSS serialization.
+            const rgb = [...hex.slice(1)].map(digit => parseInt(digit + digit, 16));
+            dialog.hide();
+            callback(rgb);
+        };
+        palette.appendChild(swatch);
     }
+    dialog.container.append(prompt, palette);
 
     dialog.addOption("Cancel");
 }
@@ -568,7 +565,8 @@ dialog.savedCustomComponents = function() {
 
         const li = document.createElement("li");
         li.component = component;
-        li.innerHTML = component.name;
+        li.textContent = component.name;
+        li.setAttribute("data-no-i18n", "");
         li.onclick = function() {
             select(
                 class {
@@ -618,7 +616,7 @@ dialog.save = function(text) {
     dialog.container.innerHTML += "Name: ";
 
     let input = document.createElement("input");
-    input.setAttribute("placeholder","BOOLR-Save-" + new Date().toLocaleString());
+    input.setAttribute("placeholder","REEO-Save-" + new Date().toLocaleString());
     dialog.container.appendChild(input);
     setTimeout(() => input.focus());
 

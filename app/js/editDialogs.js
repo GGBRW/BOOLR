@@ -10,6 +10,7 @@
         apply) {
         const input = document.createElement("input");
         input.value = value;
+        input.dir = property === "name" ? "auto" : "ltr";
 
         input.valid = valid;
         input.errormsg = errormsg;
@@ -30,6 +31,7 @@
         apply) {
         const input = document.createElement("textarea");
         input.value = value;
+        input.dir = property === "name" ? "auto" : "ltr";
 
         input.valid = valid;
         input.errormsg = errormsg;
@@ -48,10 +50,11 @@
         options,
         apply) {
         const input = document.createElement("select");
+        input.dir = "ltr";
         for (let i = 0; i < options.length; i++) {
             const option = document.createElement("option");
             option.value = options[i].value;
-            if (option.value === value) {
+            if (String(option.value) === String(value)) {
                 option.selected = true;
             }
             option.appendChild(document.createTextNode(options[i].text));
@@ -80,7 +83,7 @@
                 edit(component,"name",this.value,true);
             }
         );
-        setTimeout(() => name.focus(), 10);
+        name.focus();
 
         const pos = createInput(
             component, "pos", component.pos.x + "," + component.pos.y,
@@ -89,7 +92,7 @@
             function() {
                 const pos = this.value.split(",").map(n => +n);
                 component.pos.x = pos[0];
-                component.pos.t = pos[1];
+                component.pos.y = pos[1];
             }
         );
         const width = createInput(
@@ -237,7 +240,7 @@
                 edit(port,"name",this.value);
             }
         );
-        setTimeout(() => name.focus(), 10);
+        name.focus();
 
         const side = createInput(
             port.pos, "side", port.pos.side,
@@ -309,7 +312,7 @@
                 createVariableReference(this.value,component,["properties","delay"]);
             }
         );
-        setTimeout(() => input.focus(),10);
+        input.focus();
         dialog.container.removeChild(dialog.container.children[dialog.container.children.length - 1]);
         dialog.container.appendChild(document.createTextNode("ms"));
 
@@ -407,7 +410,7 @@
                 createVariableReference(this.value,component,["properties","rom"]);
             }
         );
-        setTimeout(() => addressWidthInput.focus(),10);
+        addressWidthInput.focus();
         dialog.container.removeChild(dialog.container.children[dialog.container.children.length - 1]);
 
         const errormsg = document.createElement("p");

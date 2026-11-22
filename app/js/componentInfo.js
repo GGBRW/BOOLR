@@ -15,12 +15,15 @@ componentInfo.show = function(component,pos) {
         }
     }
 
-    this.style.top = pos.y - this.clientHeight - zoom / 2;
-    this.style.left = pos.x - this.clientWidth / 2;
+    this.style.top = (pos.y - this.clientHeight - zoom / 2) + "px";
+    this.style.left = (pos.x - this.clientWidth / 2) + "px";
 
     setTimeout(() => {
+        if(this.dataset.overlayClosed === "true") return;
         this.style.display = "block";
+        window.reeoPositionPopup(this, pos.x - this.offsetWidth / 2, pos.y - this.offsetHeight - zoom / 2);
         setTimeout(() => {
+            if(this.dataset.overlayClosed === "true") return;
             this.style.transform = "translateY(0px)";
             this.style.opacity = 1;
         }, 100);
@@ -31,5 +34,5 @@ componentInfo.hide = function() {
 
     this.style.transform = "translateY(20px)";
     this.style.opacity = 0;
-    setTimeout(() => this.style.display = "none",100);
+    setTimeout(() => { if(this.style.opacity === "0") this.style.display = "none"; },100);
 };
