@@ -71,6 +71,16 @@ Component.prototype.draw = function draw() {
   }
 };
 
+Component.prototype.portLabelPosition = function portLabelPosition(screen, pos) {
+  if (pos.side == 3) return { x: screen.x - zoom * 0.3, y: screen.y + zoom * 0.04, align: 'right' };
+  if (pos.side == 1) return { x: screen.x + zoom * 0.3, y: screen.y + zoom * 0.04, align: 'left' };
+  return {
+    x: screen.x,
+    y: pos.side == 2 ? screen.y + zoom / 3 : screen.y - zoom / 4,
+    align: 'center',
+  };
+};
+
 Component.prototype.drawAnnotations = function drawAnnotations() {
   const x = (this.pos.x - offset.x) * zoom;
   const y = -(this.pos.y - offset.y) * zoom;
@@ -82,12 +92,19 @@ Component.prototype.drawAnnotations = function drawAnnotations() {
   ))
     return;
 
+  // Annotations run in their own pass, after every body. Reset the canvas
+  // state that custom bodies may have changed so labels and pins stay crisp.
+  ctx.strokeStyle = '#111';
+  ctx.lineCap = 'butt';
+  ctx.lineJoin = 'miter';
+  ctx.textBaseline = 'alphabetic';
+
   // Draw the name of the component in the upper left corner
   if (this.name && zoom > 30) {
     ctx.textAlign = 'left';
     ctx.font = 'italic normal normal ' + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
     ctx.fillStyle = '#444';
-    ctx.fillText(this.name, x - 0.5 * zoom + zoom / 15, y - 0.62 * zoom);
+    ctx.fillText(this.name, x - 0.62 * zoom, y - 0.62 * zoom);
   }
 
   // If this component has a delay value, draw the delay value of the component in the bottom left corner
@@ -134,13 +151,11 @@ Component.prototype.drawAnnotations = function drawAnnotations() {
     if (zoom > 30) {
       const name = this.input[i].name;
       if (name) {
+        const label = this.portLabelPosition(screen, pos);
         ctx.fillStyle = '#555';
         ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
-        ctx.fillText(
-          name,
-          screen.x - ctx.measureText(name).width / 2,
-          pos.side == 2 ? screen.y + zoom / 4 : screen.y - zoom / 4,
-        );
+        ctx.textAlign = label.align;
+        ctx.fillText(name, label.x, label.y);
       }
     }
   }
@@ -175,13 +190,11 @@ Component.prototype.drawAnnotations = function drawAnnotations() {
     if (zoom > 30) {
       const name = this.output[i].name;
       if (name) {
+        const label = this.portLabelPosition(screen, pos);
         ctx.fillStyle = '#555';
         ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
-        ctx.fillText(
-          name,
-          screen.x - ctx.measureText(name).width / 2,
-          pos.side == 2 ? screen.y + zoom / 4 : screen.y - zoom / 4,
-        );
+        ctx.textAlign = label.align;
+        ctx.fillText(name, label.x, label.y);
       }
     }
   }

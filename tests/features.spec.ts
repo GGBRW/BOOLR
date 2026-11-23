@@ -174,6 +174,18 @@ test('displays stack into one module and take their colour from signals', async 
   expect(result.colourSides).toEqual([3, 3, 3]);
 });
 
+test('displays start unpowered and light only after wiring', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const display = new Display('D', {x: 0, y: 0});
+    const blank = display.isPowered();
+    display.input[0].connection = {};
+    const wired = display.isPowered();
+    const seven = new SevenSegment('S', {x: 0, y: 0});
+    return { blank, wired, sevenBlank: seven.segments === undefined };
+  })()`);
+  expect(result).toEqual({ blank: false, wired: true, sevenBlank: true });
+});
+
 test('procedural expressions compile without eval and report bad input', async ({ page }) => {
   const result = await page.evaluate(`(() => {
     const good = new Procedural('P', {x: 0, y: 0});

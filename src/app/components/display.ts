@@ -8,7 +8,7 @@ class Display extends Component {
     this.properties.digits = 1;
     this.properties.colorMode = 'fixed';
     this.properties.colorOn = '#ff3b3b';
-    this.properties.colorOff = '#301010';
+    this.properties.colorOff = '#1f0b0b';
     this.value = 0;
     this.digitValues = [0];
     this.configureDisplay();
@@ -36,7 +36,10 @@ class Display extends Component {
     for (let digit = 0; digit < digits; ++digit) {
       for (let bit = 0; bit < 4; ++bit) {
         const port = this.input[digit * 4 + bit];
-        port.pos = { side: 0, pos: (digit * 4 + bit) * (this.width / (dataPins - 1)) };
+        port.pos = {
+          side: 0,
+          pos: (digit * 4 + bit) * ((this.width - 1) / (dataPins - 1)),
+        };
         port.name = 'D' + (digit * 4 + bit);
       }
     }
@@ -53,6 +56,15 @@ class Display extends Component {
         if (port.connection) removeWire(port.connection);
       }
     }
+  }
+
+  isPowered() {
+    const digits = this.properties.digits || 1;
+    const dataPins = digits * 4;
+    return (
+      this.input.slice(0, dataPins).some((port) => !!port.connection) ||
+      this.digitValues.some((value) => value !== 0)
+    );
   }
 
   addDigit() {
@@ -89,6 +101,10 @@ class Display extends Component {
       const screen = drawDisplayBezel(box, 0.075);
       const names = 'abcdefg';
       let lit = '';
+      const powered =
+        this.input.slice(0, 8).some((port) => !!port.connection) ||
+        this.input.slice(0, 8).some((port) => !!port.value);
+      if (!powered) return;
       for (let i = 0; i < 7; ++i) {
         if (this.input[i]?.value) lit += names[i];
       }
@@ -108,6 +124,8 @@ class Display extends Component {
     const bezel = drawDisplayBezel(box, 0.055);
     const cellWidth = bezel.w / digits;
     const gap = zoom * 0.08;
+    const powered = this.isPowered();
+    if (!powered) return;
     const onColor = displayOnColor(this);
     const offColor = displayOffColor(this);
     for (let digit = 0; digit < digits; ++digit) {

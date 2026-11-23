@@ -86,10 +86,5 @@ class RGBLed2 extends Component {
     );
     ctx.fill();
     ctx.restore();
-    ctx.fillStyle = this.value ? '#f5f5f5' : '#777';
-    ctx.font = `700 ${Math.max(8, Math.round(zoom * 0.34))}px monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(['0', '1', '2', '3'][this.value], inner.x + inner.w / 2, inner.y + inner.h / 2);
   }
 }
