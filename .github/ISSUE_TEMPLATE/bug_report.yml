@@ -1,0 +1,113 @@
+name: Bug report
+description: Something in REEO does not work as documented.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please search existing issues and try the in-app **Check this circuit** tool first.
+        **Do not report security vulnerabilities here** — use the private security advisory link instead.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and its impact.
+      placeholder: I placed a Clock and Counter, set the delay to 500 ms, and…
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Start from a fresh board if possible, and list the exact clicks/keys.
+      placeholder: |
+        1. Open NEW BOARD and create "test"
+        2. Place I/O → Clock and I/O → Counter
+        3. Wire Clock output to Counter input
+        4. Set delay to 500
+        5. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the exact error text or a screenshot description.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: REEO version or deployment
+      description: From `window.reeo.version`, the commit, or the URL.
+      placeholder: 2.0.0 / https://reeo.vercel.app / commit abc1234
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - Browser (desktop)
+        - Browser (Android)
+        - Browser (iOS)
+        - Desktop app (Linux)
+        - Desktop app (Windows)
+        - Desktop app (macOS)
+        - Android app
+        - iOS app
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser/OS and viewport
+      placeholder: Chrome 140 on Windows 11, 1400×900
+    validations:
+      required: true
+  - type: dropdown
+    id: locale
+    attributes:
+      label: Language
+      options:
+        - English
+        - العربية (Arabic)
+        - مصري (Egyptian Arabic)
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: board
+    attributes:
+      label: Board export or reproduction
+      description: Attach a minimal `.board` if it reproduces a circuit issue. Remove anything private. Do not paste secrets.
+      placeholder: Drag the .board file here, or describe a minimal circuit.
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console/network errors and screenshots
+      description: Open DevTools → Console and include the first error, not only a summary.
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and the troubleshooting guide.
+          required: true
+        - label: This is not a security vulnerability (those go through the private advisory link).
+          required: true
+        - label: I removed private data, secrets, and unrelated personal information.
+          required: true

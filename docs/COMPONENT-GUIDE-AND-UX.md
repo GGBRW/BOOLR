@@ -39,3 +39,10 @@ The suite asserts tested button/select targets are at least 43.9×43.9 CSS px (4
 Corrections driven by these measurements: account for inline popup opacity during transitions, avoid unconstrained stretch widths in popups, and remove a legacy console translation that caused negative left coordinates. The localization observer now avoids rewriting unchanged document language/direction attributes, preventing an observer feedback loop with the live guide.
 
 This is the tested scope, not a guarantee about every possible user-generated label or component configuration. Safari, native signed builds, screen-reader audit, native-speaker copy review, and a physical Samsung A11 remain untested.
+
+## Related
+
+- [User guide](USER-GUIDE.md#the-field-guide-tutorials-and-help) — field guide, recipes, ghosts, and diagnostics.
+- [Component reference](COMPONENTS.md) — the pin/property reference the guide summarizes.
+- [Controls](SHORTCUTS.md) — keyboard and touch equivalents.
+- [Testing](TESTING.md) — help/measurement coverage.

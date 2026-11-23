@@ -121,7 +121,7 @@ reeoConsole.onkeydown = function(e) {
     }
 }
 
-const commands = ["set","get","variables","remove","edit","findComponent","pause"];
+const commands = ["set","get","variables","remove","edit","findComponent","start","pause","help"];
 
 reeoConsole.help = function() {
     this.log("<b>set [name] [value]</b>: sets a variable");
@@ -174,17 +174,17 @@ function inputHandler(input) {
                 var component = findComponentByPos(x, y);
                 if(!component) return "No component found at " + x + "," + y;
 
-                edit(component,args[2],args[3],true);
+                edit(component,args[2],args.slice(3).join(" "),true);
             } else if(!isNaN(args[0])) {
                 var component = findComponentByID(+args[0]);
                 if(!component) return "Component with ID " + args[0] + " not found";
 
-                edit(component,args[1],args[2],true);
+                edit(component,args[1],args.slice(2).join(" "),true);
             } else if(args.length > 1) {
                 var component = findComponentByName(args[0]);
                 if(!component) return "Component " + args[0] + " not found";
 
-                edit(component,args[1],args[2],true);
+                edit(component,args[1],args.slice(2).join(" "),true);
             }
             break;
         case "findComponent":

@@ -12,3 +12,9 @@ The editor retains its existing monochrome dialog/menu styling.
 ## Verification
 
 `bun run check` passed TypeScript, both linters, formatting, and 67 unit tests (2,068 assertions). `bun run build:vercel` passed. The full production Chromium suite passed **96/96**, including 13 new popup/release/guide tests and the existing 18 viewport×locale geometry cases. Screenshots of the release dialog and compact component guide were visually inspected at 1100×800. Physical touch devices, Safari and screen readers were not tested in this revision.
+
+## Related
+
+- [User guide](USER-GUIDE.md#the-field-guide-tutorials-and-help) — the surfaces users see.
+- [Controls](SHORTCUTS.md#dialog-and-popup-keys) — dismissal keys and gestures.
+- [Testing → Overlays](TESTING.md) — popup/dismissal coverage.

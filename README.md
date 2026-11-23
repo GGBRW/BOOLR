@@ -1,116 +1,197 @@
-# REEO
+<p align="center">
+  <img src="public/brand/reeo-mark.svg" width="112" height="112" alt="REEO circuit-R mark">
+</p>
 
-**Digital logic. Limitless curiosity.**
+<h1 align="center">REEO</h1>
 
-REEO renews the original BOOLR digital logic simulator **without replacing its interface**. The dark main menu, Righteous/Ubuntu typography, white grid canvas, gate symbols, bottom toolbar, custom components, console, and existing circuit editor remain. Improvements are additive.
+<p align="center"><strong>Digital logic. Limitless curiosity.</strong></p>
 
-## Run it with Bun
+<p align="center">
+  A browser, desktop, and mobile logic simulator that keeps the original BOOLR editor —<br>
+  and makes it clearer, safer, bilingual, and easier to learn.
+</p>
 
-Use **Bun 1.4.5+**. No account, database, or server backend is required.
+<p align="center">
+  <a href="https://reeo.vercel.app">Open the app</a> ·
+  <a href="docs/USER-GUIDE.md">User guide</a> ·
+  <a href="docs/COMPONENTS.md">Components</a> ·
+  <a href="docs/DEVELOPMENT.md">Develop</a>
+</p>
 
-```sh
+---
+
+## What it is
+
+REEO is a grid-based digital logic playground. Place gates, switches, clocks, counters, displays, ROMs, and custom subcircuits; wire their pins together; and watch binary signals propagate.
+
+This is an **incremental modernization of BOOLR, not a UI rewrite**. The dark main menu, white grid canvas, gate toolbar, component behavior, context menus, console, and `.board` format remain recognizable. The work around them is new:
+
+- **Three platforms** — static browser build, Electron desktop, Capacitor Android/iOS.
+- **A typed safety boundary** — strict TypeScript for storage, board validation, scheduling, expressions, rendering, help, localization, and input normalization.
+- **Three languages** — English, العربية, and مصري, with RTL, localized dialogs/help/diagnostics, and a bundled Arabic font.
+- **Teaching tools** — searchable component guide, eight worked circuits, dashed ghosts, structural circuit checks, contextual tips, and a pinned recipe dock.
+- **Real touch support** — Interact/Move/Pan/Select tools, pinch and two-finger navigation, long press, double tap, and responsive dialogs.
+- **Portable boards** — a local board library plus validated `.board` import/export. No account, database, or backend.
+
+It is **not** an analog simulator, a formally verified HDL, a cloud collaboration service, or a React/Solid rewrite.
+
+## Try it
+
+- **Hosted build:** <https://reeo.vercel.app>
+- **Local:** follow the quick start below.
+
+## Quick start
+
+Requires **[Bun](https://bun.sh) ≥ 1.3** (the repo pins 1.4.5). Node 22.12+ is useful for native tooling.
+
+```bash
+git clone https://github.com/abdou-da0wew/REEO.git
+cd REEO
 bun install
 bun run dev
 ```
 
-Open the URL printed by Vite. The development server binds to `0.0.0.0`, so you can also test it from another device on your local network. For a browser-only setup without downloading Electron:
+Open the printed URL (default `http://localhost:5173`). The dev server binds `0.0.0.0`, so it also works from a phone on your network or a container preview.
 
-```sh
+Browser-only setup without downloading Electron:
+
+```bash
 ELECTRON_SKIP_BINARY_DOWNLOAD=1 bun install
 bun run dev
 ```
 
-Bun is the package manager, development runtime, script runner, and unit-test runner. Electron necessarily ships its own Chromium/Node runtime; the browser and Capacitor versions run in browser engines. Node 22.12+ remains useful for native packaging tools.
+Before the first e2e run:
 
-## What's new
-
-- **Circuit and UI icons:** vector gate/component symbols, Phosphor interface icons, and bottom-right dismissible tip toasts.
-- **REEO identity:** original circuit-R mark, wordmark, application icons, brand guide, and the REEO Circuit Display typeface.
-- **Browser version:** Vite static build; Vercel is the default configured hosting target.
-- **Desktop retained:** modern Electron with a typed main/preload, sandboxed renderer, context isolation, and no renderer access to Node or the OS filesystem.
-- **Mobile targets:** Capacitor Android/iOS configuration and manual CI builds, sharing the same interface.
-- **English, Arabic, Egyptian Arabic:** typed dictionaries, persistent language selection, RTL, translated tutorials, dialogs, validation, tips, console help and built-in diagnostics. IBM Plex Sans Arabic is bundled for Arabic glyphs only; command syntax and user-created names remain unchanged.
-- **Touch support:** placement/toggle/wire gestures plus explicit Move, Pan, Select, and zoom controls. Responsive menus, bounded dialogs, safe-area handling, and larger touch targets.
-- **Portable boards:** local board library plus `.board` import/export, compatible with the original current save format. Browser and desktop now use the same local-storage adapter.
-- **Reliability:** bounded TypeScript simulation scheduler, periodic and lifecycle saves, empty-board saving, validated import boundary, and arithmetic parsing without `eval`.
-- **Tooling:** TypeScript 7 strict checking; Prettier as the **only formatter**; Biome and Oxlint as **linters only**; Bun lockfile and CI.
-
-## First circuit
-
-1. Choose **NEW BOARD**, enter a name, and create it.
-2. In the original bottom toolbar, choose **I/O → Input**, then click/tap the canvas.
-3. Choose a gate (`!`, `&`, `|`, `^`) and place it.
-4. Drag from a black output pin to a white input pin.
-5. Add **I/O → Output** to see the result. Toggle your input.
-6. Save from the bottom-right menu. **Export board** downloads a backup.
-
-On a touchscreen, use the small top-left controls to move components or pan without keyboard modifiers. On a computer, original shortcuts and mouse interactions remain. The quick-guide button explains both.
-
-**Your boards are stored on this device, in this browser profile/app.** Clearing browser/app data removes them. Export backups before switching devices or uninstalling. Existing files in an old BOOLR `saves/` folder are not automatically migrated: import those `.board` files explicitly. Private browsing and storage quotas may prevent persistence.
-
-## Type
-
-**REEO Circuit Display** is an original monoline display typeface cut from the R in the wordmark: one 56-unit stroke, round caps, and port stubs at the joints. It is a real installable TTF, not an expanded logo font.
-
-- 359 glyphs and 344 mapped codepoints: complete Latin-1 and Latin Extended-A, plus typographic quotes, dashes, daggers, ellipsis, euro and minus.
-- Tabular figures, 161 kern pairs, a real `.notdef`, and `ss01` for a slashed zero.
-- Metrics: 1000 upm, cap 700, x-height 500, ascender 880, descender −240.
-- Live specimen: `/brand/font-specimen.html`. Source: `scripts/circuit-font.py`. Verification: `python3 scripts/verify-font.py` (or `bun run font:verify`).
-- License: GPL-3.0-only, the same license as the repository.
-
-## Commands
-
-| Command                | Purpose                                              |
-| ---------------------- | ---------------------------------------------------- |
-| `bun run dev`          | Browser development, using Bun + Vite                |
-| `bun run build:web`    | Type-check and build static `dist/`                  |
-| `bun run preview`      | Serve the production build locally                   |
-| `bun run typecheck`    | Strict web and desktop type checking                 |
-| `bun run test`         | Bun unit tests for the production TypeScript modules |
-| `bun run test:e2e`     | Playwright integration/responsive/touch tests        |
-| `bun run font:build`   | Rebuild `REEOCircuitDisplay.ttf` (fontTools)         |
-| `bun run font:verify`  | Check coverage, tables and features; run OTS         |
-| `bun run lint`         | Oxlint and Biome, no formatting                      |
-| `bun run format`       | Format with Prettier only                            |
-| `bun run check`        | Types, both linters, formatting, and unit tests      |
-| `bun run desktop:dev`  | Build and open the Electron app                      |
-| `bun run desktop:pack` | Package for the current desktop OS                   |
-
-Install a Playwright browser before the first end-to-end run:
-
-```sh
+```bash
 bunx playwright install chromium
 bun run test:e2e
 ```
 
-## Deploy to Vercel
+### Your first circuit
 
-Import this repository into a Vercel project, keeping the repository root as the project root. `vercel.json` specifies Bun installation, the Vite build, `dist/`, cache policies, and browser security headers. The deployment build also verifies generated asset references. No environment variables are needed for the web app. Alternatively run `bunx vercel` from your own authenticated environment.
+1. **NEW BOARD** → name it → **Create**.
+2. Toolbar **I/O → Input**, then click the grid.
+3. Toolbar **`!`** (NOT), place it to the right.
+4. Drag from the input’s **black output pin** to the gate’s **white input pin**.
+5. Add **I/O → LED**, wire the gate output to it.
+6. Click the input to toggle `0`/`1`.
+7. `Ctrl+S` to save; **Export board** for a portable backup.
 
-This repository is **configured for Vercel**, not already deployed by these changes. The static site has no cloud database, authentication, or cross-device synchronization. Existing optional WebSocket collaboration requires a separately maintained server; no server is bundled or deployed here.
+Full walkthrough: [User guide](docs/USER-GUIDE.md#your-first-circuit).
 
-For the complete dashboard/CLI setup, preview and production deployment steps, custom domains, caching, security policy, and troubleshooting, see [the Vercel deployment guide](docs/VERCEL.md).
+> **Your boards are local.** They live in this browser profile or app installation, not in an account. Clearing site/app data, using a different origin, or uninstalling can remove them. Export backups. Old BOOLR `saves/` files are not migrated automatically — import each `.board` file.
 
-## Native apps and releases
+## Feature tour
 
-See [platform build instructions](docs/PLATFORMS.md). Desktop CI is manual and produces Windows, Linux, and macOS artifacts. Mobile CI is manual and produces an Android debug APK and an iOS simulator app. These are not signed app-store releases.
+| Area        | What you can do                                                                                                   |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- |
+| Canvas      | Place, select, move, rotate, resize, copy/paste, delete, undo/redo, pan, zoom, fit                                |
+| Wiring      | Fan-out, branches, wire colors, port editing, straight segments, waypoints                                        |
+| Logic       | Input, Output, Button, Constant, NOT, AND, OR, XOR, Delay, Clock, Counter, LED, Display, ROM, Debug, Beep, timers |
+| Reuse       | Componentize a selection, open/edit custom circuits, save components to a local library                           |
+| Learning    | Field guide search, 19 component entries, 8 recipes, ghosts, diagnostics, contextual tips, tutorial               |
+| Console     | Variables, lookup by name/ID/position, remove/edit properties, expressions, start/pause                           |
+| Persistence | Autosave, local board library, rename/delete, export/import, empty-board saving                                   |
+| Languages   | English, Modern Standard Arabic, Egyptian Arabic; persistent RTL                                                  |
+| Platforms   | Browser, Electron (Linux/Windows/macOS), Capacitor (Android/iOS)                                                  |
+| Input       | Mouse, keyboard, pen, touch; explicit coarse-pointer controls                                                     |
 
-## Architecture and migration
+Pin-level reference: [Components](docs/COMPONENTS.md). Shortcuts: [Controls](docs/SHORTCUTS.md). Console: [Console](docs/CONSOLE.md).
 
-This is an **incremental modernization, not a from-scratch UI rewrite**:
+## Documentation
 
-- `app/`: original HTML, CSS, classic-script simulator, and assets.
-- `app/css/reeo.css`: small additive responsive/RTL/accessibility layer.
-- `src/`: strict TypeScript platform contracts, local storage, i18n, bounded simulation work loop, safe arithmetic, and board-validation boundary.
-- `electron/`: strict TypeScript desktop host and narrow preload bridge.
-- `capacitor.config.ts`: native mobile shells using the same `dist/`.
-- `vite.config.ts`: preserves classic-script ordering and compiles the typed platform bootstrap.
-- `tests/`: real-browser checks against the original editor and gates.
+| I want to…                       | Read                                                                |
+| -------------------------------- | ------------------------------------------------------------------- |
+| Learn the whole app              | [User guide](docs/USER-GUIDE.md)                                    |
+| Look up pins/properties          | [Component reference](docs/COMPONENTS.md)                           |
+| Find a shortcut or touch gesture | [Controls](docs/SHORTCUTS.md)                                       |
+| Use the console/variables        | [Console](docs/CONSOLE.md)                                          |
+| Fix a problem                    | [Troubleshooting](docs/TROUBLESHOOTING.md)                          |
+| Understand the code              | [Architecture](docs/ARCHITECTURE.md)                                |
+| Set up and contribute            | [Development](docs/DEVELOPMENT.md), [Contributing](CONTRIBUTING.md) |
+| Run/write tests                  | [Testing](docs/TESTING.md)                                          |
+| Build native apps or release     | [Platforms](docs/PLATFORMS.md), [Releasing](docs/RELEASING.md)      |
+| Deploy the web build             | [Vercel](docs/VERCEL.md)                                            |
+| Configure GitHub                 | [GitHub guide](docs/GITHUB.md)                                      |
+| Understand the identity/type     | [Brand](docs/BRAND.md)                                              |
+| See audit records                | [Documentation index](docs/README.md#audit-records)                 |
 
-The approximately 9,000-line original editor is **not yet entirely TypeScript**. Its renderers, component classes, advanced dialogs, and globals remain JavaScript to preserve behavior while their boundaries are migrated. New code is strictly typed; `satisfies`, discriminated unions, literal locale keys, type-only imports, typed DOM APIs, and `unknown` validation are used where appropriate. We deliberately do not add Solid/React/TanStack just to redraw an already working interface.
+## Commands
 
-See the [modernization audit](docs/MODERNIZATION.md) for completed work, compatibility constraints, and remaining work. Prettier and the new linters deliberately exclude the untouched legacy JavaScript to avoid a misleading whole-repository lint claim or a noisy bulk rewrite.
+| Command                                 | Purpose                                                    |
+| --------------------------------------- | ---------------------------------------------------------- |
+| `bun run dev`                           | Vite dev server on `0.0.0.0`                               |
+| `bun run build`                         | Typecheck + build `dist/`                                  |
+| `bun run build:vercel`                  | Build + verify built files/references                      |
+| `bun run preview`                       | Serve the production build                                 |
+| `bun run check`                         | Typecheck, Oxlint, Biome, Prettier, docs links, unit tests |
+| `bun run test`                          | `bun:test` specs in `src/`                                 |
+| `bun run test:e2e`                      | Playwright suite                                           |
+| `bun run docs:verify`                   | Internal documentation link check                          |
+| `bun run lint` / `format`               | Lint / Prettier                                            |
+| `bun run desktop:dev`                   | Build + open Electron                                      |
+| `bun run desktop:pack`                  | Package for the current desktop OS                         |
+| `bun run mobile:android` / `mobile:ios` | Build + sync Capacitor                                     |
+| `bun run mobile:assets`                 | Regenerate native icons/splash                             |
+| `bun run font:build` / `font:verify`    | Build/verify REEO Circuit Display                          |
+
+Environment details, prerequisites, and troubleshooting are in [Development](docs/DEVELOPMENT.md). Native builds are documented in [Platforms](docs/PLATFORMS.md).
+
+## Project structure
+
+```text
+app/                 original page, classic-script simulator, CSS, fonts, images
+src/                 strict TypeScript boundary (runtime, board, storage, i18n, help…)
+tests/               Playwright specs against the real app
+scripts/             build verification, docs links, native assets, font tooling
+electron/            typed main process + narrow preload bridge
+public/              brand assets, Phosphor icons, shared fonts
+assets/native/       source icons/splash for Android/iOS
+docs/                user and developer documentation
+.github/             workflows, issue/PR templates, CODEOWNERS, Dependabot
+```
+
+`app/index.html` is the single page. Vite keeps the original classic-script load order and injects a compiled TypeScript bootstrap; the legacy canvas/model remains JavaScript. See [Architecture](docs/ARCHITECTURE.md) for the module map, globals bridge, board format, simulation flow, and known debts.
+
+## Testing and honest limits
+
+The automated suite covers gate truth tables, sources/sinks, counters, ROM slicing, fan-out, pause, save/import round trips, custom components, timers, touch gestures, dialogs/overlays, localization/RTL, the field guide, layout measurements, production CSP boot, and the wordmark/font.
+
+**Not certified:** Safari/Firefox/WebKit, physical iOS/Android devices, screen readers or full keyboard-only canvas editing, signed/notarized installers, real audio output, long-duration stress boards, or the optional collaboration server (no server is bundled). The repository’s GitHub `verify` CI can be blocked by an account billing lock; Vercel checks are separate.
+
+Details and the latest recorded baseline: [Testing](docs/TESTING.md). Product-level issues: [Troubleshooting](docs/TROUBLESHOOTING.md).
+
+## Deploy
+
+Vercel is the configured browser target. `vercel.json` sets:
+
+```text
+install: ELECTRON_SKIP_BINARY_DOWNLOAD=1 bun install --frozen-lockfile
+build:   bun run build:vercel
+output:  dist
+```
+
+No environment variables are required. The static app has no cloud database or authentication. The optional legacy WebSocket collaboration path requires a server you host and secure yourself; none is deployed here. See [Vercel guide](docs/VERCEL.md).
+
+## Contributing
+
+- Read [Contributing](CONTRIBUTING.md) and the [Development guide](docs/DEVELOPMENT.md).
+- Preserve the existing REEO interface and visual language; do not introduce a new framework or design system.
+- Run `bun run check`, `bun run build:vercel`, and `bun run test:e2e`.
+- Add all three locales for new user-facing text.
+- Report security issues privately via [SECURITY.md](SECURITY.md), not a public issue.
+- Questions and bug-report guidance: [Support](SUPPORT.md).
+
+Desktop and mobile workflows are manual and produce unsigned artifacts. See [Releasing](docs/RELEASING.md).
+
+## Identity and type
+
+The wordmark joins the original circuit-R image to live `EEO` set in **REEOCircuitDisplay.ttf**. The font is a real 359-glyph typeface with tabular figures, kerning, and a slashed-zero feature. Specimen: [`public/brand/font-specimen.html`](public/brand/font-specimen.html). Build/verify with `bun run font:build` and `bun run font:verify` (Python + fontTools). Details: [Brand guide](docs/BRAND.md) and [`public/brand/README.md`](public/brand/README.md).
 
 ## Credits and license
 
-REEO is derived from **BOOLR by Gees Brouwer**. The original project attribution and GPLv3 licensing are retained. The REEO identity does not remove the original authors' credit. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+REEO is derived from **BOOLR by Gees Brouwer**. Original attribution and GPLv3 licensing are retained; the REEO identity does not erase the original authors’ credit.
+
+- License: **GPL-3.0-only** — [LICENSE](LICENSE)
+- Attribution: [NOTICE](NOTICE)
+- Maintainer: [@abdou-da0wew](https://github.com/abdou-da0wew)

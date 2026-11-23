@@ -43,3 +43,9 @@ Reviewed viewport sizes:
 ## Remaining scope
 
 Firefox, Safari/WebKit, physical tablets (including A11), native release builds, unusual browser zoom/font settings, every advanced legacy dialog, and arbitrary large circuits have not all been certified by this audit. Advanced legacy tutorials/diagnostics still have English text. Further regression tests should be added as those paths are migrated.
+
+## Related
+
+- [Testing](TESTING.md) — current automated matrix and gaps.
+- [User guide](USER-GUIDE.md#responsive-and-touch-behavior) — responsive/touch behavior.
+- [Controls](SHORTCUTS.md#touch) — gesture reference.

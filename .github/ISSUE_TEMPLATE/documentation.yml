@@ -1,0 +1,49 @@
+name: Documentation issue
+description: Report missing, inaccurate, or broken documentation.
+title: '[Docs]: '
+labels: ['documentation']
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Page or file
+      placeholder: docs/COMPONENTS.md → ROM
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+      description: Quote the text and explain what the app actually does.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested correction
+      description: If you can, provide replacement text or a link to authoritative behavior.
+    validations:
+      required: false
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of issue
+      options:
+        - Incorrect behavior description
+        - Missing user-facing feature
+        - Missing developer information
+        - Broken link
+        - Translation/copy issue (en/ar/arz)
+        - Outdated command or script
+        - Formatting/accessibility
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked the current documentation index and searched existing issues.
+          required: true
+        - label: This is not a security report.
+          required: true

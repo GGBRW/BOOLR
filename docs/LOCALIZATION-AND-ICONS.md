@@ -42,3 +42,9 @@ The `REEO Arabic` CSS face uses Arabic-only Unicode ranges, prepended to existin
 ## Verification and limits
 
 The audit was visually checked at 390×844 (English), 800×1280 (Arabic) and 1366×768 (Egyptian Arabic), including editor toasts/circuit symbols, Arabic tutorial and Egyptian editor dialog. Physical Android/iOS/Electron runtimes and a native-speaker language review were not performed in this pass.
+
+## Related
+
+- [User guide → Languages and RTL](USER-GUIDE.md#languages-and-rtl) — user-facing behavior.
+- [Controls](SHORTCUTS.md) — untranslated commands and shortcuts.
+- [Development → Internationalization](DEVELOPMENT.md#internationalization-workflow) — adding translations.
