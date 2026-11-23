@@ -1,0 +1,101 @@
+<!-- Main menu -->
+<div class="main-menu">
+  <h1 class="reeo-wordmark" aria-label="REEO">
+    <img class="reeo-wordmark-r" src="/brand/reeo-r-mark.svg" alt="" aria-hidden="true" />
+    <span class="reeo-wordmark-letters" aria-hidden="true">EEO</span>
+  </h1>
+  <span class="version"></span>
+
+  <div class="loading">LOADING...</div>
+  <button disabled onclick="event.ctrlKey ? this.parentNode.hide() : newBoardMenu.toggle()">
+    <i class="material-icons">add</i>
+    NEW BOARD
+  </button>
+
+  <div class="sub new-board">
+    <h1>Create new board</h1>
+    <input id="boardname" dir="auto" placeholder="Board name" />
+    <div id="filename">This board will be saved as new-board.board</div>
+
+    <br />
+    <br />
+    <p style="color: rgba(0, 0, 0, 0.5)">
+      Tip: hold Ctrl while choosing NEW BOARD to start without a saved file.
+    </p>
+    <button
+      onclick="
+        this.parentNode.hide();
+        this.parentNode.querySelector('input').value = '';
+      "
+    >
+      Cancel
+    </button>
+    <button
+      onclick="
+        createNewBoard(document.querySelector('.new-board #boardname').value);
+        this.parentNode.parentNode.hide();
+      "
+    >
+      Create
+    </button>
+  </div>
+
+  <button disabled onclick="openBoardMenu.toggle()">
+    <i class="material-icons">folder</i>
+    OPEN BOARD
+  </button>
+
+  <div class="sub open-board">
+    <h1>Open board</h1>
+    <ul></ul>
+    <p>Boards are saved on this device. Import or export a .board file to move between devices.</p>
+    <button onclick="window.reeo.importBoard()">Import a .board file</button>
+    <button onclick="dialog.connectToServer()">Connect to a REEO server</button>
+  </div>
+
+  <button disabled onclick="settingsMenu.toggle()">
+    <i class="material-icons">settings</i>
+    SETTINGS
+  </button>
+
+  <div class="sub settings">
+    <h1>Settings</h1>
+    <br />
+    <br />
+    <button onclick="this.parentNode.hide()">Cancel</button>
+    <button
+      onclick="
+        this.parentNode.apply();
+        this.parentNode.hide();
+      "
+    >
+      OK
+    </button>
+  </div>
+
+  <button id="reeo-quit" disabled onclick="window.reeo.quit()">
+    <i class="material-icons">exit_to_app</i>
+    QUIT
+  </button>
+  <button id="reeo-resume" style="display: none" onclick="mainMenu.hide()">
+    <i class="material-icons">arrow_back</i>
+    <span>Resume board</span>
+  </button>
+</div>
+
+<!-- Small home-screen credit. Both the name and icon are one link to the repository. -->
+<div class="reeo-credit">
+  <a
+    class="reeo-credit-link"
+    href="https://github.com/abdou-da0wew/REEO"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span>
+      <span data-i18n="developer">Developer</span>
+      :
+    </span>
+    <span dir="ltr">Abdou-da0wew</span>
+    <span class="reeo-credit-icon" aria-hidden="true"></span>
+  </a>
+</div>

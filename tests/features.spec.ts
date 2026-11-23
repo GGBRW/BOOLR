@@ -36,7 +36,7 @@ test('board code builds a wired circuit and reports syntax errors', async ({ pag
 });
 
 test('new sound, switch, display and procedural parts are pickable', async ({ page }) => {
-  const labels = await page.locator('#list li').allTextContents();
+  const labels = (await page.locator('#list li').allTextContents()).map((label) => label.trim());
   for (const label of [
     'Buzzer',
     'Tone',

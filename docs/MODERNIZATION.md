@@ -23,7 +23,7 @@ The original main menu, typography, palette, circuit renderer, toolbar, gate cat
 | Ad-hoc dependencies                             | Bun lockfile, strict TS7, separate Prettier/Oxlint/Biome responsibilities                                      |
 | No tests or CI                                  | Bun unit tests; Playwright original-gate, storage, language, responsive and touch checks; manual native builds |
 
-The removed files were unused `console.js`, `contextmenu.js`, and `localStorage.js`, plus the obsolete `stringifier.js` parser exposing `eval`-based `parse_old`/`stringify_old`. The active `console2.js`, `contextmenu2.js`, and `localStorage2.js` remain so their behavior is not rewritten merely for naming aesthetics.
+The removed files were unused `console.js`, `contextmenu.js`, and `localStorage.js`, plus the obsolete `stringifier.js` parser exposing `eval`-based `parse_old`/`stringify_old`. The active console, context-menu, and storage implementations now live in clearly named modules under `src/app/ui/` and `src/app/persistence/`; they were split and renamed without changing behavior.
 
 ## Compatibility
 

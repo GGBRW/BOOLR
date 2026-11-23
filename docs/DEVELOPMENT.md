@@ -95,7 +95,7 @@ Detailed module responsibilities are in [Architecture](ARCHITECTURE.md#typed-run
 - Prefer small modules and pure functions for new logic (`src/expression.ts`, `src/geometry.ts`, `src/diagnostics.ts` are examples). Put DOM installation in an `install*` function.
 - Do not add dependencies casually. Runtime dependencies are intentionally minimal (`@capacitor/core`, Phosphor icon assets).
 
-## Working on the two layers
+## Working on the application modules
 
 ### Typed code (`src/`)
 
@@ -104,25 +104,40 @@ Detailed module responsibilities are in [Architecture](ARCHITECTURE.md#typed-run
 - Expose only what classic scripts need on `window`, and document it in the architecture global table.
 - Add unit tests for pure logic; add Playwright coverage if the behavior reaches the UI.
 
-### Legacy code (`app/js/`)
+### Editor modules (`src/app/`)
 
-- These files are classic scripts with shared globals. Do not add `import`/`export` or `type="module"`.
-- Keep load order in `app/index.html`; scripts are not bundled and rely on later definitions at event time.
-- Run the e2e suite after any change to `components.js`, `canvas.js`, `keys.js`, `localStorage2.js`, or `interaction.ts`.
-- If a function must be called from TS, expose it through the existing bridge pattern rather than importing across layers.
-- Do not “clean up” commented-out classes as a side task; they are documented as dead in [Architecture](ARCHITECTURE.md#known-architectural-debts).
+- These files are TypeScript classic scripts that share one global scope. Do not add
+  ECMAScript `import`/`export` syntax or load them as `type="module"`; add the file to
+  `src/legacy-modules.ts` instead.
+- Load order is the manifest order. Functions may be defined later than first reference
+  only when the reference runs at event time; top-level class extends and registries must
+  appear after their dependencies.
+- Keep files under roughly 300 lines and name them by responsibility. Split a growing
+  canvas, dialog, or component family into a new sibling file rather than appending.
+- Run `bun run check` and the e2e suite after any change to components, canvas, keyboard,
+  persistence, or `src/interaction.ts`.
+- If a function must be called from typed code, keep the global bridge name stable and
+  update the narrow `declare` in the consumer. Prefer moving new logic into a typed module
+  and calling it from the editor module.
+- `src/app/**` currently uses `// @ts-nocheck` while legacy behavior is migrated. Do not
+  add new `any`-heavy code outside that boundary.
 
 ## Adding a component
 
 A component is not done when it draws. It must exist in **all** of these places:
 
-1. **Class** in `app/js/components.js` extending `Component` (or `Gate`/appropriate base), with `input`/`output` ports, `properties`, and `update()`/`dispose()` as needed.
-2. **Constructor registry** used by `localStorage2.js` and the TS allowlist in `src/board.ts` (`constructors`).
-3. **Toolbar/picker** markup and `toolbar.js` behavior. The picker is a list of slots; follow an existing entry rather than adding a separate picker style.
+1. **Class** in a focused `src/app/components/*.ts` file extending `Component`, with
+   `input`/`output` ports, `properties`, and `update()`/`dispose()` as needed. Append the
+   file to `src/legacy-modules.ts` after `component.ts` and before `persistence`.
+2. **Constructor registry** in `src/app/persistence/constructors.ts` and the TS allowlist
+   in `src/board.ts` (`constructors`).
+3. **Toolbar/picker** markup in `app/partials/workspace.html` and `src/app/ui/toolbar.ts`
+   behavior. The picker is a list of slots; follow an existing entry rather than adding a
+   separate picker style.
 4. **Body rendering** in `src/rendering.ts` (`switch`/lookup by constructor name).
 5. **Circuit symbol** in `src/icons.ts` (`circuitPaths` key, fallback symbol).
 6. **Help copy** in `src/help-content.ts`: `id`, localized title/description/wiring/experiment/caution, and any recipe references.
-7. **Translation** in `src/i18n.ts` / `src/legacy-messages.ts` for dynamic strings and dialogs.
+7. **Translation** in `src/i18n/` / `src/legacy-messages.ts` for dynamic strings and dialogs.
 8. **Board validation** limits (pins, properties) if the component adds arrays or unusual fields.
 9. **Tests**:
    - unit test for pure behavior if extracted,
@@ -218,16 +233,16 @@ Then manually verify the real UI at desktop and phone widths in all three locale
 
 ## Common development errors
 
-| Symptom                                                     | Fix                                                                                                     |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `Cannot find module` / Vite tries to bundle a legacy script | Keep `vite-ignore` and the classic `<script>` tag; do not import `app/js` from TS                       |
-| Type error on an optional field                             | Omit it; do not assign `undefined` (`exactOptionalPropertyTypes`)                                       |
-| Build succeeds but page is blank in Electron                | Run `bun run build` before `desktop:dev`/`desktop:pack`; Electron loads `dist/`                         |
-| e2e cannot launch Chromium                                  | Install Playwright Chromium and the Linux shared libraries; use `CHROMIUM_PATH` if using a custom build |
-| Arabic test fails with Latin text left over                 | Add the missing translation rather than loosening the test                                              |
-| A component works alone but breaks inside Custom            | Check port recreation on parse and disposal of nested timers                                            |
-| A save silently does nothing                                | Check storage quota and whether the path passed the adapter’s allowlist                                 |
-| Prettier failure in legacy HTML/CSS                         | Prettier ignores most `app/**` markup/CSS; format those by hand to match the file                       |
+| Symptom                                          | Fix                                                                                                     |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Editor module is not running                     | Add it to `src/legacy-modules.ts` in dependency order; classic scripts must not use `import`/`export`   |
+| Type error on an optional field                  | Omit it; do not assign `undefined` (`exactOptionalPropertyTypes`)                                       |
+| Build succeeds but page is blank in Electron     | Run `bun run build` before `desktop:dev`/`desktop:pack`; Electron loads `dist/`                         |
+| e2e cannot launch Chromium                       | Install Playwright Chromium and the Linux shared libraries; use `CHROMIUM_PATH` if using a custom build |
+| Arabic test fails with Latin text left over      | Add the missing translation rather than loosening the test                                              |
+| A component works alone but breaks inside Custom | Check port recreation on parse and disposal of nested timers                                            |
+| A save silently does nothing                     | Check storage quota and whether the path passed the adapter’s allowlist                                 |
+| Prettier failure in legacy HTML/CSS              | Prettier ignores most `app/**` markup/CSS; format those by hand to match the file                       |
 
 ## Submitting a change
 

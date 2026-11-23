@@ -1,0 +1,135 @@
+// @ts-nocheck
+// biome-ignore-all lint: transitional legacy interface module
+/* eslint-disable */
+class Display extends Component {
+  constructor(name, pos) {
+    super(name, pos, 4, 7);
+    this.properties.displayMode = 'bcd';
+    this.properties.digits = 1;
+    this.properties.colorMode = 'fixed';
+    this.properties.colorOn = '#ff3b3b';
+    this.properties.colorOff = '#301010';
+    this.value = 0;
+    this.digitValues = [0];
+    this.configureDisplay();
+  }
+
+  configureDisplay() {
+    const digits = Math.max(1, Math.min(8, parseInt(this.properties.digits) || 1));
+    this.properties.displayMode = 'bcd';
+    this.properties.digits = digits;
+    const signal = this.properties.colorMode === 'signal';
+    const dataPins = digits * 4;
+    this.width = digits * 4;
+    this.height = 7;
+
+    // Keep the three colour ports (and their wires) when digits are added
+    // or removed; only the data bus in front of them changes size.
+    const colorPorts = this.input.filter((port) => /^C[0-2]$/.test(port.name || ''));
+    const dataPorts = this.input.filter((port) => !/^C[0-2]$/.test(port.name || ''));
+    this.input = dataPorts;
+    while (this.input.length < dataPins) this.addInputPort();
+    while (this.input.length > dataPins) {
+      const port = this.input.pop();
+      if (port && port.connection) removeWire(port.connection);
+    }
+    for (let digit = 0; digit < digits; ++digit) {
+      for (let bit = 0; bit < 4; ++bit) {
+        const port = this.input[digit * 4 + bit];
+        port.pos = { side: 0, pos: digit * 4 + bit };
+        port.name = 'D' + (digit * 4 + bit);
+      }
+    }
+    if (signal) {
+      while (colorPorts.length < 3) colorPorts.push(this.addInputPort());
+      for (let i = 0; i < 3; ++i) {
+        const port = colorPorts[i];
+        if (this.input.indexOf(port) === -1) this.input.push(port);
+        port.pos = { side: 3, pos: i };
+        port.name = 'C' + i;
+      }
+    } else {
+      for (const port of colorPorts) {
+        if (port.connection) removeWire(port.connection);
+      }
+    }
+  }
+
+  addDigit() {
+    this.properties.digits = Math.min(8, (this.properties.digits || 1) + 1);
+    this.configureDisplay();
+  }
+
+  removeDigit() {
+    this.properties.digits = Math.max(1, (this.properties.digits || 1) - 1);
+    this.configureDisplay();
+  }
+
+  function() {
+    if (this.properties.displayMode !== 'bcd') {
+      this.value = this.input[0]?.value || 0;
+      return;
+    }
+    const digits = this.properties.digits || 1;
+    this.digitValues = [];
+    for (let digit = 0; digit < digits; ++digit) {
+      let value = 0;
+      for (let bit = 0; bit < 4; ++bit) {
+        value |= (this.input[digit * 4 + bit]?.value || 0) << bit;
+      }
+      this.digitValues.push(value & 15);
+    }
+    this.value = this.digitValues[digits - 1] || 0;
+  }
+
+  draw() {
+    Component.prototype.draw.call(this);
+    const box = componentBox(this);
+    if (this.properties.displayMode !== 'bcd') {
+      const screen = drawDisplayScreen(box, 0.075);
+      const names = 'abcdefg';
+      let lit = '';
+      for (let i = 0; i < 7; ++i) {
+        if (this.input[i]?.value) lit += names[i];
+      }
+      if (this.input[7]?.value) lit += 'p';
+      drawSevenDigit(
+        screen.x,
+        screen.y,
+        screen.w,
+        screen.h,
+        lit,
+        displayOnColor(this),
+        displayOffColor(this),
+      );
+      return;
+    }
+    const digits = this.properties.digits || 1;
+    const cellWidth = box.w / digits;
+    const gap = zoom * 0.1;
+    const onColor = displayOnColor(this);
+    const offColor = displayOffColor(this);
+    for (let digit = 0; digit < digits; ++digit) {
+      const cell = {
+        x: box.x + digit * cellWidth + gap / 2,
+        y: box.y,
+        w: cellWidth - gap,
+        h: box.h,
+      };
+      const screen = drawDisplayScreen(cell, 0.055);
+      let value = 0;
+      for (let bit = 0; bit < 4; ++bit) {
+        value |= (this.input[digit * 4 + bit]?.value || 0) << bit;
+      }
+      drawSevenDigit(
+        screen.x,
+        screen.y,
+        screen.w,
+        screen.h,
+        SEGMENTS[value] || '',
+        onColor,
+        offColor,
+      );
+    }
+  }
+}

@@ -33,12 +33,7 @@ for (const file of readdirSync(resolve(root, 'assets'))) {
     if (match[1]) verifyReference(match[1], source);
   }
 }
-for (const path of [
-  'js/startup.js',
-  'js/components.js',
-  'brand/reeo-mark.svg',
-  'brand/reeo-icon.png',
-]) {
+for (const path of ['index.html', 'brand/reeo-mark.svg', 'brand/reeo-icon.png']) {
   if (!existsSync(resolve(root, path))) failures.push(path);
 }
 if (failures.length)

@@ -181,7 +181,7 @@ It is stored per origin (`reeo.locale`). Private windows and cleared site data r
 ### Blank page on Vercel
 
 - Confirm the build output is `dist/` and the deployment used `bun run build:vercel`/the configured build command.
-- Open DevTools → Console and Network. A 404 for `/app/js/...` means the legacy script assets were not included; they are referenced from `app/` in the repo.
+- Open DevTools → Console and Network. A 404 for `/src/app/...` means the legacy script assets were not included; they are referenced from `app/` in the repo.
 - A CSP error means a new external resource/connection was added without updating `vercel.json`.
 - A “failed to load module” on an old browser means the build target is newer than that browser.
 

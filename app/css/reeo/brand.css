@@ -1,0 +1,267 @@
+@media (max-width: 600px) {
+  .main-menu {
+    padding-bottom: 120px;
+  }
+  .main-menu > h1 {
+    font-size: clamp(68px, 19vw, 110px);
+    margin: 110px 0 28px;
+  }
+  .reeo-wordmark {
+    gap: 0;
+    font-size: min(103px, 25.9vw);
+  }
+  .main-menu .version {
+    font-size: 12px;
+  }
+  .main-menu > button {
+    padding: 20px 26px;
+    width: 310px;
+    font-size: 20px;
+    margin: 6px auto;
+  }
+  .main-menu > button .material-icons {
+    font-size: 32px;
+    top: -4px;
+  }
+  .main-menu .sub {
+    position: relative;
+    max-height: 65dvh;
+    padding-bottom: 20px;
+  }
+  .main-menu .sub h1 {
+    margin: 20px;
+    font-size: 25px;
+  }
+  .main-menu .sub p {
+    font-size: 13px;
+  }
+  .main-menu .sub button {
+    padding: 12px 16px;
+    margin: 6px;
+  }
+  .reeo-platform-bar {
+    inset-inline: 10px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  .reeo-platform-bar button {
+    padding: 8px 10px;
+  }
+  .reeo-platform-bar button > span:not(.material-icons) {
+    display: none;
+  }
+  #toolbar {
+    width: 336px;
+    margin-left: -168px;
+  }
+  #toolbar .slot {
+    width: 48px;
+  }
+  #version {
+    display: none;
+  }
+  #dialog {
+    width: calc(100vw - 24px);
+    left: 12px;
+    margin-left: 0;
+    padding-inline: 15px;
+  }
+  #dialog .container {
+    padding-inline: 5px;
+  }
+  #dialog h1 {
+    font-size: 26px;
+  }
+  #dialog .options button {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 350px) {
+  #toolbar {
+    width: 308px;
+    margin-left: -154px;
+  }
+  #toolbar .slot {
+    width: 44px;
+  }
+  .reeo-touch-tools {
+    font-size: 10px;
+    gap: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Interaction audit: visible controls have the same behavior on mouse, touch, and pen. */
+
+.reeo-touch-tools {
+  display: flex;
+}
+
+.main-menu {
+  padding-bottom: 32px;
+}
+
+.main-menu.has-submenu::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: #0009;
+  z-index: 1;
+}
+
+.main-menu .sub {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 120px);
+  transform: translate(-50%, -50%) !important;
+  padding: 10px 0 24px;
+  border-radius: 6px;
+  z-index: 2;
+  box-shadow: 0 16px 70px #0008;
+}
+
+.main-menu .sub::before {
+  display: none;
+}
+
+.main-menu .sub ul {
+  max-width: 100%;
+}
+
+#contextMenu,
+#waypointsMenu {
+  z-index: 120;
+  max-height: calc(100dvh - 16px);
+}
+
+#menu {
+  z-index: 120;
+}
+
+#dialog .reeo-brand-icon {
+  width: 88px;
+  height: 88px;
+  display: block;
+  margin: 12px auto 22px;
+}
+
+#version .reeo-brand-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-inline-end: 5px;
+}
+
+#version {
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+#version .brand-name {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+
+.tutorial {
+  display: none;
+  z-index: 130;
+  width: min(500px, calc(100vw - 16px));
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.tutorial .sections {
+  position: absolute;
+  inset: 70px 0 90px;
+  height: auto;
+  overflow-y: auto;
+  padding: 12px 20px;
+}
+
+.tutorial .sections > div {
+  position: relative;
+  width: 100%;
+  display: none;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+.tutorial .sections > div.is-current {
+  display: block;
+}
+
+.tutorial .options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 80px;
+  background: #ddd;
+}
+
+.tutorial .options button {
+  margin: 0;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.tutorial .options .index {
+  position: static;
+}
+
+@media (max-width: 600px) {
+  #version {
+    display: none;
+  }
+  .main-menu .sub {
+    padding-bottom: 20px;
+  }
+}
+
+.main-menu .new-board #filename {
+  position: relative;
+  height: auto;
+  line-height: 1.5;
+  padding: 8px 12px;
+  max-width: calc(100% - 32px);
+  overflow-wrap: anywhere;
+}
+
+.main-menu .new-board #filename::before {
+  position: absolute;
+  top: -15px;
+}
+
+.main-menu .settings #settings {
+  width: auto;
+  max-width: 100%;
+}
+
+.main-menu .settings #settings button {
+  margin: 12px 0;
+}
+
+/* Keep the wordmark and version on deliberate rows at every viewport size. */
+
+.main-menu > h1.reeo-wordmark {
+  display: flex !important;
+  width: max-content;
+  font-family: 'REEO Circuit Display', 'Righteous', sans-serif;
+  font-size: min(188px, 25.6vw);
+  font-weight: 400;
+  line-height: 1;
+  margin: 64px auto 12px;
+}

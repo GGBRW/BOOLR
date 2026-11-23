@@ -71,10 +71,10 @@ After deployment, check headers and missing-file handling:
 
 ```sh
 curl -I https://YOUR-DEPLOYMENT.vercel.app/
-curl -I https://YOUR-DEPLOYMENT.vercel.app/js/components.js
+curl -I https://YOUR-DEPLOYMENT.vercel.app/index.html
 # Substitute a real fingerprinted path from the deployed HTML:
 curl -I https://YOUR-DEPLOYMENT.vercel.app/assets/ACTUAL-HASHED-FILE.css
-curl -I https://YOUR-DEPLOYMENT.vercel.app/js/definitely-missing.js
+curl -I https://YOUR-DEPLOYMENT.vercel.app/definitely-missing.js
 ```
 
 Expect revalidation on HTML/classic scripts, immutable caching on the hashed asset, security headers, and 404 on the nonexistent script. `vercel.json` rules are validated locally by regression tests, not by a live deployment in this workspace.

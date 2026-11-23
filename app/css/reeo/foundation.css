@@ -1,0 +1,259 @@
+/* Additive improvements only: original canvas, menus, fonts, toolbar, and colors remain intact. */
+
+:root {
+  --reeo-accent: #ddd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button:focus-visible,
+select:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--reeo-accent);
+  outline-offset: 4px;
+}
+
+button,
+select,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+canvas {
+  touch-action: none;
+}
+
+/* The R is the circuit mark; the rest is set in REEO Circuit Display. */
+
+.reeo-wordmark {
+  display: inline-flex !important;
+  align-items: baseline;
+  gap: 0;
+  font-family: 'REEO Circuit Display', 'Righteous', sans-serif;
+  font-size: min(188px, 25.6vw);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+}
+
+.reeo-wordmark-r {
+  display: block;
+  flex: none;
+  width: auto;
+  height: 0.7em;
+  margin: 0;
+}
+
+.reeo-wordmark-letters {
+  display: block;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.reeo-platform-bar {
+  position: fixed;
+  inset-block-start: max(12px, env(safe-area-inset-top));
+  inset-inline-end: max(12px, env(safe-area-inset-right));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  z-index: 110;
+  font:
+    12px 'Alan Sans',
+    Arial,
+    sans-serif;
+  max-width: calc(100vw - 24px);
+}
+
+.reeo-platform-bar button,
+.reeo-platform-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background: #111;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.reeo-platform-bar button:hover {
+  background: #292929;
+  border-color: #777;
+}
+
+.reeo-platform-bar .material-icons {
+  font-size: 19px;
+}
+
+.reeo-platform-bar select {
+  font: inherit;
+  background: #111;
+  color: #ddd;
+  border: 0;
+  max-width: 100px;
+  cursor: pointer;
+}
+
+.reeo-touch-tools {
+  display: none;
+  position: fixed;
+  z-index: 9;
+  inset-block-start: 64px;
+  inset-inline-start: 10px;
+  gap: 3px;
+  background: #111;
+  padding: 4px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px #0003;
+  font:
+    12px 'Alan Sans',
+    Arial,
+    sans-serif;
+}
+
+.reeo-touch-tools button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: #aaa;
+  padding: 10px 8px;
+  min-width: 36px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.reeo-touch-tools button[aria-pressed='true'] {
+  background: #333;
+  color: var(--reeo-accent);
+}
+
+.reeo-guide {
+  padding-inline-start: 22px;
+  text-align: start;
+  line-height: 1.8;
+}
+
+.reeo-guide li {
+  padding: 6px 0;
+}
+
+#dialog {
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+}
+
+#dialog .container input {
+  max-width: 100%;
+}
+
+.main-menu .sub {
+  max-height: 70dvh;
+  overflow-y: auto;
+}
+
+.main-menu .sub p {
+  padding-inline: 16px;
+  line-height: 1.7;
+}
+
+.main-menu > button {
+  max-width: calc(100vw - 36px);
+  min-height: 50px;
+}
+
+#toolbar {
+  z-index: 10;
+  direction: ltr;
+}
+
+#toolbar #list {
+  max-height: min(65dvh, 600px);
+  overflow-y: auto;
+}
+
+#toolbar #toast {
+  max-width: calc(100vw - 24px);
+  white-space: normal;
+}
+
+#menu,
+#contextMenu {
+  max-width: calc(100vw - 20px);
+  max-height: 75dvh;
+  overflow-y: auto;
+}
+
+#contextMenu li,
+#menu li {
+  min-height: 40px;
+}
+
+#settings li {
+  min-height: 44px;
+}
+
+.tutorial {
+  max-width: calc(100vw - 20px);
+  max-height: calc(100dvh - 90px);
+  overflow: auto;
+}
+
+.tutorial img {
+  max-width: 100%;
+  height: auto;
+}
+
+[dir='rtl'] .main-menu,
+[dir='rtl'] #dialog,
+[dir='rtl'] .tutorial {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+
+[dir='rtl'] .reeo-wordmark,
+[dir='rtl'] #version,
+[dir='rtl'] .material-icons {
+  direction: ltr;
+}
+
+[dir='rtl'] #dialog .container,
+[dir='rtl'] .main-menu .sub {
+  text-align: start;
+}
+
+[dir='rtl'] .main-menu .sub h1,
+[dir='rtl'] .main-menu .new-board {
+  text-align: center;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .reeo-touch-tools {
+    display: flex;
+  }
+  #toolbar .slot {
+    min-height: 48px;
+  }
+  #toolbar #list li {
+    min-height: 44px;
+    padding-block: 12px;
+  }
+  #toolbar {
+    bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  .brbtns {
+    bottom: calc(62px + env(safe-area-inset-bottom));
+  }
+  .brbtn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
