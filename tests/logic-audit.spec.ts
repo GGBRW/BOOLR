@@ -216,3 +216,41 @@ test('clock deletion undo restarts ticking and clear board cancels timers', asyn
   })()`),
   ).toEqual([true, true, true, 0]);
 });
+
+test('console edit coerces numbers and supports dotted expression paths', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const clock = new Clock('editable clock', { x: 0, y: 0 });
+    clock.properties.delay = 500;
+    components.push(clock);
+    const before = clock.properties.delay;
+    inputHandler('edit ' + clock.id + ' properties.delay 2 * 125');
+    return { before, after: clock.properties.delay };
+  })()`);
+  expect(result.after).toBe(250);
+  expect(result.after).not.toBe(result.before);
+});
+
+test('clear local data removes REEO keys but preserves unrelated storage', async ({ page }) => {
+  await page.evaluate(`(() => {
+    localStorage.setItem('reeo.files.v1:saves/clear-test.board', '{"name":"clear test"}');
+    localStorage.setItem('reeo.locale', 'ar');
+    localStorage.setItem('pwsData', '{"sentinel":true}');
+    localStorage.setItem('unrelated-app-key', 'keep');
+    dialog.settings();
+  })()`);
+  await page.locator('#dialog #reset').click();
+  const reloaded = page.waitForEvent('load');
+  await page.locator('#dialog .options button', { hasText: 'OK' }).click();
+  await reloaded;
+  await expect(page.locator('body')).toHaveAttribute('data-reeo-ready', 'true');
+  const keys = await page.evaluate(`({
+    board: localStorage.getItem('reeo.files.v1:saves/clear-test.board'),
+    locale: localStorage.getItem('reeo.locale'),
+    legacy: localStorage.getItem('pwsData'),
+    unrelated: localStorage.getItem('unrelated-app-key')
+  })`);
+  expect(keys.board).toBeNull();
+  expect(keys.locale).toBeNull();
+  expect(keys.unrelated).toBe('keep');
+  expect(keys.legacy ? JSON.parse(keys.legacy).sentinel : undefined).toBeUndefined();
+});

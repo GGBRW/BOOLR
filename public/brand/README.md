@@ -31,6 +31,9 @@ sizes.
 - `REEOCircuitDisplay.ttf` — the installable font.
 - `reeo-r-mark.svg` — the transparent circuit R with signal-green pin tips,
   placed inline before live `EEO` in the home wordmark.
+- `reeo-mark.svg` — compact standalone circuit-R mark.
+- `reeo-wordmark.svg` — static wordmark lockup for contexts without the live font.
+- `reeo-icon.png` / `reeo-icon.ico` — application and packaging icons.
 - `font-specimen.html` — live specimen, character sets, language samples and
   technical details. Open it through the dev server:
   `http://localhost:5173/brand/font-specimen.html`.
@@ -74,3 +77,20 @@ previous share card lost the circuit lettering.
 
 No third-party font was modified to make these glyphs. Alan Sans and IBM Plex
 Sans Arabic are bundled separately for the UI under their own OFL licenses.
+
+## Using the identity
+
+- The home wordmark is **not** an image: the R is `reeo-r-mark.svg`, tight against live
+  `EEO` rendered in `REEOCircuitDisplay.ttf`. Keep `gap: 0` and baseline alignment;
+  changing the font on the surrounding `h1` without re-declaring `.reeo-wordmark`
+  will silently fall back to the UI font.
+- Use the mark on a dark (`#111111`) or neutral background with clear space around
+  it. Do not recolor, outline, stretch, rotate, or rebuild the R from a different
+  font.
+- The wordmark's R is the logo; the `EEO` letters are type, not separately drawn
+  glyphs. Do not trace them into new artwork.
+- These assets are GPL-3.0-only like the repository. They are not a trademark
+  registration or a separate brand license.
+
+The full rationale, palette, geometry, and regression checks are in
+[docs/BRAND.md](../../docs/BRAND.md).

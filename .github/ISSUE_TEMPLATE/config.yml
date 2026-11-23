@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the REEO documentation
+    url: https://github.com/abdou-da0wew/REEO/blob/master/docs/README.md
+    about: User guide, component reference, console, troubleshooting, and developer docs.
+  - name: Report a security vulnerability privately
+    url: https://github.com/abdou-da0wew/REEO/security/advisories/new
+    about: Do not disclose security issues in a public issue.
+  - name: Support and reporting guidance
+    url: https://github.com/abdou-da0wew/REEO/blob/master/SUPPORT.md
+    about: What to include and where to ask.

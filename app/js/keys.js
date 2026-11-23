@@ -111,10 +111,17 @@ c.onkeydown = function(e) {
             }
             return false;
             break;
-        case 79: // O
+        case 78: // N
             if(e.ctrlKey) {
                 mainMenu.show();
-                setTimeout(clearBoard,1000);
+                newBoardMenu.show();
+            }
+            return false;
+            break;
+        case 79: // O
+            if(e.ctrlKey) {
+                // Opening the board menu must not clear the circuit behind it.
+                mainMenu.show();
                 openBoardMenu.show();
             } else if(e.shiftKey) {
                 const component = findComponentByPos();

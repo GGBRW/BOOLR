@@ -42,7 +42,9 @@ test('home wordmark joins the circuit R to live REEO Circuit Display type', asyn
   await expect(wordmark).toHaveAttribute('aria-label', 'REEO');
   await expect(letters).toHaveText('EEO');
   await expect(letters).toHaveCSS('font-family', /REEO Circuit Display/);
-  await expect(mark).toHaveAttribute('src', '/brand/reeo-r-mark.svg');
+  expect(await mark.evaluate((img) => new URL((img as HTMLImageElement).src).pathname)).toBe(
+    '/brand/reeo-r-mark.svg',
+  );
 
   const rendered = await page.evaluate(() => {
     const font = [...document.fonts].find((face) => face.family === 'REEO Circuit Display');

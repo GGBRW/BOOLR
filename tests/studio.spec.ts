@@ -136,3 +136,21 @@ test('imports an exported board and leaves the circuit intact on invalid import'
   await expect(page.locator('#toast')).toContainText('Unable to import this board');
   expect(await page.evaluate('components.length')).toBe(1);
 });
+
+test('Ctrl+N and Ctrl+O open their menus without clearing the circuit', async ({ page }) => {
+  await createBoard(page);
+  await page.evaluate('select(Input)');
+  await page.locator('#canvas').click({ position: { x: 300, y: 250 } });
+  expect(await page.evaluate('components.length')).toBe(1);
+
+  await page.locator('#canvas').focus();
+  await page.keyboard.press('Control+O');
+  await expect(page.locator('.main-menu .open-board')).toBeVisible();
+  expect(await page.evaluate('components.length')).toBe(1);
+
+  await page.evaluate('mainMenu.hide()');
+  await page.locator('#canvas').focus();
+  await page.keyboard.press('Control+N');
+  await expect(page.locator('.main-menu .new-board')).toBeVisible();
+  expect(await page.evaluate('components.length')).toBe(1);
+});

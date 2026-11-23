@@ -379,11 +379,7 @@ dialog.settings = function(component) {
 
     settingsList.querySelector("#settings #reset").onclick = () => dialog.confirm(
         'Are you sure you want to clear all local stored data?',
-        () => {
-            delete localStorage.pwsData;
-            window.onbeforeunload = undefined;
-            location.reload()
-        }
+        clearReeoLocalData
     );
 
     dialog.addOption("Cancel");

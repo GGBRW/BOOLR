@@ -76,3 +76,9 @@ The default bundle ID `app.reeo.logic` is a project default, not a claim that th
 Source identity assets are in `public/brand/`; platform-sized rasters are in `assets/native/`. Electron uses the REEO icons. The mobile sync scripts run `bun run mobile:assets`, which applies REEO Android launcher/adaptive foreground assets and splash images, plus the iOS 1024px icon and splash images, instead of leaving Capacitor template branding. Review the generated assets on actual launchers/devices before publishing.
 
 Automated viewport checks cover a phone at 390×844, a tablet at 800×1280, and a laptop at 1366×768, plus Chromium touch events. These checks are **not** certification on a physical A11 tablet or a substitute for Safari/WebKit, real-device, accessibility, or app-store testing. No physical A11 device was available in this environment.
+
+## Related
+
+- [Releasing](RELEASING.md) — versions, packaging, signing limits, and rollback.
+- [Testing](TESTING.md#browser-and-device-matrix) — what is and is not certified.
+- [Vercel](VERCEL.md) — browser deployment.

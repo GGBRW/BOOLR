@@ -187,6 +187,19 @@ openBoardMenu.onopen = function() {
     }
 }
 
+function clearReeoLocalData() {
+    // Remove only REEO-owned keys: legacy preferences plus the board,
+    // saved-component, locale and guide-preference namespaces.
+    const keys = [];
+    for (let index = 0; index < localStorage.length; ++index) {
+        const key = localStorage.key(index);
+        if (key && (key === "pwsData" || key.startsWith("reeo."))) keys.push(key);
+    }
+    for (const key of keys) localStorage.removeItem(key);
+    window.onbeforeunload = undefined;
+    location.reload();
+}
+
 settingsMenu.onopen = function() {
     this.querySelector("#settings") && this.removeChild(this.querySelector("#settings"));
 
@@ -208,11 +221,7 @@ settingsMenu.onopen = function() {
 
     settingsList.querySelector("#settings #reset").onclick = () => dialog.confirm(
         'Are you sure you want to clear all local stored data?',
-        () => {
-            delete localStorage.pwsData;
-            window.onbeforeunload = undefined;
-            location.reload()
-        }
+        clearReeoLocalData
     );
 
     this.apply = () => {

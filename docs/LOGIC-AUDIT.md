@@ -45,3 +45,9 @@ Production build verification: **30 browser tests passed**, including these 14 a
 These results are not a proof of zero bugs. They do not exhaust arbitrary feedback/multi-driver graphs, all combinations of nested custom circuits, every edit/resize/port operation, every ROM dialog validation path, multiplayer synchronization, all tutorial/diagnostic components, seven-segment pixel rendering, or timing under long pauses/background throttling. Audio control flow was tested, not audible output on physical hardware. Actual browser audio remains subject to user-gesture/autoplay permissions.
 
 Native Electron, Android and iOS behavior, Safari/WebKit, physical A11 hardware, signing and deployment have not been runtime-certified by this audit. Clocks and delays use browser wall-clock timers and the existing queued simulation semantics, not a deterministic virtual-time hardware simulator.
+
+## Related
+
+- [Component reference](COMPONENTS.md) — behavior and cautions for every type.
+- [Architecture → Simulation flow](ARCHITECTURE.md#simulation-flow) — the current scheduler and board model.
+- [Testing](TESTING.md) — current automated coverage and gaps.
