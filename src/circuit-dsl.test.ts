@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { compileCircuit, exampleProgram } from './circuit-dsl';
+import { compileCircuit, exampleProgram, examplePrograms, instructionNames } from './circuit-dsl';
 
 describe('board code language', () => {
   test('builds a small gate chain', () => {
@@ -61,6 +61,54 @@ describe('board code language', () => {
       'A component needs a name',
       'Duplicate name "A"',
     ]);
+  });
+
+  test('accepts comments, aliases and option syntax', () => {
+    const program = compileCircuit(`
+      # comments and aliases run through the same compiler
+      in A // first input
+      in B
+      gate G A B
+      light L G
+      wire G -> L
+      clk C 250 delay=300
+      display DISP A B C G digits=2 mode=signal
+    `);
+    expect(program.errors).toEqual([]);
+    expect(program.components.map((part) => part.type)).toEqual([
+      'Input',
+      'Input',
+      'AND',
+      'LED',
+      'Clock',
+      'Display',
+    ]);
+    expect(program.components[4]?.properties?.delay).toBe(250);
+  });
+
+  test('supports every example and reports the instruction list', () => {
+    const examples = examplePrograms();
+    expect(examples.length).toBeGreaterThanOrEqual(4);
+    for (const example of examples) {
+      expect(compileCircuit(example.source).errors).toEqual([]);
+    }
+    const names = instructionNames();
+    expect(names).toContain('sevenseg');
+    expect(names).toContain('procedural');
+    expect(new Set(names).size).toBe(names.length);
+  });
+
+  test('rejects wires that point at a missing part or pin', () => {
+    const program = compileCircuit(`
+      input A
+      led L A
+      wire NOPE[0] -> L
+      wire L -> A[9]
+    `);
+    expect(program.errors.map((error) => error.line)).toEqual([4, 5, 5]);
+    expect(program.errors[0]?.message).toContain('Unknown source');
+    expect(program.errors[1]?.message).toContain('has 0 output(s)');
+    expect(program.errors[2]?.message).toContain('has 0 input(s)');
   });
 
   test('keeps enough default input pins for multi-input displays', () => {

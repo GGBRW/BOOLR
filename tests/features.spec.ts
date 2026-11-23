@@ -35,6 +35,54 @@ test('board code builds a wired circuit and reports syntax errors', async ({ pag
   await expect(page.locator('.reeo-program-overlay')).toBeVisible();
 });
 
+test('board code editor highlights syntax, numbers lines and marks errors', async ({ page }) => {
+  await page.waitForFunction(() => typeof window.reeoOpenProgram === 'function');
+  await page.evaluate('window.reeoOpenProgram()');
+  const overlay = page.locator('.reeo-program-overlay');
+  const code = overlay.locator('.reeo-program-edit');
+  await code.fill('input A at 0,0\nand G A A\nwire G -> L\nled L G');
+  await expect(overlay.locator('.reeo-program-highlight .tok-type').first()).toHaveText('input');
+  await expect(overlay.locator('.reeo-program-highlight .tok-keyword').first()).toHaveText('at');
+  await expect(overlay.locator('.reeo-code-line-number')).toHaveCount(4);
+
+  await code.fill('input A\nand G A MISSING');
+  await expect(overlay.locator('.reeo-program-errors')).toContainText('Unknown source');
+  await expect(overlay.locator('.reeo-program-highlight .is-error')).toHaveCount(1);
+  await expect(overlay.locator('.reeo-code-line-number.is-error')).toHaveCount(1);
+
+  await code.fill('input A');
+  await code.press('Control+Enter');
+  await expect(overlay).toBeHidden();
+});
+
+test('board code can add to an existing board and rejects a name clash', async ({ page }) => {
+  await page.waitForFunction(() => typeof window.reeoOpenProgram === 'function');
+  await page.evaluate('window.reeoOpenProgram()');
+  await page.locator('.reeo-program-overlay textarea').fill('input A\ninput B\nand G A B\nled L G');
+  await page.locator('.reeo-program-build').click();
+  await expect(page.locator('.reeo-program-overlay')).toBeHidden();
+
+  await page.evaluate('window.reeoOpenProgram()');
+  const overlay = page.locator('.reeo-program-overlay');
+  await overlay.locator('textarea').fill('input C at 30,0\nled L2 C at 34,0');
+  await overlay.locator('.reeo-program-add').check();
+  await overlay.locator('.reeo-program-build').click();
+  await expect(overlay).toBeHidden();
+  const built = await page.evaluate(`({
+    names: components.map(c=>c.name),
+    wires: wires.length,
+    gInputs: components.find(c=>c.name==='G').input.filter(p=>p.connection).length
+  })`);
+  expect(built).toEqual({ names: ['A', 'B', 'G', 'L', 'C', 'L2'], wires: 4, gInputs: 2 });
+
+  await page.evaluate('window.reeoOpenProgram()');
+  await overlay.locator('textarea').fill('input A');
+  await overlay.locator('.reeo-program-add').check();
+  await overlay.locator('.reeo-program-build').click();
+  await expect(overlay.locator('.reeo-program-errors')).toContainText('already on the board');
+  await expect(overlay).toBeVisible();
+});
+
 test('new sound, switch, display and procedural parts are pickable', async ({ page }) => {
   const labels = (await page.locator('#list li').allTextContents()).map((label) => label.trim());
   for (const label of [
