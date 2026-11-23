@@ -145,7 +145,7 @@ If you change any of these areas, manually test the corresponding behavior and r
 
 ## Recorded baseline
 
-The latest full local runs recorded **116 passed, 1 skipped** in dev mode and **117 passed** in production mode. `bun run check` passed with **67 unit tests (2,252 assertions)**, `build:vercel` verified 56 asset references, and `font:verify` passed. That is a historical baseline, not a substitute for re-running the suite. Update this paragraph only when you have a newer full run; do not scatter test counts through the docs.
+The latest full local runs recorded **117 passed, 1 skipped** in dev mode and **118 passed** in production mode. `bun run check` passed with **67 unit tests (2,252 assertions)**, `build:vercel` verified 56 asset references, and `font:verify` passed. That is a historical baseline, not a substitute for re-running the suite. Update this paragraph only when you have a newer full run; do not scatter test counts through the docs.
 
 ## Browser and device matrix
 

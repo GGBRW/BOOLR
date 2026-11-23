@@ -65,7 +65,7 @@ The home screen is the dark main menu over the circuit canvas.
 
 ### Create a board
 
-- The name is free text; the filename is derived from it (`My Board!` → `my-board.board`).
+- The name is free text; the filename is derived from it (`My Board` → `my-board.board`). Punctuation and spaces become hyphens, and a duplicate name gets a numbered suffix.
 - If a filename already exists, a numbered suffix is added.
 - **Ctrl while choosing NEW BOARD** means “start unsaved.” The board title stays generic until you save.
 - Creating a new board clears the current canvas after the app has persisted the previous state.
@@ -547,6 +547,7 @@ The complete table, including all canvas shortcuts and their caveats, is in [Con
 
 | Action                 | Shortcut                       |
 | ---------------------- | ------------------------------ |
+| New / open board       | `Ctrl+N` / `Ctrl+O`            |
 | Save                   | `Ctrl+S`                       |
 | Undo / redo            | `Ctrl+Z` / `Ctrl+Y`            |
 | Copy / paste           | `Ctrl+C` / `Ctrl+V`            |
@@ -563,6 +564,8 @@ The complete table, including all canvas shortcuts and their caveats, is in [Con
 | Pan / zoom (keyboard)  | Arrows / `Page Up`/`Page Down` |
 | Return to origin       | `Home`                         |
 | Close surface          | `Escape`                       |
+
+`Ctrl+N`/`Ctrl+O` are browser-reserved; use the menu if the browser intercepts them.
 
 ---
 

@@ -46,7 +46,7 @@ The importer validates structure and limits. Common causes:
 - It is a **saved custom component**, not a board.
 - It has an unsupported component constructor (from an incompatible fork/version).
 - It exceeds the 2 MB file limit, 2,000 components, 10,000 wires, or 12 custom-component nesting levels.
-- Wire tuples reference a missing component or port.
+- Wire tuples reference a component/port that is missing or out of range (the structural validator catches malformed wire data, but a dangling reference can still load incorrectly).
 
 Your current circuit is left untouched on failure. Re-export from the source version, or reduce the board first. Check the browser console for the validator’s message.
 

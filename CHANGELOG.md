@@ -19,6 +19,7 @@ Notable changes to REEO. The app version is shown in **What’s new** and in `wi
 ### Fixed
 
 - Console numeric edits (for example `edit 12 properties.delay 500`) no longer silently do nothing.
+- `Ctrl+O` no longer clears the current circuit after a delay; `Ctrl+N` now opens the New board form.
 - Clear-local-data left board and component files behind.
 
 ## [2.0.0] — current release

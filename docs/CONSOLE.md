@@ -151,7 +151,7 @@ The `set period 250` only rewrites the clock automatically if the delay was subs
 | `Ctrl+L`  | Clear all console output                             |
 | `Escape`  | Close the console                                    |
 
-Tab completion cycles to the first alphabetical command matching the prefix (`remove`, `edit`, etc.); it does not complete names or properties.
+Tab completion inserts the first command in its built-in list matching the prefix (`remove`, `edit`, etc.); it does not cycle, and it does not complete names or properties.
 
 ## Console vs. other tools
 

@@ -2,7 +2,7 @@
 
 This page lists the controls that are actually wired in the application. Shortcuts apply to the **canvas** unless stated otherwise; click the canvas once to focus it after using a dialog.
 
-> **Menu labels vs. working shortcuts:** the bottom-right menu prints `Ctrl+N` and `Ctrl+O` as legacy hints, but the canvas does not implement those two browser-reserved shortcuts consistently. Use the menu items or home-screen buttons for **New board** and **Open board**. Do not press random browser shortcuts expecting a REEO action.
+> **Browser-reserved shortcuts:** `Ctrl+N` and `Ctrl+O` are handled when the canvas has focus, but the browser may intercept them before the page sees them. If nothing happens, use the bottom-right menu or the home-screen buttons. Opening the board menu no longer clears the circuit behind it.
 
 ## Mouse and trackpad
 
@@ -37,6 +37,8 @@ This page lists the controls that are actually wired in the application. Shortcu
 
 | Key                       | Action                                                               |
 | ------------------------- | -------------------------------------------------------------------- |
+| `Ctrl+N`                  | Open the New board form (browser-reserved; menu fallback)            |
+| `Ctrl+O`                  | Open the Open board menu without clearing the current circuit        |
 | `Ctrl+C`                  | Copy the selection, or the component under the pointer               |
 | `Ctrl+V`                  | Paste at the pointer/context position                                |
 | `Ctrl+Z`                  | Undo                                                                 |

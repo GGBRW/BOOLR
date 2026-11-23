@@ -307,7 +307,6 @@ These are real and should not be presented as features:
 - `Key`, `Merger`, `Splitter`, `BinaryToDecimal`, and `DecimalToBinary` are commented-out classes. Do not document them as available.
 - The console's undocumented `openDevTools` command is an Electron-only helper; in a browser it silently does nothing.
 - `saves.js` still uses filesystem-style method names even though it is backed by `localStorage`.
-- `Ctrl+N`/`Ctrl+O` menu hints are not implemented as reliable canvas shortcuts.
 - Some legacy dialogs have terse labels; translation coverage is tested for authored prose, not arbitrary browser errors.
 - The typed layer declares legacy globals with `declare`; it is type-checked but not runtime-validated. Keep the declarations in sync with `app/js` when signatures change.
 
