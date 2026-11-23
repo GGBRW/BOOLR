@@ -4,21 +4,22 @@ REEO ships a browser build continuously (Vercel), manual desktop packages (Elect
 
 ## Version sources
 
-The version is duplicated in four places. Keep them identical:
+The version is duplicated in five places. Keep them identical:
 
-| File             | Field                            |
-| ---------------- | -------------------------------- |
-| `package.json`   | `version`                        |
-| `app/index.html` | inline `const VERSION = "2.0.0"` |
-| `src/runtime.ts` | `window.reeo.version`            |
-| `src/types.ts`   | `ReeoApi.version` literal        |
+| File                      | Field                       |
+| ------------------------- | --------------------------- |
+| `package.json`            | `version`                   |
+| `src/app/boot/version.ts` | `VERSION` constant          |
+| `src/runtime.ts`          | `window.reeo.version`       |
+| `src/types.ts`            | `ReeoApi.version` literal   |
+| `src/release.ts`          | `FALLBACK_RELEASE` metadata |
 
 `bun.lock` records the package version only indirectly; run `bun install` after changing `package.json` so the lockfile stays consistent. Do not hand-edit generated native projects.
 
 ## What goes into a release
 
 1. **Code and docs** merged to `master`, with `bun run check`, `build:vercel`, and e2e green locally.
-2. **What’s new** content updated in `app/js/dialogs.js` (`dialog.update`). Add/remove list items, then add matching translations in `src/legacy-messages.ts` for Arabic and Egyptian Arabic. The dialog is opened from the bottom-right navigation menu.
+2. **What’s new** content updated in `src/app/ui/dialog-*.ts` (`dialog.update`). Add/remove list items, then add matching translations in `src/legacy-messages.ts` for Arabic and Egyptian Arabic. The dialog is opened from the bottom-right navigation menu.
 3. **Version bump** in all four files above.
 4. **Screenshots/README** refreshed if the home screen, wordmark, or guide changed.
 5. **Known issues** recorded in the release notes (including CI billing limitations, untested browsers/devices, unsigned packages).
@@ -62,7 +63,7 @@ Flow:
 1. Merge the release PR to `master`.
 2. Vercel builds `dist` with `build:vercel`, which typechecks, builds, and verifies referenced assets/files.
 3. Confirm the production deployment at https://reeo.vercel.app and a preview URL.
-4. Verify the CSP headers and that `/app/js/*`, fonts, icons, and brand assets load.
+4. Verify the CSP headers and that `/src/app/*`, fonts, icons, and brand assets load.
 5. Confirm storage is per-origin and note that preview/production/custom domains do not share boards.
 
 Roll back by promoting the previous deployment in Vercel. Local storage is origin-scoped, so a rollback does not delete user boards.
@@ -167,7 +168,7 @@ Never rewrite a published tag or silently replace a release asset. Publish a new
 
 - Prefer squash or merge commits that preserve a readable history; do not force-push `master`.
 - Require the `verify` check when CI is available. While the billing lock blocks it, document that Vercel checks and local results were used.
-- Require review for changes to `app/js/components.js`, `src/board.ts`, `src/storage.ts`, workflows, `vercel.json`, and this document.
+- Require review for changes to `src/app/model/component.ts and src/app/components/`, `src/board.ts`, `src/storage.ts`, workflows, `vercel.json`, and this document.
 - Never commit secrets, signing certificates, `.env` files, or generated native/desktop output.
 
 See [GitHub workflow](GITHUB.md) for the public contribution process.

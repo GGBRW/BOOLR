@@ -1,0 +1,278 @@
+/* Logical row layout: icon, label, then isolated shortcut in both directions. */
+
+#menu li,
+#contextMenu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  text-align: start;
+}
+
+#menu li > .material-icons,
+#contextMenu li > .material-icons {
+  position: static;
+  float: none;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
+}
+
+#menu li > .reeo-menu-label,
+#contextMenu li > .reeo-menu-label {
+  float: none;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  white-space: nowrap;
+}
+
+#menu li > .reeo-menu-key,
+#contextMenu li > .key {
+  float: none;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 8px;
+  line-height: 24px;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: 'Alan Sans', sans-serif;
+}
+
+#contextMenu li > .key:empty {
+  display: none;
+}
+
+#toolbar #list > li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  text-align: start;
+}
+
+#toolbar #list > li > .reeo-circuit-icon {
+  margin: 0;
+}
+
+#toolbar #list > li > .reeo-picker-label {
+  min-width: 0;
+}
+
+#toolbar #list > li > .reeo-component-help {
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reeo-editor-header .reeo-platform-bar,
+.reeo-editor-header .reeo-touch-tools,
+.reeo-editor-header .reeo-platform-bar select {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+
+.reeo-editor-header .reeo-platform-bar select {
+  color-scheme: dark;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.reeo-language-menu {
+  position: fixed;
+  z-index: 150;
+  min-width: 140px;
+  padding: 4px 0;
+  background: #111;
+  color: #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+
+.reeo-language-menu[hidden] {
+  display: none;
+}
+
+.reeo-language-menu button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.reeo-language-menu button:hover,
+.reeo-language-menu button[aria-selected='true'] {
+  background: #222;
+}
+
+.reeo-language-menu button:focus-visible {
+  outline-offset: -3px;
+}
+
+[dir='rtl'] #toolbar #list > li {
+  direction: rtl;
+}
+
+#toolbar #list > li > .reeo-component-help {
+  border: 0;
+}
+
+.reeo-language-menu button {
+  text-align: match-parent;
+}
+
+/* Home is navigation, not the circuit editor: only language stays available. */
+
+body[data-reeo-screen='home'] .reeo-touch-tools,
+body[data-reeo-screen='home'] .reeo-platform-bar > button,
+body[data-reeo-screen='home'] #toolbar,
+body[data-reeo-screen='home'] .brbtns,
+body[data-reeo-screen='home'] #customComponentToolbar,
+body[data-reeo-screen='home'] .reeo-guide-dock,
+body[data-reeo-screen='home'] #reeo-toast-stack {
+  display: none !important;
+}
+
+.reeo-language-control {
+  position: relative;
+  pointer-events: auto;
+}
+
+.reeo-editor-header .reeo-language-control > label {
+  width: 100%;
+}
+
+.reeo-language-control:has(select[aria-expanded='true']) > label {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.reeo-language-control .reeo-language-menu {
+  position: absolute;
+  inset: 100% 0 auto;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #333;
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.reeo-editor-header .reeo-language-menu button {
+  display: block;
+  min-height: 44px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #ddd;
+  text-align: match-parent;
+}
+
+.reeo-editor-header .reeo-language-menu button:hover,
+.reeo-editor-header .reeo-language-menu button[aria-selected='true'] {
+  background: #222;
+}
+
+@media (max-width: 600px) {
+  .reeo-editor-header .reeo-touch-tools {
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (pointer: coarse) {
+  #toolbar > .slot,
+  .reeo-touch-tools button {
+    touch-action: manipulation;
+  }
+}
+
+/* Home-screen developer credit: deliberately small, reusing the menu's existing dark palette. */
+
+.reeo-credit {
+  display: none;
+  position: fixed;
+  z-index: 120;
+  inset-inline: 0;
+  bottom: max(6px, env(safe-area-inset-bottom));
+  justify-content: center;
+  pointer-events: none;
+  font:
+    11px 'Alan Sans',
+    Arial,
+    sans-serif;
+  color: #777;
+}
+
+body[data-reeo-screen='home'] .reeo-credit {
+  display: flex;
+}
+
+body:has(.main-menu.has-submenu) .reeo-credit {
+  visibility: hidden;
+}
+
+.reeo-credit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  color: inherit;
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.reeo-credit-link:hover,
+.reeo-credit-link:focus-visible {
+  color: #ddd;
+}
+
+.reeo-credit-icon {
+  width: 13px;
+  height: 13px;
+  background: currentColor;
+  mask: url('/icons/phosphor/github-logo.svg') center / contain no-repeat;
+}
+
+/* Restore the original icon/label rule on home-screen actions. The masked
+   Phosphor glyph replaces the Material glyph, so the divider is drawn on the
+   button itself; positioning matches the original 40px Material icon. */
+
+.main-menu > button::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  left: 70px;
+  width: 0;
+  height: 34px;
+  transform: translateY(-50%);
+  border-left: 3px solid #888;
+  pointer-events: none;
+}

@@ -84,6 +84,7 @@ const constructors = new Set([
   'Procedural',
   'LED',
   'RGBLed',
+  'RGBLed2',
   'BarGraph',
   'SevenSegment',
   'Lamp',

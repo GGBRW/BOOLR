@@ -1,281 +1,294 @@
 .main-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding-bottom: 1000px;
-    width: 100%;
-    z-index: 100;
-    text-align: center;
-    background: #111;
-    overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding-bottom: 1000px;
+  width: 100%;
+  z-index: 100;
+  text-align: center;
+  background: #111;
+  overflow-y: auto;
 
-    opacity: 1;
-    transform: translateY(0px);
-    transition: opacity 1s, transform .5s;
+  opacity: 1;
+  transform: translateY(0px);
+  transition:
+    opacity 1s,
+    transform 0.5s;
 }
 
 .main-menu > h1 {
-    display: inline-block;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 160px;
-    font-weight: 400;
-    color: #ddd;
-    margin: 40px 0;
+  display: inline-block;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 160px;
+  font-weight: 400;
+  color: #ddd;
+  margin: 40px 0;
 
-    position: relative;
-    top: 0;
-    transition: top .5s;
+  position: relative;
+  top: 0;
+  transition: top 0.5s;
 }
 
 .main-menu .version {
-    display: inline-block;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 18px;
-    color: #ddd;
+  display: inline-block;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 18px;
+  color: #ddd;
 }
 
 .main-menu .loading {
-    position: fixed;
-    top: 25%;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 30px;
-    color : #888;
-    width: 100%;
-    text-align: center;
+  position: fixed;
+  top: 25%;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 30px;
+  color: #888;
+  width: 100%;
+  text-align: center;
 }
 
 .main-menu > button {
-    position: relative;
-    display: block;
-    background: transparent;
+  position: relative;
+  display: block;
+  background: transparent;
 
-    border: 0px solid #111;
-    margin: 10px auto;
-    padding: 30px;
-    width: 400px;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 24px;
-    color: #ddd;
-    outline: none;
-    cursor: pointer;
+  border: 0px solid #111;
+  margin: 10px auto;
+  padding: 30px;
+  width: 400px;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 24px;
+  color: #ddd;
+  outline: none;
+  cursor: pointer;
 
-    opacity: 0;
-    transform: translateX(-50px);
-    top: 0;
-    transition: opacity 1s, transform .75s, top .5s, background .2s, color .2s;
+  opacity: 0;
+  transform: translateX(-50px);
+  top: 0;
+  transition:
+    opacity 1s,
+    transform 0.75s,
+    top 0.5s,
+    background 0.2s,
+    color 0.2s;
 }
 
 .main-menu > button:hover {
-    transform: translateX(5px);
+  transform: translateX(5px);
 }
 
 .main-menu > button .material-icons {
-    position: relative;
-    top: -8px;
-    float: left;
-    font-size: 40px;
-    color: #888;
+  position: relative;
+  top: -8px;
+  float: left;
+  font-size: 40px;
+  color: #888;
 
-    transform: translateX(30px);
-    transition: transform .75s, color .5s;
+  transform: translateX(30px);
+  transition:
+    transform 0.75s,
+    color 0.5s;
 }
 
 .main-menu > button:hover .material-icons {
-    color: #ddd;
+  color: #ddd;
 }
 
 .main-menu > button .material-icons:after {
-    content: "";
-    position: relative;
-    left: 40px;
-    top: 0px;
-    border-left: 3px solid #888;
-    color: #888;
+  content: '';
+  position: relative;
+  left: 40px;
+  top: 0px;
+  border-left: 3px solid #888;
+  color: #888;
 }
 
 .main-menu .sub {
-    position: fixed;
-    display: none;
-    width: 100%;
-    background: #ddd;
-    padding-bottom: 50px;
-    z-index: 1;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  position: fixed;
+  display: none;
+  width: 100%;
+  background: #ddd;
+  padding-bottom: 50px;
+  z-index: 1;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
 
-    opacity: 0;
-    transform: translateY(-50px);
-    transition: height .5s, opacity .5s, transform .5s;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition:
+    height 0.5s,
+    opacity 0.5s,
+    transform 0.5s;
 }
 
 .main-menu .sub:before {
-    content: '';
-    position: relative;
-    border-style: solid;
-    border-width: 0 15px 15px;
-    border-color: #ddd transparent;
-    display: block;
-    width: 0;
-    z-index: 3;
-    top: -15px;
-    left: 50%;
-    margin-left: -15px;
+  content: '';
+  position: relative;
+  border-style: solid;
+  border-width: 0 15px 15px;
+  border-color: #ddd transparent;
+  display: block;
+  width: 0;
+  z-index: 3;
+  top: -15px;
+  left: 50%;
+  margin-left: -15px;
 }
 
 .main-menu .sub h1 {
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-weight: 400;
-    margin: 30px;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-weight: 400;
+  margin: 30px;
 }
 
 .main-menu .sub button {
-    background: #111;
-    border: none;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 16px;
-    color: #ddd;
-    padding: 12px 25px;
-    margin: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
+  background: #111;
+  border: none;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 16px;
+  color: #ddd;
+  padding: 12px 25px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
 }
 
 .main-menu .sub button:hover {
-    background: #333;
+  background: #333;
 }
 
 .main-menu .new-board input {
-    display: block;
-    margin: 20px auto;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(0,0,0,.1);
-    padding: 10px;
-    width: 200px;
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 18px;
-    outline: none;
-    text-align: center;
+  display: block;
+  margin: 20px auto;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 200px;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 18px;
+  outline: none;
+  text-align: center;
 }
 
 .main-menu .new-board #filename {
-    background: rgba(0,0,0,.1);
-    color: #111;
-    padding: 10px;
-    font-size: 15px;
-    border-radius: 5px;
-    display: inline-block;
-    line-height: 0px;
-    height: 25px;
+  background: rgba(0, 0, 0, 0.1);
+  color: #111;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  display: inline-block;
+  line-height: 0px;
+  height: 25px;
 
-    opacity: 1;
-    transition: opacity .2s;
+  opacity: 1;
+  transition: opacity 0.2s;
 }
 
 .main-menu .new-board #filename:before {
-    content: '';
-    position: relative;
-    border-style: solid;
-    border-width: 0 15px 15px;
-    border-color: rgba(0,0,0,.1) transparent;
-    display: block;
-    width: 0;
-    z-index: 3;
-    top: -25px;
-    left: 50%;
-    margin-left: -15px;
+  content: '';
+  position: relative;
+  border-style: solid;
+  border-width: 0 15px 15px;
+  border-color: rgba(0, 0, 0, 0.1) transparent;
+  display: block;
+  width: 0;
+  z-index: 3;
+  top: -25px;
+  left: 50%;
+  margin-left: -15px;
 }
 
 .main-menu .new-board input::selection {
-    background: #111;
-    color: #ddd;
+  background: #111;
+  color: #ddd;
 }
 
 .main-menu .open-board ul {
-    width: 640px;
-    list-style: none;
-    padding: 0;
-    margin: 20px auto;
-    max-height: 200px;
-    overflow-y: auto;
+  width: 640px;
+  list-style: none;
+  padding: 0;
+  margin: 20px auto;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .main-menu .open-board ul::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+  width: 5px;
+  height: 5px;
 }
 
 .main-menu .open-board ul::-webkit-scrollbar-track {
-    background: rgba(0,0,0,.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .main-menu .open-board ul::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,.3);
-    border-radius: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
 }
 
 .main-menu .open-board li {
-    font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
-    font-size: 18px;
-    padding: 20px;
-    text-align: left;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 18px;
+  padding: 20px;
+  text-align: left;
 
-    transition: background .2s, color .2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .main-menu .open-board li .material-icons {
-    float: right;
-    margin-left: 30px;
-    cursor: pointer;
+  float: right;
+  margin-left: 30px;
+  cursor: pointer;
 }
 
 .main-menu .open-board li:hover {
-    background: rgba(0,0,0,.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .main-menu .open-board li span {
-    position: relative;
-    top: 2px;
-    padding-left: 20px;
-    color: #555;
-    font-size: 15px;
-    float: right;
+  position: relative;
+  top: 2px;
+  padding-left: 20px;
+  color: #555;
+  font-size: 15px;
+  float: right;
 }
 
 .main-menu .settings #settings {
-    margin: 0 auto;
-    width: 500px;
+  margin: 0 auto;
+  width: 500px;
 }
 
 .main-menu .settings #settings li {
-    text-align: left;
+  text-align: left;
 }
 
 .main-menu .settings #settings .slider {
-    background: #888;
+  background: #888;
 }
 
 .main-menu .settings #settings .slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 4px;
-    bottom: 4px;
-    background: #ddd;
-    opacity: .5;
-    -webkit-transition: .2s;
-    transition: .2s;
+  position: absolute;
+  content: '';
+  height: 14px;
+  width: 14px;
+  left: 4px;
+  bottom: 4px;
+  background: #ddd;
+  opacity: 0.5;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
 }
 
-
 .main-menu .settings #settings input:checked + .slider {
-    background: #111;
+  background: #111;
 }
 
 .main-menu .settings #settings button {
-    padding: 10px;
-    background: #500;
-    margin-left: -250px;
+  padding: 10px;
+  background: #500;
+  margin-left: -250px;
 }

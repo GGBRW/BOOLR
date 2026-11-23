@@ -47,7 +47,7 @@ test('release notes fall back cleanly when the public API is unreachable', async
   await page.evaluate('dialog.update()');
   await expect(page.locator('#dialog')).toBeVisible();
   await expect(page.locator('#dialog')).toContainText(
-    "What's new now reads the latest public GitHub release",
+    'Every component now shares one visual language',
   );
   await expect(page.locator('#dialog .reeo-release-source')).toHaveAttribute(
     'href',

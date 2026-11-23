@@ -42,22 +42,21 @@ const MAX_ITEM_LENGTH = 320;
 
 const FALLBACK_BODY = `## Highlights
 
-- What's new now reads the latest public GitHub release and keeps a copy on this device.
-- The share card and in-app identity use the REEO Circuit Display typeface.
-- Release notes are parsed as text, cached locally, and shown without a page reload.
+- Every component now shares one visual language: white bodies with strong black outlines, neutral black panels, and no default blue surfaces.
+- Seven-segment and multi-digit displays use the solid rounded segment renderer and start blank until a data pin is wired.
 
 ## Fixed
 
-- The release dialog no longer depends on a hardcoded list shipped with the app.
-- Release metadata is validated before it is displayed or cached.
+- Display, seven-segment, RGB LED and RGB LED 2-bit labels no longer spill into their panels.
+- Segment digits and colour channels are drawn inside their component footprints, and pins that sit between grid points can be wired reliably.
 
 ## Platforms
 
 - Browser build, Electron desktop packages, and Capacitor Android/iOS shells are produced from the same source.`;
 
 export const FALLBACK_RELEASE: ReleaseNote = {
-  tagName: 'v2.1.0',
-  name: 'REEO v2.1.0',
+  tagName: 'v2.2.0',
+  name: 'REEO v2.2.0',
   body: FALLBACK_BODY,
   url: RELEASES_URL,
   publishedAt: '',

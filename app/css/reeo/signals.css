@@ -1,0 +1,272 @@
+.reeo-guide-dock p {
+  margin: 8px 0;
+}
+
+.reeo-guide-dock > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 8px;
+}
+
+.reeo-guide-dock > div > button {
+  font-size: 13px;
+  padding-inline: 6px;
+}
+
+.reeo-smart-tip {
+  padding-top: 18px !important;
+}
+
+@media (max-width: 600px) {
+  .reeo-help-panel {
+    padding: 12px;
+    gap: 8px;
+  }
+  .reeo-help-panel header {
+    align-items: start;
+  }
+  .reeo-help-panel nav {
+    gap: 4px;
+  }
+  .reeo-help-panel nav button {
+    flex: 1 1 40%;
+    font-size: 13px;
+  }
+  .reeo-help-card {
+    padding: 16px 0;
+  }
+}
+
+.reeo-help-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1199;
+  background: rgba(136, 136, 136, 0.75);
+}
+
+.reeo-help-backdrop[hidden] {
+  display: none;
+}
+
+.reeo-help-panel button:focus-visible,
+.reeo-help-panel input:focus-visible,
+.reeo-guide-dock button:focus-visible,
+.reeo-smart-tip button:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: 4px;
+}
+
+.reeo-help-panel input[type='checkbox'] {
+  accent-color: #ddd;
+}
+
+.reeo-help-panel input[type='search']::-webkit-search-cancel-button {
+  filter: grayscale(1);
+}
+
+/* One responsive header aligns editor tools with project actions. */
+
+.reeo-editor-header {
+  position: fixed;
+  z-index: 110;
+  inset-block-start: max(12px, env(safe-area-inset-top));
+  inset-inline-start: max(12px, env(safe-area-inset-left));
+  inset-inline-end: max(12px, env(safe-area-inset-right));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 12px;
+  pointer-events: none;
+}
+
+.reeo-editor-header .reeo-touch-tools,
+.reeo-editor-header .reeo-platform-bar {
+  position: static;
+  inset: auto;
+  max-width: 100%;
+  pointer-events: auto;
+}
+
+.reeo-editor-header .reeo-touch-tools {
+  order: 1;
+  padding: 4px;
+}
+
+.reeo-editor-header .reeo-platform-bar {
+  order: 2;
+  margin-inline-start: auto;
+  justify-content: flex-end;
+}
+
+.reeo-editor-header .reeo-platform-bar button,
+.reeo-editor-header .reeo-platform-bar label {
+  min-height: 52px;
+}
+
+@media (max-width: 350px) {
+  .reeo-editor-header .reeo-touch-tools {
+    width: 100%;
+  }
+}
+
+/* Compact learning/release dialogs, using the original dialog treatment. */
+
+.reeo-help-panel {
+  inset: auto;
+  left: calc(var(--reeo-view-left) + var(--reeo-view-width) / 2);
+  top: calc(var(--reeo-view-top) + var(--reeo-view-height) / 2);
+  transform: translate(-50%, -50%);
+  width: min(760px, calc(var(--reeo-view-width) - 24px));
+  height: min(660px, calc(var(--reeo-view-height) - 32px));
+  max-width: none;
+  padding: 20px;
+  gap: 12px;
+}
+
+.reeo-help-panel h2 {
+  padding: 0;
+  font-size: 24px;
+}
+
+.reeo-help-panel header button {
+  flex-shrink: 0;
+}
+
+.reeo-help-results {
+  line-height: 1.65;
+}
+
+.reeo-help-card {
+  padding-block: 16px;
+}
+
+.reeo-help-card h3 {
+  margin-bottom: 12px;
+}
+
+.reeo-help-card h4 {
+  margin-top: 12px;
+}
+
+.reeo-help-card p {
+  margin-bottom: 8px;
+}
+
+.reeo-editor-header #reeo-help {
+  width: 52px;
+  padding: 0;
+  justify-content: center;
+}
+
+.reeo-editor-header #reeo-help .material-icons {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+#dialog.reeo-whats-new {
+  width: min(420px, calc(var(--reeo-view-width) - 24px));
+  max-height: min(500px, calc(var(--reeo-view-height) - 24px));
+}
+
+#dialog.reeo-whats-new h1 {
+  padding-bottom: 4px;
+}
+
+#dialog.reeo-whats-new .reeo-release-version {
+  margin: 0 0 4px;
+  color: #888;
+}
+
+#dialog.reeo-whats-new .reeo-release-meta {
+  margin: 0 0 12px;
+  color: #666;
+  font-size: 12px;
+}
+
+#dialog.reeo-whats-new .reeo-release-section {
+  margin: 14px 0 4px;
+  color: #bbb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#dialog.reeo-whats-new .reeo-release-source {
+  display: inline-block;
+  margin-top: 10px;
+  color: #8ab4f8;
+  font-size: 12px;
+}
+
+#dialog.reeo-whats-new .container {
+  padding-bottom: 0;
+}
+
+#dialog.reeo-whats-new ul {
+  margin: 0;
+  padding-inline-start: 20px;
+  text-align: start;
+}
+
+#dialog.reeo-whats-new li {
+  width: auto;
+  margin: 0;
+  padding: 6px 0;
+  cursor: default;
+}
+
+#dialog.reeo-whats-new li:hover {
+  background: transparent;
+}
+
+#dialog.reeo-whats-new .options {
+  padding-block: 16px;
+}
+
+@media (max-width: 600px) {
+  .reeo-help-panel {
+    padding: 16px;
+    gap: 10px;
+  }
+  .reeo-help-panel h2 {
+    font-size: 22px;
+  }
+  .reeo-help-panel header {
+    align-items: center;
+    gap: 12px;
+  }
+  .reeo-help-panel nav button {
+    padding: 8px;
+  }
+}
+
+#dialog .reeo-color-palette {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  gap: 12px;
+  margin-block: 16px 4px;
+}
+
+#dialog .container .reeo-color-swatch {
+  float: none;
+  display: block;
+  width: 100%;
+  height: 48px;
+  min-width: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #888;
+  border-radius: 0;
+}
+
+#dialog .container .reeo-color-swatch:hover {
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+#dialog .container .reeo-color-swatch:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: 3px;
+}

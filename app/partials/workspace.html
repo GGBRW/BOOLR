@@ -1,0 +1,172 @@
+<!-- Chat -->
+<input id="chat" dir="auto" spellcheck="false" />
+
+<!-- Console -->
+<div class="console">
+  <div class="container">
+    <div class="focused-input">
+      <span class="arrow material-icons">keyboard_arrow_right</span>
+      <input spellcheck="false" />
+    </div>
+  </div>
+  <div class="toolbar">
+    <button class="material-icons" onclick="reeoConsole.clear()" title="Clear console">
+      delete
+    </button>
+    <button class="material-icons" onclick="reeoConsole.toggleFullscreen()" title="Fullscreen">
+      fullscreen
+    </button>
+    <button class="material-icons" onclick="reeoConsole.hide()" title="Close console">
+      exit_to_app
+    </button>
+    <button class="material-icons" title="Help">help</button>
+  </div>
+</div>
+
+<!-- Notifications -->
+<ul id="notifications"></ul>
+
+<!-- Component toolbar -->
+<div id="toolbar">
+  <div id="toast"></div>
+
+  <div class="slot" tooltip="Input and output ports">I/O</div>
+  <div
+    class="slot"
+    tooltip="NOT gate"
+    onmousedown="event.which == 3 ? dialog.truthTable(NOT) : select(NOT)"
+  >
+    !
+  </div>
+  <div
+    class="slot"
+    tooltip="AND gate"
+    onmousedown="event.which == 3 ? dialog.truthTable(AND) : select(AND)"
+  >
+    &
+  </div>
+  <div
+    class="slot"
+    tooltip="OR gate"
+    onmousedown="event.which == 3 ? dialog.truthTable(OR) : select(OR)"
+  >
+    |
+  </div>
+  <div
+    class="slot"
+    tooltip="XOR gate"
+    onmousedown="event.which == 3 ? dialog.truthTable(XOR) : select(XOR)"
+  >
+    ^
+  </div>
+  <div class="slot" tooltip="Custom component" onmousedown="select(Custom)">
+    <i class="material-icons">memory</i>
+  </div>
+  <div class="slot" tooltip="Saved components" onmousedown="dialog.savedCustomComponents()">
+    <i class="material-icons">list</i>
+  </div>
+
+  <ul id="list" tabindex="1" style="display: none">
+    <li onclick="select(Input)"><span class="reeo-picker-label">Input</span></li>
+    <li onclick="select(Output)"><span class="reeo-picker-label">Output</span></li>
+    <li onclick="select(Button)"><span class="reeo-picker-label">Button</span></li>
+    <li onclick="select(Constant)"><span class="reeo-picker-label">Constant</span></li>
+    <li onclick="select(Delay)"><span class="reeo-picker-label">Delay</span></li>
+    <li onclick="select(Clock)"><span class="reeo-picker-label">Clock</span></li>
+    <li onclick="select(LED)"><span class="reeo-picker-label">LED</span></li>
+    <li onclick="select(RGBLed)"><span class="reeo-picker-label">RGB LED</span></li>
+    <li onclick="select(RGBLed2)" title="Two inputs choose off, colour 1, colour 2 or colour 3">
+      <span class="reeo-picker-label">RGB LED 2-bit</span>
+    </li>
+    <li onclick="select(BarGraph)"><span class="reeo-picker-label">Bar Graph</span></li>
+    <li onclick="select(SevenSegment)"><span class="reeo-picker-label">Seven Segment</span></li>
+    <li onclick="select(Lamp)"><span class="reeo-picker-label">Lamp</span></li>
+    <li onclick="select(Motor)"><span class="reeo-picker-label">Motor</span></li>
+    <li onclick="select(Display)"><span class="reeo-picker-label">Display</span></li>
+    <li onclick="select(Debug)"><span class="reeo-picker-label">Debug</span></li>
+    <li onclick="select(Beep)"><span class="reeo-picker-label">Beep</span></li>
+    <li onclick="select(Buzzer)"><span class="reeo-picker-label">Buzzer</span></li>
+    <li onclick="select(Tone)"><span class="reeo-picker-label">Tone</span></li>
+    <li onclick="select(DipSwitch)"><span class="reeo-picker-label">Dip Switch</span></li>
+    <li onclick="select(Slider)"><span class="reeo-picker-label">Slider</span></li>
+    <li onclick="select(Counter)"><span class="reeo-picker-label">Counter</span></li>
+    <li onclick="select(Splitter)"><span class="reeo-picker-label">Splitter</span></li>
+    <li onclick="select(Merger)"><span class="reeo-picker-label">Merger</span></li>
+    <li onclick="select(Procedural)"><span class="reeo-picker-label">Procedural</span></li>
+    <li onclick="select(TimerStart)"><span class="reeo-picker-label">TimerStart</span></li>
+    <li onclick="select(TimerEnd)"><span class="reeo-picker-label">TimerEnd</span></li>
+    <li onclick="select(ROM)"><span class="reeo-picker-label">ROM</span></li>
+  </ul>
+</div>
+<div id="toolbartip"></div>
+
+<!-- Buttons in bottom right corner -->
+<div class="brbtns">
+  <button class="brbtn material-icons" id="menuopen" title="Open menu">
+    <div class="container">expand_less</div>
+  </button>
+  <button class="brbtn material-icons" id="pause" title="Pause simulation">pause</button>
+</div>
+
+<!-- Menu in bottom right corner -->
+<ul id="menu">
+  <li
+    onmousedown="
+      mainMenu.show();
+      newBoardMenu.show();
+    "
+  >
+    <i class="material-icons">add</i>
+    <span class="reeo-menu-label">New board</span>
+    <span class="reeo-menu-key" dir="ltr">Ctrl+N</span>
+  </li>
+  <li
+    onmousedown="
+      mainMenu.show();
+      openBoardMenu.show();
+    "
+  >
+    <i class="material-icons">folder</i>
+    <span class="reeo-menu-label">Open board</span>
+    <span class="reeo-menu-key" dir="ltr">Ctrl+O</span>
+  </li>
+  <li onmousedown="save(true)">
+    <i class="material-icons">save</i>
+    <span class="reeo-menu-label">Save board</span>
+    <span class="reeo-menu-key" dir="ltr">Ctrl+S</span>
+  </li>
+  <li
+    onmousedown="
+      mainMenu.hide();
+      window.reeoOpenProgram();
+    "
+  >
+    <i class="material-icons">code</i>
+    <span class="reeo-menu-label">Board code</span>
+    <span class="reeo-menu-key" dir="ltr">HDL</span>
+  </li>
+  <li onmousedown="reeoConsole.show()">
+    <i class="material-icons">featured_play_list</i>
+    <span class="reeo-menu-label">Open console</span>
+    <span class="reeo-menu-key" dir="ltr">Shift+T</span>
+  </li>
+  <li onmousedown="dialog.settings()">
+    <i class="material-icons">settings</i>
+    <span class="reeo-menu-label">Settings</span>
+    <span class="reeo-menu-key" dir="ltr">Ctrl+Shift+S</span>
+  </li>
+  <li onmousedown="tutorial.show()">
+    <i class="material-icons">help</i>
+    <span class="reeo-menu-label">Open tutorial</span>
+    <span class="reeo-menu-key" dir="ltr">F1</span>
+  </li>
+  <li onmousedown="mainMenu.show()">
+    <i class="material-icons">home</i>
+    <span class="reeo-menu-label">Main menu</span>
+  </li>
+  <li id="reeo-whats-new" onmousedown="dialog.update()">
+    <i class="material-icons">update</i>
+    <span class="reeo-menu-label">What's new</span>
+    <span class="version reeo-menu-key" dir="ltr"></span>
+  </li>
+</ul>

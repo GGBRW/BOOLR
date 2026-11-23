@@ -60,7 +60,7 @@ export interface ReleaseBridge {
   sections(release: import('./release').ReleaseNote): import('./release').ReleaseSection[];
 }
 export interface REEOPlatform {
-  readonly version: '2.1.0';
+  readonly version: '2.2.0';
   readonly storage: StorageAdapter;
   exportBoard(): void;
   importBoard(): void;
@@ -79,6 +79,8 @@ declare global {
       | { remote: { getCurrentWindow(): { webContents: { openDevTools(): void } } } };
     __dirname: string;
     reeoDrawGhost: typeof import('./ghosts').drawGhost;
+    reeoEvaluateLogicExpression: typeof import('./logic-expression').evaluateLogicExpression;
+    reeoValidateLogicExpression: typeof import('./logic-expression').validateLogicExpression;
     reeoGhostState: typeof import('./ghosts').ghostState;
     reeoHelp: { open(component?: string): void };
     reeoDrawComponentBody: typeof import('./rendering').drawComponentBody;

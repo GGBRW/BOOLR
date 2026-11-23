@@ -7,6 +7,7 @@ import { installLayout } from './layout';
 import { installIcons, drawComponentIcon, circuitSVG } from './icons';
 import { decodeBoard, validateCircuitData } from './board';
 import { evaluateExpression } from './expression';
+import { evaluateLogicExpression, validateLogicExpression } from './logic-expression';
 import { installI18n } from './i18n';
 import { installProgramEditor } from './program';
 import type { MessageKey } from './i18n';
@@ -117,7 +118,7 @@ window.reeoRelease = {
   sections: (release) => parseReleaseBody(release.body),
 };
 window.reeo = {
-  version: '2.1.0',
+  version: '2.2.0',
   storage,
   exportBoard() {
     const board = snapshot();
@@ -272,3 +273,6 @@ window.reeoDrawGhost = drawGhost;
 window.reeoGhostState = ghostState;
 
 installProgramEditor();
+
+window.reeoEvaluateLogicExpression = evaluateLogicExpression;
+window.reeoValidateLogicExpression = validateLogicExpression;

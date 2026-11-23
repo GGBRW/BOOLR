@@ -2,7 +2,12 @@
 
 Notable changes to REEO. The app version is shown in **What’s new** and in `window.reeo.version`. This project follows semantic versioning for its own releases; the original BOOLR versioning is historical.
 
-## [Unreleased]
+## [2.2.0] - 2026-11-21
+
+### Highlights
+
+- Component visuals now share one language: white bodies with thick black outlines, neutral black panels and no dark-blue surfaces.
+- Displays power up blank and only light after a data pin is wired; seven-segment digits use the solid rounded bars from the original renderer.
 
 ### Added
 
@@ -14,7 +19,14 @@ Notable changes to REEO. The app version is shown in **What’s new** and in `wi
 
 ### Changed
 
-- A fresh Display is taller, and boards can hold up to 5,000 components, 25,000 wires, 1,024 ports per direction and 2,000-cell dimensions.
+- Display modules stack up to eight digits, and boards can hold up to 5,000 components, 25,000 wires, 1,024 ports per direction and 2,000-cell dimensions.
+- Pin hit-testing follows the rendered position, so fractional display, RGB and bus pins are selectable and wires snap to the exact pin.
+
+### Fixed
+
+- Segment digits and RGB panels no longer show overlapping names, stray state digits or detached pins.
+- Display data pins stay inside the module footprint, and Splitter/Merger bus glyphs terminate on their pins.
+- Displays start unpowered instead of showing a lit zero on a fresh board.
 
 ## [2.1.0] - 2026-11-21
 

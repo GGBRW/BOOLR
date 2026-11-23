@@ -205,7 +205,7 @@ Before a release or a risky refactor:
 | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
 | Chromium fails to launch            | Install Playwright browsers/libs; set `CHROMIUM_PATH`/`LD_LIBRARY_PATH`                        |
 | Dev server port busy                | Reuse it (`reuseExistingServer`) or set `PLAYWRIGHT_BASE_URL`                                  |
-| Tests pass locally but CI e2e fails | Run production mode locally; check relative base/CSP and copied `app/js`                       |
+| Tests pass locally but CI e2e fails | Run production mode locally; check relative base/CSP and the inlined runtime modules           |
 | Arabic assertion fails              | Add/fix the translation; do not skip the locale                                                |
 | Flaky timing test                   | Use deterministic direct updates where possible; pause the queue; avoid real-clock sleeps      |
 | Font test fails                     | Run `bun run font:verify`; ensure font files are present and the wordmark markup/CSS is intact |

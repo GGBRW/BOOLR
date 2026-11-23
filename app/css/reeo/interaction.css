@@ -1,0 +1,262 @@
+.main-menu > .version {
+  display: block;
+  margin: 0 auto 28px;
+  font-size: 12px;
+  color: #999;
+}
+
+canvas[data-tool='move'] {
+  cursor: move !important;
+}
+
+canvas[data-tool='pan'] {
+  cursor: grab !important;
+}
+
+canvas[data-tool='pan'][data-dragging='true'] {
+  cursor: grabbing !important;
+}
+
+@media (max-width: 600px) {
+  .main-menu > h1.reeo-wordmark {
+    font-size: min(103px, 25.9vw);
+    margin: 105px auto 10px;
+  }
+  .main-menu > .version {
+    margin-bottom: 24px;
+  }
+}
+
+@font-face {
+  font-family: 'REEO Circuit Display';
+  src: url('/brand/REEOCircuitDisplay.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'REEO Arabic';
+  src: url('/fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* Unicode-restricted font: only Arabic glyphs use IBM Plex, including mixed text. */
+
+body {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+}
+
+.reeo-ui-icon {
+  font-size: 0 !important;
+}
+
+.reeo-ui-icon::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: 24px;
+  vertical-align: middle;
+  background: currentColor;
+  mask: var(--reeo-icon) center / contain no-repeat;
+  -webkit-mask: var(--reeo-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+
+.reeo-circuit-icon {
+  width: 32px;
+  height: 26px;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+#toolbar > .slot {
+  padding-top: 12px;
+  color: #aaa;
+}
+
+#toolbar > .slot:hover {
+  color: #fff;
+}
+
+#list > li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#reeo-toast-stack {
+  position: fixed;
+  z-index: 40;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(76px, calc(env(safe-area-inset-bottom) + 76px));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: min(350px, calc(100vw - 32px));
+  max-height: calc(100dvh - 180px);
+  overflow: auto;
+  pointer-events: none;
+}
+
+#reeo-toast-stack .tip,
+#reeo-toast-stack #toast {
+  position: relative;
+  inset: auto !important;
+  margin: 0 !important;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 16px 48px 16px 16px;
+  border: 0;
+  border-radius: 5px;
+  background: #111;
+  color: #ddd;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: start;
+  white-space: normal;
+  pointer-events: auto;
+  animation: reeo-toast-in 0.2s ease-out;
+}
+
+#reeo-toast-stack #toast:not(.is-visible) {
+  display: none !important;
+}
+
+#reeo-toast-stack .tip::after {
+  display: none;
+}
+
+#reeo-toast-stack .tip > .material-icons:first-child {
+  color: #ddd;
+  margin-inline-end: 8px;
+}
+
+.reeo-tip-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.reeo-tip-close:focus-visible {
+  outline: 2px solid #ddd;
+  outline-offset: -4px;
+}
+
+@keyframes reeo-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #reeo-toast-stack .tip,
+  #reeo-toast-stack #toast {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Keep signal diagrams and code left-to-right even in an Arabic interface. */
+
+.reeo-circuit-icon {
+  direction: ltr;
+  flex-shrink: 0;
+}
+
+#dialog .container > .reeo-circuit-icon {
+  width: 100px;
+  height: 70px;
+  margin: 12px;
+}
+
+code,
+.key {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.console .container .input::before,
+.console .container .output::before,
+.console .container .error::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 4px;
+  background: currentColor;
+  mask: url('/icons/phosphor/caret-right.svg') center / contain no-repeat;
+}

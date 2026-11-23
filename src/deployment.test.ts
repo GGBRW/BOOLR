@@ -23,7 +23,7 @@ describe('Vercel deployment contract', () => {
 
   test('only fingerprinted Vite assets get immutable caching', () => {
     expect(header('/assets/index-abc123.css', 'Cache-Control')).toContain('immutable');
-    for (const path of ['/', '/index.html', '/js/components.js', '/brand/reeo-mark.svg']) {
+    for (const path of ['/', '/index.html', '/brand/reeo-mark.svg', '/brand/reeo-mark.svg']) {
       expect(header(path, 'Cache-Control')).toBe('public, max-age=0, must-revalidate');
     }
   });

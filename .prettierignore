@@ -8,11 +8,6 @@ ios-build/
 bun.lock
 playwright-report/
 test-results/
-# Preserve original formatting during incremental modernization.
-app/**/*.js
-app/**/*.html
-app/css/*.css
-!app/css/reeo.css
 app/fonts/
 app/img/
 public/brand/*.svg
