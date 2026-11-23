@@ -59,9 +59,18 @@ ascenders use the uppercase position. The `i` and `j` bases switch to
 
 ## Share card
 
-Serve the repository's `public` folder (or run the app), wait for
-`document.fonts.ready`, then capture `og-source.html` at exactly 1200 × 630.
-Save the result as `reeo-og.png`.
+`og-source.svg` is the canonical 1200 × 630 artwork and `og-source.html` is its
+live preview. Render the PNG through resvg so the brand fonts are loaded from
+their files rather than discovered from the host system:
+
+```sh
+bun run og:render
+```
+
+The script passes `REEOCircuitDisplay.ttf` and `AlanSans-Variable.ttf` directly
+to resvg. Do not rely on a headless browser's `@font-face` support: when the
+font fails to load it silently substitutes a generic sans, which is how the
+previous share card lost the circuit lettering.
 
 No third-party font was modified to make these glyphs. Alan Sans and IBM Plex
 Sans Arabic are bundled separately for the UI under their own OFL licenses.

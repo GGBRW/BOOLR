@@ -1265,8 +1265,27 @@ textarea {
   padding-bottom: 4px;
 }
 #dialog.reeo-whats-new .reeo-release-version {
-  margin: 0 0 16px;
+  margin: 0 0 4px;
   color: #888;
+}
+#dialog.reeo-whats-new .reeo-release-meta {
+  margin: 0 0 12px;
+  color: #666;
+  font-size: 12px;
+}
+#dialog.reeo-whats-new .reeo-release-section {
+  margin: 14px 0 4px;
+  color: #bbb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+#dialog.reeo-whats-new .reeo-release-source {
+  display: inline-block;
+  margin-top: 10px;
+  color: #8ab4f8;
+  font-size: 12px;
 }
 #dialog.reeo-whats-new .container {
   padding-bottom: 0;

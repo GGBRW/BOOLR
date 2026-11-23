@@ -11,6 +11,7 @@ import { installI18n } from './i18n';
 import type { MessageKey } from './i18n';
 import { createStorage } from './storage';
 import { runTick } from './simulation';
+import { getReleaseSnapshot, parseReleaseBody, refreshLatestRelease } from './release';
 import { installEditorPointers } from './interaction';
 import { positionPopup } from './geometry';
 import type { BoardFile, Component, Point, SavedBoard } from './types';
@@ -109,8 +110,13 @@ function persist(): void {
     message('storageError');
   }
 }
+window.reeoRelease = {
+  current: () => getReleaseSnapshot(),
+  refresh: () => refreshLatestRelease(),
+  sections: (release) => parseReleaseBody(release.body),
+};
 window.reeo = {
-  version: '2.0.0',
+  version: '2.1.0',
   storage,
   exportBoard() {
     const board = snapshot();

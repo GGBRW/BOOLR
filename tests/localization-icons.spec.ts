@@ -136,6 +136,7 @@ test('toast lifetime pauses on hover and respects reduced motion', async ({ page
 test('all legacy dialog flows have localized authored prose in both Arabic locales', async ({
   page,
 }) => {
+  await page.route('https://api.github.com/**', (route) => route.abort('failed'));
   await editor(page);
   await page.evaluate(`window.auditGate=new AND('TestName',{x:0,y:0})`);
   for (const locale of ['ar', 'arz']) {
