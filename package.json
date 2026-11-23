@@ -1,10 +1,10 @@
 {
   "name": "reeo",
   "productName": "REEO",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
-  "description": "REEO — digital logic, limitless curiosity. The original circuit playground, renewed.",
+  "description": "REEO \u2014 digital logic, limitless curiosity. The original circuit playground, renewed.",
   "license": "GPL-3.0-only",
   "author": "REEO contributors; original BOOLR by Gees Brouwer",
   "packageManager": "bun@1.4.5",
@@ -41,7 +41,9 @@
     "build:vercel": "bun run build:web && bun run verify:web",
     "verify:web": "bun scripts/verify-web.ts",
     "font:build": "python3 scripts/circuit-font.py",
-    "font:verify": "python3 scripts/verify-font.py"
+    "font:verify": "python3 scripts/verify-font.py",
+    "og:render": "bun scripts/render-og.ts",
+    "release:notes": "bun scripts/release-notes.ts"
   },
   "dependencies": {
     "@capacitor/core": "^8.6.2",
@@ -53,6 +55,8 @@
     "@capacitor/cli": "^8.6.2",
     "@capacitor/ios": "^8.6.2",
     "@playwright/test": "^1.65.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/bun": "^1.3.0",
     "@types/node": "^24.0.0",
     "electron": "^45.4.1",
     "electron-builder": "^26.0.12",
@@ -60,7 +64,6 @@
     "oxlint": "^1.94.0",
     "prettier": "^3.10.1",
     "typescript": "^7.0.2",
-    "vite": "^8.3.8",
-    "@types/bun": "^1.3.0"
+    "vite": "^8.3.8"
   }
 }

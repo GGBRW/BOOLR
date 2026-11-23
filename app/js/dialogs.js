@@ -5,6 +5,7 @@ dialog.container = document.querySelector("#dialog .container");
 dialog.options = document.querySelector("#dialog .options");
 
 dialog.show = function() {
+    this.releaseToken = (this.releaseToken || 0) + 1;
     this.classList.remove("reeo-whats-new");
     this.container.innerHTML = "";
     this.options.innerHTML = "";
@@ -123,22 +124,81 @@ dialog.editBoard = function(save) {
     });
 }
 
+dialog.releaseNotes = function(release) {
+    const sections = window.reeoRelease.sections(release);
+    dialog.container.replaceChildren();
+
+    const version = document.createElement("p");
+    version.className = "reeo-release-version";
+    version.setAttribute("data-no-i18n", "");
+    const tag = release.tagName.startsWith("v") ? release.tagName : "v" + release.tagName;
+    version.textContent = "REEO " + tag;
+    dialog.container.appendChild(version);
+
+    if (release.publishedAt) {
+        const date = new Date(release.publishedAt);
+        if (!Number.isNaN(date.getTime())) {
+            const published = document.createElement("p");
+            published.className = "reeo-release-meta";
+            published.setAttribute("data-no-i18n", "");
+            published.textContent = "Published " + date.toLocaleDateString();
+            dialog.container.appendChild(published);
+        }
+    }
+
+    if (!sections.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "Release notes are not available right now.";
+        dialog.container.appendChild(empty);
+    }
+
+    for (const section of sections) {
+        const heading = document.createElement("p");
+        heading.className = "reeo-release-section";
+        heading.setAttribute("data-no-i18n", "");
+        heading.dir = "ltr";
+        heading.textContent = section.title;
+        const changes = document.createElement("ul");
+        changes.dir = "ltr";
+        for (const text of section.items) {
+            const item = document.createElement("li");
+            item.setAttribute("data-no-i18n", "");
+            item.textContent = text;
+            changes.appendChild(item);
+        }
+        dialog.container.append(heading, changes);
+    }
+
+    const source = document.createElement("a");
+    source.className = "reeo-release-source";
+    source.href = release.url;
+    source.target = "_blank";
+    source.rel = "noreferrer";
+    source.setAttribute("data-no-i18n", "");
+    source.textContent = release.source === "fallback" ? "View releases on GitHub" : "View this release on GitHub";
+    dialog.container.appendChild(source);
+}
+
 dialog.update = function() {
     dialog.show();
     dialog.classList.add("reeo-whats-new");
     dialog.name.textContent = "What's new";
-    const version = document.createElement("p");
-    version.className = "reeo-release-version";
-    version.setAttribute("data-no-i18n", "");
-    version.textContent = "REEO v" + VERSION;
-    const changes = document.createElement("ul");
-    for(const text of ["Pinch, pan, double-tap and long-press on touch screens", "Faint circuit ghosts while following a guide", "Zoom controls and one-tap Fit circuit", "New REEO circuit typeface and share card", "Searchable component guide and worked circuits", "On-grid circuit symbols", "Arabic and Egyptian Arabic"]) {
-        const item = document.createElement("li");
-        item.textContent = text;
-        changes.appendChild(item);
+    if (!window.reeoRelease) {
+        const error = document.createElement("p");
+        error.textContent = "Release notes are not available in this build.";
+        dialog.container.appendChild(error);
+        dialog.addOption("Close");
+        return;
     }
-    dialog.container.append(version, changes);
+
+    const token = dialog.releaseToken;
+    dialog.releaseNotes(window.reeoRelease.current());
     dialog.addOption("Close");
+
+    window.reeoRelease.refresh().then(release => {
+        if (dialog.releaseToken !== token || !dialog.classList.contains("reeo-whats-new")) return;
+        dialog.releaseNotes(release);
+    }).catch(() => {});
 }
 
 dialog.openBoard = function() {

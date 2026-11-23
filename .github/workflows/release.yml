@@ -1,0 +1,154 @@
+name: REEO release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to publish, for example v2.1.0
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+jobs:
+  web:
+    name: Web bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - run: bun install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: bun run build:vercel
+      - run: cd dist && zip -qr "../REEO-web-${RELEASE_TAG}.zip" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: REEO-web-*.zip
+          if-no-files-found: error
+
+  desktop:
+    name: Desktop (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - run: bun install --frozen-lockfile
+      - run: bun run desktop:pack
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            releases/*.AppImage
+            releases/*.deb
+            releases/*.exe
+            releases/*.dmg
+            releases/*.zip
+          if-no-files-found: error
+
+  android:
+    name: Android debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: bun install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: bun run build
+      - run: bun run mobile:add:android
+      - run: bun run mobile:android
+      - run: ./gradlew assembleDebug
+        working-directory: android
+      - run: cd android/app/build/outputs/apk/debug && zip -q "${GITHUB_WORKSPACE}/REEO-android-${RELEASE_TAG}-debug.zip" *.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: REEO-android-*.zip
+          if-no-files-found: error
+
+  ios:
+    name: iOS simulator app
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - run: bun install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: bun run build
+      - run: bun run mobile:add:ios
+      - run: bun run mobile:ios
+      - run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -derivedDataPath ios-build CODE_SIGNING_ALLOWED=NO build
+      - run: ditto -c -k --sequesterRsrc --keepParent ios-build/Build/Products/Debug-iphonesimulator/App.app "REEO-ios-${RELEASE_TAG}-simulator.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios
+          path: REEO-ios-*.zip
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub release
+    needs: [web, desktop, android, ios]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - run: bun scripts/release-notes.ts "${RELEASE_TAG}" > release-notes.md
+      - name: Create or update the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then
+            gh release edit "${RELEASE_TAG}" --title "REEO ${RELEASE_TAG}" --notes-file release-notes.md
+          else
+            gh release create "${RELEASE_TAG}" --title "REEO ${RELEASE_TAG}" --notes-file release-notes.md --verify-tag
+          fi
+          gh release upload "${RELEASE_TAG}" release-assets/* --clobber

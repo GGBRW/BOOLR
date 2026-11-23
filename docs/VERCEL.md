@@ -49,7 +49,7 @@ Git integration is the default deployment automation; a second GitHub deployment
 - Gives fingerprinted `/assets/*` a one-year immutable cache. HTML, original unversioned `/js/*`, and brand assets must revalidate so deployments do not mix old logic with new HTML.
 - Sends `nosniff`, referrer, permissions, frame and Content Security Policy headers.
 - Retains inline scripts/styles for the original UI (`'unsafe-inline'`); does **not** allow `'unsafe-eval'`. Removing inline permissions requires a separate nonce/hash or script-extraction migration.
-- Allows same-origin connections and secure `wss:` connections for the existing optional external collaboration feature. This does not deploy a collaboration server. Tighten `connect-src` to a specific server hostname if one is operated.
+- Allows same-origin connections, the public GitHub Releases API used by the What's new dialog, and secure `wss:` connections for the existing optional external collaboration feature. This does not deploy a collaboration server. Tighten `connect-src` to a specific server hostname if one is operated.
 - Uses clean URLs and no trailing slash. There is intentionally **no catch-all SPA rewrite**: this editor lives at `/`, not at arbitrary client-side routes. Missing JS/images must return 404 rather than HTML.
 
 Vercel manages HTTPS and compression. No custom function runtime, region, duration, wildcard CORS policy, or secret is needed for this static target. The framing policy permits only same-origin embedding; adjust both CSP `frame-ancestors` and `X-Frame-Options` deliberately if cross-origin embedding becomes a requirement.

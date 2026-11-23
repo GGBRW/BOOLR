@@ -1,8 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><rect x="19" y="19" width="2" height="2" fill="#333"/></pattern><style>@font-face{font-family:Circuit;src:url('./REEOCircuitDisplay.ttf')}@font-face{font-family:Alan;src:url('../fonts/alan-sans/AlanSans-Variable.ttf')}</style></defs>
-<rect width="1200" height="630" fill="#111"/><rect width="1200" height="630" fill="url(#grid)"/>
-<path d="M0 315H128m944 0h128" fill="none" stroke="#555" stroke-width="4"/>
-<text x="600" y="380" text-anchor="middle" font-family="Circuit" font-size="270" fill="#ddd">REEO</text>
-<text x="600" y="500" text-anchor="middle" font-family="Alan,sans-serif" font-size="32" fill="#ddd">Digital logic. Limitless curiosity.</text>
-<text x="600" y="548" text-anchor="middle" font-family="Alan,sans-serif" font-size="20" fill="#888">BUILD · CONNECT · SIMULATE</text>
+  <title>REEO — Digital logic. Limitless curiosity.</title>
+  <defs>
+    <style>
+      @font-face { font-family: REEOCircuitDisplay; src: url('./REEOCircuitDisplay.ttf'); }
+      @font-face { font-family: 'Alan Sans'; src: url('../fonts/alan-sans/AlanSans-Variable.ttf'); }
+    </style>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="19" y="19" width="2" height="2" fill="#2f2f2f"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="44%" r="58%">
+      <stop offset="0" stop-color="#1d1d1d"/>
+      <stop offset="1" stop-color="#111111"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <g fill="none" stroke="#383838" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 315H132M1068 315H1200"/>
+    <path d="M58 166H148V226H212"/>
+    <path d="M58 494H148V434H206"/>
+    <path d="M1142 166H1052V226H988"/>
+    <path d="M1142 494H1052V434H994"/>
+    <path d="M132 315v-38M1068 315v38"/>
+  </g>
+  <g fill="#b8e986">
+    <circle cx="0" cy="315" r="5"/>
+    <circle cx="212" cy="226" r="5"/>
+    <circle cx="206" cy="434" r="5"/>
+  </g>
+  <g fill="#6d6d6d">
+    <circle cx="1200" cy="315" r="5"/>
+    <circle cx="988" cy="226" r="5"/>
+    <circle cx="994" cy="434" r="5"/>
+    <circle cx="132" cy="277" r="4"/>
+    <circle cx="1068" cy="353" r="4"/>
+  </g>
+  <text x="600" y="403" text-anchor="middle" font-family="REEOCircuitDisplay" font-size="300" letter-spacing="2" fill="#e4e4e4">REEO</text>
+  <text x="600" y="486" text-anchor="middle" font-family="Alan Sans" font-size="32" fill="#a8a8a8">Digital logic. Limitless curiosity.</text>
+  <text x="600" y="558" text-anchor="middle" font-family="Alan Sans" font-size="17" letter-spacing="4" fill="#6f6f6f">BUILD · CONNECT · SIMULATE · REEO.VERCEL.APP</text>
 </svg>
