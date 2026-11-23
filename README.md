@@ -33,6 +33,8 @@ Bun is the package manager, development runtime, script runner, and unit-test ru
 - **Touch support:** placement/toggle/wire gestures plus explicit Move, Pan, Select, and zoom controls. Responsive menus, bounded dialogs, safe-area handling, and larger touch targets.
 - **Portable boards:** local board library plus `.board` import/export, compatible with the original current save format. Browser and desktop now use the same local-storage adapter.
 - **Reliability:** bounded TypeScript simulation scheduler, periodic and lifecycle saves, empty-board saving, validated import boundary, and arithmetic parsing without `eval`.
+- **Live release notes:** the What's new dialog reads the latest public GitHub release, parses its changelog, and caches it for offline use instead of shipping a hardcoded list.
+- **Release pipeline:** one version tag builds the web bundle, Electron desktop packages, and Android/iOS shells through `.github/workflows/release.yml`.
 - **Tooling:** TypeScript 7 strict checking; Prettier as the **only formatter**; Biome and Oxlint as **linters only**; Bun lockfile and CI.
 
 ## First circuit

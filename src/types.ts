@@ -54,8 +54,13 @@ export interface DesktopBridge {
   openDevTools(): void;
   platform: string;
 }
+export interface ReleaseBridge {
+  current(): import('./release').ReleaseNote;
+  refresh(): Promise<import('./release').ReleaseNote>;
+  sections(release: import('./release').ReleaseNote): import('./release').ReleaseSection[];
+}
 export interface REEOPlatform {
-  readonly version: '2.0.0';
+  readonly version: '2.1.0';
   readonly storage: StorageAdapter;
   exportBoard(): void;
   importBoard(): void;
@@ -65,6 +70,7 @@ export interface REEOPlatform {
 declare global {
   interface Window {
     reeo: REEOPlatform;
+    reeoRelease: ReleaseBridge;
     reeoDesktop?: DesktopBridge;
     require: (
       module: string,

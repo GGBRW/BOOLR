@@ -2,7 +2,7 @@
 
 The editor retains its existing monochrome dialog/menu styling.
 
-- **What's new** is in the bottom navigation menu, not a separate version button in the bottom-right action strip. Its content-sized 420px maximum-width release dialog lists the current changes with compact spacing.
+- **What's new** is in the bottom navigation menu, not a separate version button in the bottom-right action strip. Its content-sized 420px maximum-width release dialog reads the latest public GitHub release, parses the changelog into text sections, and caches the result locally; bundled fallback notes keep it useful offline.
 - **Quick guide** is a 52px square icon-only header button with a localized accessible label and native hover title. The icon remains 24px, matching other editor icons.
 - The **Circuit field guide** is centered, up to 760×660 CSS px, bounded by the visual viewport, with a scrollable reference area and adjusted section spacing.
 - `src/overlays.ts` coordinates the existing show/hide APIs rather than replacing the UI. Opening a popup dismisses the previous transient surface. The pinned recipe checklist is persistent editor guidance and intentionally not treated as a popup.

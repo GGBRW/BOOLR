@@ -1,51 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <meta charset="utf-8" />
-  <title>REEO circuit wordmark</title>
-  <style>
-    @font-face {
-      font-family: Circuit;
-      src: url('./REEOCircuitDisplay.ttf');
-    }
-    @font-face {
-      font-family: Alan;
-      src: url('../fonts/alan-sans/AlanSans-Variable.ttf');
-    }
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      width: 1200px;
-      height: 630px;
-      background: #111;
-      color: #ddd;
-      background-image: radial-gradient(#333 1px, transparent 1px);
-      background-size: 40px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    h1 {
-      font: 270px Circuit;
-      margin: 0;
-      line-height: 1.15;
-      font-weight: 400;
-    }
-    p {
-      font: 32px Alan;
-      margin: 24px 0 16px;
-    }
-    small {
-      font: 20px Alan;
-      color: #888;
-      letter-spacing: 3px;
-    }
-  </style>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200, initial-scale=1" />
+    <title>REEO share card</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #111;
+      }
+      object {
+        display: block;
+        width: 1200px;
+        height: 630px;
+      }
+    </style>
+  </head>
   <body>
-    <h1>REEO</h1>
-    <p>Digital logic. Limitless curiosity.</p>
-    <small>BUILD · CONNECT · SIMULATE</small>
+    <!-- The SVG is the canonical 1200 × 630 artwork; this page is a live preview. -->
+    <object
+      data="./og-source.svg"
+      type="image/svg+xml"
+      width="1200"
+      height="630"
+      aria-label="REEO share card"
+    ></object>
   </body>
 </html>

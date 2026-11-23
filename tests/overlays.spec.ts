@@ -5,15 +5,32 @@ async function boot(page: import('@playwright/test').Page) {
   await page.evaluate(`mainMenu.style.display='none'`);
 }
 test('What’s new lives in navigation and has a compact release dialog', async ({ page }) => {
+  await page.route('https://api.github.com/**', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        tag_name: 'v9.9.9',
+        name: 'REEO v9.9.9',
+        body: '## Highlights\n- Dynamic release notes from GitHub\n- Cached for offline use\n### Fixed\n- Removed the hardcoded list',
+        html_url: 'https://github.com/abdou-da0wew/REEO/releases/tag/v9.9.9',
+        published_at: '2026-11-21T00:00:00Z',
+      }),
+    }),
+  );
   await boot(page);
   await expect(page.locator('.brbtns #version')).toHaveCount(0);
   await page.locator('#menuopen').click();
   await page.locator('#reeo-whats-new').click();
   await expect(page.locator('#dialog')).toBeVisible();
   await expect(page.locator('#dialog h1')).toHaveText("What's new");
-  await expect(page.locator('#dialog li')).toHaveCount(7);
-  await expect(page.locator('#dialog')).toContainText('Pinch, pan, double-tap');
-  await expect(page.locator('#dialog')).toContainText('Faint circuit ghosts');
+  await expect(page.locator('#dialog')).toContainText('REEO v9.9.9');
+  await expect(page.locator('#dialog li')).toHaveCount(3);
+  await expect(page.locator('#dialog')).toContainText('Dynamic release notes from GitHub');
+  await expect(page.locator('#dialog')).toContainText('Cached for offline use');
+  await expect(page.locator('#dialog')).toContainText('Removed the hardcoded list');
+  const cached = await page.evaluate(() => localStorage.getItem('reeo.release.v1'));
+  expect(cached).toContain('v9.9.9');
   const r = await page.locator('#dialog').boundingBox();
   expect(r?.width).toBeLessThanOrEqual(420);
   expect(r?.height).toBeLessThan(520);
@@ -23,6 +40,19 @@ test('What’s new lives in navigation and has a compact release dialog', async 
   await expect(page.locator('#dialog')).toBeHidden();
   await page.locator('#menuopen').click();
   await expect(page.locator('#menu')).toHaveCSS('opacity', '1');
+});
+test('release notes fall back cleanly when the public API is unreachable', async ({ page }) => {
+  await page.route('https://api.github.com/**', (route) => route.abort('failed'));
+  await boot(page);
+  await page.evaluate('dialog.update()');
+  await expect(page.locator('#dialog')).toBeVisible();
+  await expect(page.locator('#dialog')).toContainText(
+    "What's new now reads the latest public GitHub release",
+  );
+  await expect(page.locator('#dialog .reeo-release-source')).toHaveAttribute(
+    'href',
+    'https://github.com/abdou-da0wew/REEO/releases',
+  );
 });
 test('Quick guide is icon-only and opens a smaller centered field guide', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 900 });

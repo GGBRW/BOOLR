@@ -35,6 +35,7 @@ describe('Vercel deployment contract', () => {
     const policy = header('/', 'Content-Security-Policy');
     expect(policy).toContain("object-src 'none'");
     expect(policy).toContain("script-src 'self' 'unsafe-inline'");
+    expect(policy).toContain("connect-src 'self' https://api.github.com");
     expect(policy).not.toContain('unsafe-eval');
   });
 
