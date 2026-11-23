@@ -264,26 +264,26 @@ export const componentGuides: readonly ComponentGuide[] = [
   },
   {
     id: 'Display',
-    title: ['Seven-segment display', 'شاشة سباعية المقاطع', 'شاشة سباعية المقاطع'],
+    title: ['Multi-digit display', 'شاشة متعددة الأرقام', 'شاشة متعددة الأرقام'],
     behavior: [
-      'Eight independent input pins control segments A–G and the decimal point DP. It does not decode a binary number automatically.',
-      'تتحكم ثمانية مداخل مستقلة في المقاطع A–G والنقطة DP. لا تفك ترميز رقم ثنائي تلقائيًا.',
-      'ثمان مداخل مستقلة بتتحكّم في المقاطع A–G والنقطة DP. مش بتحوّل الرقم الثنائي لشكل رقم لوحدها.',
+      'Each digit decodes four BCD pins (D0–D3, D4–D7, …) into 0–9 or A–F. Use Add digit in the Edit dialog or the right-click menu to join up to eight digits into one display.',
+      'يفك كل رقم أربع بتات BCD (D0–D3 وD4–D7 وهكذا) إلى 0–9 أو A–F. استخدم إضافة رقم من نافذة التعديل أو قائمة الزر الأيمن لضم حتى ثمانية أرقام في شاشة واحدة.',
+      'كل رقم بيفك أربع بتات BCD (D0–D3 وD4–D7 وهكذا) لأرقام 0–9 أو A–F. استخدم إضافة رقم من نافذة التعديل أو قائمة الزر الأيمن عشان تجمع لحد تمانية أرقام في شاشة واحدة.',
     ],
     wiring: [
-      'Drive each labeled segment with a switch, decoder circuit, or one ROM data bit.',
-      'قد كل مقطع بمفتاح أو دائرة فك ترميز أو بت بيانات من ROM.',
-      'شغّل كل مقطع بمفتاح أو دايرة فك ترميز أو بت بيانات من ROM.',
+      'Wire four BCD bits per digit. Set colour mode to Signal-driven to turn the three C0–C2 pins into a 3-bit palette selector; all digits then share that colour.',
+      'وصّل أربع بتات BCD لكل رقم. اختر لونًا يقوده الإشارة لتحويل المنافذ C0–C2 إلى محدد لوحة ألوان من ثلاث بتات؛ تشترك كل الأرقام في اللون.',
+      'وصّل أربع بتات BCD لكل رقم. اختار لون بيقوده الإشارة عشان تحوّل المنافذ C0–C2 لمحدد ألوان من تلات بتات؛ كل الأرقام بتشترك في اللون.',
     ],
     example: [
-      'Turn on A, B, C, D, E and F and leave G off to draw 0; turn on B and C for 1.',
-      'شغّل A وB وC وD وE وF وأطفئ G لعرض 0؛ شغّل B وC لعرض 1.',
-      'شغّل A وB وC وD وE وF وسيب G مطفي عشان تعرض 0؛ شغّل B وC عشان تعرض 1.',
+      'Two counters → two BCD inputs of a two-digit Display make a 00–99 counter.',
+      'عدادان ← مدخلا BCD لشاشة من رقمين يصنعان عدادًا من 00 إلى 99.',
+      'عدادين ← مدخلين BCD لشاشة من رقمين بيعملوا عدّاد من 00 لـ 99.',
     ],
     caution: [
-      'Pin order is not a numeric bus. Check each segment label before wiring a ROM lookup table.',
-      'ترتيب المنافذ ليس ناقلًا عدديًا؛ راجع اسم كل مقطع قبل توصيل جدول ROM.',
-      'ترتيب المنافذ مش ناقل رقمي؛ راجع اسم كل مقطع قبل ما توصّل جدول ROM.',
+      'The display decodes BCD, not a binary bus wider than four bits. Removing a digit disconnects the wires on that digit.',
+      'الشاشة تفك BCD وليس ناقلًا ثنائيًا أوسع من أربع بتات. حذف رقم يقطع أسلاكه.',
+      'الشاشة بتفك BCD مش ناقل ثنائي أوسع من أربع بتات. حذف رقم بيقطع أسلاكه.',
     ],
   },
   {
@@ -456,9 +456,9 @@ export const componentGuides: readonly ComponentGuide[] = [
       'أربع مفاتيح إدخال بيعملوا لوحة 16 نغمة، والعدّاد ممكن يمشي في لحن.',
     ],
     caution: [
-      'Set the duration long enough to hear the change but short enough to avoid overlapping notes.',
-      'اجعل المدة كافية للسماع وقصيرة بما يكفي لمنع تداخل النغمات.',
-      'خلّي المدّة كفاية عشان تسمع وقصيرة عشان النغمات ما تداخلش.',
+      'Browsers may block audio until you interact with the page; connect a note and press a button to unlock sound.',
+      'قد تحجب المتصفحات الصوت حتى تتفاعل مع الصفحة؛ وصّل نغمة واضغط زرًا لتفعيل الصوت.',
+      'المتصفحات ممكن تمنع الصوت لحد ما تتفاعل مع الصفحة؛ وصّل نغمة واضغط زرار عشان تفعّل الصوت.',
     ],
   },
   {
@@ -513,14 +513,14 @@ export const componentGuides: readonly ComponentGuide[] = [
     id: 'RGBLed',
     title: ['RGB LED', 'مصباح RGB', 'لمبة RGB'],
     behavior: [
-      'Mixes three colour channels: red, green and blue. The combined glow shows the resulting colour.',
-      'يمزج ثلاثة قنوات لون: أحمر وأخضر وأزرق، ويظهر التوهج اللون الناتج.',
-      'بيخلط تلات قنوات لون: أحمر وأخضر وأزرق، والتوهج بيورّي اللون الناتج.',
+      'Mixes three colour channels: red, green and blue in a full-panel emitter. The 2-bit RGB LED variant uses two inputs to select one of four editable colours.',
+      'يمزج قنوات الأحمر والأخضر والأزرق في مصباح يملأ المكوّن. نسخة RGB LED ثنائية البت تستخدم مدخلين لاختيار واحد من أربعة ألوان قابلة للتعديل.',
+      'بيخلط قنوات الأحمر والأخضر والأزرق في لمبة مليانة. نسخة RGB LED ثنائية البت بتستخدم مدخلين عشان تختار واحد من أربع ألوان بتتعدّل.',
     ],
     wiring: [
-      'Connect independent red, green and blue signals to R, G and B. Use the shape property to switch between round and square emitters.',
-      'وصّل إشارات الأحمر والأخضر والأزرق مستقلة بالمداخل R وG وB. استخدم خاصية الشكل للتبديل بين دائري ومربع.',
-      'وصّل إشارات الأحمر والأخضر والأزرق لوحدهم بالمداخل R وG وB. استخدم خاصية الشكل عشان تبدّل بين دائري ومربع.',
+      'Connect independent red, green and blue signals to R, G and B. For fewer wires use RGB LED 2-bit and edit Color1–Color3; the shape property still offers panel, round and square bodies.',
+      'وصّل إشارات الأحمر والأخضر والأزرق مستقلة بالمداخل R وG وB. لتقليل الأسلاك استخدم RGB LED ثنائي البت وعدّل Color1–Color3؛ ما زالت خاصية الشكل تتيح لوحًا أو دائرة أو مربعًا.',
+      'وصّل إشارات الأحمر والأخضر والأزرق لوحدهم بالمداخل R وG وB. لتقليل الأسلاك استخدم RGB LED ثنائي البت وعدّل Color1–Color3؛ خاصية الشكل لسه بتتيح لوح أو دايرة أو مربع.',
     ],
     example: [
       'Three switches demonstrate additive colour: R+G makes yellow, G+B cyan and all three white.',
@@ -566,9 +566,9 @@ export const componentGuides: readonly ComponentGuide[] = [
       'بيفك أربع بتات BCD لأرقام ست عشرية 0–9 وA–F بسبع مقاطع منوّرة.',
     ],
     wiring: [
-      'Connect D0–D3 from a counter, switch bank or decoder. The display colour is editable from the component dialog.',
-      'وصّل D0–D3 من عداد أو مفاتيح أو مفكك. لون الشاشة قابل للتعديل من نافذة المكوّن.',
-      'وصّل D0–D3 من عدّاد أو مفاتيح أو مفكك. لون الشاشة يتعدّل من نافذة المكوّن.',
+      'Connect D0–D3 from a counter, switch bank or decoder. Choose Signal-driven colour to select the lit colour with C0–C2.',
+      'وصّل D0–D3 من عداد أو مفاتيح أو مفكك. اختر لونًا يقوده الإشارة لتحديد لون الإضاءة عبر C0–C2.',
+      'وصّل D0–D3 من عدّاد أو مفاتيح أو مفكك. اختار لون بيقوده الإشارة عشان تحدد لون الإضاءة عبر C0–C2.',
     ],
     example: [
       'Counter → Seven Segment builds a simple hexadecimal counter.',

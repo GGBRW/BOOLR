@@ -114,6 +114,38 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
+    "Add digit",
+    "plus",
+    "",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        component.addDigit();
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return !selecting && component && component.constructor.name === "Display" &&
+            component.properties.displayMode === "bcd" &&
+            (component.properties.digits || 1) < 8;
+    }
+);
+
+createContextMenuOption(
+    "Remove digit",
+    "trash",
+    "",
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        component.removeDigit();
+    },
+    function() {
+        const component = findComponentByPos(...contextMenu.getPos());
+        return !selecting && component && component.constructor.name === "Display" &&
+            component.properties.displayMode === "bcd" &&
+            (component.properties.digits || 1) > 1;
+    }
+);
+
+createContextMenuOption(
     "Edit",
     "mode_edit",
     "E",

@@ -8,6 +8,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('board code builds a wired circuit and reports syntax errors', async ({ page }) => {
+  await page.waitForFunction(() => typeof window.reeoOpenProgram === 'function');
   await page.evaluate('window.reeoOpenProgram()');
   const overlay = page.locator('.reeo-program-overlay');
   await expect(overlay).toBeVisible();
@@ -42,6 +43,7 @@ test('new sound, switch, display and procedural parts are pickable', async ({ pa
     'Dip Switch',
     'Slider',
     'RGB LED',
+    'RGB LED 2-bit',
     'Bar Graph',
     'Seven Segment',
     'Lamp',
@@ -116,4 +118,74 @@ test('guide ghost is click-through until hovered and never spawns at the origin'
   await page.waitForTimeout(250);
   expect(await dock.evaluate((node) => Number(getComputedStyle(node).opacity))).toBe(1);
   await expect(dock.getByRole('button', { name: 'Hide ghost' })).toBeVisible();
+});
+
+test('displays stack into one module and take their colour from signals', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const display = new Display('D', {x: 0, y: 0});
+    display.addDigit();
+    [0,1,0,1,1,0,0,1].forEach((value, index) => display.input[index].value = value);
+    display.update();
+    const digits = [...display.digitValues];
+    display.properties.colorMode = 'signal';
+    display.configureDisplay();
+    display.input[8].value = 1;
+    const colourPort = display.input[8];
+    display.addDigit();
+    const colourKept = display.input.includes(colourPort) && display.input.indexOf(colourPort) === 12;
+    display.removeDigit();
+    return {
+      colourKept,
+      width: display.width,
+      height: display.height,
+      digits: display.properties.digits,
+      ports: display.input.length,
+      dataSides: display.input.slice(0, 8).map(port => port.pos.side),
+      colourSides: display.input.slice(8).map(port => port.pos.side),
+      colour: displayOnColor(display),
+      values: digits,
+      seven: (() => {
+        const part = new SevenSegment('S', {x: 0, y: 0});
+        part.properties.colorMode = 'signal';
+        part.configureSegments();
+        return {ports: part.input.length, colourSides: part.input.slice(4).map(port => port.pos.side)};
+      })(),
+      rgb2: (() => {
+        const part = new RGBLed2('R', {x: 0, y: 0});
+        part.input[0].value = 1;
+        part.input[1].value = 1;
+        part.update();
+        return {ports: part.input.length, value: part.value};
+      })()
+    };
+  })()`);
+  expect(result).toMatchObject({
+    colourKept: true,
+    width: 8,
+    height: 7,
+    digits: 2,
+    ports: 11,
+    colour: 'rgb(255,176,32)',
+    values: [10, 9],
+    seven: { ports: 7, colourSides: [0, 0, 0] },
+    rgb2: { ports: 2, value: 3 },
+  });
+  expect(result.dataSides.every((side: number) => side === 0)).toBe(true);
+  expect(result.colourSides).toEqual([3, 3, 3]);
+});
+
+test('procedural expressions compile without eval and report bad input', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const good = new Procedural('P', {x: 0, y: 0});
+    good.properties.expression = 'A && !B';
+    good.compile();
+    good.input[0].value = 1;
+    good.input[1].value = 0;
+    good.update();
+    const bad = new Procedural('Q', {x: 0, y: 0});
+    bad.properties.expression = 'alert(1)';
+    bad.compile();
+    return {value: good.output[0].value, error: good.compileError, bad: bad.compileError};
+  })()`);
+  expect(result).toEqual({ value: 1, error: false, bad: true });
 });

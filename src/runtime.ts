@@ -7,6 +7,7 @@ import { installLayout } from './layout';
 import { installIcons, drawComponentIcon, circuitSVG } from './icons';
 import { decodeBoard, validateCircuitData } from './board';
 import { evaluateExpression } from './expression';
+import { evaluateLogicExpression, validateLogicExpression } from './logic-expression';
 import { installI18n } from './i18n';
 import { installProgramEditor } from './program';
 import type { MessageKey } from './i18n';
@@ -272,3 +273,6 @@ window.reeoDrawGhost = drawGhost;
 window.reeoGhostState = ghostState;
 
 installProgramEditor();
+
+window.reeoEvaluateLogicExpression = evaluateLogicExpression;
+window.reeoValidateLogicExpression = validateLogicExpression;

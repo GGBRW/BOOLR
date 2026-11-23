@@ -38,4 +38,17 @@ test('production app boots and edits under the configured Vercel CSP', async ({ 
   expect(await page.evaluate('components.length')).toBe(1);
   expect(await page.locator('html').getAttribute('data-csp-violation')).toBeNull();
   expect(errors).toEqual([]);
+
+  const procedural = await page.evaluate(`(() => {
+    const part = new Procedural('CSP expression', {x: 4, y: 0});
+    part.properties.expression = 'A ^ B';
+    part.compile();
+    part.input[0].value = 1;
+    part.input[1].value = 0;
+    components.push(part);
+    part.update();
+    return {error: part.compileError, value: part.output[0].value};
+  })()`);
+  expect(procedural).toEqual({ error: false, value: 1 });
+  expect(errors).toEqual([]);
 });

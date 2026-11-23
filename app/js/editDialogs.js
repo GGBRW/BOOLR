@@ -183,19 +183,60 @@
             );
         }
 
+        for(const color of ["color0", "color1", "color2", "color3"]) {
+            if(!component.properties.hasOwnProperty(color)) continue;
+            inputs.push(
+                createInput(
+                    component.properties, color, component.properties[color],
+                    value => /^(#[0-9a-f]{3}|#[0-9a-f]{6}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\))$/i.test(value),
+                    "Use #rgb, #rrggbb or rgb(r,g,b)",
+                    function() {
+                        component.properties[color] = this.value;
+                    }
+                )
+            );
+        }
+
+        if(component.properties.hasOwnProperty("digits")) {
+            inputs.push(
+                createInput(
+                    component.properties, "digits", component.properties.digits,
+                    value => Number.isInteger(+value) && +value >= 1 && +value <= 8,
+                    "Choose 1 to 8 digits",
+                    function() {
+                        component.properties.digits = +this.value;
+                        if(component.configureDisplay) component.configureDisplay();
+                    }
+                )
+            );
+        }
+
+        if(component.properties.hasOwnProperty("colorMode")) {
+            inputs.push(
+                createSelect(
+                    component.properties, "colorMode", component.properties.colorMode,
+                    [
+                        { value: "fixed", text: "Fixed colour" },
+                        { value: "signal", text: "Signal-driven colour" }
+                    ],
+                    function() {
+                        component.properties.colorMode = this.value;
+                        if(component.configureDisplay) component.configureDisplay();
+                        else if(component.configureSegments) component.configureSegments();
+                    }
+                )
+            );
+        }
+
         if(component.properties.hasOwnProperty("expression")) {
             inputs.push(
                 createInput(
                     component.properties, "expression", component.properties.expression,
-                    expression => {
-                        try {
-                            new Function("A", "B", `return Number(Boolean(${expression}));`);
-                            return true;
-                        } catch(error) {
-                            return false;
-                        }
-                    },
-                    "Use A, B, !, &&, || and comparison operators",
+                    expression => Boolean(
+                        window.reeoValidateLogicExpression &&
+                        window.reeoValidateLogicExpression(expression).valid
+                    ),
+                    "Use A, B, !, &&, ||, ^ and comparisons",
                     function() {
                         component.properties.expression = this.value;
                         component.compile();
@@ -224,8 +265,13 @@
             const options = name === "Lamp"
                 ? [{ value: "bulb", text: "Bulb" }, { value: "panel", text: "Panel" }]
                 : name === "RGBLed"
-                    ? [{ value: "round", text: "Round" }, { value: "square", text: "Square" }]
+                    ? [
+                        { value: "panel", text: "Panel" },
+                        { value: "round", text: "Round" },
+                        { value: "square", text: "Square" }
+                    ]
                     : [
+                        { value: "panel", text: "Panel" },
                         { value: "round", text: "Round" },
                         { value: "square", text: "Square" },
                         { value: "diamond", text: "Diamond" },

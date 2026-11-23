@@ -98,7 +98,7 @@ const constructors = {
     Button,Constant,Delay,Clock,Debug,
     Beep,Buzzer,Tone,DipSwitch,Slider,
     Counter,Splitter,Merger,Procedural,
-    LED,RGBLed,BarGraph,SevenSegment,Lamp,Motor,Display,
+    LED,RGBLed,RGBLed2,BarGraph,SevenSegment,Lamp,Motor,Display,
     Custom, TimerStart, TimerEnd,
     ROM
 };
@@ -283,6 +283,23 @@ function parse(data) {
 
         Object.assign(component,data);
         component.pos = Object.assign({},data.pos);
+
+        // Boards saved before the display/LED redesign kept the old "circle in
+        // a box" shape and the cramped splitter pin spacing. Normalise them so
+        // reopening a board shows the same full panel parts as a fresh drop.
+        if(constructor === "LED" || constructor === "RGBLed") {
+            if(!component.properties.styleVersion) component.properties.shape = "panel";
+            component.properties.styleVersion = 2;
+        }
+        if(constructor === "Splitter") {
+            component.input[0].pos = { side: 3, pos: 1.5 };
+            component.output.forEach((port,index) => port.pos = { side: 1, pos: index });
+        }
+        if(constructor === "Merger") {
+            component.input.forEach((port,index) => port.pos = { side: 3, pos: index });
+            component.output[0].pos = { side: 1, pos: 1.5 };
+        }
+
         if(component.compile) component.compile();
 
         components[i] = component;
