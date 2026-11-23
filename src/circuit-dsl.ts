@@ -224,7 +224,7 @@ function suggest(word: string, choices: string[]): string | undefined {
  *   and G A B
  *   led L G
  *   clock C 500
- *   display D A B C D digits=2
+ *   display DISP A B C D digits=2
  *
  * Every statement names its output; arguments are source references such as
  * `A`, `G`, `bus[2]` or `bus.2`. Trailing `at x,y` pins a component, and
