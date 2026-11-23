@@ -1,0 +1,51 @@
+import type { Copy } from '../help-content';
+
+export const labels = {
+  title: ['Circuit field guide', 'دليل بناء الدوائر', 'دليل بناء الدواير'],
+  start: ['Start here', 'ابدأ هنا', 'ابدأ هنا'],
+  components: ['Every component', 'جميع المكوّنات', 'كل المكوّنات'],
+  recipes: ['Worked circuits', 'دوائر خطوة بخطوة', 'دواير خطوة بخطوة'],
+  check: ['Check this circuit', 'فحص هذه الدائرة', 'افحص الدايرة دي'],
+  search: ['Search components and circuits', 'البحث عن مكوّنات ودوائر', 'دوّر على مكوّنات ودواير'],
+  close: ['Back to editor', 'العودة للمحرر', 'ارجع للمحرّر'],
+  behavior: ['What it does', 'وظيفته', 'بيعمل إيه'],
+  wiring: ['How to connect it', 'طريقة توصيله', 'توصّله إزاي'],
+  example: ['Useful experiment', 'تجربة مفيدة', 'تجربة مفيدة'],
+  caution: ['Watch out', 'انتبه', 'خد بالك'],
+  expected: ['Expected result', 'النتيجة المتوقعة', 'النتيجة المتوقعة'],
+  pin: [
+    'Follow these steps while building',
+    'متابعة الخطوات أثناء البناء',
+    'تابع الخطوات وإنت بتبني',
+  ],
+  next: ['Next step', 'الخطوة التالية', 'الخطوة اللي بعدها'],
+  previous: ['Previous step', 'الخطوة السابقة', 'الخطوة اللي فاتت'],
+  finish: ['Finish checklist', 'إنهاء قائمة الخطوات', 'خلّص قائمة الخطوات'],
+  refresh: ['Check again', 'إعادة الفحص', 'افحص تاني'],
+  noIssues: [
+    'No issues found by these structural checks. This does not prove the intended logic is correct: test the truth table and timing.',
+    'لم تظهر ملاحظات في الفحص البنيوي. لا يثبت ذلك صحة المنطق المقصود؛ اختبر جدول الحقيقة والتوقيت.',
+    'الفحص البنيوي ملقاش ملاحظات. ده مش دليل إن المنطق اللي تقصده صح؛ جرّب جدول الحقيقة والتوقيت.',
+  ],
+  intro: [
+    'Learn one small block at a time. These guides explain the actual REEO components, not an idealized electronics simulator. No action in this guide edits your circuit.',
+    'تعلّم كتلة صغيرة في كل مرة. يشرح الدليل مكوّنات REEO الفعلية لا محاكي إلكترونيات مثاليًا. لا يغيّر أي إجراء هنا دائرتك.',
+    'اتعلّم كتلة صغيرة كل مرة. الدليل بيشرح مكوّنات REEO الفعلية، مش محاكي إلكترونيات مثالي. مفيش إجراء هنا بيغيّر دايرتك.',
+  ],
+  review: ['Review', 'مراجعة', 'راجع'],
+  learn: ['Read component guide', 'قراءة دليل المكوّن', 'اقرأ دليل المكوّن'],
+  locate: ['Locate on grid', 'تحديده على الشبكة', 'ورّيه على الشبكة'],
+  tip: ['Circuit tip', 'نصيحة للدائرة', 'نصيحة للدايرة'],
+  tips: ['Automatic contextual tips', 'نصائح سياقية تلقائية', 'نصايح تلقائية حسب السياق'],
+  dismiss: ['Dismiss tip', 'إغلاق النصيحة', 'اقفل النصيحة'],
+  noResults: [
+    'No matches. Try a component name such as AND, Clock, or ROM.',
+    'لا توجد نتائج. جرّب اسمًا مثل AND أو ساعة أو ROM.',
+    'مفيش نتايج. جرّب اسم زي AND أو ساعة أو ROM.',
+  ],
+  scope: [
+    'Checks cover the current board or opened subcircuit. Disconnected inputs can be intentional. Suggestions never change wiring automatically.',
+    'يفحص المحرر اللوحة الحالية أو الدائرة الفرعية المفتوحة. قد تكون المداخل غير الموصلة مقصودة. لا تغيّر الاقتراحات التوصيل تلقائيًا.',
+    'الفحص للوحة الحالية أو الدايرة الفرعية المفتوحة. المداخل اللي مش متوصّلة ممكن تكون مقصودة. الاقتراحات مبتغيّرش التوصيل لوحدها.',
+  ],
+} satisfies Record<string, Copy>;

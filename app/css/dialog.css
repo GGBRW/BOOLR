@@ -1,201 +1,229 @@
 #over {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: #888;
-    opacity: 0;
-    transition: opacity .5s;
-    z-index: 200;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #888;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 200;
 }
 
 #dialog {
-    display: none;
-    position: fixed;
-    top: 16%;
-    left: 50%;
-    height: auto;
-    width: 400px;
-    margin-left: -200px;
-    padding-bottom: 100px;
-    background: #111;
-    border-radius: 5px;
-    text-align: center;
-    font-family: Ubuntu;
-    color: #ddd;
-    font-size: 15px;
-    z-index: 1000;
-    outline: none;
+  display: none;
+  position: fixed;
+  top: 16%;
+  left: 50%;
+  height: auto;
+  width: 400px;
+  margin-left: -200px;
+  padding-bottom: 100px;
+  background: #111;
+  border-radius: 5px;
+  text-align: center;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  color: #ddd;
+  font-size: 15px;
+  z-index: 1000;
+  outline: none;
 
-    top: 100%;
-    opacity: 0;
-    transition: opacity .2s, transform .2s, top .2s, height 1s;
+  top: 100%;
+  opacity: 0;
+  transition:
+    opacity 0.2s,
+    transform 0.2s,
+    top 0.2s,
+    height 1s;
 }
 
-#dialog h1 {
-    font-family: Ubuntu;
-    font-size: 26px;
-    font-weight: 400;
-    margin: 0;
-    padding: 20px 0;
+#dialog h1,
+.reeo-help-panel h2 {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  margin: 0;
+  padding: 20px 0;
 }
 
 #dialog .container {
-    padding: 0 20px;
+  padding: 0 20px;
 }
 
-#dialog input {
-    font-family: Monospaced;
-    font-size: 15px;
-    background: rgba(255,255,255,0);
-    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
-    border: none;
-    outline: none;
-    margin: 8px;
-    padding: 2px;
-    color: #ddd;
+#dialog input,
+.reeo-help-panel input[type='search'] {
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.1);
+  border: none;
+  outline: none;
+  margin: 8px;
+  padding: 2px;
+  color: #ddd;
 }
 
 #dialog input.error {
-    box-shadow: 0 2px 0 0 #500;
-    color: red;
+  box-shadow: 0 2px 0 0 #500;
+  color: red;
 }
 
 #dialog textarea {
-    font-family: Monospaced;
-    font-size: 15px;
-    background: rgba(255,255,255,0);
-    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
-    border: none;
-    outline: none;
-    margin: 8 8 0 8px;
-    padding: 2px;
-    color: #ddd;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.1);
+  border: none;
+  outline: none;
+  margin: 8 8 0 8px;
+  padding: 2px;
+  color: #ddd;
 }
 
 #dialog textarea.error {
-    box-shadow: 0 2px 0 0 #500;
-    color: red;
+  box-shadow: 0 2px 0 0 #500;
+  color: red;
 }
 
 #dialog select {
-    font-family: Monospaced;
-    font-size: 15px;
-    background: rgba(255,255,255,0);
-    box-shadow: 0 2px 0 0 rgba(255,255,255,.1);
-    border: none;
-    outline: none;
-    margin: 8 8 0 8px;
-    padding: 2px;
-    color: #ddd;
-    width: 20%;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.1);
+  border: none;
+  outline: none;
+  margin: 8 8 0 8px;
+  padding: 2px;
+  color: #ddd;
+  width: 20%;
 }
 
 #dialog .errormsg {
-    opacity: 0;
-    transition: opacity .5s;
-    color: #f00;
+  opacity: 0;
+  transition: opacity 0.5s;
+  color: #f00;
 }
 
 #dialog .container button {
-    background: rgba(255,255,255,.2);
-    border: none;
-    font-family: Ubuntu;
-    font-size: 15px;
-    color: #fff;
-    padding: 10px;
-    margin: 10px;
-    min-width: 100px;
-    outline: none;
-    cursor: pointer;
-    float: left;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  color: #fff;
+  padding: 10px;
+  margin: 10px;
+  min-width: 100px;
+  outline: none;
+  cursor: pointer;
+  float: left;
 }
 
 #dialog ul {
-    margin-left: 10%;
+  margin-left: 10%;
 }
 
 #dialog li {
-    font-family: "Ubuntu";
-    font-size: 15px;
-    color: #fff;
-    cursor: pointer;
-    text-align: left;
-    padding: 12px;
-    width: 75%;
-    margin: 0 auto;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  padding: 12px;
+  width: 75%;
+  margin: 0 auto;
 }
 
 #dialog li:hover {
-    background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 #dialog li .material-icons {
-    position: relative;
-    top: -3px;
-    float: right;
-    cursor: pointer;
-    margin-left: 20px;
-    color: #ddd;
+  position: relative;
+  top: -3px;
+  float: right;
+  cursor: pointer;
+  margin-left: 20px;
+  color: #ddd;
 }
 
 #dialog .container .truthtable {
-    margin: 20px auto;
-    border-collapse: collapse;
+  margin: 20px auto;
+  border-collapse: collapse;
 }
 
 #dialog .container .truthtable th {
-    font-family: "Ubuntu", Arial;
-    font-weight: 400;
-    color: #111;
-    background: #ddd;
-    border-collapse: collapse;
-    border: 2px solid #ddd;
-    padding: 8px 16px;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-weight: 400;
+  color: #111;
+  background: #ddd;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+  padding: 8px 16px;
 }
 
 #dialog .container .truthtable td {
-    border: 2px solid #ddd;
-    text-align: center;
-    padding: 8px 16px;
-    border-collapse: collapse;
-    font-size: 18px;
-    color: #ddd;
+  border: 2px solid #ddd;
+  text-align: center;
+  padding: 8px 16px;
+  border-collapse: collapse;
+  font-size: 18px;
+  color: #ddd;
 }
 
 #dialog .options {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 20px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 20px 0;
 }
 
-#dialog .options button {
-    position: relative;
-    top: 0;
-    background: rgba(255,255,255,.2);
-    box-shadow: 0 3px 0 0 rgba(255,255,255,.1);
-    border: none;
-    font-family: Ubuntu;
-    font-size: 15px;
-    color: #fff;
-    padding: 10px;
-    margin: 10px;
-    min-width: 100px;
-    outline: none;
-    cursor: pointer;
+#dialog .options button,
+.reeo-help-panel button,
+.reeo-guide-dock button,
+.reeo-smart-tip button:not(.reeo-tip-close) {
+  position: relative;
+  top: 0;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 3px 0 0 rgba(255, 255, 255, 0.1);
+  border: none;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
+  color: #fff;
+  padding: 10px;
+  margin: 10px;
+  min-width: 100px;
+  outline: none;
+  cursor: pointer;
 
-    transition: top .1s, box-shadow .1s, background .1s;
+  transition:
+    top 0.1s,
+    box-shadow 0.1s,
+    background 0.1s;
 }
 
-#dialog .options button:hover {
-    background: rgba(255,255,255,.3);
-    box-shadow: 0 3px 0 0 rgba(255,255,255,.2);
+#dialog .options button:hover,
+.reeo-help-panel button:hover,
+.reeo-guide-dock button:hover,
+.reeo-smart-tip button:not(.reeo-tip-close):hover {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 3px 0 0 rgba(255, 255, 255, 0.2);
 }
 
-#dialog .options button:active {
-    box-shadow: 0 0 0 0 #111;
-    top: 3px;
+#dialog .options button:active,
+.reeo-help-panel button:active,
+.reeo-guide-dock button:active,
+.reeo-smart-tip button:not(.reeo-tip-close):active {
+  box-shadow: 0 0 0 0 #111;
+  top: 3px;
+}
+
+/* New learning surfaces use the same surface treatment as the existing dialog. */
+.reeo-help-panel,
+.reeo-guide-dock {
+  background: #111;
+  color: #ddd;
+  border-radius: 5px;
+  font-family: 'REEO Arabic', 'Alan Sans', sans-serif;
+  font-size: 15px;
 }

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+releases/
+electron-out/
+android/
+ios/
+ios-build/
+bun.lock
+playwright-report/
+test-results/
+app/fonts/
+app/img/
+public/brand/*.svg

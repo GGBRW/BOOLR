@@ -1,0 +1,22 @@
+# Keep source/build inputs; exclude local state, native outputs and tooling artifacts.
+.git/
+.vercel/
+node_modules/
+dist/
+.idea/
+.DS_Store
+.env*
+*.log
+*.tsbuildinfo
+playwright-report/
+test-results/
+coverage/
+
+# Vercel builds the browser target only.
+android/
+ios/
+ios-build/
+electron-out/
+releases/
+build/
+saves/

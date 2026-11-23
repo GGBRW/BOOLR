@@ -1,0 +1,420 @@
+@media (max-width: 600px) {
+  .main-menu > button::after {
+    left: 66px;
+    height: 30px;
+  }
+}
+
+/* Release notes scroll inside the dialog so the Close action never covers an item. */
+
+#dialog.reeo-whats-new[style*='display: block'] {
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#dialog.reeo-whats-new > h1 {
+  flex: 0 0 auto;
+}
+
+#dialog.reeo-whats-new .container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+#dialog.reeo-whats-new .options {
+  position: static;
+  flex: 0 0 auto;
+  padding-block: 12px;
+}
+
+@media (max-height: 480px) {
+  #dialog.reeo-whats-new h1 {
+    padding-block: 12px;
+  }
+  #dialog.reeo-whats-new .reeo-release-version {
+    margin-bottom: 8px;
+  }
+  #dialog.reeo-whats-new li {
+    padding-block: 3px;
+  }
+}
+
+/* Programmatic board editor (menu → Board code). */
+
+.reeo-program-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(12, 16, 22, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.reeo-program-panel {
+  width: min(920px, 94vw);
+  max-height: min(88dvh, 820px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  color: #fff;
+  background: #20242b;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
+}
+
+.reeo-program-panel header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reeo-program-heading {
+  min-width: 0;
+}
+
+.reeo-program-panel h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.reeo-program-panel p {
+  margin: 0;
+  color: #b9c2cf;
+  font-size: 14px;
+}
+
+.reeo-program-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reeo-program-status {
+  color: #b8e986;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.reeo-program-status.is-error {
+  color: #ffb4ab;
+}
+
+.reeo-program-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.reeo-program-example {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9c2cf;
+  font-size: 13px;
+}
+
+.reeo-program-example select {
+  padding: 6px 8px;
+  color: #e8f4ff;
+  background: #2a303a;
+  border: 1px solid #586375;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.reeo-program-shortcut {
+  margin-left: auto;
+  color: #8f9bab;
+  font-size: 12px;
+}
+
+.reeo-program-mode {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b9c2cf;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.reeo-program-mode input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #b8e986;
+}
+
+.reeo-program-panel .reeo-program-clear {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.reeo-program-editor {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 300px;
+  min-width: 0;
+  overflow: hidden;
+  background: #12161c;
+  border: 1px solid #3d4756;
+  border-radius: 10px;
+}
+
+.reeo-program-editor:focus-within {
+  border-color: #b8e986;
+  box-shadow: 0 0 0 2px rgba(184, 233, 134, 0.22);
+}
+
+.reeo-program-gutter {
+  flex: 0 0 46px;
+  min-height: 0;
+  padding: 12px 8px 12px 0;
+  overflow: hidden;
+  color: #5d697a;
+  background: #0e1217;
+  border-right: 1px solid #29313c;
+  font:
+    14px/1.55 'REEO Circuit Display',
+    ui-monospace,
+    monospace;
+  text-align: right;
+  user-select: none;
+}
+
+.reeo-code-line-number {
+  display: block;
+  min-height: 1.55em;
+  padding-right: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reeo-code-line-number.is-error {
+  color: #ffb4ab;
+  font-weight: 600;
+}
+
+.reeo-program-code {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.reeo-program-highlight,
+.reeo-program-edit {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 12px 14px;
+  border: 0;
+  font:
+    14px/1.55 'REEO Circuit Display',
+    ui-monospace,
+    monospace;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+
+.reeo-program-highlight {
+  overflow: hidden;
+  color: #e8f4ff;
+  background: transparent;
+  pointer-events: none;
+  scrollbar-width: none;
+}
+
+.reeo-program-edit {
+  resize: none;
+  color: transparent;
+  background: transparent;
+  caret-color: #e8f4ff;
+  outline: none;
+  -webkit-text-fill-color: transparent;
+}
+
+.reeo-program-edit::selection {
+  background: rgba(184, 233, 134, 0.26);
+  -webkit-text-fill-color: transparent;
+}
+
+.reeo-program-highlight::-webkit-scrollbar {
+  display: none;
+}
+
+.reeo-code-line {
+  min-height: 1.55em;
+}
+
+.reeo-code-line.is-error {
+  background: rgba(255, 107, 107, 0.12);
+  box-shadow: inset 2px 0 #ff6b6b;
+}
+
+.reeo-code-token.tok-comment {
+  color: #6b7789;
+  font-style: italic;
+}
+
+.reeo-code-token.tok-type {
+  color: #b8e986;
+  font-weight: 600;
+}
+
+.reeo-code-token.tok-name {
+  color: #8fd6ff;
+}
+
+.reeo-code-token.tok-reference {
+  color: #ffd479;
+}
+
+.reeo-code-token.tok-property {
+  color: #c9a7ff;
+}
+
+.reeo-code-token.tok-keyword {
+  color: #ff9ecb;
+}
+
+.reeo-code-token.tok-value,
+.reeo-code-token.tok-string {
+  color: #a8d8a0;
+}
+
+.reeo-code-token.tok-number {
+  color: #ffb86b;
+}
+
+.reeo-code-token.tok-op {
+  color: #b9c2cf;
+}
+
+.reeo-code-token.tok-invalid {
+  color: #ff8a80;
+  text-decoration: underline wavy rgba(255, 138, 128, 0.7);
+  text-underline-offset: 3px;
+}
+
+.reeo-program-errors {
+  max-height: 110px;
+  overflow: auto;
+  margin: 0;
+  padding: 8px 10px;
+  color: #ffd0cd;
+  background: rgba(160, 35, 35, 0.3);
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font:
+    13px/1.5 ui-monospace,
+    monospace;
+}
+
+.reeo-program-cheatsheet {
+  padding: 6px 10px;
+  color: #b9c2cf;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.reeo-program-cheatsheet summary {
+  color: #dbe3ee;
+  cursor: pointer;
+}
+
+.reeo-program-cheatsheet p {
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+
+.reeo-program-panel footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.reeo-program-panel footer span {
+  flex: 1;
+  min-width: 220px;
+  color: #8f9bab;
+  font-size: 12px;
+}
+
+.reeo-program-panel code {
+  color: #b8e986;
+}
+
+.reeo-program-panel button {
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid #586375;
+  background: #2a303a;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+
+.reeo-program-panel button:hover {
+  background: #394250;
+}
+
+.reeo-program-panel .reeo-program-close {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 1;
+  border: 0;
+  background: transparent;
+}
+
+.reeo-program-panel .reeo-program-build {
+  color: #10160f;
+  background: #b8e986;
+  border-color: #b8e986;
+  font-weight: 600;
+}
+
+.reeo-program-panel .reeo-program-build:hover {
+  background: #c6f39a;
+}
+
+@media (max-width: 600px) {
+  .reeo-program-overlay {
+    padding: 8px;
+  }
+
+  .reeo-program-panel {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .reeo-program-panel h2 {
+    font-size: 20px;
+  }
+
+  .reeo-program-shortcut {
+    display: none;
+  }
+
+  .reeo-program-editor {
+    min-height: 240px;
+  }
+
+  .reeo-program-gutter {
+    flex-basis: 38px;
+  }
+}

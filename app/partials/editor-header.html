@@ -1,0 +1,43 @@
+<header class="reeo-editor-header">
+  <nav class="reeo-platform-bar" aria-label="REEO tools">
+    <label>
+      <span class="material-icons" aria-hidden="true">language</span>
+      <select id="reeo-language" aria-label="Language" data-no-i18n>
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+        <option value="arz">مصري</option>
+      </select>
+    </label>
+    <button id="reeo-import" title="Import board">
+      <span class="material-icons" aria-hidden="true">file_upload</span>
+      <span data-i18n="import">Import board</span>
+    </button>
+    <button id="reeo-export" title="Export board">
+      <span class="material-icons" aria-hidden="true">file_download</span>
+      <span data-i18n="export">Export board</span>
+    </button>
+    <button id="reeo-help" title="Quick guide" aria-label="Quick guide">
+      <span class="material-icons" aria-hidden="true">help_outline</span>
+    </button>
+  </nav>
+  <div class="reeo-touch-tools" aria-label="Touch tools">
+    <button data-touch-tool="interact" aria-pressed="true" data-i18n="interact">Interact</button>
+    <button data-touch-tool="move" aria-pressed="false" data-i18n="move">Move</button>
+    <button data-touch-tool="pan" aria-pressed="false" data-i18n="pan">Pan</button>
+    <button data-touch-tool="select" aria-pressed="false" data-i18n="select">Select</button>
+    <button id="reeo-add" title="Add component" aria-label="Add component">
+      <span class="material-icons" aria-hidden="true">add</span>
+    </button>
+    <button id="reeo-fit" title="Fit circuit" aria-label="Fit circuit">
+      <span class="material-icons" aria-hidden="true">zoom_out_map</span>
+    </button>
+    <button id="reeo-zoom-out" aria-label="Zoom out">−</button>
+    <button id="reeo-zoom-in" aria-label="Zoom in">+</button>
+  </div>
+</header>
+<!-- Preload canvas fonts -->
+<div id="preload" style="font-family: Monospaced; position: absolute; top: -20px">&nbsp;</div>
+
+<!-- Version number -->
+
+<canvas id="canvas" tabindex="1"></canvas>

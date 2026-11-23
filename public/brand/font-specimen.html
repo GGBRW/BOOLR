@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>REEO Circuit Display — type specimen</title>
+    <meta
+      name="description"
+      content="REEO Circuit Display: a monoline display typeface cut from the R in the REEO wordmark. 359 glyphs, full Latin-1 and Latin Extended-A, tabular figures, kerning and a slashed zero."
+    />
+    <style>
+      @font-face {
+        font-family: 'REEO Circuit';
+        src: url('./REEOCircuitDisplay.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Alan Sans';
+        src: url('../fonts/alan-sans/AlanSans-Variable.ttf') format('truetype');
+        font-weight: 300 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      :root {
+        --ink: #ddd;
+        --dim: #888;
+        --faint: #555;
+        --line: #2c2c2c;
+        --panel: #151515;
+        --bg: #111;
+        --display: 'REEO Circuit', 'Alan Sans', Arial, sans-serif;
+        --ui: 'Alan Sans', Arial, sans-serif;
+        --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--bg);
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--ui);
+        font-variation-settings: 'wght' 400;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration-color: #555;
+        text-underline-offset: 3px;
+      }
+      a:hover {
+        text-decoration-color: var(--ink);
+      }
+      .wrap {
+        width: min(1180px, calc(100% - 40px));
+        margin-inline: auto;
+      }
+      header {
+        border-bottom: 1px solid var(--line);
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 18px 0;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink);
+        letter-spacing: 0.16em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        display: block;
+      }
+      .download {
+        border: 1px solid #3a3a3a;
+        border-radius: 5px;
+        padding: 9px 14px;
+        color: var(--ink);
+        text-decoration: none;
+        letter-spacing: 0.08em;
+        text-transform: none;
+        font-size: 12px;
+      }
+      .download:hover {
+        background: #191919;
+      }
+      .hero {
+        padding: clamp(44px, 9vw, 100px) 0 clamp(34px, 6vw, 64px);
+        border-bottom: 1px solid var(--line);
+      }
+      .kicker {
+        margin: 0 0 18px;
+        font: 12px var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .hero h1 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(58px, 14vw, 168px);
+        line-height: 0.95;
+        letter-spacing: -0.01em;
+      }
+      .hero .lede {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: clamp(24px, 5vw, 72px);
+        margin-top: clamp(24px, 4vw, 44px);
+        align-items: start;
+      }
+      .lede p {
+        margin: 0;
+        max-width: 58ch;
+        font-size: clamp(15px, 1.5vw, 18px);
+        line-height: 1.65;
+        color: #b9b9b9;
+      }
+      .facts {
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+      .facts div {
+        background: var(--bg);
+        padding: 12px 14px;
+      }
+      .facts dt {
+        font: 10px var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .facts dd {
+        margin: 5px 0 0;
+        font: 13px var(--mono);
+        color: #cfcfcf;
+      }
+
+      section {
+        padding: clamp(36px, 6vw, 68px) 0;
+        border-bottom: 1px solid var(--line);
+      }
+      h2 {
+        margin: 0 0 8px;
+        font: 400 12px var(--ui);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .note {
+        margin: 0 0 26px;
+        max-width: 70ch;
+        color: #9c9c9c;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .preview {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: clamp(18px, 3vw, 30px);
+      }
+      .sample-out {
+        display: block;
+        min-height: 1.3em;
+        font-family: var(--display);
+        font-size: clamp(38px, 7vw, 88px);
+        line-height: 1.22;
+        overflow-wrap: anywhere;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 18px 26px;
+        margin-top: 24px;
+      }
+      .controls label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font: 11px var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .controls input[type='text'] {
+        flex: 1 1 280px;
+        min-height: 40px;
+        padding: 8px 12px;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background: #0e0e0e;
+        color: var(--ink);
+        font: 14px var(--ui);
+      }
+      .controls input[type='range'] {
+        width: 150px;
+        accent-color: #bbb;
+      }
+      .toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .toggle input {
+        accent-color: #bbb;
+        width: 15px;
+        height: 15px;
+      }
+      .live {
+        font-size: var(--live-size, 72px) !important;
+      }
+
+      .wordmark {
+        font-family: var(--display);
+        font-size: clamp(52px, 11vw, 132px);
+        line-height: 1.06;
+        margin: 0 0 18px;
+      }
+      .lineup {
+        font-family: var(--display);
+        font-size: clamp(28px, 5vw, 62px);
+        line-height: 1.28;
+        margin: 0;
+      }
+      .lineup span {
+        display: block;
+      }
+      .dim {
+        color: #6d6d6d;
+      }
+
+      .rows {
+        display: grid;
+        gap: 18px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        gap: 18px;
+        align-items: baseline;
+        border-top: 1px solid #232323;
+        padding-top: 14px;
+      }
+      .row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+      .row .tag {
+        font: 10px var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .row p {
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(26px, 4vw, 48px);
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .blocks {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+      .block {
+        background: var(--bg);
+        padding: 20px;
+      }
+      .block .tag {
+        font: 10px var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .block .text {
+        margin: 12px 0 0;
+        font-family: var(--display);
+        font-size: 23px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+
+      .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 24px;
+        padding: 0;
+        list-style: none;
+      }
+      .features li {
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 6px 9px;
+        font: 11px var(--mono);
+        color: #bbb;
+      }
+      .spec-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .spec-table th,
+      .spec-table td {
+        text-align: start;
+        padding: 10px 12px;
+        border-top: 1px solid #242424;
+        vertical-align: top;
+      }
+      .spec-table th {
+        color: var(--faint);
+        font: 10px var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+      .spec-table td:first-child {
+        color: var(--dim);
+        white-space: nowrap;
+        width: 34%;
+      }
+      .spec-table td:last-child {
+        font-family: var(--mono);
+        color: #cfcfcf;
+      }
+
+      details {
+        border-top: 1px solid #242424;
+        padding-top: 16px;
+        margin-top: 26px;
+      }
+      summary {
+        cursor: pointer;
+        font: 11px var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .charset {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        margin-top: 18px;
+      }
+      .cell {
+        background: #141414;
+        padding: 10px 6px 7px;
+        text-align: center;
+      }
+      .cell .glyph {
+        font-family: var(--display);
+        font-size: 30px;
+        line-height: 1.1;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cell .code {
+        display: block;
+        margin-top: 4px;
+        font: 9px var(--mono);
+        color: #5f5f5f;
+        letter-spacing: 0.04em;
+      }
+      .cell.blank .glyph {
+        color: #333;
+        font: 11px var(--mono);
+      }
+
+      footer {
+        padding: 30px 0 54px;
+        color: #777;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 14px;
+      }
+      footer a {
+        color: #a5a5a5;
+      }
+
+      @media (max-width: 760px) {
+        .bar {
+          flex-wrap: wrap;
+          gap: 10px;
+          padding: 13px 0;
+        }
+        .bar .version {
+          display: none;
+        }
+        .download {
+          font-size: 11px;
+          padding: 7px 10px;
+        }
+        .hero .lede {
+          grid-template-columns: 1fr;
+        }
+        .blocks {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .row {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+        .controls {
+          align-items: stretch;
+        }
+        .controls input[type='text'] {
+          flex-basis: 100%;
+        }
+      }
+      @media (max-width: 560px) {
+        .blocks {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap bar">
+        <div class="brand">
+          <img src="./reeo-mark.svg" alt="" />
+          REEO
+          <span class="dim">/ Type</span>
+        </div>
+        <div class="version">REEO Circuit Display · v2.000</div>
+        <a class="download" href="./REEOCircuitDisplay.ttf" download>Download .ttf</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap hero">
+        <p class="kicker">Display typeface · 359 glyphs</p>
+        <h1>
+          REEO
+          <br />
+          Circuit
+        </h1>
+        <div class="lede">
+          <p>
+            A monoline Latin display face cut from the R in the REEO wordmark. Every letter is drawn
+            the way a circuit is routed: a single 56-unit stroke, round caps and joins, and short
+            port stubs where a terminal meets a curve. The skeleton is fixed; the angles and
+            proportions change to keep each shape legible.
+          </p>
+          <dl class="facts">
+            <div>
+              <dt>Style</dt>
+              <dd>Regular 400</dd>
+            </div>
+            <div>
+              <dt>Units / em</dt>
+              <dd>1000</dd>
+            </div>
+            <div>
+              <dt>Coverage</dt>
+              <dd>Latin-1 + Ext-A</dd>
+            </div>
+            <div>
+              <dt>Features</dt>
+              <dd>kern · ss01</dd>
+            </div>
+            <div>
+              <dt>Figures</dt>
+              <dd>Tabular 620</dd>
+            </div>
+            <div>
+              <dt>License</dt>
+              <dd>GPL-3.0-only</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <section>
+        <div class="wrap">
+          <h2>Try it</h2>
+          <p class="note">
+            Type below, change the size, and switch the slashed zero. The preview uses the actual
+            font file in this folder — no images.
+          </p>
+          <div class="preview">
+            <output class="sample-out live" id="sample" for="live-text">
+              Design the signal. 2026
+            </output>
+            <div class="controls">
+              <label for="live-text">
+                Text
+                <input
+                  id="live-text"
+                  type="text"
+                  value="Design the signal. 2026"
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+              </label>
+              <label for="live-size">
+                Size
+                <input id="live-size" type="range" min="34" max="150" value="72" />
+              </label>
+              <label class="toggle" for="slash-zero">
+                <input id="slash-zero" type="checkbox" />
+                Slashed zero
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <h2>Wordmark &amp; voice</h2>
+          <p class="note">
+            The three letters of the wordmark set the rules: a flat terminal at every stroke end, a
+            small square port where a stem branches, and a 56-unit line that never changes weight.
+          </p>
+          <p class="wordmark">REEO</p>
+          <div class="lineup">
+            <span>Aa Bb Cc 0123</span>
+            <span class="dim">AVATAR — Wave Type</span>
+            <span class="dim">Digital logic. Limitless curiosity.</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <h2>Character sets</h2>
+          <p class="note">
+            Latin-1 and Latin Extended-A are complete, including the punctuation, currency and
+            spacing accents used by European languages. The face is Latin-only by design; Greek,
+            Cyrillic and Arabic are outside its scope. Figures are monospaced at 620 units so tables
+            and schematics line up.
+          </p>
+          <div class="rows">
+            <div class="row">
+              <span class="tag">Uppercase</span>
+              <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+            </div>
+            <div class="row">
+              <span class="tag">Lowercase</span>
+              <p>abcdefghijklmnopqrstuvwxyz</p>
+            </div>
+            <div class="row">
+              <span class="tag">Figures</span>
+              <p>0123456789 &nbsp; 0/0 &nbsp; ½ ¼ ¾ ¹²³</p>
+            </div>
+            <div class="row">
+              <span class="tag">Punctuation</span>
+              <p>
+                .,:;!? ¡¿ … † ‡ § ¶ • · « » ‹ › “ ” ‘ ’ ‚ „ ( ) [ ] { } / \ | — – − + = &lt; &gt; ≤
+                ≥ ≠
+              </p>
+            </div>
+            <div class="row">
+              <span class="tag">Currency</span>
+              <p>$ ¢ £ ¤ ¥ € ± × ÷ % ‰</p>
+            </div>
+            <div class="row">
+              <span class="tag">Symbols</span>
+              <p>© ® ™ ° µ ¬ ¦ ⁄ # @ &amp; * ~ ^ `</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <h2>Languages</h2>
+          <p class="note">
+            Accents are not stretched: each composite reuses the drawn base and a separate mark,
+            placed for uppercase, lowercase, and the d/l/t ascenders.
+          </p>
+          <div class="blocks">
+            <div class="block">
+              <span class="tag">English</span>
+              <p class="text">
+                Typography is the craft of endowing language with a durable visual form.
+              </p>
+            </div>
+            <div class="block">
+              <span class="tag">Deutsch</span>
+              <p class="text">Größe, Übermut, schön. Ästhetik heißt auch: genau hinsehen.</p>
+            </div>
+            <div class="block">
+              <span class="tag">Français</span>
+              <p class="text">Ça a été très agréable. L’œuvre et l’esthétique, le rythme.</p>
+            </div>
+            <div class="block">
+              <span class="tag">Español</span>
+              <p class="text">¿Dónde está el niño? ¡Qué señal tan clara!</p>
+            </div>
+            <div class="block">
+              <span class="tag">Polski</span>
+              <p class="text">Zółć gęślą jaźń. Łódź, ćwierć, ścieżka.</p>
+            </div>
+            <div class="block">
+              <span class="tag">Türkçe</span>
+              <p class="text">İstanbul’da ışık, ölçü ve güç. Ağaç, çiçek, göz.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <h2>OpenType</h2>
+          <p class="note">
+            Kerning is stored in GPOS and applied by every modern browser and desktop app. The
+            slashed zero is an optional stylistic set, so tabular figures stay untouched unless you
+            ask for it.
+          </p>
+          <ul class="features">
+            <li>kern — A/V, T/o, Y/a, F/., …</li>
+            <li>ss01 — slashed zero</li>
+            <li>Tabular figures</li>
+            <li>Real .notdef</li>
+            <li>OS/2 v4</li>
+            <li>Unicode cmap</li>
+          </ul>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th scope="row">Family</th>
+                <td>REEO Circuit Display</td>
+              </tr>
+              <tr>
+                <th scope="row">Style</th>
+                <td>Regular · 400</td>
+              </tr>
+              <tr>
+                <th scope="row">Format</th>
+                <td>TrueType (glyf), 1000 upm</td>
+              </tr>
+              <tr>
+                <th scope="row">Glyphs / cmap</th>
+                <td>359 / 344</td>
+              </tr>
+              <tr>
+                <th scope="row">Script</th>
+                <td>Latin only. Arabic UI text uses IBM Plex Sans Arabic.</td>
+              </tr>
+              <tr>
+                <th scope="row">Coverage</th>
+                <td>
+                  Latin-1 Supplement, Latin Extended-A, punctuation, currency, math, fractions
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Vertical metrics</th>
+                <td>880 / −240, line gap 0</td>
+              </tr>
+              <tr>
+                <th scope="row">Cap / x-height</th>
+                <td>700 / 500</td>
+              </tr>
+              <tr>
+                <th scope="row">Stroke</th>
+                <td>56 units, round caps and joins</td>
+              </tr>
+              <tr>
+                <th scope="row">Features</th>
+                <td>kern (GPOS), ss01 (GSUB)</td>
+              </tr>
+              <tr>
+                <th scope="row">Designer</th>
+                <td>Abdou-da0wew</td>
+              </tr>
+              <tr>
+                <th scope="row">License</th>
+                <td>GPL-3.0-only — see the repository LICENSE</td>
+              </tr>
+            </tbody>
+          </table>
+          <details>
+            <summary>Full character set · 344 mapped codepoints</summary>
+            <div class="charset" id="charset" aria-label="Full character set"></div>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>
+          REEO Circuit Display · drawn for
+          <a href="https://github.com/abdou-da0wew/REEO">REEO</a>
+          · 2026
+        </span>
+        <span>
+          <a href="https://github.com/abdou-da0wew/REEO">Repository</a>
+          ·
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      const sample = document.getElementById('sample');
+      const text = document.getElementById('live-text');
+      const size = document.getElementById('live-size');
+      const slash = document.getElementById('slash-zero');
+
+      function update() {
+        sample.textContent = text.value || 'Type something';
+        sample.style.setProperty('--live-size', size.value + 'px');
+        sample.style.fontFeatureSettings = slash.checked ? '"ss01" 1' : '"ss01" 0';
+      }
+
+      text.addEventListener('input', update);
+      size.addEventListener('input', update);
+      slash.addEventListener('change', update);
+      update();
+
+      const ranges = [
+        [0x20, 0x7e],
+        [0xa0, 0x17f],
+      ];
+      const extra = [
+        0x1e9e, 0x2010, 0x2011, 0x2013, 0x2014, 0x2018, 0x2019, 0x201a, 0x201c, 0x201d, 0x201e,
+        0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203a, 0x2044, 0x20ac, 0x2122, 0x2212,
+        0x2260, 0x2264, 0x2265,
+      ];
+      const points = [];
+      for (const [from, to] of ranges) for (let code = from; code <= to; code++) points.push(code);
+      for (const code of extra) if (!points.includes(code)) points.push(code);
+
+      const cells = points.map((code) => {
+        const blank = code === 0x20 || code === 0xa0 || code === 0xad;
+        const glyph = blank ? '␣' : String.fromCodePoint(code);
+        const codeLabel = code.toString(16).toUpperCase().padStart(4, '0');
+        const label =
+          code === 0xa0 ? 'NBSP' : code === 0xad ? 'SHY' : code === 0x20 ? 'SP' : codeLabel;
+        return `<div class="cell${blank ? ' blank' : ''}"><span class="glyph">${glyph}</span><span class="code">${label}</span></div>`;
+      });
+      document.getElementById('charset').innerHTML = cells.join('');
+    </script>
+  </body>
+</html>

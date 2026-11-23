@@ -1,0 +1,19 @@
+REEO is a continuation of BOOLR, a digital logic simulator originally authored by
+Gees Brouwer (https://github.com/ggbrw).
+
+The original source in this repository is licensed under GNU GPL version 3.
+REEO modifications and new source code are distributed under GPL-3.0-only.
+Original authorship and upstream history are preserved; product rebranding does
+not imply authorship of all original code.
+
+The original bundled font and icon assets are retained. Their respective authors
+and licenses continue to apply; audit redistribution notices before store release.
+
+Interface icons: Phosphor Icons (@phosphor-icons/core), MIT License.
+The selected original SVGs and license are in public/icons/phosphor/.
+Circuit symbols are REEO-authored vector paths, not Phosphor UI icons.
+
+Arabic font: IBM Plex Sans Arabic, Copyright IBM Corp., SIL Open Font License 1.1.
+Bundled from the Google Fonts google/fonts repository; font files and OFL.txt are
+in public/fonts/ibm-plex-sans-arabic/. CSS unicode-range restricts these faces to
+Arabic glyphs so existing Latin font stacks remain in use.

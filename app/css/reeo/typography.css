@@ -1,0 +1,269 @@
+#customComponentToolbar #name {
+  display: block;
+  padding-inline: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#reeo-toast-stack {
+  bottom: max(126px, calc(env(safe-area-inset-bottom) + 126px));
+}
+
+@media (min-width: 901px) {
+  #reeo-toast-stack {
+    bottom: 76px;
+  }
+}
+
+@media (max-width: 350px) {
+  .reeo-touch-tools {
+    inset-inline: 8px;
+    padding: 2px;
+    gap: 0;
+    justify-content: space-between;
+  }
+  .reeo-touch-tools button {
+    padding-inline: 3px;
+    font-size: 11px;
+  }
+  #toolbar {
+    width: 308px;
+    margin-left: -154px;
+  }
+  #toolbar .slot {
+    width: 44px;
+  }
+}
+
+@media (max-height: 480px) {
+  .main-menu > h1.reeo-wordmark {
+    font-size: 74px;
+    margin: 72px auto 8px;
+  }
+  .main-menu > .version {
+    margin-block: 0;
+  }
+  .main-menu > button {
+    padding-block: 8px;
+    margin-block: 3px;
+  }
+}
+
+.main-menu.has-submenu {
+  z-index: 180;
+  overflow: hidden;
+  transform: none !important;
+}
+
+.reeo-platform-bar label {
+  padding-block: 0;
+}
+
+.reeo-platform-bar select {
+  min-height: 44px;
+}
+
+#toolbartip span {
+  font-size: 12px !important;
+}
+
+.console .container {
+  height: calc(100% - 52px);
+}
+
+#contextMenu,
+#menu,
+#waypointsMenu,
+#toolbartip,
+#creditstip,
+#hoverBalloon,
+#componentInfo,
+#customComponentToolbar .menu {
+  width: max-content !important;
+}
+
+.console {
+  transform: none !important;
+}
+
+.reeo-help-panel {
+  position: fixed;
+  z-index: 1200;
+  inset: calc(var(--reeo-view-top) + 12px) auto auto calc(var(--reeo-view-left) + 12px);
+  width: calc(var(--reeo-view-width) - 24px);
+  height: calc(var(--reeo-view-height) - 24px);
+  max-width: 1100px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reeo-help-panel[hidden],
+.reeo-guide-dock[hidden] {
+  display: none;
+}
+
+.reeo-help-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reeo-help-panel h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.reeo-help-panel button,
+.reeo-guide-dock button,
+.reeo-smart-tip button:not(.reeo-tip-close) {
+  margin: 0;
+  min-width: 0;
+}
+
+.reeo-help-panel nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reeo-help-panel nav button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 3px 0 0 #ddd;
+}
+
+.reeo-help-panel input[type='search'] {
+  width: 100%;
+  margin: 0 0 4px;
+  padding: 10px 2px;
+}
+
+.reeo-help-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.reeo-help-panel label input {
+  width: 24px;
+  height: 24px;
+}
+
+.reeo-help-results {
+  overflow: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+  line-height: 1.75;
+  padding: 4px;
+}
+
+.reeo-help-results > ol > li {
+  margin-bottom: 18px;
+}
+
+.reeo-help-card {
+  padding: 20px 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reeo-help-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  color: inherit;
+  font-weight: 400;
+}
+
+.reeo-help-card h4 {
+  margin: 12px 0 4px;
+  font-size: 15px;
+}
+
+.reeo-help-card p {
+  margin: 0 0 12px;
+}
+
+.reeo-help-card li {
+  margin: 12px 0;
+}
+
+.reeo-help-card button {
+  margin: 8px 8px 0 0;
+}
+
+.reeo-component-help {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  color: #bbb;
+  border: 0;
+}
+
+.reeo-guide-dock {
+  position: fixed;
+  z-index: 160;
+  left: 12px;
+  bottom: 130px;
+  width: min(390px, calc(100vw - 24px));
+  max-height: calc(var(--reeo-view-height) - 150px);
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  padding: 14px;
+  line-height: 1.6;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  opacity: 0.35;
+  pointer-events: none;
+  filter: saturate(0.55) brightness(0.82);
+  transition:
+    opacity 160ms ease,
+    filter 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.reeo-guide-dock > strong,
+.reeo-guide-dock > p,
+.reeo-guide-dock > div {
+  grid-column: 1 / -1;
+}
+
+.reeo-guide-dock > button,
+.reeo-guide-dock > div > button {
+  width: 100%;
+}
+
+.reeo-guide-dock > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 8px;
+}
+
+.reeo-guide-dock > div > button {
+  font-size: 13px;
+  padding-inline: 6px;
+}
+
+.reeo-guide-dock.is-engaged,
+.reeo-guide-dock:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+  box-shadow: 0 8px 34px rgba(0, 0, 0, 0.48);
+}
+
+@media (hover: none) {
+  .reeo-guide-dock {
+    opacity: 1;
+    pointer-events: auto;
+    filter: none;
+  }
+}
