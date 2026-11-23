@@ -54,6 +54,32 @@ test('release notes fall back cleanly when the public API is unreachable', async
     'https://github.com/abdou-da0wew/REEO/releases',
   );
 });
+test('long release notes scroll inside the compact dialog', async ({ page }) => {
+  const items = Array.from({ length: 24 }, (_, index) => `- Release note ${index + 1}`).join('\n');
+  await page.route('https://api.github.com/**', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        tag_name: 'v9.9.9',
+        name: 'REEO v9.9.9',
+        body: `## Highlights\n${items}\n### Fixes\n- Final fix`,
+        html_url: 'https://github.com/abdou-da0wew/REEO/releases/tag/v9.9.9',
+        published_at: '2026-11-21T00:00:00Z',
+      }),
+    }),
+  );
+  await boot(page);
+  await page.evaluate('dialog.update()');
+  await expect(page.locator('#dialog li')).toHaveCount(25);
+  const r = await page.locator('#dialog').boundingBox();
+  expect(r?.height).toBeLessThan(520);
+  await expect(page.locator('#dialog .options button')).toBeVisible();
+  const scrolled = await page
+    .locator('#dialog .container')
+    .evaluate((el) => el.scrollHeight > el.clientHeight);
+  expect(scrolled).toBe(true);
+});
 test('Quick guide is icon-only and opens a smaller centered field guide', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 900 });
   await boot(page);
