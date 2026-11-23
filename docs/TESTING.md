@@ -151,15 +151,16 @@ The latest full local runs recorded **117 passed, 1 skipped** in dev mode and **
 
 Automated/measured targets:
 
-| Viewport   | Intent                         |
-| ---------- | ------------------------------ |
-| 320 × 640  | smallest supported phone       |
-| 360 × 780  | common Android width           |
-| 390 × 844  | modern iPhone width            |
-| 768 × 1024 | tablet portrait                |
-| 844 × 390  | phone landscape / short height |
-| 1024 × 768 | small laptop                   |
-| 1400 × 900 | desktop                        |
+| Viewport               | Intent                           |
+| ---------------------- | -------------------------------- |
+| 320 × 568              | smallest measured phone          |
+| 390 × 844              | common modern phone              |
+| 844 × 390              | phone landscape / short height   |
+| 800 × 1280             | tablet portrait                  |
+| 1366 × 768             | laptop                           |
+| 1920 × 1080            | desktop                          |
+| 955 × 590              | narrow desktop header breakpoint |
+| 768 × 900 / 1400 × 900 | wordmark/header checks           |
 
 For each relevant surface, check:
 
