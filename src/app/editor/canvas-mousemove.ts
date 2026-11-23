@@ -2,6 +2,13 @@
 // biome-ignore-all lint: transitional legacy interface module
 /* eslint-disable */
 function completePortConnection(to) {
+  const end = portGridPosition(to.component, to);
+  const last = connecting.pos[connecting.pos.length - 1];
+  if (last && Math.abs(last.x - end.x) < 1e-6 && Math.abs(last.y - end.y) < 1e-6) {
+    connecting.pos[connecting.pos.length - 1] = end;
+  } else {
+    connecting.pos.push(end);
+  }
   connecting.to = to;
   wires.push(connecting);
 
@@ -176,20 +183,20 @@ c.onmousemove = function (e) {
         return;
       }
 
+      // Snap the path to a hovered input pin. Pins can sit between grid
+      // points, and the path builder works in fractional grid units.
+      const hovered = findPortByPos(mouse.grid.x, mouse.grid.y, mouse.screen.x, mouse.screen.y);
+      const snap =
+        hovered && hovered.type == 'input' ? portGridPosition(hovered.component, hovered) : null;
+
       // Calculate the delta x and y
-      let dx = mouse.grid.x - connecting.pos.slice(-1)[0].x;
-      let dy = mouse.grid.y - connecting.pos.slice(-1)[0].y;
+      let dx = (snap ? snap.x : mouse.grid.x) - connecting.pos.slice(-1)[0].x;
+      let dy = (snap ? snap.y : mouse.grid.y) - connecting.pos.slice(-1)[0].y;
 
       // If dx and dy are both 0, no new positions have to be put into the wire's 'pos' array.
       // Still try to land on a pin that sits between two grid points.
       if (!dx && !dy) {
-        const to = findPortByPos(
-          connecting.pos.slice(-1)[0].x,
-          connecting.pos.slice(-1)[0].y,
-          mouse.screen.x,
-          mouse.screen.y,
-        );
-        if (to && to.type == 'input') completePortConnection(to);
+        if (snap) completePortConnection(hovered);
         return;
       }
 
@@ -205,44 +212,45 @@ c.onmousemove = function (e) {
         delete connecting.lock;
       }
 
-      while ((dx || dy) && dx + dy < 50000) {
+      let guard = 0;
+      while ((Math.abs(dx) > 1e-6 || Math.abs(dy) > 1e-6) && guard++ < 100000) {
         const prev = connecting.pos.slice(-2)[0];
         const last = connecting.pos.slice(-1)[0];
+        const stepX = Math.abs(dx) >= 1 ? Math.sign(dx) : dx;
+        const stepY = Math.abs(dy) >= 1 ? Math.sign(dy) : dy;
 
-        if (Math.abs(dx) > Math.abs(dy)) {
-          if (
-            prev &&
-            last &&
-            last.x + Math.sign(dx) == prev.x &&
-            last.y == connecting.pos.slice(-2)[0].y
-          ) {
+        if (Math.abs(dx) >= Math.abs(dy)) {
+          if (prev && last && Math.abs(last.x + stepX - prev.x) < 1e-6 && last.y == prev.y) {
             connecting.pos.splice(-1);
           } else {
             connecting.pos.push({
-              x: last.x + Math.sign(dx),
+              x: last.x + stepX,
               y: last.y,
             });
           }
-          dx = dx - Math.sign(dx);
+          dx = dx - stepX;
         } else {
-          if (prev && last && last.x == prev.x && last.y + Math.sign(dy) == prev.y) {
+          if (prev && last && last.x == prev.x && Math.abs(last.y + stepY - prev.y) < 1e-6) {
             connecting.pos.splice(-1);
           } else {
             connecting.pos.push({
               x: last.x,
-              y: last.y + Math.sign(dy),
+              y: last.y + stepY,
             });
           }
-          dy = dy - Math.sign(dy);
+          dy = dy - stepY;
         }
       }
 
-      const to = findPortByPos(
-        connecting.pos.slice(-1)[0].x,
-        connecting.pos.slice(-1)[0].y,
-        mouse.screen.x,
-        mouse.screen.y,
-      );
+      const to =
+        hovered && hovered.type == 'input'
+          ? hovered
+          : findPortByPos(
+              connecting.pos.slice(-1)[0].x,
+              connecting.pos.slice(-1)[0].y,
+              mouse.screen.x,
+              mouse.screen.y,
+            );
 
       if (to && to.type == 'input') completePortConnection(to);
     } else if (e.altKey) {

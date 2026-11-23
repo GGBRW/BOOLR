@@ -142,6 +142,30 @@ test('place, connect and simulate a circuit using actual toolbar and pointer int
   await expect.poll(() => page.evaluate('components[1].value')).toBe(1);
 });
 
+test('display data pins between grid points stay wirable', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await start(page);
+  const points = await page.evaluate(`(() => {
+    components.length = 0;
+    wires.length = 0;
+    offset.x = 0;
+    offset.y = 0;
+    zoom = 70;
+    zoomAnimation = 70;
+    const source = new Input('IN', {x: 1, y: -4});
+    const display = new Display('DISPLAY', {x: 5, y: -4});
+    components.push(source, display);
+    return {
+      from: portScreenPosition(source, source.output[0]),
+      to: portScreenPosition(display, display.input[0]),
+    };
+  })()`);
+  await drag(page, [points.from.x, points.from.y], [points.to.x, points.to.y]);
+  await expect.poll(() => page.evaluate('wires.length')).toBe(1);
+  expect(await page.evaluate('wires[0].to && wires[0].to.name')).toBe('D0');
+  expect(await page.evaluate('wires[0].pos.slice(-1)[0]')).toEqual({ x: 5, y: -3 });
+});
+
 test('navigation opens above its button, resumes the board, and tutorial arrows work', async ({
   page,
 }) => {

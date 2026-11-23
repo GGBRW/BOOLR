@@ -127,10 +127,7 @@ c.onmousedown = function (e) {
           if (port.type == 'output') {
             connecting = new Wire();
             connecting.from = port;
-            connecting.pos.push({
-              x: mouse.grid.x,
-              y: mouse.grid.y,
-            });
+            connecting.pos.push(portGridPosition(port.component, port));
           }
         } else {
           const component = new Selected();

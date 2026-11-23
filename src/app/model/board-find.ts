@@ -122,6 +122,11 @@ function portScreenPosition(component, port) {
   return { x: screenX, y: screenY };
 }
 
+function portGridPosition(component, port) {
+  const screen = portScreenPosition(component, port);
+  return { x: screen.x / zoom + offset.x, y: -screen.y / zoom + offset.y };
+}
+
 function findPortByPos(x = mouse.grid.x, y = mouse.grid.y, pixelX, pixelY) {
   // Pins are drawn at their exact screen position; use that distance first so
   // fractional and high-density pins stay selectable on touch and mouse.
@@ -140,7 +145,7 @@ function findPortByPos(x = mouse.grid.x, y = mouse.grid.y, pixelX, pixelY) {
       }
     }
   }
-  if (closest) return closest;
+  if (closest || pixelX !== undefined) return closest;
   if (findComponentByPos()) return;
   for (let i = 0; i < 4; ++i) {
     const component = findComponentByPos(
