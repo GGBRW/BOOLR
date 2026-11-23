@@ -74,6 +74,14 @@ function parse(data) {
       if (!component.properties.styleVersion) component.properties.shape = 'panel';
       component.properties.styleVersion = 2;
     }
+    if (constructor === 'RGBLed' || constructor === 'RGBLed2') {
+      // Older boards kept the pins near the top-left corner, with the last
+      // stub hanging below the chassis. Spread them over the body instead.
+      const pins = constructor === 'RGBLed' ? [-0.25, 0, 0.25] : [-0.2, 0.2];
+      component.input.forEach((port, index) => {
+        if (pins[index] !== undefined) port.pos = { side: 3, pos: pins[index] };
+      });
+    }
     if (constructor === 'Splitter') {
       component.input[0].pos = { side: 3, pos: 1.5 };
       component.output.forEach((port, index) => (port.pos = { side: 1, pos: index }));

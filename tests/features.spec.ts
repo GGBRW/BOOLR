@@ -150,12 +150,20 @@ test('displays stack into one module and take their colour from signals', async 
         part.configureSegments();
         return {ports: part.input.length, colourSides: part.input.slice(8).map(port => port.pos.side)};
       })(),
+      rgb: (() => {
+        const part = new RGBLed('L', {x: 0, y: 0});
+        return {pins: part.input.map(port => port.pos.pos), shape: part.properties.shape};
+      })(),
       rgb2: (() => {
         const part = new RGBLed2('R', {x: 0, y: 0});
         part.input[0].value = 1;
         part.input[1].value = 1;
         part.update();
-        return {ports: part.input.length, value: part.value};
+        return {
+          ports: part.input.length,
+          value: part.value,
+          pins: part.input.map(port => port.pos.pos)
+        };
       })()
     };
   })()`);
@@ -168,7 +176,8 @@ test('displays stack into one module and take their colour from signals', async 
     colour: 'rgb(255,176,32)',
     values: [10, 9],
     seven: { ports: 11, colourSides: [3, 3, 3] },
-    rgb2: { ports: 2, value: 3 },
+    rgb: { pins: [-0.25, 0, 0.25], shape: 'panel' },
+    rgb2: { ports: 2, value: 3, pins: [-0.2, 0.2] },
   });
   expect(result.dataSides.every((side: number) => side === 0)).toBe(true);
   expect(result.colourSides).toEqual([3, 3, 3]);
@@ -184,6 +193,29 @@ test('displays start unpowered and light only after wiring', async ({ page }) =>
     return { blank, wired, sevenBlank: seven.segments === undefined };
   })()`);
   expect(result).toEqual({ blank: false, wired: true, sevenBlank: true });
+});
+
+test('old RGB LED boards load with pins spread over the body', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const board = (type, positions) => [[[type, {
+      name: 'old', pos: {x: 0, y: 0}, width: 1, height: 1,
+      properties: type === 'RGBLed' ? {shape: 'panel', styleVersion: 2} : {},
+      input: positions.map((pos, index) => ({
+        name: type === 'RGBLed' ? ['R','G','B'][index] : 'B' + index,
+        value: 0,
+        pos: {side: 3, pos}
+      })),
+      output: []
+    }]], []];
+    return ['RGBLed', 'RGBLed2'].map(type => {
+      const part = parse(board(type, type === 'RGBLed' ? [0.2,0.5,0.8] : [0.3,0.7])).components[0];
+      return {shape: part.properties.shape, pins: part.input.map(port => port.pos.pos)};
+    });
+  })()`);
+  expect(result).toEqual([
+    { shape: 'panel', pins: [-0.25, 0, 0.25] },
+    { shape: undefined, pins: [-0.2, 0.2] },
+  ]);
 });
 
 test('procedural expressions compile without eval and report bad input', async ({ page }) => {

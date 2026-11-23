@@ -32,7 +32,7 @@ export function drawComponentBody(
   const gate = ['NOT', 'AND', 'OR', 'XOR'].includes(type);
   ctx.fillStyle = blueprint
     ? 'rgba(47, 127, 168, 0.10)'
-    : ['LED', 'Display', 'SevenSegment'].includes(type)
+    : ['LED', 'Display', 'SevenSegment', 'RGBLed', 'RGBLed2'].includes(type)
       ? '#111'
       : '#fff';
   const p = new Path2D();
@@ -102,7 +102,7 @@ export function drawComponentBody(
     } else p.rect(0, 0, w, h);
     ctx.fill(p);
     ctx.stroke(p);
-    if (['LED', 'Display', 'SevenSegment'].includes(type)) {
+    if (['LED', 'Display', 'SevenSegment', 'RGBLed', 'RGBLed2'].includes(type)) {
       ctx.beginPath();
       ctx.roundRect(w * 0.05, h * 0.05, w * 0.9, h * 0.9, Math.min(zoom * 0.15, 8));
       ctx.strokeStyle = blueprint ? 'rgba(47, 127, 168, 0.55)' : '#555';
