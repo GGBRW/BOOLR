@@ -4,7 +4,7 @@
 
 Open **Quick guide** in the existing top toolbar. Its four sections are Start here, Every component, Worked circuits, and Check this circuit. The component picker has individual question buttons; the grid component context menu also offers Component help. All new guide content is available in English, Arabic, and Egyptian Arabic.
 
-The reference covers all 19 exposed component types. Each entry has behavior, wiring instructions, an experiment/use case, and cautions. Search accepts component names or words from descriptions; an exact component name takes precedence over broad matches.
+The reference covers all 31 exposed component types. Each entry has behavior, wiring instructions, an experiment/use case, and cautions. Search accepts component names or words from descriptions; an exact component name takes precedence over broad matches.
 
 Eight recipes cover a first signal path, NAND/NOR, half adder, full adder, alarm, multiplexer, clock/counter, and ROM lookup. Pin a recipe to follow numbered instructions alongside the editor. Steps advance manually: the app does not falsely claim to verify the learner's intended circuit or automatically complete it.
 

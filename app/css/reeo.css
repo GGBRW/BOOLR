@@ -1120,14 +1120,60 @@ textarea {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   padding: 14px;
   line-height: 1.6;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  opacity: 0.35;
+  pointer-events: none;
+  filter: saturate(0.55) brightness(0.82);
+  transition:
+    opacity 160ms ease,
+    filter 160ms ease,
+    box-shadow 160ms ease;
+}
+.reeo-guide-dock > strong,
+.reeo-guide-dock > p,
+.reeo-guide-dock > div {
+  grid-column: 1 / -1;
+}
+.reeo-guide-dock > button,
+.reeo-guide-dock > div > button {
+  width: 100%;
+}
+.reeo-guide-dock > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 8px;
+}
+.reeo-guide-dock > div > button {
+  font-size: 13px;
+  padding-inline: 6px;
+}
+.reeo-guide-dock.is-engaged,
+.reeo-guide-dock:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+  box-shadow: 0 8px 34px rgba(0, 0, 0, 0.48);
+}
+@media (hover: none) {
+  .reeo-guide-dock {
+    opacity: 1;
+    pointer-events: auto;
+    filter: none;
+  }
 }
 .reeo-guide-dock p {
   margin: 8px 0;
 }
 .reeo-guide-dock > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 8px;
+}
+.reeo-guide-dock > div > button {
+  font-size: 13px;
+  padding-inline: 6px;
 }
 .reeo-smart-tip {
   padding-top: 18px !important;
@@ -1626,4 +1672,111 @@ body:has(.main-menu.has-submenu) .reeo-credit {
   #dialog.reeo-whats-new li {
     padding-block: 3px;
   }
+}
+
+/* Programmatic board editor (menu → Board code). */
+.reeo-program-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(12, 16, 22, 0.55);
+  backdrop-filter: blur(3px);
+}
+.reeo-program-panel {
+  width: min(760px, 94vw);
+  max-height: min(86dvh, 760px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  color: #fff;
+  background: #20242b;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
+}
+.reeo-program-panel header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.reeo-program-panel h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 500;
+}
+.reeo-program-panel p {
+  margin: 0;
+  color: #b9c2cf;
+  font-size: 14px;
+}
+.reeo-program-panel textarea {
+  min-height: 280px;
+  flex: 1;
+  resize: vertical;
+  padding: 12px;
+  color: #e8f4ff;
+  background: #12161c;
+  border: 1px solid #3d4756;
+  border-radius: 10px;
+  font:
+    14px/1.55 'REEO Circuit Display',
+    ui-monospace,
+    monospace;
+  tab-size: 2;
+}
+.reeo-program-errors {
+  max-height: 110px;
+  overflow: auto;
+  margin: 0;
+  padding: 8px 10px;
+  color: #ffd0cd;
+  background: rgba(160, 35, 35, 0.3);
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+.reeo-program-panel footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.reeo-program-panel footer span {
+  flex: 1;
+  min-width: 220px;
+  color: #8f9bab;
+  font-size: 12px;
+}
+.reeo-program-panel footer code {
+  color: #b8e986;
+}
+.reeo-program-panel button {
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid #586375;
+  background: #2a303a;
+  color: #fff;
+  cursor: pointer;
+}
+.reeo-program-panel button:hover {
+  background: #394250;
+}
+.reeo-program-panel .reeo-program-close {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 1;
+  border: 0;
+  background: transparent;
+}
+.reeo-program-panel .reeo-program-build {
+  color: #10160f;
+  background: #b8e986;
+  border-color: #b8e986;
+  font-weight: 600;
 }

@@ -1,0 +1,119 @@
+import { expect, test } from '@playwright/test';
+
+test.use({ hasTouch: false });
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(`document.querySelector('.main-menu').style.display='none'`);
+});
+
+test('board code builds a wired circuit and reports syntax errors', async ({ page }) => {
+  await page.evaluate('window.reeoOpenProgram()');
+  const overlay = page.locator('.reeo-program-overlay');
+  await expect(overlay).toBeVisible();
+  await overlay.locator('textarea').fill(`
+    input A
+    input B
+    and G A B
+    not N G
+    led L N
+  `);
+  await overlay.locator('.reeo-program-build').click();
+  await expect(overlay).toBeHidden();
+  const built = await page.evaluate(`({
+    names: components.map(c=>c.name),
+    wires: wires.length,
+    connected: components.find(c=>c.name==='G').input.filter(p=>p.connection).length
+  })`);
+  expect(built).toEqual({ names: ['A', 'B', 'G', 'N', 'L'], wires: 4, connected: 2 });
+
+  await page.evaluate('window.reeoOpenProgram()');
+  await page.locator('.reeo-program-overlay textarea').fill('input A\nand G A MISSING');
+  await page.locator('.reeo-program-build').click();
+  await expect(page.locator('.reeo-program-errors')).toContainText('Unknown source "MISSING"');
+  await expect(page.locator('.reeo-program-overlay')).toBeVisible();
+});
+
+test('new sound, switch, display and procedural parts are pickable', async ({ page }) => {
+  const labels = await page.locator('#list li').allTextContents();
+  for (const label of [
+    'Buzzer',
+    'Tone',
+    'Dip Switch',
+    'Slider',
+    'RGB LED',
+    'Bar Graph',
+    'Seven Segment',
+    'Lamp',
+    'Motor',
+    'Splitter',
+    'Merger',
+    'Procedural',
+  ]) {
+    expect(labels).toContain(label);
+  }
+
+  const result = await page.evaluate(`(() => {
+    const names=['Buzzer','Tone','DipSwitch','Slider','RGBLed','BarGraph','SevenSegment','Lamp','Motor','Splitter','Merger','Procedural'];
+    const parts=names.map((name,index)=>new constructors[name](name,{x:index*4,y:0}));
+    parts.forEach(part=>part.update());
+    const rgb=parts.find(part=>part.name==='RGBLed');
+    rgb.input[0].value=rgb.input[1].value=1; rgb.update();
+    const procedural=parts.find(part=>part.name==='Procedural');
+    procedural.input[0].value=1; procedural.input[1].value=1; procedural.update();
+    return {
+      ports: parts.map(part=>[part.name,part.input.length,part.output.length]),
+      rgb: rgb.value,
+      procedural: procedural.output[0].value
+    };
+  })()`);
+  expect(result.rgb).toBe(6);
+  expect(result.procedural).toBe(0);
+  expect(result.ports).toContainEqual(['Tone', 4, 0]);
+  expect(result.ports).toContainEqual(['SevenSegment', 4, 0]);
+  expect(result.ports).toContainEqual(['Splitter', 1, 4]);
+  expect(result.ports).toContainEqual(['Slider', 0, 4]);
+});
+
+test('bulk auto-wire and auto-route make orthogonal connections', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const a=new Input('A',{x:0,y:0});
+    const g=new AND('G',{x:4,y:0});
+    const l=new LED('L',{x:10,y:-2});
+    components=[a,g,l]; wires=[]; const selection={components:[a,g,l],wires:[]};
+    autoWireSelection(selection);
+    const wired=wires.length;
+    selection.wires=[...wires];
+    autoRouteSelection(selection);
+    return {
+      wired,
+      paths:wires.map(wire=>wire.pos.length),
+      connected:[a.output[0].connection!==null,g.input[0].connection!==null,g.output[0].connection!==null,l.input[0].connection!==null]
+    };
+  })()`);
+  expect(result.wired).toBe(2);
+  expect(result.connected.every(Boolean)).toBe(true);
+  expect(result.paths.every((length: number) => length >= 2)).toBe(true);
+});
+
+test('guide ghost is click-through until hovered and never spawns at the origin', async ({
+  page,
+}) => {
+  await page.evaluate('window.reeoHelp.open()');
+  await page.getByRole('button', { name: 'Worked circuits', exact: true }).first().click();
+  await page.getByRole('button', { name: 'Follow these steps while building' }).first().click();
+  const dock = page.locator('#reeo-guide-dock');
+  await expect(dock).toBeVisible();
+  await page.mouse.move(1180, 700);
+  await expect(dock).toHaveCSS('pointer-events', 'none');
+  expect(await dock.evaluate((node) => Number(getComputedStyle(node).opacity))).toBeLessThan(0.6);
+  const state = await page.evaluate('window.reeoGhostState()');
+  expect(state.origin.x === 0 && state.origin.y === 0).toBe(false);
+  const box = await dock.boundingBox();
+  if (!box) throw new Error('guide dock has no box');
+  await page.mouse.move(box.x + 40, box.y + 40);
+  await expect(dock).toHaveCSS('pointer-events', 'auto');
+  await page.waitForTimeout(250);
+  expect(await dock.evaluate((node) => Number(getComputedStyle(node).opacity))).toBe(1);
+  await expect(dock.getByRole('button', { name: 'Hide ghost' })).toBeVisible();
+});

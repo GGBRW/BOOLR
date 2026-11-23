@@ -9,6 +9,7 @@ interface BodyComponent {
   output: BodyPort[];
   value?: number;
   outline?: number;
+  blueprint?: boolean;
 }
 /** Real component bodies inside the unchanged grid footprint/port hit boxes. */
 export function drawComponentBody(
@@ -25,10 +26,15 @@ export function drawComponentBody(
   ctx.translate(x - zoom / 2, y - zoom / 2);
   // Match the original canvas: white bodies, black chips, black strokes and red selection.
   // Signal colors remain confined to the existing wires, LED and display renderers.
+  const blueprint = part.blueprint === true;
   ctx.lineWidth = Math.max(1, (zoom / 12) | 0);
-  ctx.strokeStyle = part.outline ? '#f00' : '#111';
+  ctx.strokeStyle = blueprint ? '#2f7fa8' : part.outline ? '#f00' : '#111';
   const gate = ['NOT', 'AND', 'OR', 'XOR'].includes(type);
-  ctx.fillStyle = ['Custom', 'LED', 'Display'].includes(type) ? '#111' : '#fff';
+  ctx.fillStyle = blueprint
+    ? 'rgba(47, 127, 168, 0.10)'
+    : ['Custom', 'LED', 'Display'].includes(type)
+      ? '#111'
+      : '#fff';
   const p = new Path2D();
   if (gate) {
     const a = w * 0.16,
@@ -99,32 +105,36 @@ export function drawComponentBody(
     if (['LED', 'Display'].includes(type)) {
       ctx.beginPath();
       ctx.roundRect(w * 0.05, h * 0.05, w * 0.9, h * 0.9, Math.min(zoom * 0.15, 8));
-      ctx.strokeStyle = '#555';
+      ctx.strokeStyle = blueprint ? 'rgba(47, 127, 168, 0.55)' : '#555';
       ctx.stroke();
     }
     if (['ROM', 'Custom', 'Counter'].includes(type)) {
       ctx.beginPath();
       ctx.roundRect(w * 0.12, h * 0.15, w * 0.76, h * 0.7, Math.min(zoom * 0.08, 5));
-      ctx.strokeStyle = type === 'Custom' ? '#555' : '#ddd';
+      ctx.strokeStyle = blueprint
+        ? 'rgba(47, 127, 168, 0.55)'
+        : type === 'Custom'
+          ? '#555'
+          : '#ddd';
       ctx.stroke();
     }
     if (type === 'Clock' || type === 'Delay') {
       ctx.beginPath();
       ctx.moveTo(0, h * 0.23);
       ctx.lineTo(w, h * 0.23);
-      ctx.strokeStyle = '#ddd';
+      ctx.strokeStyle = blueprint ? 'rgba(47, 127, 168, 0.55)' : '#ddd';
       ctx.stroke();
     }
     if (type === 'Button') {
       ctx.beginPath();
       ctx.roundRect(w * 0.22, h * 0.15, w * 0.56, h * 0.7, h * 0.2);
-      ctx.strokeStyle = '#888';
+      ctx.strokeStyle = blueprint ? 'rgba(47, 127, 168, 0.6)' : '#888';
       ctx.stroke();
     }
     if (type === 'Input' || type === 'Output' || type === 'Constant') {
       ctx.beginPath();
       ctx.arc(w * 0.12, h * 0.5, Math.min(zoom * 0.07, 5), 0, Math.PI * 2);
-      ctx.fillStyle = part.value ? '#111' : '#888';
+      ctx.fillStyle = blueprint ? '#2f7fa8' : part.value ? '#111' : '#888';
       ctx.fill();
     }
   }

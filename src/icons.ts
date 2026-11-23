@@ -9,6 +9,12 @@ export const uiIcons: Record<string, string> = {
   open_in_new: 'arrow-square-out',
   rotate_right: 'arrow-clockwise',
   compare_arrows: 'arrows-left-right',
+  code: 'terminal-window',
+  cable: 'git-merge',
+  route: 'git-merge',
+  view_column: 'list-bullets',
+  view_stream: 'list-bullets',
+  functions: 'cpu',
   add: 'plus',
   folder: 'folder-open',
   settings: 'gear',
@@ -83,6 +89,19 @@ export const circuitPaths: Record<string, string> = {
   Debug: 'M2 12H7M7 3H25V21H7ZM16 6V13M16 17h.1',
   TimerStart: 'M7 3H25V21H7ZM12 7L21 12 12 17ZM2 12H7',
   TimerEnd: 'M7 3H25V21H7ZM12 7H20V17H12ZM25 12H30',
+  Buzzer: 'M2 10H8L15 4V20L8 14H2ZM19 8Q24 12 19 16M23 4Q30 12 23 20',
+  Tone: 'M3 15H9L18 8V20L9 13H3ZM23 6V17M23 6L29 4V15L23 17',
+  DipSwitch: 'M4 4H28V20H4ZM8 7V17M14 7V17M20 7V17M26 7V17M8 10H14M20 13H26',
+  Slider: 'M8 3V21M8 8H25M3 8H8M8 8a2 2 0 1 0 4 0 2 2 0 1 0-4 0',
+  RGBLed: 'M12 6a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM12 10v.1M8 15v.1M16 15v.1M24 8V4M26 10l3-3M28 14h4',
+  BarGraph: 'M5 21V12M11 21V9M17 21V6M23 21V3M2 21H29',
+  SevenSegment: 'M9 4H23V20H9ZM12 7H20M12 12H20M12 17H20M10 8V11M22 8V11M10 13V16M22 13V16',
+  Lamp: 'M12 4a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11ZM10 21h4M9 18h6',
+  Motor: 'M13 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM13 8l5 5-5 5',
+  Splitter:
+    'M2 12H8M8 12H15M15 12V5H23M15 12V9H23M15 12V15H23M15 12V19H23M23 5H29M23 9H29M23 15H29M23 19H29',
+  Merger: 'M3 5H9M3 9H9M3 15H9M3 19H9M9 5V12H15M9 9V12M9 15V12M9 19V12M15 12H22M22 12H29',
+  Procedural: 'M3 6H9M3 18H9M9 6Q14 12 9 18M13 9H17M15 7V13M20 7Q26 12 20 18M13 15H27',
 };
 export function circuitSVG(type: string): string {
   const path = circuitPaths[type] ?? circuitPaths.Custom;

@@ -184,6 +184,7 @@ function render() {
           renderDock();
           closeHelp();
           dock.hidden = false;
+          fitGhost();
         }),
       );
       results.append(card);
@@ -324,6 +325,45 @@ export function installHelp() {
     dock.setAttribute('data-no-i18n', '');
     dock.hidden = true;
     document.body.append(dock);
+    // The dock floats over the canvas. Keep it translucent and click-through
+    // while the pointer is working on the grid; it wakes up only when the
+    // pointer is over (or very close to) the controls, or when focused.
+    let dockAwake = false;
+    const wakeDock = (awake: boolean) => {
+      if (dockAwake === awake) return;
+      dockAwake = awake;
+      dock.classList.toggle('is-engaged', awake);
+    };
+    const nearDock = (x: number, y: number) => {
+      if (dock.hidden) return false;
+      const rect = dock.getBoundingClientRect();
+      const pad = 42;
+      return (
+        x >= rect.left - pad &&
+        x <= rect.right + pad &&
+        y >= rect.top - pad &&
+        y <= rect.bottom + pad
+      );
+    };
+    document.addEventListener(
+      'pointermove',
+      (event) => {
+        if (event.pointerType === 'touch') return;
+        wakeDock(nearDock(event.clientX, event.clientY));
+      },
+      { passive: true },
+    );
+    document.addEventListener('pointerdown', (event) => {
+      if (nearDock(event.clientX, event.clientY)) wakeDock(true);
+    });
+    dock.addEventListener('pointerenter', () => wakeDock(true));
+    dock.addEventListener('pointerleave', () => wakeDock(false));
+    dock.addEventListener('focusin', () => wakeDock(true));
+    dock.addEventListener('focusout', () => {
+      setTimeout(() => {
+        if (!dock.contains(document.activeElement)) wakeDock(false);
+      }, 0);
+    });
     function localize() {
       heading.textContent = text(labels.title);
       close.textContent = text(labels.close);
@@ -386,8 +426,8 @@ export function installHelp() {
         !panel.hidden ||
         dragging ||
         connecting ||
-        components.length > 2000 ||
-        wires.length > 10000
+        components.length > 5000 ||
+        wires.length > 25000
       )
         return;
       const next =

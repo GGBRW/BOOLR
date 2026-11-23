@@ -1,4 +1,4 @@
-import { drawGhost } from './ghosts';
+import { drawGhost, ghostState } from './ghosts';
 import { installLanguagePicker } from './language-picker';
 import { installOverlays } from './overlays';
 import { installHelp, openHelp } from './help';
@@ -8,6 +8,7 @@ import { installIcons, drawComponentIcon, circuitSVG } from './icons';
 import { decodeBoard, validateCircuitData } from './board';
 import { evaluateExpression } from './expression';
 import { installI18n } from './i18n';
+import { installProgramEditor } from './program';
 import type { MessageKey } from './i18n';
 import { createStorage } from './storage';
 import { runTick } from './simulation';
@@ -268,3 +269,6 @@ installLanguagePicker();
 installOverlays();
 
 window.reeoDrawGhost = drawGhost;
+window.reeoGhostState = ghostState;
+
+installProgramEditor();

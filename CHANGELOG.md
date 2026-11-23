@@ -6,6 +6,26 @@ Notable changes to REEO. The app version is shown in **What’s new** and in `wi
 
 ### Added
 
+- **New parts:** Buzzer, Tone, Dip Switch, RGB LED, Bar Graph, Seven Segment, Lamp, Motor, Splitter, Merger, and an expression-driven Procedural part.
+- **Board code:** a Verilog-flavoured text editor (menu → Board code) that compiles named components and pin references into a wired circuit.
+- **Bulk editing:** Auto-wire selected, Auto-route wires, and horizontal/vertical distribution in the selection context menu.
+- **More colour and shape control:** square, diamond, bar and bulb LED/lamp shapes, plus editable on/off display colours.
+- **Guide placement:** blueprints now find a clear viewport spot away from real components and the guide dock; the dock becomes click-through until hovered or focused.
+
+### Changed
+
+- A fresh Display is taller, and boards can hold up to 5,000 components, 25,000 wires, 1,024 ports per direction and 2,000-cell dimensions.
+
+## [2.1.0] - 2026-11-21
+
+### Highlights
+
+- The in-app **What's new** dialog now loads the latest public GitHub release, parses its changelog, and keeps a local copy for offline and rate-limited sessions.
+- A release pipeline builds the browser bundle, Electron desktop packages, and the Capacitor Android/iOS shells from one version tag.
+- The REEO Circuit Display typeface is used for the brand wordmark and share card, with a matching accessible share image.
+
+### Added
+
 - Complete documentation set: user guide, component/pin reference, controls, console, troubleshooting, architecture, development, testing, release, platform, and GitHub guides.
 - GitHub contribution configuration: issue forms, pull request template, code owners, Dependabot, security policy, support, and code of conduct.
 - `bun run docs:verify` link checker, included in `bun run check`.

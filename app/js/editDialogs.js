@@ -169,6 +169,79 @@
             dialog.container.appendChild(document.createElement("br"));
         }
 
+        for(const color of ["colorOn", "colorOff"]) {
+            if(!component.properties.hasOwnProperty(color)) continue;
+            inputs.push(
+                createInput(
+                    component.properties, color, component.properties[color],
+                    value => /^(#[0-9a-f]{3}|#[0-9a-f]{6}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\))$/i.test(value),
+                    "Use #rgb, #rrggbb or rgb(r,g,b)",
+                    function() {
+                        component.properties[color] = this.value;
+                    }
+                )
+            );
+        }
+
+        if(component.properties.hasOwnProperty("expression")) {
+            inputs.push(
+                createInput(
+                    component.properties, "expression", component.properties.expression,
+                    expression => {
+                        try {
+                            new Function("A", "B", `return Number(Boolean(${expression}));`);
+                            return true;
+                        } catch(error) {
+                            return false;
+                        }
+                    },
+                    "Use A, B, !, &&, || and comparison operators",
+                    function() {
+                        component.properties.expression = this.value;
+                        component.compile();
+                    }
+                )
+            );
+        }
+
+        if(component.properties.hasOwnProperty("gradient")) {
+            inputs.push(
+                createSelect(
+                    component.properties, "gradient", component.properties.gradient,
+                    [
+                        { value: "flat", text: "Flat colour" },
+                        { value: "rainbow", text: "Rainbow gradient" }
+                    ],
+                    function() {
+                        component.properties.gradient = this.value;
+                    }
+                )
+            );
+        }
+
+        if(component.properties.hasOwnProperty("shape")) {
+            const name = component.constructor.name;
+            const options = name === "Lamp"
+                ? [{ value: "bulb", text: "Bulb" }, { value: "panel", text: "Panel" }]
+                : name === "RGBLed"
+                    ? [{ value: "round", text: "Round" }, { value: "square", text: "Square" }]
+                    : [
+                        { value: "round", text: "Round" },
+                        { value: "square", text: "Square" },
+                        { value: "diamond", text: "Diamond" },
+                        { value: "bar", text: "Bar" }
+                    ];
+            inputs.push(
+                createSelect(
+                    component.properties, "shape", component.properties.shape,
+                    options,
+                    function() {
+                        component.properties.shape = this.value;
+                    }
+                )
+            );
+        }
+
         if(component.properties.hasOwnProperty("data")) {
             inputs.push(
                 createTextArea(

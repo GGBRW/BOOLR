@@ -684,7 +684,7 @@ c.onmousemove = function(e) {
                 delete connecting.lock;
             }
 
-            while((dx || dy) && dx + dy < 10000) {
+            while((dx || dy) && dx + dy < 50000) {
                 const prev = connecting.pos.slice(-2)[0];
                 const last = connecting.pos.slice(-1)[0];
 

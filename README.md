@@ -33,7 +33,21 @@ This is an **incremental modernization of BOOLR, not a UI rewrite**. The dark ma
 - **Real touch support** — Interact/Move/Pan/Select tools, pinch and two-finger navigation, long press, double tap, and responsive dialogs.
 - **Portable boards** — a local board library plus validated `.board` import/export. No account, database, or backend.
 
-It is **not** an analog simulator, a formally verified HDL, a cloud collaboration service, or a React/Solid rewrite.
+- **More parts and board code:** sounders (Buzzer/Tone), a four-way Dip Switch, RGB/bar/seven-segment displays, Lamp, Motor, Splitter/Merger, and procedural expressions. A Verilog-flavoured **Board code** editor builds named components and wires from text.
+- **Bulk board editing:** auto-wire a selection, route selected wires orthogonally, distribute parts evenly, and use higher limits (5,000 parts / 25,000 wires).
+- **Guide polish:** blueprints avoid occupied space and the controls card, and the floating guide is click-through until you approach it.
+- **Circuit and UI icons:** vector gate/component symbols, Phosphor interface icons, and bottom-right dismissible tip toasts.
+- **REEO identity:** original circuit-R mark, wordmark, application icons, brand guide, and the REEO Circuit Display typeface.
+- **Browser version:** Vite static build; Vercel is the default configured hosting target.
+- **Desktop retained:** modern Electron with a typed main/preload, sandboxed renderer, context isolation, and no renderer access to Node or the OS filesystem.
+- **Mobile targets:** Capacitor Android/iOS configuration and manual CI builds, sharing the same interface.
+- **English, Arabic, Egyptian Arabic:** typed dictionaries, persistent language selection, RTL, translated tutorials, dialogs, validation, tips, console help and built-in diagnostics. IBM Plex Sans Arabic is bundled for Arabic glyphs only; command syntax and user-created names remain unchanged.
+- **Touch support:** placement/toggle/wire gestures plus explicit Move, Pan, Select, and zoom controls. Responsive menus, bounded dialogs, safe-area handling, and larger touch targets.
+- **Portable boards:** local board library plus `.board` import/export, compatible with the original current save format. Browser and desktop now use the same local-storage adapter.
+- **Reliability:** bounded TypeScript simulation scheduler, periodic and lifecycle saves, empty-board saving, validated import boundary, and arithmetic parsing without `eval`.
+- **Live release notes:** the What's new dialog reads the latest public GitHub release, parses its changelog, and caches it for offline use instead of shipping a hardcoded list.
+- **Release pipeline:** one version tag builds the web bundle, Electron desktop packages, and Android/iOS shells through `.github/workflows/release.yml`.
+- **Tooling:** TypeScript 7 strict checking; Prettier as the **only formatter**; Biome and Oxlint as **linters only**; Bun lockfile and CI.
 
 ## Try it
 
