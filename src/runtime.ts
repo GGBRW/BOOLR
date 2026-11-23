@@ -118,7 +118,7 @@ window.reeoRelease = {
   sections: (release) => parseReleaseBody(release.body),
 };
 window.reeo = {
-  version: '2.1.0',
+  version: '2.2.0',
   storage,
   exportBoard() {
     const board = snapshot();

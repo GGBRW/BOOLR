@@ -60,7 +60,7 @@ export interface ReleaseBridge {
   sections(release: import('./release').ReleaseNote): import('./release').ReleaseSection[];
 }
 export interface REEOPlatform {
-  readonly version: '2.1.0';
+  readonly version: '2.2.0';
   readonly storage: StorageAdapter;
   exportBoard(): void;
   importBoard(): void;

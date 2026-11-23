@@ -4,14 +4,15 @@ REEO ships a browser build continuously (Vercel), manual desktop packages (Elect
 
 ## Version sources
 
-The version is duplicated in four places. Keep them identical:
+The version is duplicated in five places. Keep them identical:
 
-| File             | Field                            |
-| ---------------- | -------------------------------- |
-| `package.json`   | `version`                        |
-| `app/index.html` | inline `const VERSION = "2.0.0"` |
-| `src/runtime.ts` | `window.reeo.version`            |
-| `src/types.ts`   | `ReeoApi.version` literal        |
+| File                      | Field                       |
+| ------------------------- | --------------------------- |
+| `package.json`            | `version`                   |
+| `src/app/boot/version.ts` | `VERSION` constant          |
+| `src/runtime.ts`          | `window.reeo.version`       |
+| `src/types.ts`            | `ReeoApi.version` literal   |
+| `src/release.ts`          | `FALLBACK_RELEASE` metadata |
 
 `bun.lock` records the package version only indirectly; run `bun install` after changing `package.json` so the lockfile stays consistent. Do not hand-edit generated native projects.
 
