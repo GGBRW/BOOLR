@@ -1,0 +1,66 @@
+name: Feature request
+description: Suggest a capability or improvement that fits REEO.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        REEO deliberately preserves its original editor and visual identity. Proposals that replace the interface, migrate frameworks, or add a new design system are unlikely to be accepted.
+        Explain the user problem first, then the smallest change that solves it.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Who is affected, and in what situation?
+      placeholder: Beginners cannot tell why a gate output stays 0…
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior and how it fits existing dialogs, toolbar, or guide.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing workarounds, smaller changes, or why they are insufficient.
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Components / simulation
+        - Editor interaction / canvas
+        - Help, tutorial, or diagnostics
+        - Localization / RTL
+        - Accessibility
+        - Save/load/import/export
+        - Desktop or mobile shell
+        - Documentation or contributor tooling
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: audience
+    attributes:
+      label: Who benefits?
+      description: Beginners, teachers, advanced users, contributors, mobile users…
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and the documentation.
+          required: true
+        - label: This request preserves the existing REEO look and interaction model.
+          required: true
+        - label: This is not a security report.
+          required: true

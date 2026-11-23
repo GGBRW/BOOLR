@@ -50,3 +50,9 @@ The TypeScript boundary is intentionally real production code, not `@ts-nocheck`
 ## Dependency audit
 
 The current Bun audit reports one moderate, build-tool-only `minimatch` denial-of-service advisory through Electron packaging dependencies. `bun audit fix` cannot resolve it within upstream dependency ranges. Do not apply a blanket major-version override: older glob callers use different minimatch APIs. Track upstream Electron builder/universal updates, and run packaging only against trusted project sources. This is not a claim of a zero-vulnerability dependency tree.
+
+## Related
+
+- [Architecture](ARCHITECTURE.md) — the current two-layer design and known debts.
+- [Development](DEVELOPMENT.md) — setup, extension rules, and checks.
+- [Testing](TESTING.md) — the verification matrix.

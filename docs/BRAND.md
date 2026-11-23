@@ -25,6 +25,13 @@ The home wordmark is a lockup, not an image of a wordmark: the circuit R sits im
 | Signal / restrained identity accent | `#B8E986`           |
 | Canvas                              | original white grid |
 
-The home wordmark uses REEO Circuit Display for `EEO` and the circuit-R glyph for the first letter; Righteous remains only as its fallback and in the standalone export. Retain the Ubuntu UI, monospaced circuit/console labels, gate symbols, and Material icon font. Arabic uses system Arabic fallbacks (Tahoma/Arial where present). Keep the circuit geometry, formulae, gate symbols, and technical identifiers left-to-right, even inside an RTL interface.
+The home wordmark uses REEO Circuit Display for `EEO` and the circuit-R glyph for the first letter; Righteous remains only as its fallback and in the standalone export. Retain the Ubuntu UI, monospaced circuit/console labels, gate symbols, and Material icon font. Arabic uses the bundled, Unicode-restricted IBM Plex Sans Arabic with system Arabic fallbacks where needed. Keep the circuit geometry, formulae, gate symbols, and technical identifiers left-to-right, even inside an RTL interface.
 
 Keep at least one terminal-dot diameter of clear space around the mark. Do not stretch it, obscure terminals, or recolor the original circuit editor just to match the logo. The identity should renew the product, not erase its recognizable interface or its original authors' credit.
+
+## Related
+
+- [User guide](USER-GUIDE.md) — how the identity appears in the product.
+- [Component reference](COMPONENTS.md) — the circuit symbols used by the guide.
+- [Brand assets README](../public/brand/README.md) — font tables and rebuild commands.
+- [Testing](TESTING.md) — wordmark/font regression coverage.

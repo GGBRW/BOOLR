@@ -1,0 +1,17 @@
+# Default owner for everything in the repository.
+* @abdou-da0wew
+
+# Security-sensitive and release-critical paths.
+/.github/ @abdou-da0wew
+/SECURITY.md @abdou-da0wew
+/vercel.json @abdou-da0wew
+/electron/ @abdou-da0wew
+/src/board.ts @abdou-da0wew
+/src/storage.ts @abdou-da0wew
+/scripts/verify-web.ts @abdou-da0wew
+
+# Documentation and localization.
+/docs/ @abdou-da0wew
+/CONTRIBUTING.md @abdou-da0wew
+/CODE_OF_CONDUCT.md @abdou-da0wew
+/SUPPORT.md @abdou-da0wew
