@@ -52,74 +52,119 @@ function displayOnColor(component) {
 }
 
 function displayOffColor(component) {
-  return cssColor(component.properties.colorOff, '#1f0b0b');
+  return cssColor(component.properties.colorOff, '#2a0d0d');
 }
 
-/** Solid rounded seven-segment bars, matching the original REEO display. */
+/**
+ * Classic chamfered seven-segment digit, ported from the original REEO
+ * display renderer (see f9b14b3:app/js/components.js). The bars overlap at
+ * the corners, leaving the familiar octagonal ring and glowing joints.
+ */
 function drawSevenDigit(x, y, w, h, lit, onColor, offColor, decimal = false) {
-  const t = Math.max(1.6, Math.min(w, h) * 0.15);
-  const pad = t * 0.62;
-  const x1 = x + pad + t / 2;
-  const x2 = x + w - pad - t / 2;
-  const y1 = y + pad + t / 2;
-  const y2 = y + h / 2;
-  const y3 = y + h - pad - t / 2;
-  const hLength = Math.max(t, x2 - x1);
-  const vLength = Math.max(t, y2 - y1 - t * 0.45);
-  const radius = t * 0.26;
-  const bar = (name, sx, sy, sw, sh) => {
-    const on = lit.includes(name);
-    ctx.fillStyle = on ? onColor : offColor;
-    if (on) {
-      ctx.shadowBlur = zoom * 0.18;
-      ctx.shadowColor = onColor;
+  const pad = Math.min(w, h) * 0.05;
+  const boxX = x + pad;
+  const boxY = y + pad;
+  const boxW = w - pad * 2;
+  const boxH = h - pad * 2;
+  const t = Math.max(1.5, Math.min(boxW * 0.25, boxH * 0.145));
+  const glow = Math.min(zoom * 0.4, Math.min(w, h) * 0.18);
+
+  const left = boxX + t / 2;
+  const right = boxX + boxW - t / 2;
+  const top = boxY + t / 2;
+  const mid = boxY + boxH / 2;
+  const bottom = boxY + boxH - t / 2;
+
+  const bar = (points, color, litOn) => {
+    ctx.fillStyle = color;
+    if (litOn) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = glow;
     }
     ctx.beginPath();
-    ctx.roundRect(sx, sy, sw, sh, radius);
+    ctx.moveTo(points[0][0], points[0][1]);
+    for (let i = 1; i < points.length; ++i) ctx.lineTo(points[i][0], points[i][1]);
+    ctx.closePath();
     ctx.fill();
     ctx.shadowBlur = 0;
   };
-  bar('a', x1, y1 - t / 2, hLength, t);
-  bar('g', x1, y2 - t / 2, hLength, t);
-  bar('d', x1, y3 - t / 2, hLength, t);
-  bar('f', x1 - t / 2, y1 + t * 0.38, t, vLength);
-  bar('b', x2 - t / 2, y1 + t * 0.38, t, vLength);
-  bar('e', x1 - t / 2, y2 + t * 0.4, t, vLength);
-  bar('c', x2 - t / 2, y2 + t * 0.4, t, vLength);
+
+  const cap = t * 0.18;
+  const tip = t * 0.3;
+  const horizontal = (yCenter) => {
+    return [
+      [left - cap, yCenter - tip / 2],
+      [left, yCenter - t / 2],
+      [right, yCenter - t / 2],
+      [right + cap, yCenter - tip / 2],
+      [right + cap, yCenter + tip / 2],
+      [right, yCenter + t / 2],
+      [left, yCenter + t / 2],
+      [left - cap, yCenter + tip / 2],
+    ];
+  };
+
+  const vertical = (xCenter, y1, y2) => {
+    return [
+      [xCenter - tip / 2, y1 - cap],
+      [xCenter + tip / 2, y1 - cap],
+      [xCenter + t / 2, y1],
+      [xCenter + t / 2, y2],
+      [xCenter + tip / 2, y2 + cap],
+      [xCenter - tip / 2, y2 + cap],
+      [xCenter - t / 2, y2],
+      [xCenter - t / 2, y1],
+    ];
+  };
+
+  const segments = [
+    ['a', horizontal(top)],
+    ['b', vertical(right, top, mid)],
+    ['c', vertical(right, mid, bottom)],
+    ['d', horizontal(bottom)],
+    ['e', vertical(left, mid, bottom)],
+    ['f', vertical(left, top, mid)],
+    ['g', horizontal(mid)],
+  ];
+
+  // Draw the whole ghost digit first, then paint the lit bars over it. Painting
+  // segment-by-segment would let an off bar bite a dark notch out of a lit
+  // neighbour, which is what made the old display look broken on digits like 2.
+  for (const [, points] of segments) bar(points, offColor, false);
+  for (const [name, points] of segments) {
+    if (lit.includes(name)) bar(points, onColor, true);
+  }
+
   if (decimal) {
-    const on = lit.includes('p');
-    ctx.fillStyle = on ? onColor : offColor;
-    if (on) {
-      ctx.shadowBlur = zoom * 0.18;
+    const radius = t * 0.5;
+    const dotX = boxX + boxW - radius * 1.25;
+    const dotY = boxY + boxH - radius * 1.25;
+    const dot = () => {
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, radius, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    ctx.fillStyle = offColor;
+    dot();
+    if (lit.includes('p')) {
+      ctx.fillStyle = onColor;
       ctx.shadowColor = onColor;
+      ctx.shadowBlur = glow;
+      dot();
+      ctx.shadowBlur = 0;
     }
-    ctx.beginPath();
-    ctx.arc(x2, y3 + t * 0.15, t * 0.36, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
   }
 }
 
-/** Inset neutral bezel used by the display modules. */
-function drawDisplayBezel(box, inset = 0.07) {
+/** Screen box inside a display module, inset from the grey chassis rim. */
+function drawDisplayScreen(box, inset = 0.06) {
   const pad = Math.min(box.w, box.h) * inset;
-  const x = box.x + pad;
-  const y = box.y + pad;
-  const w = box.w - pad * 2;
-  const h = box.h - pad * 2;
-  ctx.fillStyle = '#141414';
-  ctx.beginPath();
-  ctx.roundRect(x, y, w, h, Math.min(zoom * 0.16, 9));
-  ctx.fill();
-  ctx.strokeStyle = '#7a7a7a';
-  ctx.lineWidth = Math.max(1, zoom * 0.035);
-  ctx.stroke();
-  const margin = Math.min(w, h) * 0.06;
-  return { x: x + margin, y: y + margin, w: w - margin * 2, h: h - margin * 2 };
-}
-
-function drawDisplayScreen(box, inset = 0.075) {
-  return drawDisplayBezel(box, inset);
+  return {
+    x: box.x + pad,
+    y: box.y + pad,
+    w: box.w - pad * 2,
+    h: box.h - pad * 2,
+  };
 }
 
 class SevenSegment extends Component {
@@ -129,7 +174,7 @@ class SevenSegment extends Component {
     this.value = 0;
     this.properties.colorMode = 'fixed';
     this.properties.colorOn = '#ff4a44';
-    this.properties.colorOff = '#1f0b0b';
+    this.properties.colorOff = '#2a0d0d';
     this.configureSegments();
   }
 
@@ -183,7 +228,7 @@ class SevenSegment extends Component {
 
   draw() {
     Component.prototype.draw.call(this);
-    const bezel = drawDisplayBezel(componentBox(this), 0.055);
+    const bezel = drawDisplayScreen(componentBox(this), 0.06);
     const ports = this.dataPorts();
     const lit = ports.length >= 8 ? this.segments || '' : SEGMENTS[this.value] || '';
     const powered = ports.some((port) => !!port.connection) || lit !== '';

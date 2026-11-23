@@ -8,7 +8,7 @@ class Display extends Component {
     this.properties.digits = 1;
     this.properties.colorMode = 'fixed';
     this.properties.colorOn = '#ff3b3b';
-    this.properties.colorOff = '#1f0b0b';
+    this.properties.colorOff = '#2a0d0d';
     this.value = 0;
     this.digitValues = [0];
     this.configureDisplay();
@@ -98,7 +98,7 @@ class Display extends Component {
     Component.prototype.draw.call(this);
     const box = componentBox(this);
     if (this.properties.displayMode !== 'bcd') {
-      const screen = drawDisplayBezel(box, 0.075);
+      const screen = drawDisplayScreen(box, 0.06);
       const names = 'abcdefg';
       let lit = '';
       const powered =
@@ -121,9 +121,9 @@ class Display extends Component {
       return;
     }
     const digits = this.properties.digits || 1;
-    const bezel = drawDisplayBezel(box, 0.055);
+    const bezel = drawDisplayScreen(box, 0.06);
     const cellWidth = bezel.w / digits;
-    const gap = zoom * 0.08;
+    const gap = digits > 1 ? Math.min(zoom * 0.16, cellWidth * 0.08) : 0;
     const powered = this.isPowered();
     if (!powered) return;
     const onColor = displayOnColor(this);
