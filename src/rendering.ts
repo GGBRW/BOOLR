@@ -32,7 +32,16 @@ export function drawComponentBody(
   const gate = ['NOT', 'AND', 'OR', 'XOR'].includes(type);
   ctx.fillStyle = blueprint
     ? 'rgba(47, 127, 168, 0.10)'
-    : ['LED', 'Display', 'SevenSegment', 'RGBLed', 'RGBLed2'].includes(type)
+    : [
+          'LED',
+          'Display',
+          'SevenSegment',
+          'RGBLed',
+          'RGBLed2',
+          'Merger',
+          'Splitter',
+          'Tone',
+        ].includes(type)
       ? '#111'
       : '#fff';
   const p = new Path2D();
@@ -99,6 +108,8 @@ export function drawComponentBody(
       p.lineTo(w * 0.12, h);
       p.lineTo(0, h * 0.5);
       p.closePath();
+    } else if (['Merger', 'Splitter', 'Tone'].includes(type)) {
+      p.roundRect(0, 0, w, h, Math.min(zoom * 0.16, 9));
     } else p.rect(0, 0, w, h);
     ctx.fill(p);
     ctx.stroke(p);

@@ -7,14 +7,32 @@ function draw() {
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, c.width, c.height);
 
-  // Draw grid points
+  // Draw grid points. At normal zoom levels the cell is split into quarters
+  // so the half- and quarter-cell pins on multi-pin parts still land on a dot.
   if (zoom > 24) {
-    ctx.fillStyle = 'rgba(200,200,200,' + Math.min(1, zoom / 100) + ')';
-    for (let i = (-offset.x * zoom) % zoom; i < c.width; i = i + zoom) {
-      for (let j = (offset.y * zoom) % zoom; j < c.height; j = j + zoom) {
-        ctx.fillRect(i - zoom / 24, j - zoom / 24, zoom / 12, zoom / 12);
+    const divisions = zoom >= 50 ? 4 : 1;
+    const step = zoom / divisions;
+    const alpha = Math.min(1, zoom / 100);
+    const startX = (((-offset.x * zoom) % step) + step) % step;
+    const startY = (((offset.y * zoom) % step) + step) % step;
+    const majorDots = new Path2D();
+    const minorDots = new Path2D();
+    const majorSize = zoom / 12;
+    const minorSize = zoom / 30;
+    for (let i = startX; i < c.width; i += step) {
+      const worldX = (i + offset.x * zoom) / zoom;
+      const majorX = Math.abs(worldX - Math.round(worldX)) < 1e-6;
+      for (let j = startY; j < c.height; j += step) {
+        const worldY = (j - offset.y * zoom) / -zoom;
+        const major = majorX && Math.abs(worldY - Math.round(worldY)) < 1e-6;
+        const size = major ? majorSize : minorSize;
+        (major ? majorDots : minorDots).rect(i - size / 2, j - size / 2, size, size);
       }
     }
+    ctx.fillStyle = 'rgba(200,200,200,' + alpha * 0.5 + ')';
+    ctx.fill(minorDots);
+    ctx.fillStyle = 'rgba(200,200,200,' + alpha + ')';
+    ctx.fill(majorDots);
   }
 
   // For nice rounded edges

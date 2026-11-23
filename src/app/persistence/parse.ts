@@ -77,7 +77,7 @@ function parse(data) {
     if (constructor === 'RGBLed' || constructor === 'RGBLed2') {
       // Older boards kept the pins near the top-left corner, with the last
       // stub hanging below the chassis. Spread them over the body instead.
-      const pins = constructor === 'RGBLed' ? [-0.25, 0, 0.25] : [-0.2, 0.2];
+      const pins = constructor === 'RGBLed' ? [-0.25, 0, 0.25] : [-0.25, 0.25];
       component.input.forEach((port, index) => {
         if (pins[index] !== undefined) port.pos = { side: 3, pos: pins[index] };
       });
@@ -90,6 +90,14 @@ function parse(data) {
       component.input.forEach((port, index) => (port.pos = { side: 3, pos: index }));
       component.output[0].pos = { side: 1, pos: 1.5 };
     }
+    if (constructor === 'Tone') {
+      component.height = Math.max(component.height, 4);
+      component.input.forEach((port, index) => {
+        port.pos = { side: 3, pos: index };
+        port.name = String(1 << index);
+      });
+    }
+    if (constructor === 'Button') component.icon = undefined;
 
     if (component.compile) component.compile();
 
@@ -190,6 +198,28 @@ function parse(data) {
     if (wire.from) {
       wire.from.connection = wire;
     }
+  }
+
+  // A saved part can grow during migration (Tone is four cells tall now), so
+  // pull the attached wire ends back onto their ports instead of leaving them
+  // at the old, shorter footprint.
+  const attachPoint = (port) => {
+    const component = port.component;
+    const angle = (Math.PI / 2) * port.pos.side;
+    const point = {
+      x: component.pos.x + Math.sin(angle),
+      y: component.pos.y + Math.cos(angle),
+    };
+    if (port.pos.side === 1) point.x += component.width - 1;
+    else if (port.pos.side === 2) point.y += component.height - 1;
+    if (port.pos.side % 2 === 0) point.x += port.pos.pos;
+    else point.y -= port.pos.pos;
+    return point;
+  };
+  for (const wire of wires) {
+    if (!wire.pos || wire.pos.length < 2) continue;
+    if (wire.from) wire.pos[0] = attachPoint(wire.from);
+    if (wire.to) wire.pos[wire.pos.length - 1] = attachPoint(wire.to);
   }
 
   // Settle combinational sources after reconstructing every port and wire.

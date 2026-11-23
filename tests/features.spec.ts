@@ -177,7 +177,7 @@ test('displays stack into one module and take their colour from signals', async 
     values: [10, 9],
     seven: { ports: 11, colourSides: [3, 3, 3] },
     rgb: { pins: [-0.25, 0, 0.25], shape: 'panel' },
-    rgb2: { ports: 2, value: 3, pins: [-0.2, 0.2] },
+    rgb2: { ports: 2, value: 3, pins: [-0.25, 0.25] },
   });
   expect(result.dataSides.every((side: number) => side === 0)).toBe(true);
   expect(result.colourSides).toEqual([3, 3, 3]);
@@ -193,6 +193,53 @@ test('displays start unpowered and light only after wiring', async ({ page }) =>
     return { blank, wired, sevenBlank: seven.segments === undefined };
   })()`);
   expect(result).toEqual({ blank: false, wired: true, sevenBlank: true });
+});
+
+test('bus and tone pins sit on the same grid rows as their traces', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const merger = new Merger('M', {x: 0, y: 0});
+    const splitter = new Splitter('S', {x: 0, y: 0});
+    const tone = new Tone('T', {x: 0, y: 0});
+    return {
+      merger: {
+        height: merger.height,
+        inputs: merger.input.map(port => port.pos.pos),
+        output: merger.output[0].pos.pos
+      },
+      splitter: {
+        height: splitter.height,
+        input: splitter.input[0].pos.pos,
+        outputs: splitter.output.map(port => port.pos.pos)
+      },
+      tone: {
+        width: tone.width,
+        height: tone.height,
+        inputs: tone.input.map(port => port.pos.pos),
+        names: tone.input.map(port => port.name)
+      }
+    };
+  })()`);
+  expect(result).toEqual({
+    merger: { height: 4, inputs: [0, 1, 2, 3], output: 1.5 },
+    splitter: { height: 4, input: 1.5, outputs: [0, 1, 2, 3] },
+    tone: { width: 2, height: 4, inputs: [0, 1, 2, 3], names: ['1', '2', '4', '8'] },
+  });
+});
+
+test('old tone boards load with four grid-aligned inputs', async ({ page }) => {
+  const result = await page.evaluate(`(() => {
+    const data = [[[ 'Tone', {
+      name: 'old', pos: {x: 0, y: 0}, width: 2, height: 2,
+      properties: {},
+      input: [0, 0.5, 1, 1.5].map((pos, index) => ({
+        name: String(1 << index), value: 0, pos: {side: 3, pos}
+      })),
+      output: []
+    }]], []];
+    const tone = parse(data).components[0];
+    return {height: tone.height, pins: tone.input.map(port => port.pos.pos)};
+  })()`);
+  expect(result).toEqual({ height: 4, pins: [0, 1, 2, 3] });
 });
 
 test('old RGB LED boards load with pins spread over the body', async ({ page }) => {
@@ -214,7 +261,7 @@ test('old RGB LED boards load with pins spread over the body', async ({ page }) 
   })()`);
   expect(result).toEqual([
     { shape: 'panel', pins: [-0.25, 0, 0.25] },
-    { shape: undefined, pins: [-0.2, 0.2] },
+    { shape: undefined, pins: [-0.25, 0.25] },
   ]);
 });
 

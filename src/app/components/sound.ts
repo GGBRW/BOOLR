@@ -3,12 +3,12 @@
 /* eslint-disable */
 class Tone extends Component {
   constructor(name, pos, text = '') {
-    super(name, pos, 2, 2);
+    super(name, pos, 2, 4);
     this.text = text;
     this.value = 0;
     for (let i = 0; i < 4; ++i) {
       this.addInputPort();
-      this.input[i].pos = { side: 3, pos: i * 0.5 };
+      this.input[i].pos = { side: 3, pos: i };
       this.input[i].name = String(1 << i);
     }
   }
@@ -34,15 +34,17 @@ class Tone extends Component {
   draw() {
     Component.prototype.draw.call(this);
     const box = componentBox(this);
-    const inner = paintInset(box, 0.1);
-    ctx.fillStyle = '#161616';
-    ctx.beginPath();
-    ctx.roundRect(inner.x, inner.y, inner.w, inner.h, Math.min(zoom * 0.22, 10));
-    ctx.fill();
+    const pad = Math.min(box.w, box.h) * 0.12;
+    const inner = {
+      x: box.x + pad,
+      y: box.y + pad,
+      w: box.w - pad * 2,
+      h: box.h - pad * 2,
+    };
     const active = this.value > 0;
     const cx = inner.x + inner.w * 0.34;
-    const cy = inner.y + inner.h * 0.43;
-    const size = Math.min(inner.w, inner.h) * 0.26;
+    const cy = inner.y + inner.h * 0.45;
+    const size = Math.min(inner.w, inner.h) * 0.22;
     ctx.fillStyle = active ? '#b8e986' : '#999';
     ctx.beginPath();
     ctx.moveTo(cx - size * 0.9, cy - size * 0.42);
@@ -67,7 +69,7 @@ class Tone extends Component {
     ctx.fillText(
       active ? 'NOTE ' + this.value : '· · ·',
       inner.x + inner.w * 0.5,
-      inner.y + inner.h * 0.83,
+      inner.y + inner.h * 0.84,
     );
   }
 }

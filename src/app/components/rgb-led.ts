@@ -86,7 +86,7 @@ class RGBLed2 extends Component {
     this.properties.color2 = '#b8e986';
     this.properties.color3 = '#5b8cff';
     for (let i = 0; i < 2; ++i) {
-      this.addInputPort({ side: 3, pos: -0.2 + i * 0.4 }, 'B' + i);
+      this.addInputPort({ side: 3, pos: -0.25 + i * 0.5 }, 'B' + i);
     }
   }
 
