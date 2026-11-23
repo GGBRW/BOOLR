@@ -69,13 +69,25 @@ Component.prototype.draw = function draw() {
       );
     }
   }
+};
+
+Component.prototype.drawAnnotations = function drawAnnotations() {
+  const x = (this.pos.x - offset.x) * zoom;
+  const y = -(this.pos.y - offset.y) * zoom;
+  if (!(
+    x + this.width * zoom + zoom / 2 >= 0 &&
+    x - zoom * 1.5 <= c.width &&
+    y + this.height * zoom + zoom / 2 >= 0 &&
+    y - zoom * 1.5 <= c.height
+  ))
+    return;
 
   // Draw the name of the component in the upper left corner
   if (this.name && zoom > 30) {
     ctx.textAlign = 'left';
     ctx.font = 'italic normal normal ' + zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
-    ctx.fillStyle = '#888';
-    ctx.fillText(this.name, x - 0.5 * zoom + zoom / 15, y - 0.37 * zoom);
+    ctx.fillStyle = '#444';
+    ctx.fillText(this.name, x - 0.5 * zoom + zoom / 15, y - 0.62 * zoom);
   }
 
   // If this component has a delay value, draw the delay value of the component in the bottom left corner
@@ -122,7 +134,7 @@ Component.prototype.draw = function draw() {
     if (zoom > 30) {
       const name = this.input[i].name;
       if (name) {
-        ctx.fillStyle = '#888';
+        ctx.fillStyle = '#555';
         ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
         ctx.fillText(
           name,
@@ -163,7 +175,7 @@ Component.prototype.draw = function draw() {
     if (zoom > 30) {
       const name = this.output[i].name;
       if (name) {
-        ctx.fillStyle = '#888';
+        ctx.fillStyle = '#555';
         ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
         ctx.fillText(
           name,

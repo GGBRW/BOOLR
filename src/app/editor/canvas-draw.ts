@@ -43,6 +43,11 @@ function draw() {
     components[i].draw();
   }
 
+  // Labels and pins stay above custom bodies and panels.
+  for (let i = 0, l = components.length; i < l; ++i) {
+    components[i].drawAnnotations();
+  }
+
   // Draw hover balloon
   if (hoverBalloon.display) {
     const hoverX = Array.isArray(mouse.hover.pos)

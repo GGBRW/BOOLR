@@ -27,16 +27,19 @@ class LED extends Component {
     const factor = this.value ? 1 : 0.3;
     const color = `rgb(${Math.round(base[0] * factor)},${Math.round(base[1] * factor)},${Math.round(base[2] * factor)})`;
     ctx.save();
-    ctx.fillStyle = '#0e1115';
+    ctx.fillStyle = '#111';
     ctx.beginPath();
     ctx.roundRect(x, y, w, h, Math.min(zoom * 0.18, 9));
     ctx.fill();
+    ctx.strokeStyle = '#777';
+    ctx.lineWidth = Math.max(1, zoom * 0.03);
+    ctx.stroke();
     ctx.fillStyle = color;
     if (this.value) {
       ctx.shadowBlur = zoom * 0.55;
       ctx.shadowColor = color;
     }
-    const inset = Math.min(w, h) * 0.055;
+    const inset = Math.min(w, h) * 0.09;
     if (this.properties.shape === 'round') {
       ctx.beginPath();
       ctx.arc(x + w / 2, y + h / 2, Math.min(w, h) * 0.48, 0, Math.PI * 2);

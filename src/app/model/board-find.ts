@@ -109,7 +109,38 @@ function findPortByComponent(component, side, pos) {
  @param {number} y
  @return {object} port
  */
-function findPortByPos(x = mouse.grid.x, y = mouse.grid.y) {
+function portScreenPosition(component, port) {
+  let screenX = (component.pos.x - offset.x) * zoom;
+  let screenY = -(component.pos.y - offset.y) * zoom;
+  const angle = (Math.PI / 2) * port.pos.side;
+  screenX += Math.sin(angle) * zoom;
+  screenY -= Math.cos(angle) * zoom;
+  if (port.pos.side == 1) screenX += (component.width - 1) * zoom;
+  else if (port.pos.side == 2) screenY += (component.height - 1) * zoom;
+  if (port.pos.side % 2 == 0) screenX += port.pos.pos * zoom;
+  else screenY += port.pos.pos * zoom;
+  return { x: screenX, y: screenY };
+}
+
+function findPortByPos(x = mouse.grid.x, y = mouse.grid.y, pixelX, pixelY) {
+  // Pins are drawn at their exact screen position; use that distance first so
+  // fractional and high-density pins stay selectable on touch and mouse.
+  let closest;
+  let closestDistance = pixelX === undefined ? 0.55 : zoom * 0.35;
+  for (const component of components) {
+    for (const port of [...component.input, ...component.output]) {
+      const screen = portScreenPosition(component, port);
+      const distance =
+        pixelX === undefined
+          ? Math.hypot(screen.x / zoom + offset.x - x, -screen.y / zoom + offset.y - y)
+          : Math.hypot(pixelX - screen.x, pixelY - screen.y);
+      if (distance < closestDistance) {
+        closest = port;
+        closestDistance = distance;
+      }
+    }
+  }
+  if (closest) return closest;
   if (findComponentByPos()) return;
   for (let i = 0; i < 4; ++i) {
     const component = findComponentByPos(

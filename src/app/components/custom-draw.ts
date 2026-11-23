@@ -24,7 +24,7 @@ Custom.prototype.draw = function draw() {
 
   // Draw the name of the component
   if (this.name && zoom > 5) {
-    ctx.fillStyle = '#888';
+    ctx.fillStyle = '#111';
     ctx.font = zoom / 3 + "px 'REEO Arabic', 'Alan Sans'";
     ctx.fillText(this.name, x + ((this.width - 1) / 2) * zoom, y + ((this.height - 1) / 2) * zoom);
   }
@@ -32,7 +32,7 @@ Custom.prototype.draw = function draw() {
   // Draw the description of the component
   const description = this.properties.description;
   if (description && zoom > 30) {
-    ctx.fillStyle = '#666';
+    ctx.fillStyle = '#555';
     ctx.font = zoom / 7 + "px 'REEO Arabic', 'Alan Sans'";
     ctx.fillText(
       description,

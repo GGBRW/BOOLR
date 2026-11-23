@@ -5,8 +5,8 @@ class Splitter extends Component {
   constructor(name, pos) {
     super(name, pos, 2, 4);
     this.value = 0;
-    this.addInputPort({ side: 3, pos: 1.5 });
-    for (let i = 0; i < 4; ++i) this.addOutputPort({ side: 1, pos: i });
+    this.addInputPort({ side: 3, pos: 2 }, 'I');
+    for (let i = 0; i < 4; ++i) this.addOutputPort({ side: 1, pos: i + 0.5 }, String(i));
   }
 
   function() {
@@ -17,40 +17,36 @@ class Splitter extends Component {
   draw() {
     Component.prototype.draw.call(this);
     const box = componentBox(this);
-    const inner = paintInset(box, 0.1);
-    const inputY = box.y + box.h * 0.5;
-    const spineX = inner.x + inner.w * 0.54;
-    const rowY = (i) => box.y + (i + 0.5) * zoom;
-    ctx.strokeStyle = this.value ? '#b8e986' : '#66727e';
+    const inner = paintInset(box, 0.08);
+    const rowY = (pos) => box.y + pos * zoom;
+    const spineX = inner.x + inner.w * 0.52;
+    ctx.strokeStyle = this.value ? '#7fc96f' : '#777';
     ctx.fillStyle = ctx.strokeStyle;
-    ctx.lineWidth = Math.max(1, zoom * 0.08);
+    ctx.lineWidth = Math.max(1, zoom * 0.06);
+    ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(box.x, inputY);
-    ctx.lineTo(spineX, inputY);
-    ctx.moveTo(spineX, rowY(0));
-    ctx.lineTo(spineX, rowY(3));
+    ctx.moveTo(box.x, rowY(2));
+    ctx.lineTo(spineX, rowY(2));
+    ctx.moveTo(spineX, rowY(0.5));
+    ctx.lineTo(spineX, rowY(3.5));
+    for (let i = 0; i < 4; ++i) {
+      ctx.moveTo(spineX, rowY(i + 0.5));
+      ctx.lineTo(box.x + box.w, rowY(i + 0.5));
+    }
     ctx.stroke();
     for (let i = 0; i < 4; ++i) {
-      const y = rowY(i);
       ctx.beginPath();
-      ctx.moveTo(spineX, y);
-      ctx.lineTo(box.x + box.w, y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(spineX, y, Math.max(1.5, zoom * 0.06), 0, Math.PI * 2);
+      ctx.arc(spineX, rowY(i + 0.5), Math.max(1.4, zoom * 0.045), 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.beginPath();
-    ctx.arc(box.x, inputY, Math.max(1.5, zoom * 0.07), 0, Math.PI * 2);
-    ctx.fill();
   }
 }
 
 class Merger extends Component {
   constructor(name, pos) {
     super(name, pos, 2, 4);
-    for (let i = 0; i < 4; ++i) this.addInputPort({ side: 3, pos: i });
-    this.addOutputPort({ side: 1, pos: 1.5 });
+    for (let i = 0; i < 4; ++i) this.addInputPort({ side: 3, pos: i + 0.5 }, String(i));
+    this.addOutputPort({ side: 1, pos: 2 }, 'O');
     this.value = 0;
   }
 
@@ -63,31 +59,27 @@ class Merger extends Component {
   draw() {
     Component.prototype.draw.call(this);
     const box = componentBox(this);
-    const inner = paintInset(box, 0.1);
-    const spineX = inner.x + inner.w * 0.46;
-    const rowY = (i) => box.y + (i + 0.5) * zoom;
-    ctx.strokeStyle = this.value ? '#b8e986' : '#66727e';
+    const inner = paintInset(box, 0.08);
+    const rowY = (pos) => box.y + pos * zoom;
+    const spineX = inner.x + inner.w * 0.48;
+    ctx.strokeStyle = this.value ? '#7fc96f' : '#777';
     ctx.fillStyle = ctx.strokeStyle;
-    ctx.lineWidth = Math.max(1, zoom * 0.08);
+    ctx.lineWidth = Math.max(1, zoom * 0.06);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
     for (let i = 0; i < 4; ++i) {
-      const y = rowY(i);
+      ctx.moveTo(box.x, rowY(i + 0.5));
+      ctx.lineTo(spineX, rowY(i + 0.5));
+    }
+    ctx.moveTo(spineX, rowY(0.5));
+    ctx.lineTo(spineX, rowY(3.5));
+    ctx.moveTo(spineX, rowY(2));
+    ctx.lineTo(box.x + box.w, rowY(2));
+    ctx.stroke();
+    for (let i = 0; i < 4; ++i) {
       ctx.beginPath();
-      ctx.moveTo(box.x, y);
-      ctx.lineTo(spineX, y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(spineX, y, Math.max(1.5, zoom * 0.06), 0, Math.PI * 2);
+      ctx.arc(spineX, rowY(i + 0.5), Math.max(1.4, zoom * 0.045), 0, Math.PI * 2);
       ctx.fill();
     }
-    const outputY = box.y + box.h * 0.5;
-    ctx.beginPath();
-    ctx.moveTo(spineX, rowY(0));
-    ctx.lineTo(spineX, rowY(3));
-    ctx.moveTo(spineX, outputY);
-    ctx.lineTo(box.x + box.w, outputY);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(box.x + box.w, outputY, Math.max(1.5, zoom * 0.07), 0, Math.PI * 2);
-    ctx.fill();
   }
 }

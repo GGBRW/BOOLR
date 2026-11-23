@@ -39,11 +39,11 @@ function cssColor(value, fallback) {
 }
 
 function displayOnColor(component) {
-  const digits = Math.max(1, Math.min(8, component.properties.digits || 1));
   if (component.properties.colorMode === 'signal') {
+    const colorPorts = component.input.filter((port) => /^C[0-2]$/.test(port.name || ''));
     let index = 0;
     for (let i = 0; i < 3; ++i) {
-      index |= (component.input[digits * 4 + i]?.value || 0) << i;
+      index |= (colorPorts[i]?.value || 0) << i;
     }
     const color = DISPLAY_PALETTE[index] || DISPLAY_PALETTE[0];
     return `rgb(${color[0]},${color[1]},${color[2]})`;
@@ -55,103 +55,126 @@ function displayOffColor(component) {
   return cssColor(component.properties.colorOff, '#301010');
 }
 
-/** A solid, rounded seven-segment digit. Segments are full bars, not outlines. */
+/** Classic seven-segment bars: chamfered ends with real gaps between segments. */
 function drawSevenDigit(x, y, w, h, lit, onColor, offColor, decimal = false) {
-  const t = Math.max(1.1, Math.min(w, h) * 0.145);
-  const pad = t * 0.62;
-  const x1 = x + pad + t / 2;
-  const x2 = x + w - pad - t / 2;
-  const y1 = y + pad + t / 2;
-  const y2 = y + h / 2;
-  const y3 = y + h - pad - t / 2;
-  const hLength = Math.max(t, x2 - x1);
-  const vLength = Math.max(t, y2 - y1 - t * 0.45);
-  const radius = t * 0.26;
-  const bar = (name, sx, sy, sw, sh) => {
+  const t = Math.max(1.4, Math.min(w, h) * 0.135);
+  const left = x + w * 0.16;
+  const right = x + w - w * 0.16;
+  const top = y + h * 0.1;
+  const bottom = y + h - h * 0.1;
+  const mid = y + h * 0.5;
+  const inset = t * 0.16;
+  const chamfer = t * 0.34;
+  const bar = (name, points) => {
     const on = lit.includes(name);
     ctx.fillStyle = on ? onColor : offColor;
     if (on) {
-      ctx.shadowBlur = zoom * 0.18;
+      ctx.shadowBlur = zoom * 0.16;
       ctx.shadowColor = onColor;
     }
     ctx.beginPath();
-    ctx.roundRect(sx, sy, sw, sh, radius);
+    points.forEach(([px, py], index) => (index ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+    ctx.closePath();
     ctx.fill();
     ctx.shadowBlur = 0;
   };
-  bar('a', x1, y1 - t / 2, hLength, t);
-  bar('g', x1, y2 - t / 2, hLength, t);
-  bar('d', x1, y3 - t / 2, hLength, t);
-  bar('f', x1 - t / 2, y1 + t * 0.38, t, vLength);
-  bar('b', x2 - t / 2, y1 + t * 0.38, t, vLength);
-  bar('e', x1 - t / 2, y2 + t * 0.4, t, vLength);
-  bar('c', x2 - t / 2, y2 + t * 0.4, t, vLength);
+  const horizontal = (name, cy) => {
+    const half = t / 2;
+    bar(name, [
+      [left + chamfer, cy - half],
+      [right - chamfer, cy - half],
+      [right, cy],
+      [right - chamfer, cy + half],
+      [left + chamfer, cy + half],
+      [left, cy],
+    ]);
+  };
+  const vertical = (name, cx, y1, y2) => {
+    const half = t / 2;
+    bar(name, [
+      [cx, y1 + chamfer],
+      [cx + half, y1],
+      [cx + half, y2 - chamfer],
+      [cx, y2],
+      [cx - half, y2 - chamfer],
+      [cx - half, y1],
+    ]);
+  };
+  horizontal('a', top + t / 2);
+  horizontal('g', mid);
+  horizontal('d', bottom - t / 2);
+  vertical('f', left + t / 2, top + t + inset, mid - inset);
+  vertical('b', right - t / 2, top + t + inset, mid - inset);
+  vertical('e', left + t / 2, mid + inset, bottom - t - inset);
+  vertical('c', right - t / 2, mid + inset, bottom - t - inset);
   if (decimal) {
-    ctx.fillStyle = lit.includes('p') ? onColor : offColor;
-    if (lit.includes('p')) {
-      ctx.shadowBlur = zoom * 0.18;
+    const on = lit.includes('p');
+    ctx.fillStyle = on ? onColor : offColor;
+    if (on) {
+      ctx.shadowBlur = zoom * 0.16;
       ctx.shadowColor = onColor;
     }
     ctx.beginPath();
-    ctx.arc(x2 + t * 0.35, y3 + t * 0.15, t * 0.42, 0, Math.PI * 2);
+    ctx.arc(right - t * 0.1, bottom - t * 0.45, t * 0.42, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
   }
 }
 
-function drawDisplayScreen(box, inset = 0.075) {
+/** Inset neutral bezel used by the display modules. */
+function drawDisplayBezel(box, inset = 0.07) {
   const pad = Math.min(box.w, box.h) * inset;
-  ctx.fillStyle = '#090b0d';
+  const x = box.x + pad;
+  const y = box.y + pad;
+  const w = box.w - pad * 2;
+  const h = box.h - pad * 2;
+  ctx.fillStyle = '#141414';
   ctx.beginPath();
-  ctx.roundRect(
-    box.x + pad,
-    box.y + pad,
-    box.w - pad * 2,
-    box.h - pad * 2,
-    Math.min(zoom * 0.18, 9),
-  );
+  ctx.roundRect(x, y, w, h, Math.min(zoom * 0.16, 9));
   ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,.13)';
-  ctx.lineWidth = Math.max(1, zoom * 0.025);
+  ctx.strokeStyle = '#7a7a7a';
+  ctx.lineWidth = Math.max(1, zoom * 0.035);
   ctx.stroke();
-  return {
-    x: box.x + pad + zoom * 0.08,
-    y: box.y + pad + zoom * 0.08,
-    w: box.w - pad * 2 - zoom * 0.16,
-    h: box.h - pad * 2 - zoom * 0.16,
-  };
+  const margin = Math.min(w, h) * 0.06;
+  return { x: x + margin, y: y + margin, w: w - margin * 2, h: h - margin * 2 };
+}
+
+function drawDisplayScreen(box, inset = 0.075) {
+  return drawDisplayBezel(box, inset);
 }
 
 class SevenSegment extends Component {
   constructor(name, pos, color = [255, 80, 70]) {
-    super(name, pos, 3, 4);
+    super(name, pos, 2, 3);
     this.color = color;
     this.value = 0;
     this.properties.colorMode = 'fixed';
     this.properties.colorOn = '#ff4a44';
-    this.properties.colorOff = '#2a0d0d';
+    this.properties.colorOff = '#3a1010';
     this.configureSegments();
   }
 
+  dataPorts() {
+    return this.input.filter((port) => !/^C[0-2]$/.test(port.name || ''));
+  }
+
   configureSegments() {
-    const signalColor = this.properties.colorMode === 'signal';
     const colorPorts = this.input.filter((port) => /^C[0-2]$/.test(port.name || ''));
-    this.input = this.input.filter((port) => !/^C[0-2]$/.test(port.name || ''));
-    while (this.input.length < 4) this.addInputPort();
-    while (this.input.length > 4) {
-      const port = this.input.pop();
-      if (port && port.connection) removeWire(port.connection);
+    this.input = this.dataPorts();
+    if (this.input.length === 0) {
+      for (let i = 0; i < 4; ++i) {
+        this.addInputPort({ side: 0, pos: i * 0.66 }, 'ABCD'[i]);
+      }
+      for (let i = 0; i < 4; ++i) {
+        this.addInputPort({ side: 2, pos: i * 0.66 }, ['E', 'F', 'G', 'DP'][i]);
+      }
     }
-    for (let i = 0; i < 4; ++i) {
-      this.input[i].pos = { side: 3, pos: i };
-      this.input[i].name = 'D' + i;
-    }
-    if (signalColor) {
+    if (this.properties.colorMode === 'signal') {
       while (colorPorts.length < 3) colorPorts.push(this.addInputPort());
       for (let i = 0; i < 3; ++i) {
         const port = colorPorts[i];
         if (this.input.indexOf(port) === -1) this.input.push(port);
-        port.pos = { side: 0, pos: i };
+        port.pos = { side: 3, pos: 0.35 + i * 0.35 };
         port.name = 'C' + i;
       }
     } else {
@@ -162,6 +185,16 @@ class SevenSegment extends Component {
   }
 
   function() {
+    const ports = this.dataPorts();
+    if (ports.length >= 8) {
+      let lit = '';
+      for (let i = 0; i < 4; ++i) if (ports[i]?.value) lit += 'abcd'[i];
+      for (let i = 0; i < 3; ++i) if (ports[4 + i]?.value) lit += 'efg'[i];
+      if (ports[7]?.value) lit += 'p';
+      this.segments = lit;
+      this.value = 0;
+      return;
+    }
     this.value =
       this.input[0].value |
       (this.input[1].value << 1) |
@@ -171,12 +204,9 @@ class SevenSegment extends Component {
 
   draw() {
     Component.prototype.draw.call(this);
-    const box = componentBox(this);
-    ctx.fillStyle = '#111';
-    ctx.beginPath();
-    ctx.roundRect(box.x, box.y, box.w, box.h, Math.min(zoom * 0.12, 6));
-    ctx.fill();
-    const screen = drawDisplayScreen(box, 0.08);
+    const bezel = drawDisplayBezel(componentBox(this), 0.055);
+    const ports = this.dataPorts();
+    const lit = ports.length >= 8 ? this.segments || '' : SEGMENTS[this.value] || '';
     const onColor =
       this.properties.colorMode === 'signal'
         ? displayOnColor(this)
@@ -185,13 +215,14 @@ class SevenSegment extends Component {
             `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`,
           );
     drawSevenDigit(
-      screen.x,
-      screen.y,
-      screen.w,
-      screen.h,
-      SEGMENTS[this.value] || '',
+      bezel.x,
+      bezel.y,
+      bezel.w,
+      bezel.h,
+      lit,
       onColor,
       displayOffColor(this),
+      ports.length >= 8,
     );
   }
 }

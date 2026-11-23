@@ -72,7 +72,7 @@ test('new sound, switch, display and procedural parts are pickable', async ({ pa
   expect(result.rgb).toBe(6);
   expect(result.procedural).toBe(0);
   expect(result.ports).toContainEqual(['Tone', 4, 0]);
-  expect(result.ports).toContainEqual(['SevenSegment', 4, 0]);
+  expect(result.ports).toContainEqual(['SevenSegment', 8, 0]);
   expect(result.ports).toContainEqual(['Splitter', 1, 4]);
   expect(result.ports).toContainEqual(['Slider', 0, 4]);
 });
@@ -148,7 +148,7 @@ test('displays stack into one module and take their colour from signals', async 
         const part = new SevenSegment('S', {x: 0, y: 0});
         part.properties.colorMode = 'signal';
         part.configureSegments();
-        return {ports: part.input.length, colourSides: part.input.slice(4).map(port => port.pos.side)};
+        return {ports: part.input.length, colourSides: part.input.slice(8).map(port => port.pos.side)};
       })(),
       rgb2: (() => {
         const part = new RGBLed2('R', {x: 0, y: 0});
@@ -161,13 +161,13 @@ test('displays stack into one module and take their colour from signals', async 
   })()`);
   expect(result).toMatchObject({
     colourKept: true,
-    width: 8,
-    height: 7,
+    width: 6,
+    height: 4,
     digits: 2,
     ports: 11,
     colour: 'rgb(255,176,32)',
     values: [10, 9],
-    seven: { ports: 7, colourSides: [0, 0, 0] },
+    seven: { ports: 11, colourSides: [3, 3, 3] },
     rgb2: { ports: 2, value: 3 },
   });
   expect(result.dataSides.every((side: number) => side === 0)).toBe(true);

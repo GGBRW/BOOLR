@@ -66,7 +66,7 @@ describe('board code language', () => {
   test('keeps enough default input pins for multi-input displays', () => {
     const program = compileCircuit('input A\nsevenseg S A\nrgb R A');
     expect(program.errors).toEqual([]);
-    expect(program.components[1]?.inputs).toBe(4);
+    expect(program.components[1]?.inputs).toBe(8);
     expect(program.components[2]?.inputs).toBe(3);
   });
 });

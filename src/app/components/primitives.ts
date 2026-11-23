@@ -26,6 +26,9 @@ function paintInset(box, inset = 0.12) {
     Math.min(zoom * 0.12, 6),
   );
   ctx.fill();
+  ctx.strokeStyle = '#777';
+  ctx.lineWidth = Math.max(1, zoom * 0.03);
+  ctx.stroke();
   return { x: box.x + pad, y: box.y + pad, w: box.w - pad * 2, h: box.h - pad * 2 };
 }
 

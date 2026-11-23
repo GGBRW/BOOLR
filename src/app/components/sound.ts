@@ -35,7 +35,7 @@ class Tone extends Component {
     Component.prototype.draw.call(this);
     const box = componentBox(this);
     const inner = paintInset(box, 0.1);
-    ctx.fillStyle = '#11161b';
+    ctx.fillStyle = '#161616';
     ctx.beginPath();
     ctx.roundRect(inner.x, inner.y, inner.w, inner.h, Math.min(zoom * 0.22, 10));
     ctx.fill();
@@ -43,7 +43,7 @@ class Tone extends Component {
     const cx = inner.x + inner.w * 0.34;
     const cy = inner.y + inner.h * 0.43;
     const size = Math.min(inner.w, inner.h) * 0.26;
-    ctx.fillStyle = active ? '#b8e986' : '#7b8794';
+    ctx.fillStyle = active ? '#b8e986' : '#999';
     ctx.beginPath();
     ctx.moveTo(cx - size * 0.9, cy - size * 0.42);
     ctx.lineTo(cx, cy - size * 0.42);
@@ -53,14 +53,14 @@ class Tone extends Component {
     ctx.lineTo(cx - size * 0.9, cy + size * 0.42);
     ctx.closePath();
     ctx.fill();
-    ctx.strokeStyle = active ? '#b8e986' : '#4c5865';
+    ctx.strokeStyle = active ? '#b8e986' : '#666';
     ctx.lineWidth = Math.max(1, zoom * 0.055);
     for (let i = 1; i <= 2; ++i) {
       ctx.beginPath();
       ctx.arc(cx + size * 0.95, cy, size * (0.45 + i * 0.38), -0.85, 0.85);
       ctx.stroke();
     }
-    ctx.fillStyle = active ? '#d9f5c5' : '#65717e';
+    ctx.fillStyle = active ? '#d9f5c5' : '#777';
     ctx.font = `700 ${Math.max(8, Math.round(zoom * 0.32))}px monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';

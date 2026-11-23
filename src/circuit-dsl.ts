@@ -50,7 +50,7 @@ const TYPES: Record<string, TypeInfo> = {
   tone: { type: 'Tone', inputs: 4, outputs: 0 },
   rgb: { type: 'RGBLed', inputs: 3, outputs: 0 },
   bargraph: { type: 'BarGraph', inputs: 4, outputs: 0 },
-  sevenseg: { type: 'SevenSegment', inputs: 4, outputs: 0 },
+  sevenseg: { type: 'SevenSegment', inputs: 8, outputs: 0 },
   display: { type: 'Display', inputs: 8, outputs: 0 },
   dipswitch: { type: 'DipSwitch', inputs: 0, outputs: 4 },
   slider: { type: 'Slider', inputs: 0, outputs: 4 },

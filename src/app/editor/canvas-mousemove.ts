@@ -1,6 +1,27 @@
 // @ts-nocheck
 // biome-ignore-all lint: transitional legacy interface module
 /* eslint-disable */
+function completePortConnection(to) {
+  connecting.to = to;
+  wires.push(connecting);
+
+  if (connecting.input.length > 0) {
+    connectWires(connecting.input[0], connecting, true);
+    /*
+      Give the intersection point to the wire with the highest index,
+      so the intersection point is drawn
+    */
+    if (wires.indexOf(connecting) > wires.indexOf(connecting.input[0])) {
+      connecting.intersections.push(Object.assign({}, connecting.pos[0]));
+    } else {
+      connecting.input[0].intersections.push(Object.assign({}, connecting.pos[0]));
+    }
+  }
+  connect(connecting.from, to, connecting, true);
+
+  connecting = null;
+}
+
 c.onmousemove = function (e) {
   mouse.screen.x = e.x;
   mouse.screen.y = e.y;
@@ -159,8 +180,18 @@ c.onmousemove = function (e) {
       let dx = mouse.grid.x - connecting.pos.slice(-1)[0].x;
       let dy = mouse.grid.y - connecting.pos.slice(-1)[0].y;
 
-      // If dx and dy are both 0, no new positions have to be put into the wire's 'pos' array: return
-      if (!dx && !dy) return;
+      // If dx and dy are both 0, no new positions have to be put into the wire's 'pos' array.
+      // Still try to land on a pin that sits between two grid points.
+      if (!dx && !dy) {
+        const to = findPortByPos(
+          connecting.pos.slice(-1)[0].x,
+          connecting.pos.slice(-1)[0].y,
+          mouse.screen.x,
+          mouse.screen.y,
+        );
+        if (to && to.type == 'input') completePortConnection(to);
+        return;
+      }
 
       // If the shift key is down, we want the wire to be drawn in a straight line
       if (e.shiftKey) {
@@ -206,28 +237,14 @@ c.onmousemove = function (e) {
         }
       }
 
-      const to = findPortByPos(connecting.pos.slice(-1)[0].x, connecting.pos.slice(-1)[0].y);
+      const to = findPortByPos(
+        connecting.pos.slice(-1)[0].x,
+        connecting.pos.slice(-1)[0].y,
+        mouse.screen.x,
+        mouse.screen.y,
+      );
 
-      if (to && to.type == 'input') {
-        connecting.to = to;
-        wires.push(connecting);
-
-        if (connecting.input.length > 0) {
-          connectWires(connecting.input[0], connecting, true);
-          /*
-                        Give the intersection point to the wire with the highest index,
-                        so the intersection point is drawn
-                     */
-          if (wires.indexOf(connecting) > wires.indexOf(connecting.input[0])) {
-            connecting.intersections.push(Object.assign({}, connecting.pos[0]));
-          } else {
-            connecting.input[0].intersections.push(Object.assign({}, connecting.pos[0]));
-          }
-        }
-        connect(connecting.from, to, connecting, true);
-
-        connecting = null;
-      }
+      if (to && to.type == 'input') completePortConnection(to);
     } else if (e.altKey) {
       e.preventDefault();
       offset.x -= e.movementX / zoom;
