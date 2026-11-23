@@ -13,7 +13,7 @@ test('full guide searches all components and pins a recipe without modifying the
   const help = page.locator('#reeo-help-panel');
   await expect(help).toBeVisible();
   await help.getByRole('button', { name: 'Every component', exact: true }).click();
-  await expect(help.locator('article')).toHaveCount(19);
+  await expect(help.locator('article')).toHaveCount(31);
   await help.getByRole('searchbox').fill('Counter');
   await expect(help.locator('article')).toHaveCount(1);
   await expect(help).toContainText('no binary output bus');

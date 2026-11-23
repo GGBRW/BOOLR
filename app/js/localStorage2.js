@@ -96,7 +96,9 @@ function getLocalStorage() {
 const constructors = {
     Input,Output,NOT,AND,OR,XOR,
     Button,Constant,Delay,Clock,Debug,
-    Beep,Counter,LED,Display,
+    Beep,Buzzer,Tone,DipSwitch,Slider,
+    Counter,Splitter,Merger,Procedural,
+    LED,RGBLed,BarGraph,SevenSegment,Lamp,Motor,Display,
     Custom, TimerStart, TimerEnd,
     ROM
 };
@@ -281,6 +283,7 @@ function parse(data) {
 
         Object.assign(component,data);
         component.pos = Object.assign({},data.pos);
+        if(component.compile) component.compile();
 
         components[i] = component;
     }

@@ -3,6 +3,20 @@
 All notable changes to REEO are recorded here. The app reads the latest public
 GitHub release body, parses this same structure, and caches the result locally.
 
+## [Unreleased]
+
+### Added
+
+- **New parts:** Buzzer, Tone, Dip Switch, RGB LED, Bar Graph, Seven Segment, Lamp, Motor, Splitter, Merger, and an expression-driven Procedural part.
+- **Board code:** a Verilog-flavoured text editor (menu → Board code) that compiles named components and pin references into a wired circuit.
+- **Bulk editing:** Auto-wire selected, Auto-route wires, and horizontal/vertical distribution in the selection context menu.
+- **More colour and shape control:** square, diamond, bar and bulb LED/lamp shapes, plus editable on/off display colours.
+- **Guide placement:** blueprints now find a clear viewport spot away from real components and the guide dock; the dock becomes click-through until hovered or focused.
+
+### Changed
+
+- A fresh Display is taller, and boards can hold up to 5,000 components, 25,000 wires, 1,024 ports per direction and 2,000-cell dimensions.
+
 ## [2.1.0] - 2026-11-21
 
 ### Highlights

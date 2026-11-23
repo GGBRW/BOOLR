@@ -24,6 +24,9 @@ Bun is the package manager, development runtime, script runner, and unit-test ru
 
 ## What's new
 
+- **More parts and board code:** sounders (Buzzer/Tone), a four-way Dip Switch, RGB/bar/seven-segment displays, Lamp, Motor, Splitter/Merger, and procedural expressions. A Verilog-flavoured **Board code** editor builds named components and wires from text.
+- **Bulk board editing:** auto-wire a selection, route selected wires orthogonally, distribute parts evenly, and use higher limits (5,000 parts / 25,000 wires).
+- **Guide polish:** blueprints avoid occupied space and the controls card, and the floating guide is click-through until you approach it.
 - **Circuit and UI icons:** vector gate/component symbols, Phosphor interface icons, and bottom-right dismissible tip toasts.
 - **REEO identity:** original circuit-R mark, wordmark, application icons, brand guide, and the REEO Circuit Display typeface.
 - **Browser version:** Vite static build; Vercel is the default configured hosting target.

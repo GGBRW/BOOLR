@@ -543,8 +543,8 @@ function moveComponent(
             if(portPos.side % 2 == 0) pos.x += portPos.pos;
             else pos.y -= portPos.pos;
 
-            let dx = wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x;
-            let dy = wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y;
+            let dx = Math.round(wire.pos.slice(-1)[0].x - wire.pos.slice(-2)[0].x);
+            let dy = Math.round(wire.pos.slice(-1)[0].y - wire.pos.slice(-2)[0].y);
 
             const index = wire.pos.findIndex(
                 (pos,i) => i < wire.pos.length - 1 && pos.x == wire.pos.slice(-1)[0].x && pos.y == wire.pos.slice(-1)[0].y
@@ -599,8 +599,8 @@ function moveComponent(
             if(portPos.side % 2 == 0) pos.x += portPos.pos;
             else pos.y -= portPos.pos;
 
-            let dx = wire.pos[0].x - wire.pos[1].x;
-            let dy = wire.pos[0].y - wire.pos[1].y;
+            let dx = Math.round(wire.pos[0].x - wire.pos[1].x);
+            let dy = Math.round(wire.pos[0].y - wire.pos[1].y);
 
             const index = wire.pos.findIndex(
                 (pos,i) => i > 0 && pos.x == wire.pos[0].x && pos.y == wire.pos[0].y
@@ -1523,6 +1523,166 @@ function componentize(
 }
 
 /*
+ Bulk wiring helpers. These keep the same undo model as manual edits: one
+ history entry per gesture, so a whole bus can be reverted with one Ctrl+Z.
+ */
+function portLocation(port) {
+    const component = port.component;
+    const angle = Math.PI / 2 * port.pos.side;
+    const point = {
+        x: component.pos.x + Math.sin(angle),
+        y: component.pos.y + Math.cos(angle)
+    };
+    if(port.pos.side === 1) point.x += component.width - 1;
+    else if(port.pos.side === 2) point.y += component.height - 1;
+    if(port.pos.side % 2 === 0) point.x += port.pos.pos;
+    else point.y -= port.pos.pos;
+    return point;
+}
+
+function autoWireSelection(selection = selecting) {
+    if(!selection || !selection.components || selection.components.length < 2) return;
+    const ordered = [...selection.components].sort((a, b) =>
+        a.pos.x - b.pos.x || b.pos.y - a.pos.y
+    );
+    const pairs = [];
+    const made = [];
+
+    for(let i = 0; i < ordered.length - 1; ++i) {
+        const from = ordered[i];
+        const to = ordered[i + 1];
+        const outputs = from.output.filter(port => !port.connection);
+        const inputs = to.input.filter(port => !port.connection);
+        const count = Math.min(outputs.length, inputs.length);
+        for(let p = 0; p < count; ++p) {
+            const wire = new Wire();
+            const start = portLocation(outputs[p]);
+            const end = portLocation(inputs[p]);
+            const middle = (start.x + end.x) / 2;
+            wire.pos = start.y === end.y
+                ? [start, end]
+                : [start, { x: middle, y: start.y }, { x: middle, y: end.y }, end];
+            pairs.push({ from: outputs[p], to: inputs[p], wire });
+            connect(outputs[p], inputs[p], wire, false);
+            if(!wires.includes(wire)) wires.push(wire);
+            made.push(wire);
+        }
+    }
+
+    if(made.length < 1) return;
+
+    if(this != redoCaller) redoStack = [];
+    undoStack.push(() => {
+        for(const wire of made) removeWire(wire);
+        redoStack.push(() => {
+            for(const pair of pairs) {
+                if(!wires.includes(pair.wire)) wires.push(pair.wire);
+                connect(pair.from, pair.to, pair.wire, false);
+            }
+        });
+    });
+}
+
+function autoRouteSelection(selection = selecting) {
+    if(!selection || !selection.wires || selection.wires.length < 1) return;
+    const changed = [];
+    for(let index = 0; index < selection.wires.length; ++index) {
+        const wire = selection.wires[index];
+        if(!wire.pos || wire.pos.length < 2) continue;
+        const old = wire.pos.map(point => ({ ...point }));
+        const start = wire.pos[0];
+        const end = wire.pos[wire.pos.length - 1];
+        const lane = (index % 4) * .75;
+        const middle = (start.x + end.x) / 2 + lane;
+        const next = [start];
+        if(start.x !== middle && start.y !== end.y) next.push({ x: middle, y: start.y });
+        if(middle !== end.x && start.y !== end.y) next.push({ x: middle, y: end.y });
+        next.push(end);
+        wire.pos = next.filter((point, i) => i < 1 ||
+            point.x !== next[i - 1].x || point.y !== next[i - 1].y);
+        changed.push({ wire, old, next: wire.pos });
+    }
+    if(changed.length < 1) return;
+
+    if(this != redoCaller) redoStack = [];
+    undoStack.push(() => {
+        for(const item of changed) item.wire.pos = item.old;
+        redoStack.push(() => {
+            for(const item of changed) item.wire.pos = item.next;
+        });
+    });
+}
+
+function distributeSelection(axis = "x", selection = selecting) {
+    if(!selection || !selection.components || selection.components.length < 3) return;
+    const horizontal = axis === "x";
+    const ordered = [...selection.components].sort((a, b) =>
+        horizontal ? a.pos.x - b.pos.x : b.pos.y - a.pos.y
+    );
+    const center = component => horizontal
+        ? component.pos.x + component.width / 2
+        : component.pos.y - component.height / 2;
+    const first = center(ordered[0]);
+    const last = center(ordered[ordered.length - 1]);
+    const step = (last - first) / (ordered.length - 1);
+    const old = ordered.map(component => ({ ...component.pos }));
+
+    for(let i = 1; i < ordered.length - 1; ++i) {
+        const component = ordered[i];
+        const nextCenter = first + step * i;
+        const x = horizontal ? Math.round(nextCenter - component.width / 2) : component.pos.x;
+        const y = horizontal ? component.pos.y : Math.round(nextCenter + component.height / 2);
+        moveComponent(component, x, y, false, true);
+    }
+
+    if(this != redoCaller) redoStack = [];
+    undoStack.push(() => {
+        for(let i = 0; i < ordered.length; ++i) {
+            moveComponent(ordered[i], old[i].x, old[i].y, false, true);
+        }
+        redoStack.push(() => {
+            for(let i = 1; i < ordered.length - 1; ++i) {
+                const component = ordered[i];
+                const nextCenter = first + step * i;
+                const x = horizontal ? Math.round(nextCenter - component.width / 2) : component.pos.x;
+                const y = horizontal ? component.pos.y : Math.round(nextCenter + component.height / 2);
+                moveComponent(component, x, y, false, true);
+            }
+        });
+    });
+}
+
+function stackSelection(axis = "y", selection = selecting) {
+    if(!selection || !selection.components || selection.components.length < 2) return;
+    const horizontal = axis === "x";
+    const ordered = [...selection.components].sort((a, b) =>
+        horizontal ? a.pos.x - b.pos.x : b.pos.y - a.pos.y
+    );
+    const old = ordered.map(component => ({ ...component.pos }));
+    let cursor = horizontal ? ordered[0].pos.x : ordered[0].pos.y;
+    for(let i = 0; i < ordered.length; ++i) {
+        const component = ordered[i];
+        const x = horizontal ? Math.round(cursor) : component.pos.x;
+        const y = horizontal ? component.pos.y : Math.round(cursor);
+        if(i > 0) moveComponent(component, x, y, false, true);
+        cursor += horizontal ? component.width + .5 : -(component.height + .5);
+    }
+    const next = ordered.map(component => ({ ...component.pos }));
+
+    if(this != redoCaller) redoStack = [];
+    undoStack.push(() => {
+        for(let i = 0; i < ordered.length; ++i) {
+            moveComponent(ordered[i], old[i].x, old[i].y, false, true);
+        }
+        redoStack.push(() => {
+            for(let i = 0; i < ordered.length; ++i) {
+                moveComponent(ordered[i], next[i].x, next[i].y, false, true);
+            }
+        });
+    });
+}
+
+/*
  Generates id for every component using ES6 generators
  */
 const IdGenerator = (function* () {
@@ -2412,6 +2572,503 @@ class Counter extends Component {
     }
 }
 
+/* New lab components. Bodies stay inside the original grid footprint; the
+   custom drawing only decorates the inside of the existing terminal box. */
+function componentBox(component) {
+    const x = (component.pos.x - offset.x) * zoom;
+    const y = -(component.pos.y - offset.y) * zoom;
+    return {
+        x: x - zoom / 2,
+        y: y - zoom / 2,
+        w: component.width * zoom,
+        h: component.height * zoom
+    };
+}
+
+function paintInset(box, inset = .12) {
+    const pad = Math.min(box.w, box.h) * inset;
+    ctx.fillStyle = "#111";
+    ctx.beginPath();
+    ctx.roundRect(box.x + pad, box.y + pad, box.w - pad * 2, box.h - pad * 2, Math.min(zoom * .12, 6));
+    ctx.fill();
+    return { x: box.x + pad, y: box.y + pad, w: box.w - pad * 2, h: box.h - pad * 2 };
+}
+
+class Buzzer extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,1,{ type: "icon", text: "audiotrack" });
+        this.addInputPort({ side: 3, pos: 0 });
+        this.properties.frequency = 700;
+        this.properties.duration = 160;
+        this.lastHigh = false;
+    }
+
+    function() {
+        const high = this.input[0].value == 1;
+        if(high && !this.lastHigh) {
+            beep(this.properties.frequency, this.properties.duration);
+        }
+        this.lastHigh = high;
+        this.value = high ? 1 : 0;
+    }
+}
+
+class Tone extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,3);
+        this.addInputPort({ side: 3, pos: 0 }, "1");
+        this.addInputPort({ side: 3, pos: 1 }, "2");
+        this.addInputPort({ side: 3, pos: 2 }, "4");
+        this.addInputPort({ side: 3, pos: 3 }, "8");
+        this.properties.duration = 180;
+        this.value = 0;
+        this.lastNote = -1;
+    }
+
+    function() {
+        const note = this.input[0].value | this.input[1].value << 1 |
+            this.input[2].value << 2 | this.input[3].value << 3;
+        this.value = note;
+        if(note !== this.lastNote) {
+            this.lastNote = note;
+            if(note > 0) beep(196 * Math.pow(2, (note - 1) / 12), this.properties.duration);
+        }
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        ctx.fillStyle = "#b8e986";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `${Math.max(10, zoom * .25)}px 'REEO Circuit Display', 'Alan Sans', sans-serif`;
+        ctx.fillText(this.value ? "NOTE " + this.value : "SILENT", inner.x + inner.w / 2, inner.y + inner.h / 2);
+    }
+}
+
+class DipSwitch extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,4);
+        for(let i = 0; i < 4; ++i) this.addOutputPort({ side: 1, pos: i }, "D" + i);
+        this.value = 0;
+    }
+
+    onmousedown(sendToSocket = true) {
+        this.value = (this.value + 1) & 15;
+        this.update();
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({ type: "mousedown", data: this.id }));
+        }
+    }
+
+    function() {
+        for(let i = 0; i < 4; ++i) this.output[i].value = (this.value >> i) & 1;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        for(let i = 0; i < 4; ++i) {
+            const y = inner.y + inner.h * (i + .5) / 4;
+            ctx.fillStyle = "#333";
+            ctx.beginPath();
+            ctx.roundRect(inner.x + zoom * .12, y - zoom * .12, inner.w - zoom * .24, zoom * .24, zoom * .1);
+            ctx.fill();
+            ctx.fillStyle = (this.value >> i) & 1 ? "#b8e986" : "#777";
+            ctx.beginPath();
+            ctx.arc(inner.x + ((this.value >> i) & 1 ? inner.w - zoom * .28 : zoom * .28), y, zoom * .11, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.fillStyle = "#888";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.font = `${Math.max(9, zoom * .16)}px 'Alan Sans', sans-serif`;
+        ctx.fillText(this.value.toString(16).toUpperCase(), inner.x + inner.w - zoom * .08, inner.y + zoom * .18);
+    }
+}
+
+class Slider extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,4);
+        for(let i = 0; i < 4; ++i) this.addOutputPort({ side: 1, pos: i }, "D" + i);
+        this.value = 0;
+    }
+
+    onmousedown(sendToSocket = true) {
+        this.value = (this.value + 1) & 15;
+        this.update();
+        if(socket && sendToSocket) {
+            socket.send(JSON.stringify({ type: "mousedown", data: this.id }));
+        }
+    }
+
+    function() {
+        for(let i = 0; i < 4; ++i) this.output[i].value = (this.value >> i) & 1;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        const x = inner.x + inner.w * .42;
+        ctx.strokeStyle = "#555";
+        ctx.lineWidth = Math.max(1, zoom * .06);
+        ctx.beginPath();
+        ctx.moveTo(x, inner.y + zoom * .1);
+        ctx.lineTo(x, inner.y + inner.h - zoom * .1);
+        ctx.stroke();
+        const y = inner.y + inner.h - zoom * .1 -
+            (inner.h - zoom * .2) * (this.value / 15);
+        ctx.fillStyle = "#b8e986";
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(2, zoom * .1), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#b8e986";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.font = `${Math.max(9, zoom * .17)}px 'REEO Circuit Display', monospace`;
+        ctx.fillText(this.value.toString(16).toUpperCase(), inner.x + inner.w - zoom * .08, y);
+    }
+}
+
+class RGBLed extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,3);
+        this.addInputPort({ side: 3, pos: 0 }, "R");
+        this.addInputPort({ side: 3, pos: 1 }, "G");
+        this.addInputPort({ side: 3, pos: 2 }, "B");
+        this.properties.shape = "round";
+        this.value = 0;
+    }
+
+    function() {
+        this.value = (this.input[0].value ? 4 : 0) | (this.input[1].value ? 2 : 0) | (this.input[2].value ? 1 : 0);
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        const colors = [[255, 60, 60], [60, 255, 90], [60, 120, 255]];
+        const cx = inner.x + inner.w / 2;
+        const cy = inner.y + inner.h / 2;
+        const radius = Math.min(inner.w, inner.h) * .23;
+        ctx.save();
+        ctx.shadowBlur = zoom * .35;
+        ctx.shadowColor = `rgba(${this.input[0].value ? 255 : 0}, ${this.input[1].value ? 255 : 0}, ${this.input[2].value ? 255 : 0}, .85)`;
+        ctx.fillStyle = "#1c1c1c";
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        for(let i = 0; i < 3; ++i) {
+            const a = -Math.PI / 2 + i * Math.PI * 2 / 3;
+            const x = cx + Math.cos(a) * radius * .72;
+            const y = cy + Math.sin(a) * radius * .72;
+            const on = this.input[i].value == 1;
+            const color = colors[i];
+            ctx.fillStyle = on ? `rgb(${color[0]},${color[1]},${color[2]})` : `rgb(${color[0] / 5},${color[1] / 5},${color[2] / 5})`;
+            if(on) {
+                ctx.shadowBlur = zoom * .3;
+                ctx.shadowColor = `rgb(${color[0]},${color[1]},${color[2]})`;
+            }
+            ctx.beginPath();
+            if(this.properties.shape === "square") {
+                ctx.rect(x - radius * .32, y - radius * .32, radius * .64, radius * .64);
+            } else {
+                ctx.arc(x, y, radius * .32, 0, Math.PI * 2);
+            }
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+}
+
+class BarGraph extends Component {
+    constructor(name,pos,color = [80, 190, 255]) {
+        super(name,pos,2,4);
+        for(let i = 0; i < 4; ++i) this.addInputPort({ side: 3, pos: i }, String(i + 1));
+        this.color = color;
+        this.properties.gradient = "flat";
+        this.value = 0;
+    }
+
+    function() {
+        this.value = this.input.reduce((value, port, index) => value | (port.value << index), 0);
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        for(let i = 0; i < 4; ++i) {
+            const on = this.input[i].value == 1;
+            const h = (inner.h - zoom * .12) / 4;
+            const y = inner.y + inner.h - h * (i + 1);
+            const rainbow = this.properties.gradient === "rainbow";
+            const barColor = rainbow
+                ? `hsl(${185 + i * 32} 85% 62%)`
+                : `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`;
+            ctx.fillStyle = on ? barColor : "#252525";
+            if(on) {
+                ctx.shadowBlur = zoom * .2;
+                ctx.shadowColor = barColor;
+            }
+            ctx.fillRect(inner.x + zoom * .12, y + zoom * .04, inner.w - zoom * .24, h - zoom * .08);
+            ctx.shadowBlur = 0;
+        }
+    }
+}
+
+const SEGMENTS = {
+    0: "abcdef", 1: "bc", 2: "abdeg", 3: "abcdg", 4: "bcfg",
+    5: "acdfg", 6: "acdefg", 7: "abc", 8: "abcdefg", 9: "abcdfg",
+    10: "abcefg", 11: "cdefg", 12: "adef", 13: "bcdeg", 14: "adefg", 15: "aefg"
+};
+
+class SevenSegment extends Component {
+    constructor(name,pos,color = [255, 80, 70]) {
+        super(name,pos,3,4);
+        for(let i = 0; i < 4; ++i) this.addInputPort({ side: 3, pos: i }, "D" + i);
+        this.color = color;
+        this.value = 0;
+    }
+
+    function() {
+        this.value = this.input[0].value | this.input[1].value << 1 |
+            this.input[2].value << 2 | this.input[3].value << 3;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box, .08);
+        const lit = SEGMENTS[this.value] || "";
+        const t = Math.max(1.2, zoom * .09);
+        const x1 = inner.x + inner.w * .25, x2 = inner.x + inner.w * .75;
+        const y1 = inner.y + inner.h * .10, y2 = inner.y + inner.h * .50, y3 = inner.y + inner.h * .90;
+        const seg = (name, x, y, w, h) => {
+            ctx.fillStyle = lit.includes(name)
+                ? `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`
+                : "#351010";
+            if(lit.includes(name)) {
+                ctx.shadowBlur = zoom * .18;
+                ctx.shadowColor = `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`;
+            }
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, t);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        };
+        seg("a", x1, y1, x2 - x1, t);
+        seg("b", x2, y1, t, y2 - y1);
+        seg("c", x2, y2, t, y3 - y2);
+        seg("d", x1, y3, x2 - x1, t);
+        seg("e", x1, y2, t, y3 - y2);
+        seg("f", x1, y1, t, y2 - y1);
+        seg("g", x1, y2, x2 - x1, t);
+    }
+}
+
+class Lamp extends Component {
+    constructor(name,pos,color = [255, 190, 80]) {
+        super(name,pos,2,2);
+        this.addInputPort({ side: 3, pos: 0 });
+        this.color = color;
+        this.properties.shape = "bulb";
+        this.value = 0;
+    }
+
+    function() {
+        this.value = this.input[0].value;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        const cx = inner.x + inner.w / 2;
+        const cy = inner.y + inner.h / 2;
+        const radius = Math.min(inner.w, inner.h) * .28;
+        ctx.save();
+        if(this.value) {
+            ctx.shadowBlur = zoom * .55;
+            ctx.shadowColor = `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`;
+        }
+        ctx.fillStyle = this.value
+            ? `rgb(${this.color[0]},${this.color[1]},${this.color[2]})`
+            : "#40352b";
+        ctx.beginPath();
+        if(this.properties.shape === "panel") ctx.roundRect(cx - radius, cy - radius, radius * 2, radius * 2, radius * .2);
+        else ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Motor extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,2);
+        this.addInputPort({ side: 3, pos: 0 });
+        this.value = 0;
+    }
+
+    function() {
+        this.value = this.input[0].value;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        const cx = inner.x + inner.w / 2;
+        const cy = inner.y + inner.h / 2;
+        const radius = Math.min(inner.w, inner.h) * .3;
+        const angle = this.value ? performance.now() / 240 : 0;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        ctx.strokeStyle = this.value ? "#b8e986" : "#777";
+        ctx.lineWidth = Math.max(1.5, zoom * .06);
+        for(let i = 0; i < 3; ++i) {
+            ctx.rotate(Math.PI * 2 / 3);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(radius, 0);
+            ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * .22, 0, Math.PI * 2);
+        ctx.fillStyle = this.value ? "#b8e986" : "#777";
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Splitter extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,4);
+        this.addInputPort({ side: 3, pos: 1 }, "IN");
+        for(let i = 0; i < 4; ++i) this.addOutputPort({ side: 1, pos: i }, "O" + i);
+    }
+
+    function() {
+        for(const port of this.output) port.value = this.input[0].value;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box, .08);
+        const left = inner.x + inner.w * .22;
+        const right = inner.x + inner.w * .78;
+        const middle = inner.y + inner.h / 2;
+        ctx.strokeStyle = "#b8e986";
+        ctx.lineWidth = Math.max(1, zoom * .045);
+        for(let i = 0; i < 4; ++i) {
+            const y = inner.y + inner.h * (i + .5) / 4;
+            ctx.beginPath();
+            ctx.moveTo(left, middle);
+            ctx.lineTo((left + right) / 2, middle);
+            ctx.lineTo((left + right) / 2, y);
+            ctx.lineTo(right, y);
+            ctx.stroke();
+        }
+        ctx.fillStyle = "#b8e986";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `${Math.max(9, zoom * .14)}px 'Alan Sans', sans-serif`;
+        ctx.fillText("1", left, inner.y + zoom * .16);
+        ctx.fillText("4", right, inner.y + zoom * .16);
+    }
+}
+
+class Merger extends Component {
+    constructor(name,pos) {
+        super(name,pos,2,4);
+        for(let i = 0; i < 4; ++i) this.addInputPort({ side: 3, pos: i }, "I" + i);
+        this.addOutputPort({ side: 1, pos: 1 }, "OUT");
+    }
+
+    function() {
+        this.output[0].value = this.input.some(port => port.value == 1) ? 1 : 0;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box, .08);
+        const left = inner.x + inner.w * .22;
+        const right = inner.x + inner.w * .78;
+        const middle = inner.y + inner.h / 2;
+        ctx.strokeStyle = "#b8e986";
+        ctx.lineWidth = Math.max(1, zoom * .045);
+        for(let i = 0; i < 4; ++i) {
+            const y = inner.y + inner.h * (i + .5) / 4;
+            ctx.beginPath();
+            ctx.moveTo(left, y);
+            ctx.lineTo((left + right) / 2, y);
+            ctx.lineTo((left + right) / 2, middle);
+            ctx.lineTo(right, middle);
+            ctx.stroke();
+        }
+        ctx.fillStyle = "#b8e986";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `${Math.max(9, zoom * .14)}px 'Alan Sans', sans-serif`;
+        ctx.fillText("4", left, inner.y + zoom * .16);
+        ctx.fillText("1", right, inner.y + zoom * .16);
+    }
+}
+
+
+class Procedural extends Component {
+    constructor(name,pos) {
+        super(name,pos,3,3,{ type: "icon", text: "functions" });
+        this.addInputPort({ side: 3, pos: 0 }, "A");
+        this.addInputPort({ side: 3, pos: 1 }, "B");
+        this.addOutputPort({ side: 1, pos: 1 }, "Y");
+        this.properties.expression = "A ^ B";
+        this.value = 0;
+        this.compileError = false;
+        this.compiled = null;
+        this.compile();
+    }
+
+    compile() {
+        try {
+            this.compiled = new Function("A", "B", `return Number(Boolean(${this.properties.expression}));`);
+            this.compileError = false;
+        } catch(error) {
+            this.compiled = null;
+            this.compileError = true;
+        }
+    }
+
+    function() {
+        if(!this.compiled) return;
+        const value = this.compiled(this.input[0].value == 1, this.input[1].value == 1);
+        this.value = value ? 1 : 0;
+        this.output[0].value = this.value;
+    }
+
+    draw() {
+        Component.prototype.draw.call(this);
+        const box = componentBox(this);
+        const inner = paintInset(box);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = this.compileError ? "#ff8a80" : "#b8e986";
+        ctx.font = `${Math.max(9, zoom * .15)}px 'REEO Circuit Display', monospace`;
+        const text = this.compileError ? "EXPRESSION ERROR" : String(this.properties.expression);
+        const max = Math.max(8, Math.floor(inner.w / (zoom * .09)));
+        ctx.fillText(text.length > max ? text.slice(0, max - 1) + "…" : text,
+            inner.x + inner.w / 2, inner.y + inner.h / 2);
+    }
+}
+
 class LED extends Component {
     constructor(name,pos,color = [100,0,0]) {
         super(name,pos,1,1,{ type: "value" });
@@ -2419,6 +3076,7 @@ class LED extends Component {
         this.value = 0;
 
         this.color = color;
+        this.properties.shape = "round";
     }
 
     function() {
@@ -2453,13 +3111,23 @@ class LED extends Component {
         }
         ctx.fillStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
 
+        const cx = x - zoom / 2 + this.width / 2 * zoom;
+        const cy = y - zoom / 2 + this.height / 2 * zoom;
+        const radius = zoom / 4;
         ctx.beginPath();
-        ctx.arc(
-            x - zoom / 2 + this.width / 2 * zoom,
-            y - zoom / 2 + this.height / 2 * zoom,
-            zoom / 4,
-            0, Math.PI * 2
-        );
+        if(this.properties.shape === "square") {
+            ctx.roundRect(cx - radius, cy - radius, radius * 2, radius * 2, radius * .18);
+        } else if(this.properties.shape === "diamond") {
+            ctx.moveTo(cx, cy - radius);
+            ctx.lineTo(cx + radius, cy);
+            ctx.lineTo(cx, cy + radius);
+            ctx.lineTo(cx - radius, cy);
+            ctx.closePath();
+        } else if(this.properties.shape === "bar") {
+            ctx.roundRect(cx - radius * .42, cy - radius, radius * .84, radius * 2, radius * .3);
+        } else {
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        }
         ctx.fill();
 
         ctx.shadowBlur = 0;
@@ -2577,7 +3245,7 @@ class LED extends Component {
 
 class Display extends Component {
     constructor(name,pos,color = "#a00") {
-        super(name,pos,4,5,{ type: "value" });
+        super(name,pos,4,7,{ type: "value" });
         this.addInputPort({ side: 0, pos: 0 }, "A");
         this.addInputPort({ side: 0, pos: 1 }, "B");
         this.addInputPort({ side: 0, pos: 2 }, "C");
@@ -2593,6 +3261,8 @@ class Display extends Component {
 
         this.colorOff = "#300";
         this.colorOn = "#f00";
+        this.properties.colorOn = "#ff3b3b";
+        this.properties.colorOff = "#301010";
     }
 
     update() {
@@ -2625,10 +3295,12 @@ class Display extends Component {
         const lineWidth = this.lineWidth * this.height * zoom;
         const margin = zoom / 20;
 
-        ctx.shadowColor = this.colorOn;
+        const onColor = this.properties.colorOn || this.colorOn;
+        const offColor = this.properties.colorOff || this.colorOff;
+        ctx.shadowColor = onColor;
 
         // Segment A, top mid
-        ctx.fillStyle = this.input[0].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[0].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[0].value ? zoom / 2 : 0;
         let sx = x + hOffset + lineWidth + margin;
         let sy = y + vOffset;
@@ -2643,7 +3315,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment G, mid mid
-        ctx.fillStyle = this.input[6].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[6].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[6].value ? zoom / 2 : 0;
         sy = y + (this.height / 2 * zoom - lineWidth / 2);
         ctx.beginPath();
@@ -2656,7 +3328,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment D, bottom mid
-        ctx.fillStyle = this.input[3].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[3].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[3].value ? zoom / 2 : 0;
         sy = y + (this.height * zoom - vOffset - lineWidth);
         ctx.beginPath();
@@ -2669,7 +3341,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment F, top left
-        ctx.fillStyle = this.input[5].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[5].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[5].value ? zoom / 2 : 0;;
         sx = x + hOffset;
         sy = y + vOffset + lineWidth + margin;
@@ -2684,7 +3356,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment B, bottom left
-        ctx.fillStyle = this.input[1].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[1].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[1].value ? zoom / 2 : 0;
         sx = x + (this.width - 1) * zoom - lineWidth;
         ctx.beginPath();
@@ -2697,7 +3369,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment E, top right
-        ctx.fillStyle = this.input[4].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[4].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[4].value ? zoom / 2 : 0;
         sx = x + hOffset;
         sy = y + (this.height / 2) * zoom + lineWidth / 2 + margin;
@@ -2711,7 +3383,7 @@ class Display extends Component {
         ctx.fill();
 
         // Segment C, bottom right
-        ctx.fillStyle = this.input[2].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[2].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[2].value ? zoom / 2 : 0;
         sx = x + (this.width - 1) * zoom - lineWidth;
         ctx.beginPath();
@@ -2724,7 +3396,7 @@ class Display extends Component {
         ctx.fill();
 
         // Decimal Point segment
-        ctx.fillStyle = this.input[7].value ? this.colorOn : this.colorOff;
+        ctx.fillStyle = this.input[7].value ? onColor : offColor;
         if(zoom > 20) ctx.shadowBlur = this.input[7].value ? zoom / 2 : 0;
         ctx.beginPath();
         ctx.arc(

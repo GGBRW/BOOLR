@@ -74,8 +74,20 @@ const constructors = new Set([
   'Clock',
   'Debug',
   'Beep',
+  'Buzzer',
+  'Tone',
+  'DipSwitch',
+  'Slider',
   'Counter',
+  'Splitter',
+  'Merger',
+  'Procedural',
   'LED',
+  'RGBLed',
+  'BarGraph',
+  'SevenSegment',
+  'Lamp',
+  'Motor',
   'Display',
   'Custom',
   'TimerStart',
@@ -102,8 +114,8 @@ export function validateCircuitData(value: unknown, depth = 0): asserts value is
     !Array.isArray(value) ||
     !Array.isArray(value[0]) ||
     !Array.isArray(value[1]) ||
-    value[0].length > 2000 ||
-    value[1].length > 10000
+    value[0].length > 5000 ||
+    value[1].length > 25000
   )
     throw new Error('Invalid circuit data');
   for (const entry of value[0] as unknown[]) {
@@ -116,8 +128,8 @@ export function validateCircuitData(value: unknown, depth = 0): asserts value is
       !isPoint(props.pos) ||
       !Array.isArray(props.input) ||
       !Array.isArray(props.output) ||
-      props.input.length > 512 ||
-      props.output.length > 512
+      props.input.length > 1024 ||
+      props.output.length > 1024
     )
       throw new Error('Invalid component properties');
     for (const port of [...props.input, ...props.output] as unknown[]) {
@@ -139,7 +151,7 @@ export function validateCircuitData(value: unknown, depth = 0): asserts value is
         (typeof props[dimension] !== 'number' ||
           !Number.isFinite(props[dimension]) ||
           props[dimension] <= 0 ||
-          props[dimension] > 1000)
+          props[dimension] > 2000)
       )
         throw new Error('Invalid component dimensions');
     }
@@ -151,7 +163,7 @@ export function validateCircuitData(value: unknown, depth = 0): asserts value is
     if (
       !Array.isArray(positions) ||
       positions.length < 1 ||
-      positions.length > 20000 ||
+      positions.length > 50000 ||
       !(positions as unknown[]).every(isPoint)
     )
       throw new Error('Invalid wire path');

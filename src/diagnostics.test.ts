@@ -31,6 +31,18 @@ test('every exposed component has complete localized reference content', () => {
       'TimerStart',
       'TimerEnd',
       'Custom',
+      'Buzzer',
+      'Tone',
+      'DipSwitch',
+      'Slider',
+      'RGBLed',
+      'BarGraph',
+      'SevenSegment',
+      'Lamp',
+      'Motor',
+      'Splitter',
+      'Merger',
+      'Procedural',
     ].sort(),
   );
   for (const guide of componentGuides)

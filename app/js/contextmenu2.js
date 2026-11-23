@@ -259,6 +259,78 @@ createContextMenuOption(
 );
 
 createContextMenuOption(
+    "Auto-wire selected",
+    "cable",
+    "",
+    function() {
+        autoWireSelection(selecting);
+    },
+    function() {
+        return selecting && selecting.components && selecting.components.length > 1;
+    }
+);
+
+createContextMenuOption(
+    "Auto-route wires",
+    "route",
+    "",
+    function() {
+        autoRouteSelection(selecting);
+    },
+    function() {
+        return selecting && selecting.wires && selecting.wires.length > 0;
+    }
+);
+
+createContextMenuOption(
+    "Stack horizontally",
+    "view_column",
+    "",
+    function() {
+        stackSelection("x", selecting);
+    },
+    function() {
+        return selecting && selecting.components && selecting.components.length > 1;
+    }
+);
+
+createContextMenuOption(
+    "Stack vertically",
+    "view_stream",
+    "",
+    function() {
+        stackSelection("y", selecting);
+    },
+    function() {
+        return selecting && selecting.components && selecting.components.length > 1;
+    }
+);
+
+createContextMenuOption(
+    "Distribute horizontally",
+    "swap_horiz",
+    "",
+    function() {
+        distributeSelection("x", selecting);
+    },
+    function() {
+        return selecting && selecting.components && selecting.components.length > 2;
+    }
+);
+
+createContextMenuOption(
+    "Distribute vertically",
+    "swap_vert",
+    "",
+    function() {
+        distributeSelection("y", selecting);
+    },
+    function() {
+        return selecting && selecting.components && selecting.components.length > 2;
+    }
+);
+
+createContextMenuOption(
     "Componentize",
     "memory",
     "Shift+C",

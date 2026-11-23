@@ -79,6 +79,7 @@ declare global {
       | { remote: { getCurrentWindow(): { webContents: { openDevTools(): void } } } };
     __dirname: string;
     reeoDrawGhost: typeof import('./ghosts').drawGhost;
+    reeoGhostState: typeof import('./ghosts').ghostState;
     reeoHelp: { open(component?: string): void };
     reeoDrawComponentBody: typeof import('./rendering').drawComponentBody;
     reeoCircuitSVG: typeof import('./icons').circuitSVG;
